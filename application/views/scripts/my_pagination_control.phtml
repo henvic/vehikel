@@ -1,0 +1,40 @@
+<?php
+$registry = Zend_Registry::getInstance();
+$request = new Zend_Controller_Request_Http();
+$baseuri = $request->getRequestUri();
+
+if($this->current != 1 || mb_substr($baseuri, mb_strlen($baseuri)-6) == "/page1")
+$baseuri = mb_substr($baseuri, 0, -mb_strlen(mb_strrchr(mb_substr($baseuri, 0, -1), "/")));
+if(strrchr($baseuri, "/") != "/") $baseuri = $baseuri."/";
+$baseuri = $this->escape($baseuri);
+?>
+<div class="pages">
+<?php if($this->pageCount):
+$pages = $this->paginator($this->current, $this->pageCount);
+?>
+<div class="pagination">
+<?php if (isset($this->previous)): ?>
+<a href="<?=$baseuri?><?php if($this->previous != 1): ?>page<?= $this->previous ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?><?php endif;?>" class="Prev">&lt; Previous</a>
+<?php else: ?>
+<span class="Prev AtStart">&lt; Previous</span>
+<?php endif; 
+// Numbered page links
+while(current($pages)):
+if($this->current == current($pages)): ?>
+<span class="this-page"><?= current($pages) ?></span>
+<?php else: ?>
+<a href="<?=$baseuri?><?php if(current($pages) != 1): ?>page<?= current($pages) ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?><?php endif;?>"><?= current($pages) ?></a>
+<?php endif; //the order of the test below is ultimately important
+if(current($pages) != next($pages)-1 && current($pages)): ?>
+<span class="break">...</span>
+<?php endif; endwhile;
+
+if (isset($this->next)): ?>
+<a href="<?=$baseuri?>page<?= $this->next ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?>" class="Next">Next &gt;</a>
+<?php else: ?>
+<span class="Next AtEnd">Next &gt;</span>
+<?php endif; ?>
+</div>
+<?php endif; ?>
+<div class="Results">(<?= $this->totalItemCount ?> items)</div>
+</div>

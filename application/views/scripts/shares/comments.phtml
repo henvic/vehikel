@@ -1,0 +1,63 @@
+<?php
+$auth = Zend_Auth::getInstance();
+
+$registry = Zend_Registry::getInstance();
+$userInfo = $registry->get('userInfo');
+$shareInfo = $registry->get('shareInfo');
+
+$Time = new ML_Time();
+?>
+<div id="comments">
+<?php if($this->paginator->getTotalItemCount()): ?>
+<h3>Comments<?php if($this->paginator->getCurrentPageNumber() != 1) echo " (continuing...)" ?></h3>
+<?php foreach($this->paginator->getCurrentItems()->toArray() as $comment): ?>
+<div class="block" id="comment<?= $comment['id'] ?>">
+<div class="uimg">
+<?= $this->avatar($comment, "square"); ?>
+</div>
+<div class="comments">
+<p class="somehtml">
+<?php if($comment['people_deleted.alias']): ?>
+<?= $comment['people_deleted.name']?> (deleted) <b>said: </b>
+<?php else: ?>
+<a href="<?= $this->url(array("username" => $comment['people.alias']), "filestream_1stpage") ?>"><?= $comment['people.name']?></a> <b>said: </b>
+<?php endif; ?>
+<br />
+<?= $comment['comments_filtered'] ?></p>
+<p class="commentmeta"><small>
+<?php 
+$createdDate = $Time->ago($comment['timestamp']);
+$modifiedDate = $Time->ago($comment['lastModified']);
+?>
+<?= $createdDate ?> 
+<?php if($createdDate != $modifiedDate): ?> (last modified <?= $modifiedDate ?>) <?php endif; ?>
+<a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id'], "comment_id" => $comment['id']), "commentpermalink")?>" rel="nofollow">permalink</a>
+<?php if($auth->getIdentity() == $comment['uid'] ||
+ $auth->getIdentity() == $comment['byUid']): 
+ ?> | <a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id'], "comment_id" => $comment['id']), "deletecomment")?>" rel="nofollow">delete</a>
+ <?php endif;
+ if($auth->getIdentity() == $comment['uid']): 
+ ?> | <a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id'], "comment_id" => $comment['id']), "editcomment")?>" rel="nofollow">edit</a>
+ <?php endif;?>
+</small></p>
+</div>
+<hr title="End of comments" />
+</div>
+<?php endforeach; ?>
+<?php if($this->paginator->count() > 1) echo $this->paginator; ?>
+<?php endif; ?>
+<?php if($auth->hasIdentity()): ?>
+<?php if(isset($this->commentPreview)):
+$purifier = ML_HtmlPurifier::getInstance();
+?>
+<h3>Preview your comment</h3>
+<div id="commentPreview">
+<p class="somehtml"><?= $purifier->purify($this->commentPreview) ?></p>
+</div>
+<?php endif; ?>
+<?php
+$this->commentForm->getElement("commentMsg")->getDecorator("description")->setEscape(false);
+?>
+<?= $this->commentForm ?>
+<?php endif; ?>
+</div>

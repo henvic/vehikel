@@ -1,0 +1,31 @@
+<?php
+$accountLinks = array(
+"order" => array("Payment &amp; Order" => $this->url(array(), "do_order")),
+"index" => array("Settings" => $this->url(array(), "account")),
+"picture" => array("Picture" => $this->url(array(), "accountpicture")),
+"twitter" => array("Twitter" => $this->url(array(), "accounttwitter")),
+//"applications" => array("Applications" => $this->url(array(), "accountapps")),
+"password" => array("Password" => $this->url(array(), "password")),
+);
+?>
+<ul id="nav-account" class="verticalmenu">
+<?php
+
+$request = Zend_Controller_Front::getInstance()->getRequest();
+//@todo $request->getActionName() isn't the complete path (ControllerName is missing), but is enough by now
+foreach($accountLinks as $action => $rel)
+{
+	if($action == $request->getActionName()):
+	?>
+	<li class="active"><a href="<?= current($rel) ?>"><?= key($rel) ?></a></li>
+	<?php
+	else :
+	?>
+	<li><a href="<?= current($rel) ?>"><?= key($rel) ?></a></li>
+	<?php
+	endif;
+}
+unset($action);
+unset($rel);
+?>
+</ul>

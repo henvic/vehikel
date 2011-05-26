@@ -1,0 +1,67 @@
+<?php
+$auth = Zend_Auth::getInstance();
+$registry = Zend_Registry::getInstance();
+
+$userInfo = $registry->get("userInfo");
+
+$who = ($auth->getIdentity() == $userInfo['id']) ? "you" : $userInfo['name'];
+$contactLinks = array(
+"list" => array("Contacts" => $this->url(array("username" => $userInfo['alias']), "contacts_1stpage")),
+"reverselist" => array("Who counts ".$this->escape($who)." as a contact" => $this->url(array("username" => $userInfo['alias']), "contactsrev_1stpage")),
+);
+
+if($auth->hasIdentity())
+{
+if($userInfo['id'] == $auth->getIdentity())
+{
+	$contactLinks['ignorelist'] = array("People you ignore" => $this->url(array("username" => $userInfo['alias']), "ignore_1stpage"));
+}else
+{
+	$Contacts = ML_Contacts::getInstance();
+	
+	$mutualContactInfo = $Contacts->getInfo($auth->getIdentity(), $userInfo['id']);
+}
+}
+?>
+<h2>Lists</h2>
+<ul class="verticalmenu">
+<?php
+
+$request = Zend_Controller_Front::getInstance()->getRequest();
+
+foreach($contactLinks as $action => $rel)
+{
+	if($action == $request->getActionName()):
+	?>
+	<li class="active"><a href="<?= current($rel) ?>"><?= key($rel) ?></a></li>
+	<?php
+	else :
+	?>
+	<li><a href="<?= current($rel) ?>"><?= key($rel) ?></a></li>
+	<?php
+	endif;
+}
+?>
+</ul>
+<?php
+if($auth->hasIdentity() && $userInfo['id'] != $auth->getIdentity()):
+?>
+<h2>Your relationships</h2>
+<ul id="contactrels">
+<?php if(isset($mutualContactInfo['has'])): ?>
+<li class="first">You count <b><?= $this->escape($userInfo['alias']) ?></b> as a contact.</li>
+<?php else: ?>
+<li class="first">You don't count <?= $this->escape($userInfo['alias']) ?> as a contact.</li>
+<?php endif; ?>
+<?php if(isset($mutualContactInfo['reverse']['has'])): ?>
+<li><?= $this->escape($userInfo['alias']) ?> counts <b>you</b> as a contact.</li>
+<?php else: ?>
+<li><?= $this->escape($userInfo['alias']) ?> doesn't count you as a contact.</li>
+<?php endif; ?>
+</ul>
+<?php if(!isset($mutualContactInfo['has'])): ?>
+<p><a href="<?=$this->url(array("username" => $userInfo['alias']), "contact_relationship") ?>" rel="nofollow">Add <?= $this->escape($userInfo['alias']) ?> as a contact</a></p>
+<?php else: ?>
+<p><a href="<?=$this->url(array("username" => $userInfo['alias']), "contact_relationship") ?>" rel="nofollow">Remove <?= $this->escape($userInfo['alias']) ?> from your contacts</a></p>
+<?php endif; ?>
+<?php endif; ?>

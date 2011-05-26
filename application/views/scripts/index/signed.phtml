@@ -1,0 +1,33 @@
+<?php
+$auth = Zend_Auth::getInstance();
+$registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+$signedUserInfo = $registry->get("signedUserInfo");
+$this->headTitle($config->applicationname, "SET");
+?>
+<div class="yui-g">
+<div class="yui-u first">
+<h2 class="mainpage">Welcome <?= $this->escape($signedUserInfo['name']) ?>!</h2>
+<p><a href="<?= $this->url(array(), "upload") ?>" class="big">Upload something</a></p>
+<?= $this->partial("activity/recent.phtml"); ?>
+</div>
+<div class="yui-u">
+<?php
+if($config->signup->inviteonly):
+$Invites = new ML_Invites();
+$this->invites = $Invites->get();
+if(is_array($this->invites) && sizeof($this->invites) > 0):
+?>
+<h2 class="mainpage">We have some invite codes for you…</h2>
+<ol>
+<?php
+foreach($this->invites as $token):
+?>
+<li class="monospace"><b><?= $this->escape(strtoupper($token)) ?></b></li>
+<?php endforeach; ?>
+</ol>
+<a href="<?= $this->url(array(), "invites") ?>" title="Information about the invite codes">Learn more</a>
+<?php endif; ?>
+<?php endif; ?>
+</div>
+</div>

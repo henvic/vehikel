@@ -1,0 +1,32 @@
+<?php
+$auth = Zend_Auth::getInstance(); 
+$registry = Zend_Registry::getInstance();
+$userInfo = $registry->get('userInfo');
+if($auth->getIdentity() != $userInfo['id'])
+{
+	$title = "Tags used by ".$this->escape($userInfo['name']);
+} else {
+	$title = "Tags you use";
+}
+
+$this->headTitle($title, "PREPEND");
+
+?>
+<h2><?= $title ?></h2>
+<?php
+$tags_num = sizeof($this->taglist);
+if($tags_num == 0):?>
+<p>There is no tags here.</p>
+<?php else: ?>
+<ul>
+<?php $times_used_by_all_tags = array_sum(array_values($this->taglist));
+foreach($this->taglist as $tag => $timesUsed):
+$highlight_tag = (1.5*$times_used_by_all_tags/$tags_num < $timesUsed) ? true : false; 
+?>
+<?php if($highlight_tag) echo "<strong>"; ?>
+<li><a href="<?= $this->url(array("username" => $userInfo['alias'], "tag" => $tag), "tagpage_1stpage") ?>"><?= $this->escape($tag) ?></a></li>
+<?php if($highlight_tag) echo "</strong>"; ?>
+<?php endforeach; unset($highlight_tag); ?>
+</ul>
+Total of <?= $tags_num ?> tags.
+<?php endif; ?>

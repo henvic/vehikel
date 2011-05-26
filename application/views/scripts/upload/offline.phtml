@@ -1,0 +1,9 @@
+<?php 
+$registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+$this->headTitle("Upload");
+?>
+<h2>Upload system is down</h2>
+<p><?php if(!empty($config->uploadStatus->offlineMsg)):
+echo $this->escape($config->uploadStatus->offlineMsg); else: ?>
+We regreat for the inconvenience, but the upload system is down for a while. Please try later.<?php endif; ?></p>

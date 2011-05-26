@@ -1,0 +1,25 @@
+There is a sample application config file application.ini
+
+Right now this is designed to be run exclusively by Plifk
+
+The sample config file should be copied to anywhere else.
+
+For rapid upgrading make this base directory free of changes.
+
+Everything should be somewhere else.
+
+There is a db.sql file with the table structure needed for this service.
+
+The following environmental variables shall be set:
+
+EXTERNAL_LIBRARY_PATH
+APPLICATION_ENV (development/production)
+DEFAULT_TIMEZONE (GMT)
+PLIFK_CONF_FILE
+
+They should be set on the server with SetEnv
+and for the service module it should be set as in
+http://www.mcsr.olemiss.edu/unixhelp/environment/env3db.html
+https://help.ubuntu.com/community/EnvironmentVariables
+
+This is designed to run under Zend Server 4.06 with uploadprogress extension, ImageMagick and Zend Framework 1.9.6 or greater (minor version, check ChangeLog).

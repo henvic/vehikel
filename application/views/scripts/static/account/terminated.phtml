@@ -1,0 +1,15 @@
+<?php
+$auth = Zend_Auth::getInstance();
+
+if(!$auth->hasIdentity()):
+$this->headTitle("Account terminated");
+?>
+<h2>Account terminated</h2>
+<p>Thanks for using our services.</p>
+<p>If you don't know why you're here, don't worry. It's probably all right.</p>
+<?php else:
+$this->headTitle("Your account is ok");
+?>
+<h2>You are currently using our services</h2>
+<p>Despite the page you're at, your account is ok.</p>
+<?php endif; ?>

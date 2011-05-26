@@ -1,0 +1,50 @@
+<?php 
+$registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+
+$this->headTitle("Payment");
+
+?>
+<h2>Your cart</h2>
+<?php
+if(!$this->cart):
+?>
+<p>You have nothing on your cart.</p>
+<?php else: ?>
+<table class="styled">
+<thead><tr><th>Quantity</th><th>Product</th><th>Price</th><th></th></tr></thead>
+<tbody>
+<?php foreach($this->cart['items'] as $item):?>
+<td><?= $item['quantity'] ?></td>
+<td class="left"><?= $item['product']['name'] ?></td>
+<td class="left">$<?= $item['product']['price']*$item['quantity'] . ' ' . $item['product']['price_unit']?></td>
+<td>Remove</td>
+<?php endforeach; ?>
+<tr>
+<td>1</td>
+<td class="left">12-month subscription</td>
+<td class="left">$40 USD</td>
+<td>Remove</td>
+</tr>
+<tr>
+<td>2</td>
+<td class="left">Free credit</td>
+<td class="left">− $10 USD</td>
+<td>Remove</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td></td>
+<td class="left"><b>Total</b></td>
+<td class="left"><b>$30 USD</b></td>
+<td class="left"><b>Buy now</b></td>
+</tr>
+</tfoot>
+</table>
+<?php endif; ?>
+<h2>Payment</h2>
+<h3>Do you have a redeem code?</h3>
+<p>Add it to subtract your total.</p>
+<h3>Pay with PayPal</h3>
+<p>Just a click away.</p>

@@ -1,0 +1,62 @@
+<?php
+// this is used in the 'orders history' and 'order' pages
+$registry = Zend_Registry::getInstance();
+?>
+<table class="styled">
+<thead><tr><th>Order Number</th><th>Date and time</th><th>Transaction</th><th>Net amount</th></tr></thead>
+<tbody>
+<?php
+if($this->paginator && !$this->paginator->getTotalItemCount()): ?>
+<p>There is nothing here for you.</p>
+<?php else:
+if($this->paginator)
+{
+	$items = $this->paginator->getCurrentItems()->toArray();
+} else {
+	$items = array($this->order);
+}
+foreach($items as $order):
+
+$order_date = new Zend_Date();
+$order_date->set($order['timestamp'], Zend_Date::ISO_8601);
+$order_currency = new Zend_Currency(
+    array(
+        'value'    => $order['amount']/100,
+        'currency' => 'USD',
+    	'display'  => Zend_Currency::USE_SHORTNAME,
+    )
+);
+
+?>
+<tr>
+<td><?php
+if(!isset($this->order)):?>
+<a href="<?= $this->url(array("order_pid" => $order['pid']), "order") ?>">
+<?php endif; ?>
+<?= $this->escape(ML_Credits::printFormatedUUId($order['pid'])) ?>
+<?php
+if(isset($this->order)):?></a>
+<?php endif; ?>
+</td>
+<td><?= $this->escape($order_date) ?></td>
+<td class="left">
+<?php
+switch($order['reason_type'])
+{
+	case "transfer" : $order_type = ($order['amount'] > 0) ? 'Paid' : 'Credited'; break;
+	case "redeem" : $order_type = "Coupon redeemed"; break;
+	default : $order_type = "Unknown";
+}
+
+echo $this->escape($order_type);
+?>
+</td>
+<td class="right"><?= $this->escape($order_currency.' '.$order_currency->getShortName()) ?></td>
+</tr>
+<?php endforeach; endif; ?>
+</tbody>
+<?php if($this->paginator): ?>
+<tfoot><tr><th>Order Number</th><th>Date and time</th><th>Transaction</th><th>Amount</th></tr></tfoot>
+<?php endif; ?>
+</table>
+<p><small>Time zone considered: Pacific Standard Time (PST).</small></p>

@@ -1,0 +1,18 @@
+<?php
+$registry = Zend_Registry::getInstance();
+$userInfo = $registry->get('userInfo');
+$shareInfo = $registry->get('shareInfo');
+$commentInfo = $registry->get("commentInfo");
+$this->commentForm->getElement("commentMsg")->getDecorator("description")->setEscape(false);
+$this->headTitle("Edit comment");
+?>
+<h2><a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id'], "comment_id" => $commentInfo['id']), "commentpermalink") ?>">Comment on <?= $this->escape($shareInfo['title']) ?></a></h2>
+<?php if(isset($this->commentPreview)):
+$purifier = ML_HtmlPurifier::getInstance();
+?>
+<h3>Preview your comment</h3>
+<div id="commentPreview">
+<p class="somehtml"><?= $purifier->purify($this->commentPreview) ?></p>
+</div>
+<?php endif; ?>
+<?= $this->commentForm ?>

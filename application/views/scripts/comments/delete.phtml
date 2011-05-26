@@ -1,0 +1,14 @@
+<?php
+$registry = Zend_Registry::getInstance();
+$userInfo = $registry->get('userInfo');
+$shareInfo = $registry->get('shareInfo');
+$commentInfo = $registry->get("commentInfo");
+
+$this->headTitle("Delete comment");
+?>
+<h2><a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id'], "comment_id" => $commentInfo['id']), "commentpermalink") ?>">Comment on <?= $this->escape($shareInfo['title']) ?></a></h2>
+<h3>Are you sure you want to delete this comment?</h3>
+<div id="commentPreview">
+<p class="somehtml"><?= $this->comment['comments_filtered'] ?></p>
+</div>
+<?= $this->form ?>

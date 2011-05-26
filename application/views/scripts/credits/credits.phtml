@@ -1,0 +1,28 @@
+<?php 
+$registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+
+$this->headTitle("Your account balance / Add funds");
+$signedUserInfo = $registry->get("signedUserInfo");
+
+?>
+<div class="yui-ge">
+<div class="yui-u first">
+<h2>Your account balance / Add funds</h2>
+<?php
+if($this->transaction_id):
+?>
+<p>You've got a new balance. Added/subtraído...: next: fazer o /account/order/history</p>
+<?php endif; ?>
+<?= $this->partial("/credits/info.phtml"); ?>
+<h3>Use PayPal to add funds to your account</h3>
+<p>$ ___ USD <a href="">Pay!</a></p>
+<img src="https://www.paypal.com/en_US/i/bnr/horizontal_solution_PPeCheck.gif" width="253" height="80" alt="Payments by PayPal" />
+<hr />
+<h3>If you have got a gift card or coupon code</h3>
+<?= $this->redeemForm ?>
+</div>
+<div class="yui-u accountside">
+<?= $this->partial("/account/menu.phtml"); ?>
+</div>
+</div>

@@ -1,0 +1,26 @@
+<phpunit bootstrap="./public/index.php" colors="true">
+	<php>
+		<env name="EXTERNAL_LIBRARY_PATH" value="/Users/henvic/projects/MediaLab_external" />
+		<env name="APPLICATION_ENV" value="development" />
+		<env name="DEFAULT_TIMEZONE" value="GMT" />
+		
+	</php>
+    <testsuite name="ApplicationTestSuite">
+        <directory>./application/</directory>
+        <directory>./library/</directory>
+    </testsuite>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../application</directory>
+            <directory suffix=".php">../application/library</directory>
+            <exclude>
+                <directory suffix=".phtml">../application/views</directory>
+                <file>../application/Bootstrap.php</file>
+            </exclude>
+       </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="./log/coverage" charset="UTF-8"
+         yui="false" highlight="false" lowUpperBound="35" highLowerBound="70"/>
+    </logging>
+</phpunit>

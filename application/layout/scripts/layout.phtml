@@ -1,0 +1,144 @@
+<?php
+// Layout configuration file
+$registry = Zend_Registry::getInstance();
+$auth = Zend_Auth::getInstance();
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$config = $registry->get('config');
+
+$this->headScript()->setAllowArbitraryAttributes(true);
+
+if($registry->isRegistered("shareInfo") && $this->tagsList)
+{
+	$keywords = '';
+	foreach($this->tagsList as $tag)
+	{
+		if($keywords) $keywords .= ", ";
+		$keywords .= $this->escape($tag['raw']);
+	}
+
+	if(!empty($keywords)) $keywords .= ", ";
+	$keywords .= $config->keywords;
+
+	$shareInfo = $registry->get("shareInfo");
+	$this->headMeta()->appendName('description', $this->escape($shareInfo['title']));
+} else {
+	$keywords = $config->keywords;
+	$this->headMeta()->appendName('description', $config->description);
+}
+
+$this->headMeta()->appendName('keywords', $keywords);
+
+$this->webname = $config->applicationname;
+
+if($registry->isRegistered("signedUserInfo"))
+$signedUserInfo = $registry->get("signedUserInfo");
+
+$this->headTitle()->setSeparator(' – ');
+
+//if($registry->isRegistered("usingXhtmlHeader"))
+//{
+//	$this->headMeta()->appendHttpEquiv('Content-Type', "application/xhtml+xml; charset=utf-8");
+//} else {
+	$this->headMeta()->appendHttpEquiv('Content-Type', "text/html; charset=utf-8");
+//}
+
+$this->doctype('XHTML1_STRICT');
+
+$this->headLink(array('rel' => 'favicon', 'href' => $this->staticversion("/favicon.ico"), 'type' => "image/x-icon"), 'PREPEND');
+$this->headLink(array('rel' => 'apple-touch-icon', 'href' => $this->staticversion("/images/apple-touch-icon.png")), 'PREPEND');
+
+// START Loading some Javascript
+// using this configuration: http://developer.yahoo.com/yui/articles/hosting/?animation&connection&dom&element&event&yahoo&yuiloader&MIN
+
+if($registry->isRegistered("jsfiles"))
+{
+	$add_jsfiles = $registry->get("jsfiles");
+	foreach($add_jsfiles as $file => $method)
+	{
+		if($method == "append")
+		{
+			$this->headScript()->appendFile($file);
+		} elseif($method == "prepend") {
+			$this->headScript()->prependFile($file);
+		}
+	}
+}
+
+if($auth->hasIdentity()) {
+	$this->addjsvar("uid", $auth->getIdentity());
+}
+
+if($registry->isRegistered("globalHash")) {
+	$this->addjsvar("global_auth_hash", $registry->get("globalHash"));
+}
+
+$this->addjsvar("webroot", $config->webroot);
+
+//$this->headScript()->prependFile($this->staticversion("/javascript/plifk.js"));
+$this->headScript()->prependFile($this->staticUrl("/plifk.js"));
+$this->headScript()->prependFile("http://yui.yahooapis.com/combo?3.1.1/build/yui/yui-min.js");
+$this->headScript()->prependScript($this->getjsvarstext());
+$this->headLink()->appendStylesheet("http://yui.yahooapis.com/combo?2.8.1/build/reset-fonts-grids/reset-fonts-grids.css&2.8.1/build/base/base-min.css&2.8.1/build/container/assets/skins/sam/container.css", "screen", false, array("id" => "yuibasecss"));
+//$this->headLink()->appendStylesheet($this->staticversion("/plifk.css"), "screen", false, array("id" => "yuibase"));
+$this->headLink()->appendStylesheet($this->staticUrl("/plifk.css"));
+?>
+<?= $this->doctype() ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?= $this->headTitle() ?>
+
+<?= $this->headLink() ?>
+
+<?= $this->headMeta() ?>
+
+<?= $this->headScript() ?>
+
+<?= $this->headStyle() ?>
+</head>
+<body>
+<div id="doc2" class="yui-t1">
+<div id="bd"<?php /* role="main"*/?>>
+<div id="yui-main">
+<div class="yui-b">
+<div class="yui-g"<?php /* role="navigation"*/?> id="nav-bar"><?php
+if(isset($signedUserInfo)):
+?>
+<ul>
+<li class="first">Signed in as <a href="<?= $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage") ?>"><?= $this->escape($signedUserInfo['alias']) ?></a></li>
+<?php /*<li><a href="<?= $this->url(array("username" => $signedUserInfo['alias']), "contacts_1stpage") ?>">Your contacts</a></li>*/?>
+<li><b><a href="<?= $this->url(array(), "upload") ?>">Upload</a></b></li>
+<li><a href="<?= $this->url(array(), "account") ?>">Account</a></li>
+<li><a href="<?= $this->staticUrl("/help") ?>">Help</a></li>
+<li class="logout last"><a href="<?= $this->url(array(), "logout") ?>" id="logout_link" rel="nofollow">Sign out</a></li>
+</ul>
+<?php else: ?>
+<ul class="unsigned">
+<li><a href="<?= $this->url(array(), "join") ?>">Join&nbsp;us</a></li>
+<li>You're not signed in.</li>
+<li><a href="<?= $this->url(array(), "login") ?>" id="login-button">Sign&nbsp;in</a></li>
+</ul>
+<?php endif; ?></div>
+</div>
+</div>
+<div class="yui-b"<?php /*role="banner"*/?> id="logo">
+<h1><a href="<?= $this->url(array(), "index") ?>"><span></span><?= $this->escape($config->applicationname) ?></a></h1>
+</div>
+
+</div>
+<div id="hd"<?php /*role="application"*/?>>
+<?php
+$controllerName = $request->getControllerName();
+
+if($registry->isRegistered("userInfo"))
+{
+	echo $this->render("usermenu.phtml");
+}
+?>
+<?= $this->layout()->content ?>
+</div>
+<div id="ft"<?php /*role="contentinfo"*/?>><?php include("footer.phtml"); ?></div>
+</div>
+<?php include("analytics.phtml"); ?>
+</body>
+</html>

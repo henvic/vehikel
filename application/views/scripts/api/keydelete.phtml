@@ -1,0 +1,22 @@
+<?php
+$this->headTitle("API | Delete Key");
+?>
+<h2><a href="<?= $this->url(array(), "apikeys") ?>">Your API keys</a></h2>
+<?php
+$consumer = $this->consumerData;
+?>
+<h3>Delete your API Key</h3>
+<p>Are you sure you want to delete the following API key?</p>
+<dl>
+<dt><?= $this->escape($consumer['application_title']) ?></dt>
+<dd>
+<ul>
+<li><strong>Key:</strong> <?= $this->escape($consumer['consumer_key']) ?></li>
+<li><strong>Secret:</strong> <?= $this->escape($consumer['consumer_secret']) ?></li>
+<li><strong>Issued:</strong> <?php $date = new Zend_Date(); $date->set($consumer['issue_date'], Zend_Date::ISO_8601); echo $date->get(Zend_Date::DATE_LONG); ?></li>
+<li><strong>Application URI:</strong> <i><?= $this->escape($consumer['application_uri']) ?></i></li>
+<li><strong>Description:</strong> <i><?= $this->escape($consumer['application_descr']) ?></i></li>
+</ul>
+</dd>
+</dl>
+<?= $this->form ?>

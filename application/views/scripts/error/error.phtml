@@ -1,0 +1,49 @@
+<?php // application/views/scripts/error/error.phtml
+
+$registry = Zend_Registry::getInstance();
+
+switch($this->statusCode)
+{ 
+	case "403" : $headtitle = "403 Forbidden"; break;
+	case "404" : $headtitle = "Page not found"; break;
+	default : $headtitle = "Application error";
+}
+
+$this->headTitle($headtitle);
+
+if($this->statusCode == 404 && isset($_SERVER['REQUEST_URI']))
+{
+	$params = $this->request->getParams();
+	
+	if($registry->isRegistered("userInfo"))
+	{
+		$userInfo = $registry->get("userInfo");
+	}
+}
+
+?>
+<?php if ('development' == APPLICATION_ENV): ?>
+<div class="yui-g">
+<div class="yui-u first">
+<h2>Exception information:</h2>
+<p>
+<b>Message:</b> <?= $this->escape($this->exception->getMessage()) ?> 
+</p>
+</div>
+<div class="yui-u">
+<h3>Request Parameters:</h3>
+<pre><?php echo var_export($this->request->getParams(), true) ?></pre>
+<h3>Stack trace:</h3>
+<pre><?= $this->escape($this->exception->getTraceAsString()) ?></pre>
+</div>
+</div> 
+<?php endif; ?>
+<h2><?= $headtitle ?></h2>
+<?php if($this->statusCode == 404): ?>
+<p>The page you tried to access does not exists.</p>
+<?php if(isset($userInfo) && is_array($userInfo)): ?>
+<p><strong>Do you want to browser <a href="<?= $this->url(array("username" => $userInfo['alias']), "filestream_1stpage") ?>" title="<?= $this->escape($userInfo['name'])?> files"><?= $this->escape($userInfo['name'])?></a>'s contents?</strong></p>
+<?php endif; ?>
+<?php else: ?>
+<p>There was an application error.</p>
+<?php endif; ?>

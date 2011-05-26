@@ -1,0 +1,45 @@
+<?php 
+$registry = Zend_Registry::getInstance();
+$userInfo = $registry->get("userInfo");
+$auth = Zend_Auth::getInstance();
+
+$this->headTitle("Your ignore list", "PREPEND");
+
+$paginator = $this->paginator;
+?>
+<div class="yui-ge">
+<div class="yui-u first">
+<h2>Your ignore list</h2>
+<p>If someone is taking the fun of Plifk away from you, consider ignoring (blocking) the person.</p>
+<?php if(!$this->paginator->getTotalItemCount()): ?>
+<p><strong>Great!</strong> Right now no one is being blocked by you.</p>
+<?php else: ?>
+<table class="contacts styled">
+<thead>
+<tr>
+<th class="name">Name</th>
+<th class="since">Since</th>
+<th class="relationship">Block</th>
+</tr>
+</thead>
+<tbody>
+<?php $blockeds = $paginator->getCurrentItems()->toArray();
+$date = new Zend_Date();
+foreach($blockeds as $blocked):
+$date->set($blocked['timestamp'], Zend_Date::ISO_8601);
+?>
+<tr>
+<td class="name left"><b><a href="<?= $this->url(array("username" => $blocked['people.alias']), "filestream_1stpage") ?>"><?= $this->escape($blocked['people.name']) ?></a></b></td>
+<td><?= $date->get(Zend_Date::DATE_LONG); ?></td>
+<td><a href="<?= $this->url(array("username" => $blocked['people.alias']), "contact_relationship_ignore") ?>">Remove?</a></td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+<?php endif; ?>
+<?php if($this->paginator->count() > 1) echo $this->paginator; ?>
+</div>
+<div class="yui-u">
+<?= $this->partial("/contacts/menu.phtml"); ?>
+</div>
+</div>

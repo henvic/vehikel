@@ -1,0 +1,22 @@
+<?php 
+$auth = Zend_Auth::getInstance();
+$registry = Zend_Registry::getInstance();
+$userInfo = $registry->get('userInfo');
+if($auth->getIdentity() != $userInfo['id'])
+$this->headTitle("Shares of ".$this->escape($userInfo['name'])." tagged ".$this->escape($this->tagname), "PREPEND");
+else $this->headTitle("Your shares tagged ".$this->escape($this->tagname), "PREPEND");
+?>
+<div id="tagpage">
+<h2>Tag <?= $this->escape($this->tagname) ?></h2>
+<?php if(!$this->paginator->getTotalItemCount()): ?>
+<p><em>(none)</em></p>
+<?php else: ?>
+<ul>
+<?php
+foreach($this->paginator->getCurrentItems()->toArray() as $taginfo): ?>
+<li><a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $taginfo['share']), "sharepage_1stpage") ?>"><?= $taginfo['share.title'] ?></a></li>
+<?php endforeach; ?>
+<?php if($this->paginator->count() > 1) echo $this->paginator; ?>
+</ul>
+<?php endif; ?>
+</div>

@@ -1,0 +1,10 @@
+<?php
+$registry = Zend_Registry::getInstance();
+$userInfo = $registry->get('userInfo');
+$shareInfo = $registry->get('shareInfo');
+
+$this->headTitle("Delete ".$this->escape($shareInfo['title']) . " tag");
+?>
+<h2>Delete <a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage") ?>"><?= $this->escape($shareInfo['title']) ?></a> tag</h2>
+<p>Are you sure you want to remove the tag <strong><?= $this->escape($this->tag['raw']) ?></strong> from this?</p>
+<?= $this->deleteTagForm ?>

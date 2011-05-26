@@ -1,0 +1,178 @@
+<?php 
+$registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+
+$this->headTitle("API | Documentation");
+?>
+<h2>API Documentation</h2>
+<p>This document describes the <abbr title="Application Programming Interface">API</abbr> methods available for consumption by third-party developers, plus some technical information that may be of interest to anyone. Please notice that the API is not final (you can use the method <b>/version</b> to check the current version) and should be considered as experimental.</p>
+<h3>Overview</h3>
+<p>This API is in beta trial and is limited to a very small set of methods. This documentation also is very limited and assumes the developer has the know-how necessary to use it straightforward. If it is not the case, additional information (see <a href="#extresources">Other sites with useful resources and information</a>) might be necessary. Some methods are open to everyone and others require authentication by means of the OAuth protocol, in which case there are some pre-requisites:</p>
+<ol>
+<li>An API key <small>(<a href="<?= $this->url(array(), "apply_api_key") ?>">apply for a new one</a> | <a href="<?= $this->url(array(), "apikeys") ?>">your API keys</a>)</small></li>
+<li>A token of the user using your program</li>
+</ol>
+<p>Times are given in the <?= getEnv("DEFAULT_TIMEZONE"); ?> standard timezone (no Daylight saving).</p>
+
+<h3>Feed information</h3>
+<p>The user feed is a valuable element that is available for everyone. Typically you can retrieve the same information by using the API methods <b>/people/info</b> and <b>/files/list</b>, but in your use may make more sense to consume the feed (XML based RSS 2.0). Use the following address model to get a user feed: <code>http://www.plifk.com/<strong>(username)</strong>/feed</code></p>
+
+<h3>Avatar images</h3>
+<p>The link for the avatar images are constructed in the following way:<br />
+<code><?= $config->services->S3->headshotsBucketAddress ?><strong>(user id)</strong>-<strong>(icon secret)</strong><strong>(size end)</strong>.jpg</code></p>
+<p>The icon secret can be retrieve by means of the /people/info method. By "size end" we mean the URI termination for the wanted size. They are: "-t" for thumbnail, "-s" for square, "-m" for small, "" (nothing) for medium and "-b" for large.
+</p>
+
+<h3>Download links</h3>
+<p>The <b>dataurl</b> element in the <b>/files/info</b> response is the download link for a given object (file).</p>
+<p>This value can be cached, but can change at anytime as well as <b>filename</b> and <b>download_secret</b> can. If the file is not found you at the value of <b>dataurl</b> you should refresh the value before assuming anything (such as that the file is not available anymore). Please notice that <b>secret</b> and <b>download_secret</b> are two distinct and independent params.</p>
+<p>Appending <b>?torrent</b> to the end of the link you can get a .torrent for the file, which can be useful for the download of large files.</p>
+<p>Don't rely on the <code><?= $config->services->S3->sharesBucketAddress ?><strong>(username)</strong>/<strong>(file_id)</strong>-<strong>(download_secret)</strong>/<strong>(filename)</strong></code> pattern.<br />
+This is a pattern found at the <b>dataurl</b> element. <b>You should not</b> take it for granted. Instead, always use the <b>dataurl</b> value. Failure to comply with this <b>will break</b> your application sometime.</p>
+
+<h3>How to link</h3>
+<p>Avoid linking with a <code>/</code> (trailing slash) at the end or without the initial <code>www.</code> at the beginning. If you do so the user will receive a permanent redirection request to the right address, degrading the user experience.<br /><br />
+We provide short links at the domain <code>plifk.li</code> and the following redirections are available:</p>
+<ul>
+<li><code>http://plifk.li/<strong>(base58_file_id)</strong> redirects to http://www.plifk.com/<strong>(username)</strong>/<strong>(file_id)</strong></code></li>
+</ul>
+<p><code>base58_file_id</code> is the file_id after being transformed to base58 (<a href="http://www.flickr.com/groups/api/discuss/72157616713786392/" title="manufacturing flic.kr style photo URLs">reference</a> at the not-related <a href="http://www.flickr.com/" class="new-window">Flickr</a> web service). The <b>shorturl</b> element of the <b>/files/info</b> method response has this link ready-to-use.</p>
+
+<h3>Request format</h3>
+<p>This is a HTTP REST based API. The API server is in http://<strong>api.plifk.com</strong>/ and to call a simple GET method you should build a URI such as the following:<br /><br />
+<code>http://api.plifk.com/files/list?user_id=1&amp;page=3</code><br /><br /> where <b>/files/list</b> is the method intended and the <b>user_id</b> and <b>page</b> are the request parameters used in this query.<br /><br />
+You must know that <strong>method</strong> and <strong>method/</strong> (notice the slash) are not considered the same for the sake of consistency and calls to something like <b>/files/list/</b> will <strong>not</strong> work.</p>
+
+<h3>Response formats and encoding</h3>
+<p>We use and assume that all transactions are made with the <b>utf-8</b> encoding. Don't send requests encoded in nothing else.<br /><br />
+Except for the /oauth/* methods, all other methods have two response formats. They are: <strong>xml</strong> and <strong>json</strong>.<br /><br />
+Both provide the same information. The json can be handful if you use Javascript and the <abbr title="Extensible Markup Language">XML</abbr> is easer for human reading and perhaps parsing too.<br /><br />
+This may be given as the <b>response_format</b> param. Possible values: xml (default), json.<br /><br />
+All response values must be considered as of a string type, regardless of their true nature, except for the pagination element.</p>
+
+<h3>Error responses</h3>
+<p>For now what we basically send two errors information. One (404) for when the resource (method or user) is not found. Another (500) for bad requests, that is triggered when a condition is not satisfied or in case of a server errors.<?php // For example, if trying to upload a file without any bandwith left.?><br />
+We will introduce a more useful (and backwards compatible) error response soon. The structure of the error information can be seen by accessing a method (except the ones that start with /oauth*, that have their own way to deal with it) without giving the required params (<a href="http://api.plifk.com/files/list?page=12" title="example of response for method that requires parameter not given">example</a>) or by accessing a method or resource that does not exists (<a href="http://api.plifk.com/error/error" title="example of response for method not found" rel="nofollow">example</a>).</p>
+
+<h3 id="extresources">Other sites with useful resources and information</h3>
+<ul>
+<li><a href="http://term.ie/oauth/example/client.php">OAuth Test Client</a></li>
+<li><a href="http://developer.yahoo.com/oauth/">OAuth Authentication Model - Yahoo! Developer Network</a></li>
+<li><a href="http://www.hueniverse.com/hueniverse/2007/10/beginners-guide.html">Beginner’s Guide to OAuth – Part I: Overview</a></li>
+<li><a href="http://code.google.com/p/oauth-php/">oauth-php</a> (if you use PHP; don't forget to see the <a href="http://code.google.com/p/oauth-php/wiki/ConsumerHowTo">Consumer How To page</a>)</li>
+</ul>
+<p><em><strong>Tip:</strong> if you ever consumed <a href="http://apiwiki.twitter.com/">Twitter's API</a> in any way you will see that this is much like it.</em></p>
+
+<h3>Methods currently available</h3>
+
+<h4>Public ones</h4>
+<dl>
+<dt>/test/echo</dt>
+<dd>
+<p>Sends a response echoing the user request (example).<br />
+<b>HTTP Method(s):</b> GET<br />
+<a href="http://api.plifk.com/test/echo?example=this&amp;echo=test">Response example</a>
+</p>
+</dd>
+<dt>/version</dt>
+<dd>
+<p>Sends a response with the current version of the API. Even numbers identify a version as stable, odd number as experimental and "<b>a</b>" is for alpha, "<b>b</b>" is for beta.<br />
+<b>HTTP Method(s):</b> GET<br />
+<a href="http://api.plifk.com/version">Response example</a>
+</p>
+</dd>
+<dt>/people/info</dt>
+<dd>
+<p>Get user information. Note that users can hide their e-mails from public search and this method will return not found in this case, even if there is an account for the given e-mail.<br />
+<b>HTTP Method(s):</b> GET<br />
+<b>Parameters:</b> one of the following is required: user_id, username, email.<br />
+<a href="http://api.plifk.com/people/info?user_id=33">Response example</a>
+</p>
+</dd>
+<dt>/tags/user_list</dt>
+<dd>
+<p>List of all tags used by the given user.<br />
+<b>HTTP Method(s):</b> GET<br />
+<b>Parameters:</b> user_id (required)<br />
+<a href="http://api.plifk.com/tags/user_list?user_id=33">Response example</a>
+</p>
+</dd>
+<dt>/files/info</dt>
+<dd>
+<p>Get information about a file.<br />
+<b>HTTP Method(s):</b> GET<br />
+<b>Parameters:</b> file_id (required)<br />
+<a href="http://api.plifk.com/files/info?file_id=114">Response example</a>
+</p>
+</dd>
+<dt>/files/list</dt>
+<dd>
+<p>List the files of a given user.<br />
+<b>HTTP Method(s):</b> GET<br />
+<b>Parameters:</b> user_id (required), per_page (optional, default: 20), page (optional, default: 1)<br />
+<a href="http://api.plifk.com/files/list?user_id=33">Response example</a>
+</p>
+</dd>
+</dl>
+
+<h4>Authentication (OAuth)</h4>
+<dl>
+<dt>/oauth/request_token</dt>
+<dd>
+<p>Allows a Consumer application to obtain an OAuth Request Token to request user authorization. This method fulfills <a href="http://oauth.net/core/1.0/#auth_step1">Secion 6.1</a> of the <a href="http://oauth.net/core/1.0/#anchor9">OAuth 1.0 authentication flow</a>.<br />
+<b>HTTP Method(s):</b> GET<br />
+<b>Format:</b> <a href="http://oauth.net/core/1.0/#auth_header">OAuth HTTP Authorization Scheme</a><br />
+<b>Parameters:</b> <a href="http://oauth.net/core/1.0/#anchor9">See Section 6 Of the OAuth Core Specification for required parameters</a></p>
+<p>With this method you will obtain some token data. You should create an URI to http://plifk.com/api/authorize with the oauth_token data from the oauth/requesttoken method appended to the the right end of this URI. As in: <em>http://example.com/api/requesttoken?oauth_token=6c0e40771d0db03a5ebfb67df9080703</em> (don't forget the <b>?</b>) and store the token secret to use to request an access token after the user authorizes.
+</p>
+</dd>
+<dt>/oauth/access_token</dt>
+<dd>
+<p>Allows a Consumer application to exchange the OAuth Request Token for an OAuth Access Token. This method fulfills <a href="http://oauth.net/core/1.0/#auth_step3">Secion 6.3</a> of the <a href="http://oauth.net/core/1.0/#anchor9">OAuth 1.0 authentication flow</a>.<br />
+<b>HTTP Method(s):</b> POST<br />
+<b>Format:</b> <a href="http://oauth.net/core/1.0/#auth_header">OAuth HTTP Authorization Scheme</a><br />
+<b>Parameters:</b> <a href="http://oauth.net/core/1.0/#anchor9">OAuth HTTP Authorization Scheme</a>
+</p>
+</dd>
+</dl>
+
+<h4>Authentication required methods</h4>
+<p>You have to sign every method call that requires authentication as dictated by the OAuth documentation.</p>
+<dl>
+<dt>/activity/recent</dt>
+<dd>
+<p>Shows recent activity from contacts (right now only the files uploaded).<br />
+<b>HTTP Method(s):</b> GET
+</p>
+</dd>
+<dt>/upload/status</dt>
+<dd>
+<p>Get user upload status information showing how much bandwidth is used, left, etc.<br />
+<b>HTTP Method(s):</b> GET
+</p>
+</dd>
+</dl>
+
+<h3>Methods yet to be released</h3>
+<p>As of <em>February 17th, 2010</em> these methods are almost certainly functioning correctly but were not implemented because of lack of testing against failure. They might be released at any time.</p>
+
+<h4>Authentication required methods</h4>
+<dl>
+<dt>/upload</dt>
+<dd>
+<p>Upload a file.<br />
+<b>HTTP Method(s):</b> POST (PUT might be added in the future with the expected slightly different behaviour)<br />
+<b>Parameters:</b> file (required), title (optional, up to 100 chars), short (optional, up to 120 chars), description (optional, up to 4096 chars)
+</p>
+</dd>
+<dt>/files/setmeta</dt>
+<dd>
+<p>Set the metadata for a file <small>(note that everything is required)</small>.<br />
+<b>HTTP Method(s):</b> POST<br />
+<b>Parameters:</b> file_id (required), title (required, up to 100 chars), short (required, up to 120 chars), description (required, up to 4096 chars, including <abbr title="HyperText Markup Language">HTML</abbr> mark-up), filename (required, up to 30 chars)<br />
+<b>Response:</b> empty on success.
+</p>
+</dd>
+</dl>
+<hr />
+<p><em>Last modified: February 17th, 2010</em></p>

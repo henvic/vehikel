@@ -1,0 +1,56 @@
+<?php
+
+$auth = Zend_Auth::getInstance();
+$registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+
+$Profile = new ML_Profile();
+$Contacts = ML_Contacts::getInstance();
+
+$userInfo = $registry->get("userInfo");
+
+$this->headTitle($config->applicationname . ": " . $this->escape($userInfo['name']), "SET");
+
+$profileInfo = $Profile->getById($userInfo['id']);
+
+?>
+<div class="yui-g">
+<h2>About <?= $this->escape($userInfo['name']) ?></h2>
+
+<ul>
+<?php
+if($auth->hasIdentity() && $auth->getIdentity() != $userInfo['id'])
+{
+	$contactInfo = $Contacts->getInfo($auth->getIdentity(), $userInfo['id']);
+	
+	if(isset($contactInfo['id'])) echo '<li><b>You count '.$this->escape($userInfo['alias']).'</b> as a contact (<a href="'.$this->url(array("username" => $userInfo['alias']), "contact_relationship").'" rel="nofollow">change?</a>).</li>'."\n";
+	else {
+		$Ignore = ML_Ignore::getInstance();
+		$ignoreStatus = $Ignore->status($auth->getIdentity(), $userInfo['id']);
+		if(isset($ignoreStatus['ignore']))
+		echo '<li><b>You have blocked this user.</b> <a href="'.$this->url(array("username" => $userInfo['alias']), "contact_relationship_ignore").'" rel="nofollow">Change?</a></li>'."\n";
+		
+		echo '<li><b><a href="'.$this->url(array("username" => $userInfo['alias']), "contact_relationship").'" rel="nofollow">Add '.$this->escape($userInfo['alias']).' as a contact</a></b></li>';
+	}
+	
+	if(is_array($contactInfo['reverse'])) echo "<li>".$this->escape($userInfo['alias'])." counts <b>you</b> as a contact.</li>";
+}
+?>
+<?php if(!empty($profileInfo['website'])): ?><li><strong>Website:</strong> <a href="<?= $this->escape($profileInfo['website']) ?>"><?= $this->escape($profileInfo['website']) ?></a></li><?php endif; ?>
+<?php if(!empty($profileInfo['location'])): ?><li><strong>Location:</strong> <?= $this->escape($profileInfo['location']) ?></li><?php endif; ?>
+</ul>
+<p id="profile_desc" class="somehtml">
+<?php if($profileInfo['about_filtered']): ?>
+<?= $profileInfo['about_filtered']?>
+<?php else:?>
+<small class="nodescr">(about not available)</small>
+<?php endif; ?>
+</p>
+<?php $avatar = $this->avatarprofile($userInfo); if($avatar): ?>
+<h3>User image</h3>
+<?= $avatar ?>
+<?php endif; ?>
+<?php if($auth->hasIdentity() && $auth->getIdentity() != $userInfo['id'] && (!isset($ignoreStatus) || !is_array($ignoreStatus))): ?>
+<p class="longbreak"><small><a href="<?= $this->url(array("username" => $userInfo['alias']), "contact_relationship_ignore")?>" rel="nofollow">Block this user?</a></small></p>
+<?php endif;?>
+</div>

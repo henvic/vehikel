@@ -1,0 +1,15 @@
+<?php
+$registry = Zend_Registry::getInstance();
+$signedUserInfo = $registry->get("signedUserInfo"); 
+$this->headTitle("Delete your Plifk account?");
+?>
+<h2><?= $this->escape($signedUserInfo['name']) ?></h2>
+<h3>Do you really want to delete your account?</h3>
+<ol>
+<li>Maybe it's time to read the <a href="<?= $this->staticUrl("/privacy") ?>">Privacy Policy</a> to see what data we keep;</li>
+<li>Comments you left on other user's pages are preserved;</li>
+<li>The removal of your files from storage can take some time;</li>
+</ol>
+</p>
+<?= $this->deleteAccountForm ?>
+<p>Want to talk with our team at <a href="http://support.plifk.com/" class="new-window">our customer support community</a> or via <a href="mailto:cs@plifk.com" title="Plifk customer service e-mail address">email</a>?</p>

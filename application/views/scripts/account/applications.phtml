@@ -1,0 +1,46 @@
+<?php
+$registry = Zend_Registry::getInstance();
+$this->headTitle("Applications you use");
+?>
+<div class="yui-ge">
+<div class="yui-u first">
+<h2>Application services</h2>
+<?php if(sizeof($this->listConsumerTokens)): ?>
+<p>See what applications you have authorized to access your account.</p>
+<table>
+<thead>
+<tr>
+<th>Application</th>
+<th>Access granted date</th>
+<th>Access type</th>
+<th>Revoke</th>
+</tr>
+</thead>
+<tbody>
+<?php
+foreach($this->listConsumerTokens as $consumer): ?>
+<tr>
+<td>
+<?php $appuri = $this->escape($consumer['application_uri']); if(empty($appuri)): ?>
+<b><?= $this->escape($consumer['application_title']) ?></b>
+<?php else: ?>
+<a href="<?= $this->escape($consumer['application_uri']) ?>"><b><?= $this->escape($consumer['application_title']) ?></b></a>
+<?php endif; ?>
+</td>
+<td><?= $this->escape($consumer['application_descr']) ?></td>
+<td><?php $date = new Zend_Date(); $date->set($consumer['timestamp'], Zend_Date::ISO_8601); echo $date->get(Zend_Date::TIME_SHORT).' '.$date->get(Zend_Date::DATE_LONG); ?></td>
+<td>read and write</td>
+<td><a href="<?= $this->url(array(), "accountapps") ?>?revoke_token=<?= $this->escape($consumer['token']) ?>&hash=<?= $registry->get("globalHash") ?>">Revoke?</a></td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+<?php else: ?>
+<p>No application has access to your account right now.</p>
+<?php endif; ?>
+<p>If you are a developer using the Plifk API, <a href="<?= $this->url(array(), "apikeys") ?>" title="Your API keys">your keys are here</a>.</p>
+</div>
+<div class="yui-u accountside">
+<?= $this->partial("/account/menu.phtml"); ?>
+</div>
+</div>

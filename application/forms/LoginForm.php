@@ -1,0 +1,61 @@
+<?php
+// http://weierophinney.net/matthew/archives/165-Login-and-Authentication-with-Zend-Framework.html
+class LoginForm extends Zend_Form
+{
+    public function init()
+    {
+        $registry = Zend_Registry::getInstance();
+        $config = $registry->get("config");
+    	/* Damn it!
+    	 * [15:47] <jesswa> i think the reason your code isn't working
+[15:47] <jesswa> is because $form->addElement() returns the form and not the element you just added
+[15:47] <jesswa> try changing line 14 to $this->getElement("password")->setAttrib('class', 'my-class');
+    	 */
+    	$this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
+    	
+		$this->addElement('text', 'username', array(
+            'label'      => 'Username or e-mail:',
+            'required'   => true,
+            'filters'    => array('StringTrim', 'StringToLower'),
+            'validators' => array(
+                array('validator' => 'username'), //there's stringlenght there
+                )
+        ));
+        
+        $this->addElement('password', 'password', array(
+        	'label'      => 'Password:',
+            'required'   => true,
+            'filters'    => array('StringTrim'),
+            'validators' => array(
+        array('validator' => 'StringLength', 'options' => array(5, 20)),
+        		array('validator' => 'password'),
+            ),
+        ));
+        
+        $this->addElement('checkbox', 'remember_me', array(
+            'label'    => 'Remember me'));
+        
+	    if(ML_AntiAttack::ensureHuman()) {
+        	$this->addElement(ML_AntiAttack::captchaElement());
+        }
+        
+        $login = $this->addElement('submit', 'login', array(
+            'required' => false,
+            'ignore'   => true,
+            'label'    => 'Sign in'
+        ));
+        
+        
+        if($config->ssl)
+        {
+            $this->getElement("login")->addValidator("Https");
+            //Note: by default the submit element doesn't display a error decorator
+            $this->getElement("login")->addDecorator("Errors");
+        }
+        
+        $this->getElement("username")->setAttrib('class', 'smallfield');
+        $this->getElement("password")->setAttrib('class', 'smallfield');
+    }
+}
+ 

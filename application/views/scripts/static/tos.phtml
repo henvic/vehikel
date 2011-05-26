@@ -1,0 +1,50 @@
+<?php 
+$registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+$this->headTitle("Terms of Service");
+?>
+<h2>Terms of Service</h2>
+<p>Your access and use of the services provided by the means of this website and any other solutions associated with Plifk is conditioned on your acceptance and compliance to these Terms of Services.</p>
+
+<h3>Basic Terms</h3>
+<ol>
+<li>All Content, whether publicly or privately posted and transmitted, is the sole responsibility of the person who originated such Content.</li>
+<li>You are limited to publish only Content that doesn't infringe rights and are not forbidden for you to publish by laws of the United States of America, including, but not limited to, the Copyright Law.</li>
+<li>We may not nor will monitor or control the Content posted via the Services and, we cannot take responsibility for such Content. Any use or reliance on any Content or materials posted via the Services or obtained by you through the Services is at your own risk.</li>
+<li>You are the solely responsible for any actions taken by means of your access account.</li>
+<li>To the extent of where law permits Plifk reserves the right not to be hold liable for any disclosure of Content related to your account intentional or not, including, but not limited to, due to system fault or for compliance with applicable laws.</li>
+<li>In addition, Plifk may stop (permanently or temporarily) providing the services to you or any other without prior notice.</li>
+<li>Any information that you provide to us are subject to Plifk's <a href="http://<?= $this->escape($config->webhost) ?>/<?= $this->staticUrl("privacy") ?>">Privacy Policy</a>, which governs our collection and use of your information.</li>
+</ol>
+
+<h3>Limitations of Service</h3>
+<p>You can not use this service to share Content larger than what is allowed. For Content here understand as a single piece of data that can be useful by itself. For example: a song is considered a Content, but half of a compacted data file is almost certainly not.<br /><br />
+In addition, this service is intended to be used by human beings at both ends (provider and requester of Content). Using automation to upload or download files to and from the storage servers might or not be tolerated at our own discretion. The purpose and nature of the data is considered in these cases (e.g., data collection from remote sensoring stations used in scientific experiments are very welcome, hotlinking files is not).</p>
+
+<h3>Content on the Services</h3>
+<p>You understand that by using the Services, you may be exposed to Content that might be offensive, harmful, inaccurate or otherwise inappropriate, or in some cases, Content that have been mislabeled or are otherwise deceptive.<br /><br />
+
+Under no circumstances will Plifk be liable for any failure to provide services, errors or omissions.<br /><br />
+
+This service is provided on an "AS IS" and "AS AVAILABLE" basis, with no guarantees of minimum space or bandwidth available, neither of integrity of data, nor anything else, except for what it is obligated by law.<br /><br />
+
+We reserve the right to remove any Content that is deceived as dangerous for our users (i.e., virus) or that violates in any way these agreements without prior notice.<br /><br />
+You can use the <em>Report abuse</em> link found at the footer of every page in this website to report suspect activity.</p>
+
+<h3>Member conduit</h3>
+<p>You agree not to use this service to impersionate or misrepresent any person or entity; promote "junk mail", "spam", send virus or anything else with the purpose of disturbing the peace of mind of others.<br /><br />
+
+You agree not to publicly display any material that may be inappropriate to minors or considered <em>not safe for work</em> (Internet jargon for things that can cause embarassment for viewing in public).</p>
+
+<h3>Rules for the use of the API (Application Programming Interface)</h3>
+<p>The API is provided to you at Plifk's sole discretion and may be suspended or terminated at any time for any reason or no reason at all.<br /><br />
+
+All application that makes use of the API are required to use the available resources with regard to maintain a high quality of service. For that developers should understand that results should be cached when appropriate and any information retrieved by any method or any other means should be used with due respect to both the Privacy Policy and these Terms of Service. This include the protection of sensitive data, including, but not limited to tokens and other private user information.</p>
+
+<h3>About the validity of these Terms of Service</h3>
+<p>These terms may be revised from time to time, the most current version will always be at <a href="http://<?= $this->escape($config->webhost) ?>/<?= $this->staticUrl("tos") ?>">http://<?= $this->escape($config->webhost) ?>/<?= $this->staticUrl("tos") ?></a>. If the revision, in our sole discretion, is material enough you will be notified via the available means. By continuing to access or use the Services after those revisions become effective, you agree to be bound by the revised Terms.<br /><br />
+
+If you have any questions about these Terms, please <a href="http://<?= $this->escape($config->webhost) ?>/<?= $this->staticUrl("about") ?>#contact">contact</a>.</p>
+
+<hr />
+<p><em>Effective: October 30th, 2009</em></p>

@@ -1,0 +1,38 @@
+<?php
+$registry = Zend_Registry::getInstance();
+
+$signedUserInfo = $registry->get('signedUserInfo');
+$this->headTitle("Upload your files");
+?>
+<h2>Upload your files</h2>
+<?php if($this->uploadStatus['bandwidth']['remainingbytes'] > 0): ?>
+<div class="yui-gb">
+<div class="yui-u first">
+<?= $this->uploadForm ?> 
+</div>
+<div class="yui-u">
+<h3>Progress of your upload(s)</h3>
+<div id="uploadprogress">
+<div class="percentage"></div>
+</div>
+<small id="uploadprogressinfo">Not uploading anything right now.</small>
+<h3>Bandwidth available</h3>
+<?php
+$print_available = round(($this->uploadStatus['bandwidth']['remainingbytes']/$this->uploadStatus['bandwidth']['maxbytes'])*100);
+?>
+<div id="bandwidth">
+<div class="used" style="width: <?= round((1-$this->uploadStatus['bandwidth']['remainingbytes']/$this->uploadStatus['bandwidth']['maxbytes'])*100) ?>%;"><?php if($print_available <= 85) echo 100-$print_available."%"; ?></div>
+<div class="available" style="padding-left: <?= round((1-$this->uploadStatus['bandwidth']['remainingbytes']/$this->uploadStatus['bandwidth']['maxbytes'])*100) ?>%; width: <?= round(($this->uploadStatus['bandwidth']['remainingbytes']/$this->uploadStatus['bandwidth']['maxbytes'])*100) ?>%;"><?php if($print_available >= 15) echo $print_available."%"; ?></div>
+</div>
+<small id="bandwidthinfo"><?= file_size($this->uploadStatus['bandwidth']['remainingbytes'], true) ?> of <?= file_size($this->uploadStatus['bandwidth']['maxbytes'], true) ?> still available for use this month.</small>
+</div>
+<div class="yui-u">
+<h3>How it works</h3>
+<p>Each month you have some bandwidth to use for uploading your files.</p>
+<h3>Your uploads</h3>
+<p>You can upload files up to <?= file_size($this->uploadStatus['filesize']['maxbytes'], true) ?> each one, four at a time.</p>
+</div>
+</div>
+<?php else: ?>
+<p>You can not upload any data right now because you have exceeded your quota.</p>
+<?php endif; ?>

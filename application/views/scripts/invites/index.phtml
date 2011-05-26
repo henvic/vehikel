@@ -1,0 +1,39 @@
+<?php
+$this->headTitle("Invites for the Plifk experience", "SET");
+?>
+<?php
+$Invites = new ML_Invites();
+		
+$this->invites = $Invites->get();
+
+if(!is_array($this->invites)): ?>
+<h2>Zero invites for you :-(</h2>
+<p>Don't worry, within some days you will start to receive them. We will let you know when it is time at the Plifk <b><a href="<?= $this->url(array(), "index") ?>">Home</a></b> page.</p>
+<?php
+elseif(empty($this->invites)):
+?>
+<h2>Thanks. You've invited a lot! :-)</h2>
+<p>We don't have any more invites for you right now. When we do, we will let you know at the Plifk <b><a href="<?= $this->url(array(), "index") ?>">Home</a></b> page.<br /><br />
+Anyway, we are glad you are enjoying Plifk!</p>
+<?php
+else: ?>
+<div class="yui-g">
+<div class="yui-u first">
+<h2>Inviting is fun</h2>
+<p>Each invite code you get is good for opening one new account when our doors are closed because of our daily sign up limit, it's like a VIP pass.</p>
+<p>The invite codes are 100% anonymous, so you can give to anyone.</p>
+<p>New users might be asked to enter an invite code in the first step of the sign up process at <<?= $this->escape($config->webhost) ?><?= $this->url(array(), "join") ?></p>
+<p>There is a limit of one account per user now, so don't use them yourself!</p>
+</div>
+<div class="yui-u">
+<h2>Your invite codes…</h2>
+<ol>
+<?php
+foreach($this->invites as $token):
+?>
+<li class="monospace"><b><?= $this->escape(strtoupper($token)) ?></b></li>
+<?php endforeach; ?>
+</ol>
+</div>
+</div>
+<?php endif; ?>

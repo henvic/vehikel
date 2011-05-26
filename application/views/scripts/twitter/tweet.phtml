@@ -1,0 +1,24 @@
+<?php
+$registry = Zend_Registry::getInstance();
+$Twitter = ML_Twitter::getInstance();
+$tweetResponse = $this->tweetResponse;
+
+
+if(empty($tweetResponse)):
+?>
+<p class="error">Can't tweet :(</p>
+<?php
+elseif(!isset($tweetResponse['error'])):
+?>
+<p class="sent">Tweeted with <a href="http://twitter.com/<?= $this->escape($tweetResponse['user']['screen_name']) ?>"><?= $this->escape($tweetResponse['user']['name']) ?></a>!</p>
+<?php else:
+switch($tweetResponse['error'])
+{
+	case "account_not_found" : ?><p class="error">Can't find your Twitter account.</p><?php break;
+	case "unavailable" : ?><p class="error">Tweet service unavailable right now :(</p><?php break;
+	case "msg_too_long" : ?><p class="error">Oops! Too looong to be a tweet!</p><?php break;
+	case "too_many_tweets" : ?><p class="error">Hold your fire! Wait some time before trying to tweet again.</p><?php break;
+	default: ?><p class="error">Unexpected error.</p><?php
+}
+endif;
+?>

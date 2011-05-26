@@ -1,0 +1,60 @@
+<?php
+$auth = Zend_Auth::getInstance();
+
+$registry = Zend_Registry::getInstance();
+$userInfo = $registry->get('userInfo');
+$config = $registry->get('config');
+
+$share_of =  ($userInfo['id'] == $auth->getIdentity()) ? "Your files" : $userInfo['name']." files";
+$this->headTitle($this->escape($share_of), "PREPEND");
+$this->headLink()->appendAlternate($this->url(array("username" => $userInfo['alias']), "userfeed"), "application/rss+xml", $share_of." RSS feed");
+
+$shares = $this->paginator->getCurrentItems()->toArray();
+?>
+<h2>Files <?php if($userInfo['id'] == $auth->getIdentity()): ?>you are sharing<?php else: ?>shared by <?php echo $this->escape($userInfo['name']); endif; if($this->paginator->getCurrentPageNumber() > 1) echo ' (continuing...)'; ?></h2>
+<?php if(!$this->paginator->getTotalItemCount()): ?>
+<p>There is nothing here for you.</p>
+<?php else: ?>
+<div id="sharelist">
+<?php
+foreach($shares as $share):
+$download_link = $this->escape($config->services->S3->sharesBucketAddress.$userInfo['alias']."/".$share['id']."-".$share['download_secret']."/".$share['filename']);
+$date = new Zend_Date();
+$date->set($share['uploadedTime'], Zend_Date::ISO_8601);
+
+/* @begin of in filepage.phtml also */
+if($share['type'] == "application/x-msdownload" || $share['type'] == "application/x-msdownload")
+{
+	$file_type_escaped = '<span title="' . $this->escape($share['type']) .  '" class="warning">Windows executable</span>';
+	$warning_file_type = true;
+} else {
+	$file_type_escaped = $this->escape($share['type']);
+}
+
+/* @end of in filepage.phtml also */
+?>
+<div class="info">
+<div class="yui-gc">
+<div class="yui-u first">
+<h3><a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $share['id']), "sharepage_1stpage")?>" title="Details about <?= $this->escape($share['title'])?>"><?= $this->escape($share['title']) ?></a></h3>
+</div>
+<div class="yui-u">
+<p class="published-at"><span class="hidden-from-gui">Published on </span><?= $date->get(Zend_Date::DATE_LONG) ?></p>
+</div>
+</div>
+<?php if($share['short']): ?>
+<p class="shortdesc"><?= $this->escape($share['short']); ?>
+</p>
+<?php if($share['description_filtered'] && $share['description_filtered'] != $share['short']): ?><small class="longdesc-notice">(open to see available description)</small><?php endif; ?>
+<?php endif; ?>
+<ul>
+<li><a href="<?= $download_link ?>" title="Get <?= $this->escape($share['filename']) ?>" rel="nofollow" class="download-link">Download</a></li>
+<li><span class="file-info"><?= file_size($share['fileSize'], true) ?></span></li>
+<li><span class="file-info <?php if(isset($warning_file_type)): ?>warning<?php endif; ?>"><?= $file_type_escaped ?></span></li>
+</ul>
+</div>
+<?php endforeach; ?>
+</div>
+<?php if($this->paginator->count() > 1) echo $this->paginator; ?>
+<?php endif; ?>
+<a href="<?=$this->url(array("username" => $userInfo['alias']), "userfeed")?>" title="Files of <?= $this->escape($userInfo['name']) ?>" class="rssicon">rss feed</a>

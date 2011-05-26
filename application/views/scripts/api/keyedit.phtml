@@ -1,0 +1,13 @@
+<?php
+$this->headTitle("API | Edit Key Information");
+?>
+<h2><a href="<?= $this->url(array(), "apikeys") ?>">Your API keys</a></h2>
+<?php
+$consumer = $this->consumerData;
+?>
+<h3>Your API Key details</h3>
+<p><strong>Key: <?= $this->escape($consumer['consumer_key']) ?></strong><br />
+<strong>Secret: <?= $this->escape($consumer['consumer_secret']) ?></strong></p>
+<?= $this->apiKeyForm ?>
+<p><strong><a href="<?= $this->url(array("api_key" => $consumer['consumer_key']), "api_key_delete") ?>">Delete this API key</a>.</strong></p>
+<p>Or see all the <a href="<?= $this->url(array(), "apikeys") ?>">API keys</a> you have.</p>

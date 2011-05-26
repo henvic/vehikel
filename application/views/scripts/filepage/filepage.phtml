@@ -1,0 +1,146 @@
+<?php
+$registry = Zend_Registry::getInstance();
+$auth = Zend_Auth::getInstance();
+
+$config = $registry->get('config');
+$shareInfo = $registry->get('shareInfo');
+$userInfo = $registry->get('userInfo');
+
+$this->headTitle($this->escape($shareInfo['title']), "PREPEND");
+
+$download_link = $this->escape($config->services->S3->sharesBucketAddress.$userInfo['alias']."/".$shareInfo['id']."-".$shareInfo['download_secret']."/".$shareInfo['filename']);
+
+$Favorites = ML_Favorites::getInstance();
+$countFavorites = $Favorites->count($shareInfo['id']);
+?>
+<div class="yui-gc">
+<div class="yui-u first">
+<h2><?= $this->escape($shareInfo['title']) ?></h2>
+</div>
+<div class="yui-u">
+<p><small>Jump to <span class="hidden-from-gui"><a href="#download-link">download link and metadata</a>, </span><a href="#comments">comments</a>. 
+<?php if($auth->getIdentity()!=$shareInfo['byUid']): ?>
+<span id="shareFavorite"><?= $this->render("favorites/switch.phtml") ?></span>
+<?php endif; ?>
+</small></p>
+</div>
+</div>
+<div class="yui-gc">
+<div class="yui-u first">
+<p id="description" class="somehtml">
+<?php if($shareInfo['description_filtered']): ?>
+<?= $shareInfo['description_filtered'] ?>
+<?php else: ?>
+<small class="nodescr">(No description)</small>
+<?php endif; ?>
+</p>
+<hr title="End of description" />
+<?= $this->render("shares/comments.phtml") ?>
+</div>
+<div class="yui-u" id="metasidebar">
+<ul id="downloadlinks">
+<li class="main" id="download-link"><a href="<?= $download_link ?>" rel="nofollow">Download</a></li>
+<?php
+/*
+ * Torrent is not worth yet and is destroying the layout
+ * <li><a href="<?= $download_link ?>?torrent">torrent</a></li>
+*/
+?>
+</ul>
+<table id="file-metadata">
+<tbody>
+<?php 
+$date = new Zend_Date(); $date->set($shareInfo['uploadedTime'], Zend_Date::ISO_8601);
+$shortlink = $config->URLshortening->addr.$this->escape(base58_encode($shareInfo['id']));
+$metadata = array(
+"Filename" => $this->escape($shareInfo['filename']),
+"Size" => file_size($shareInfo['fileSize'], true),
+"File-Type" => $this->escape($shareInfo['type']),
+"Published" => $date->get(Zend_Date::DATE_LONG),
+"Privacy" => "Public available",
+"MD5 fingerprint" => "<code class=\"md5sum\">".$this->escape($shareInfo['md5'])."</code>",
+"Short Link" => '<span class="x-small-font">' . $shortlink . "</span>",
+);
+
+//@gambiarra: because the layout was being broken for big-words
+
+$filename_stringlenght = mb_strlen($metadata['Filename']);
+
+if($filename_stringlenght > 30)
+{
+	$filename_stringfont = ($filename_stringlenght > 35) ? "xx-small-font" : "x-small-font";
+	
+	$metadata['Filename'] = '<span class="'.$filename_stringfont.'">' . $metadata['Filename']."</span>";
+}
+
+/* @begin of in filestream.phtml also */
+switch($shareInfo['type'])
+{
+	case "application/x-msdownload" : case "application/x-msdos-program" :
+	$metadata['File-Type'] = '<span title="' . $metadata['File-Type'] .  '" class="warning">Windows executable</span>';
+		; break;
+	default :
+		$filetype_stringlenght = mb_strlen($metadata['File-Type']);
+
+		if($filetype_stringlenght > 25)
+		{
+			$metadata['File-Type'] = '<span class="xx-small-font">' . $metadata['File-Type'] ."</span>";
+		} elseif($filetype_stringlenght > 16) {
+			$metadata['File-Type'] = '<span class="x-small-font">' . $metadata['File-Type'] ."</span>";
+		}
+}
+/* @end of in filestream.phtml also */
+
+//virus scanned: never
+//views
+if($countFavorites) {
+	$favkey = '<a href="'. $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "favorites_1stpage") .'">Favorites</a>';
+	$plural_or_not = ($countFavorites>1) ? 's' : '';
+	$metadata[$favkey] = $countFavorites." time".$plural_or_not." favorited";
+}
+
+foreach($metadata as $key => $value):
+?>
+<tr class="<?= $this->cycle(array("even", "odd"), "metadata")->next() ?>">
+<td class="key"><?= $key ?></td>
+<td class="value"><?= $value ?></td>
+</tr>
+<?php
+endforeach;
+?>
+</tbody>
+</table>
+<?php
+if($auth->getIdentity()==$shareInfo['byUid']):
+?>
+<ul id="sharemaster">
+<li class="edit"><a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "editsharepage")?>" rel="nofollow">Edit info</a></li> 
+<li class="delete"><a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "deleteshare")?>" title="Delete this file" rel="nofollow">Delete ✖</a></li>
+</ul>
+<?php endif; ?>
+<div class="shortdesc">
+<h3>Short description</h3>
+<p><?php echo ($shareInfo['short']) ? $this->escape($shareInfo['short']) : '<small class="nodescr">(No short description available)</small>' ?></p>
+</div>
+<?php if($this->twitterForm):
+$this->twitterForm->getElement("tweet")->getDecorator("description")->setEscape(false);
+
+?>
+<div id="tweet-box">
+<h3>Share with your Twitter followers</h3>
+<?= $this->twitterForm->setAttrib("id", "tweet-form") ?>
+<div id="twitter-servicemsg"></div><?php //don't use <div /> ?>
+</div>
+<?php endif; ?>
+<div id="TagList">
+<?php if(!empty($this->tagsList) || $auth->getIdentity() == $userInfo['id']): ?>
+<h3>Tags</h3>
+<ul id="thetags">
+<?= $this->render("tags/tags.phtml") ?>
+</ul>
+<?php if($auth->getIdentity() == $userInfo['id']) echo ML_Tags::_form()->setAttrib("id", "tags-form");
+        ; ?>
+<?php endif; ?>
+</div>
+</div>
+</div>

@@ -1,0 +1,50 @@
+<?php 
+$registry = Zend_Registry::getInstance();
+$userInfo = $registry->get("userInfo");
+$auth = Zend_Auth::getInstance();
+
+if($userInfo['id'] == $auth->getIdentity()) $this->headTitle("Who counts you a contact", "PREPEND"); else $this->headTitle("Who counts ".$this->escape($userInfo['name'])." a contact", "PREPEND");
+
+$paginator = $this->paginator;
+?>
+<div class="yui-ge">
+<div class="yui-u first">
+<h2>Who counts <?php if($userInfo['id'] == $auth->getIdentity()) echo 'you'; else echo $this->escape($userInfo['name']) ?> a contact</h2>
+<?php if($this->paginator->getTotalItemCount()): ?>
+<table id="revcontacts" class="contacts styled">
+<thead>
+<tr>
+<th class="name">Name</th>
+<th class="since">Since</th>
+<th class="relationship">Relationship</th>
+</tr>
+</thead>
+<tbody>
+<?php
+$contacts = $paginator->getCurrentItems()->toArray();
+$date = new Zend_Date();
+
+foreach($contacts as $contact):
+$date->set($contact['since'], Zend_Date::ISO_8601);
+?>
+<tr>
+<td class="name left"><b><a href="<?= $this->url(array("username" => $contact['people.alias']), "filestream_1stpage") ?>"><?= $this->escape($contact['people.name']) ?></a></b> <?php if($contact['uid'] == $auth->getIdentity()) echo '<small>(that\'s you)</small>' ?></td>
+<td><?= $date->get(Zend_Date::DATE_LONG); ?></td>
+<td>contact
+<?php if($userInfo['id'] == $auth->getIdentity()): ?>
+ <small>(<a href="<?= $this->url(array("username" => $contact['people.alias']), "contact_relationship_ignore") ?>">block?</a>)</small>
+<?php endif; ?>
+</td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+<?php else: ?>
+<p><em>No one counts <?php echo ($auth->getIdentity() == $userInfo['id']) ? 'you' : 'this user' ?> as a contact.</em></p>
+<?php endif; ?>
+<?php if($this->paginator->count() > 1) echo $this->paginator; ?>
+</div>
+<div class="yui-u">
+<?= $this->partial("/contacts/menu.phtml"); ?>
+</div>
+</div>

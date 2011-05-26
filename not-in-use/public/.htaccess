@@ -1,0 +1,13 @@
+SetEnv EXTERNAL_LIBRARY_PATH /home/henrique/workspace/MediaLab/external
+SetEnv APPLICATION_ENV development
+SetEnv DEFAULT_TIMEZONE America/Recife
+<Files .*>
+ order allow,deny
+ deny from all
+ Satisfy All
+</Files>
+RewriteEngine On
+RewriteRule !\. ./index.php
+
+#see reason why http://framework.zend.com/manual/en/zend.session.advanced_usage.html
+php_value session.auto_start 0

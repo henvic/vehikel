@@ -1,0 +1,39 @@
+<?php
+$auth = Zend_Auth::getInstance();
+$registry = Zend_Registry::getInstance();
+$userInfo = $registry->get('userInfo');
+?>
+<div id="usermenu"> 
+<div class="avatar"> 
+<?= $this->avatar($userInfo, "thumbnail") ?>
+</div>
+<div class="userinfo">
+<h2><a href="<?= $this->url(array("username" => $userInfo['alias']), "filestream_1stpage") ?>"><?= $this->escape($userInfo['name']) ?></a><?php if($auth->getIdentity() == $userInfo['id']): ?><small class="you">(you)</small><?php endif; ?></h2>
+
+<ul>
+<?php 
+$userLinks = array(
+"filestream" => array("name" => "Files", "uri" => $this->url(array("username" => $userInfo['alias']), "filestream_1stpage")),
+"profile" => array("name" => "Profile", "uri" => $this->url(array("username" => $userInfo['alias']), "profile")),
+"taglist" => array("name" => "Tags", "uri" => $this->url(array("username" => $userInfo['alias']), "taglist")),
+"userfavorites" => array("name" => "Favorites", "uri" => $this->url(array("username" => $userInfo['alias']), "userfav_1stpage")),
+"contacts" => array("name" => "Contacts", "uri" => $this->url(array("username" => $userInfo['alias']), "contacts_1stpage")),
+);
+
+$requestUserParams = $registry->get('requestUserParams');
+
+if($requestUserParams['controller'] == "favorites" &&
+$requestUserParams['action'] == "user") $requestUserParams['action'] = "userfavorites";
+elseif($requestUserParams['controller'] == "contacts" &&
+$requestUserParams['action'] == "list") $requestUserParams['action'] = "contacts";
+
+foreach($userLinks as $open_action => $userlink_info):
+if($open_action != $requestUserParams['action']):
+?>
+<li><a href="<?= $this->escape($userlink_info['uri'])?>"><?= $this->escape($userlink_info['name']) ?></a></li>
+<?php else: ?>
+<li class="active"><a href="<?= $this->escape($userlink_info['uri'])?>"><?= $this->escape($userlink_info['name']) ?></a></li>
+<?php endif; endforeach; unset($open_action); unset($userlink_info); ?>
+</ul>
+</div>
+</div>

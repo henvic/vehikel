@@ -1,0 +1,11 @@
+<?php
+$registry = Zend_Registry::getInstance();
+$userInfo = $registry->get('userInfo');
+$shareInfo = $registry->get('shareInfo');
+
+$this->editForm->getElement("description")->getDecorator("description")->setEscape(false);
+
+$this->headTitle("Editing ".$this->escape($shareInfo['title']) . " info");
+?>
+<h2><a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage") ?>"><?= $this->escape($shareInfo['title']) ?></a></h2>
+<?= $this->editForm ?>

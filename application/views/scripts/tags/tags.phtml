@@ -1,0 +1,21 @@
+<?php
+$auth = Zend_Auth::getInstance();
+$registry = Zend_Registry::getInstance(); 
+
+$shareInfo = $registry->get("shareInfo");
+$userInfo = $registry->get("userInfo");
+
+if(!empty($this->tagsList)):
+foreach($this->tagsList as $tag):
+?>
+<li>
+<a href="<?= $this->url(array("username" => $userInfo['alias'], "tag" => $tag['clean']), "tagpage_1stpage") ?>"><?= $this->escape($tag['raw']) ?></a> 
+<?php if($auth->getIdentity() == $shareInfo['byUid']): ?>
+<small>
+<a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage") ?>?deletetag=<?=$this->escape($tag['id']) ?>" rel="nofollow" class="delete" title="delete tag <?= $this->escape($tag['clean']) ?>">✘</a>
+</small><?php endif; ?>
+</li>
+<?php endforeach; ?>
+<?php else: ?>
+<li><small class="nodescr">(no tags)</small></li>
+<?php endif; ?>
