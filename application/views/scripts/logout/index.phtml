@@ -6,7 +6,23 @@ $this->headTitle("Sign out");
 <div class="yui-gc">
 <div class="yui-u first">
 <h2>Sign out of <?= $this->escape($config->applicationname) ?></h2>
-<p>If you ever forget to logout from a public computer, use remote logout.</p>
+<p>If you ever forget to logout from a public computer, sign out all other sessions from this page.</p>
+<table>
+<thead>Currently logged in from</thead>
+<th>
+<td>Session</td>
+<td>Last IP</td>
+<td>Last time connected</td>
+<td>Logged in</td>
+</th>
+<tr>
+<td>1</td>
+<td>23423</td>
+<td>234234</td>
+<td>2342342</td>
+</tr>
+</table>
+<p>This computer is using IP address <?= $this->escape($_SERVER['REMOTE_ADDR']) ?>.
 <?php if(isset($_GET['please']) || $registry->isRegistered("pleaseSignout")):?>
 <p><strong>Notice:</strong> The action you tried to perform or the section you tried to access can not be performed by you while signed in to this account. Please, sign out and try again.</p>
 <?php endif; ?>

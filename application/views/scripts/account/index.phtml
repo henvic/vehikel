@@ -11,7 +11,7 @@ $this->accountForm->getElement("about")->getDecorator("description")->setEscape(
 <div class="yui-ge">
 <div class="yui-u first">
 <h2>Welcome, <?= $this->escape($signedUserInfo['name']) ?></h2>
-<?= $this->partial("/credits/info.phtml"); ?>
+<?= $this->render("/credits/info.phtml"); ?>
 <?php if(isset($this->changeEmail) && $this->changeEmail): ?>
 <strong>You have set a new e-mail address for your account. But before you start using it we require you validate it. We have sent you an e-mail to the new address confirming this operation.</strong>
 <?php endif; ?>
@@ -25,6 +25,6 @@ $this->accountForm->getElement("about")->getDecorator("description")->setEscape(
 </ul>
 </div>
 <div class="yui-u accountside">
-<?= $this->partial("/account/menu.phtml"); ?>
+<?= $this->render("/account/menu.phtml"); ?>
 </div>
 </div>
