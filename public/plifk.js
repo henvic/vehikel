@@ -262,7 +262,7 @@ YUI({
 		}
 		form.submit();
 	};
-	Y.on("click", logoutEvent, ["#logout_link","#remote_signout_link"]);
+	Y.on("click", logoutEvent, ["#logout_link"]);
 	
 	
 	
