@@ -132,23 +132,6 @@ class ML_Pictures extends Model_getModel
 		return $id;
 	}
 	
-	public function deletePicture($id)
-	{
-		$Pictures = new Model_Pictures();
-		
-		if(!is_natural_dbId($id)) return false;
-		
-		$Pictures->deleteByParam($id);
-		
-		foreach($this->getSizesInfo() as $sizeinfo)
-		{
-			unlink(APPLICATION_PATH ."/../public/content/pictures/".$id.$sizeinfo['typeextension'].'.jpg');
-		}
-		
-		return true;
-	}
-	
-	
 	/*
 	 * May want to use at sometime
 	 * http://shiftingpixel.com/2008/03/03/smart-image-resizer/
