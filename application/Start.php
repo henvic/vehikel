@@ -1,6 +1,11 @@
 <?php
+
 defined('EXTERNAL_LIBRARY_PATH')
-    or define('EXTERNAL_LIBRARY_PATH', getenv('EXTERNAL_LIBRARY_PATH'));
+    or define('EXTERNAL_LIBRARY_PATH', realpath(getenv('EXTERNAL_LIBRARY_PATH')));
+
+
+defined('CACHE_PATH')
+    or define('CACHE_PATH', realpath(getenv('CACHE_PATH')));
 
 // Define path to application directory
 defined('APPLICATION_PATH')
@@ -10,8 +15,7 @@ defined('APPLICATION_PATH')
 // Define application environment
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV',
-              (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV')
-                                         : 'development'));
+              getenv('APPLICATION_ENV'));
 
 defined('PUBLIC_PATH')
     or define('PUBLIC_PATH', realpath(APPLICATION_PATH.'/../public'));
@@ -19,25 +23,43 @@ defined('PUBLIC_PATH')
 defined('LIBRARY_PATH')
     or define('LIBRARY_PATH', realpath(APPLICATION_PATH.'/../library'));
 
+
 set_include_path(
 	EXTERNAL_LIBRARY_PATH . PATH_SEPARATOR .
     LIBRARY_PATH . PATH_SEPARATOR .
-    APPLICATION_PATH . '/models' . PATH_SEPARATOR .
-    get_include_path()
+    APPLICATION_PATH . '/models' . PATH_SEPARATOR //.
+    //get_include_path()
 );
 
 date_default_timezone_set(getEnv("DEFAULT_TIMEZONE"));
 
+require EXTERNAL_LIBRARY_PATH . '/Zend/Loader/Autoloader.php';
+Zend_Loader_Autoloader::getInstance();
+
+require EXTERNAL_LIBRARY_PATH . '/Zend/Registry.php';
+require EXTERNAL_LIBRARY_PATH . '/Zend/Cache/Core.php';
+require EXTERNAL_LIBRARY_PATH . '/Zend/Cache/Backend/Apc.php';
+
+$sysCache = new Zend_Cache_Core(array('automatic_serialization' => true));
+$sysCache->setBackend(new Zend_Cache_Backend_File(array("cache_dir" => CACHE_PATH)));
+//$sysCache->setBackend(new Zend_Cache_Backend_Memcached());
+
+Zend_Registry::getInstance()->set("sysCache", $sysCache);
+
+//@todo refactory callFilter.php and check library/ML/RouteModule.php for workarounds & do the proper thing
 require APPLICATION_PATH . '/models/callFilter.php';
 
-/** Zend_Application */
+/** ML_Application */
 require EXTERNAL_LIBRARY_PATH . '/Zend/Application.php';
+require LIBRARY_PATH . '/ML/Application.php';
 
 // Create application, bootstrap, and run
 try {
-$application = new Zend_Application(
+$application = new ML_Application(
     APPLICATION_ENV,
-    getenv("PLIFK_CONF_FILE")
+    getenv("PLIFK_CONF_FILE"),
+    $sysCache,
+    true
 );
 
 $application->bootstrap()->run();
