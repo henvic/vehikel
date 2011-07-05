@@ -23,4 +23,28 @@ require LIBRARY_PATH . '/ML/RouteModule.php';
 $compat = new ML_Controller_Router_Route_Module(array(), $dispatcher, $request);
 $router->addRoute(HOST_MODULE, $compat);
 
-$routerConfig = new Zend_Config_Ini(APPLICATION_PATH . '/configs/'.HOST_MODULE.'Routes.ini');
+
+function getCachedIni($file)//don't use this for the Zend_Application
+{
+	$registry = Zend_Registry::getInstance();
+	
+	$sysCache = $registry->get("sysCache");
+	
+	$configMTime = filemtime($file);
+	
+	$cacheId = "cachedIni_" . md5($file);
+	
+	$cacheLastMTime = $sysCache->test($cacheId);
+	
+	if ($cacheLastMTime !== false && $configMTime <= $cacheLastMTime) {
+		return $sysCache->load($cacheId, true);
+	}
+	
+	$routerConfig = new Zend_Config_Ini($file);
+    $sysCache->save($routerConfig, $cacheId, array(), null);
+	
+    return $routerConfig;
+	
+}
+
+$routerConfig = getCachedIni(APPLICATION_PATH . '/configs/'.HOST_MODULE.'Routes.ini');
