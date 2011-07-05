@@ -1,6 +1,4 @@
 <?php
-/* Important code. Keep it safe. */
-// http://framework.zend.com/manual/en/zend.controller.action.html
 
 function base58_encode($num) {
 	return base_encode($num, "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");
@@ -67,12 +65,3 @@ function is_natural($val, $acceptzero = false) {
   $return = false;
  return $return;
 }
-
-/*
-//from php.net
-function string_to_filename($word) {
-    $tmp = preg_replace('/^\W+|\W+$/', '', $word); // remove all non-alphanumeric chars at begin & end of string
-    $tmp = preg_replace('/\s+/', '_', $tmp); // compress internal whitespace and replace with _
-    return strtolower(preg_replace('/\W-/', '', $tmp)); // remove all non-alphanumeric chars except _ and -
-}*/
-
