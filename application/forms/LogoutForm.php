@@ -11,7 +11,7 @@ class LogoutForm extends Zend_Form
         ));
         
         $this->addElement('submit', 'remote_signout', array(
-            'label'    => 'Remote sign out!'
+            'label'    => 'Sign out all other sessions'
         ));
         
         $this->addElement(ML_MagicCookies::formElement());
