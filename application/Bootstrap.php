@@ -1,16 +1,47 @@
 <?php
 
+  function array_to_obj($array, &$obj)
+  {
+    foreach ($array as $key => $value)
+    {
+      if (is_array($value))
+      {
+      $obj->$key = new stdClass();
+      array_to_obj($value, $obj->$key);
+      }
+      else
+      {
+        $obj->$key = $value;
+      }
+    }
+  return $obj;
+  }
+
+function arrayToObject($array)
+{
+ $object= new stdClass();
+ return array_to_obj($array,$object);
+}
+
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
+	protected function _initCache() //sysCache initialized in Start.php
+	{
+		$sysCache = Zend_Registry::getInstance()->get("sysCache");
+		Zend_Date::setOptions(array('cache' => $sysCache));
+		Zend_Locale::setCache($sysCache);
+		Zend_Translate::setCache($sysCache);
+	}
+	
 	protected function _initRun()
 	{
 		if(HOST_MODULE == 'default' || HOST_MODULE == 'api') $this->registerPluginResource("Uri");
 		
 		$config_array = $this->getOptions();
+		//@todo don't use it anymore as a object to avoid this overhead
+		Zend_Registry::getInstance()->set('config', arrayToObject($config_array));
 		
-		Zend_Registry::getInstance()->set('config', new Zend_Config($config_array));
-		
-	if(isset($config_array['email']['type']) && $config_array['email']['type'] == 'sendmail')
+		if(isset($config_array['email']['type']) && $config_array['email']['type'] == 'sendmail')
 		{
     		Zend_Mail::setDefaultTransport(new Zend_Mail_Transport_Sendmail());
 		} else {
@@ -20,8 +51,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	
 	protected function _initAutoload()
     {
-    	$autoloader = Zend_Loader_Autoloader::getInstance();
-    	$autoloader->registerNamespace('ML_');
+    	Zend_Loader_Autoloader::getInstance()->registerNamespace('ML_');
     }
 	
 	protected function _initDatabase()
@@ -30,8 +60,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			$this->bootstrap('db');
     		
         	$db = $this->getResource('db');
+        	
+        	Zend_Db_Table_Abstract::setDefaultMetadataCache("sysCache");
 	        
-			
 			Zend_Registry::getInstance()->set("database", $db);
 		} catch(Exception $e)
 		{
@@ -42,6 +73,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	
     protected function _initRequest()
     {
-    	require_once 'resources/Request'.HOST_MODULE.'NotPlugin.php';
+    	require 'resources/Request'.HOST_MODULE.'NotPlugin.php';
     }
 }
