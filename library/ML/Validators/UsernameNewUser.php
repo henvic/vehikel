@@ -22,7 +22,7 @@ class MLValidator_UsernameNewUser extends Zend_Validate_Abstract
  		
         $valueString = (string) $value;
         
-        if(ereg("[^a-z0-9_-]", $value) || $value == '0')
+        if(preg_match('#([^a-z0-9_-]+)#is', $value) || $value == '0')
         {
         	$this->_error(self::MSG_USERNAME_INVALID);
         	return false;

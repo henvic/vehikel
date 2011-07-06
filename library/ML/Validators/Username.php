@@ -34,13 +34,14 @@ class MLValidator_Username extends Zend_Validate_Abstract
         }
         
         if(mb_strlen($value) == 0) return false;
+        
         if(mb_strlen($value) > 20)
         {
         	$this->_error(self::MSG_USERNAME_NOT_FOUND);
         	return false;
         }
         
-        if(ereg("[^a-z0-9_-]", $value))
+        if(preg_match('#([^a-z0-9_-]+)#is', $value) || $value == '0')
         {
         	$this->_error(self::MSG_USERNAME_NOT_FOUND);
         	return false;
