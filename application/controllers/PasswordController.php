@@ -67,7 +67,7 @@ class PasswordController extends Zend_Controller_Action
 			$mail->setBodyText($this->view->render("password/emailRecover.phtml"))
 				->setFrom($config->robotEmail->addr, $config->robotEmail->name)
 				->addTo($getUser['email'], $getUser['name'])
-				->setSubject('Recover your '.$config->application.' account')
+				->setSubject('Recover your '.$config->applicationname.' account')
 				->send();
         }
     	
