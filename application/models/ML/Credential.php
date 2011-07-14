@@ -1,6 +1,10 @@
 <?php
+require EXTERNAL_LIBRARY_PATH .  '/phpass-0.3/PasswordHash.php';
+
 class ML_Credential extends ML_getModel
 {
+	const PASSWORD_HASH_ITERATION_COUNT = "8";
+	
 /**
      * Singleton instance
      *
@@ -38,30 +42,41 @@ class ML_Credential extends ML_getModel
 	protected $_name = "credentials";
 	protected $_primary = "uid";
 	
-	static public function getHash($uid, $membershipdate, $password)
+	static private function getPreHash($uid, $password)
 	{
-		//the letters after uid is a hash, shall never be changed
-		$hash = hash("sha384", $uid."ßÿ".$password.$membershipdate);
-		return $hash;
+		return hash("sha384", $uid."-".$password);
 	}
 	
-	public function getAuthAdapter(array $userInfo, $password)
+	static public function setHash($uid, $password)
+	{
+    	$part_hash = self::getPreHash($uid, $password);
+    	
+    	$t_hasher = new PasswordHash(self::PASSWORD_HASH_ITERATION_COUNT, FALSE);
+    	
+    	$hash = $t_hasher->HashPassword($part_hash);
+    	
+    	return $hash;
+	}
+	
+	public function getAuthAdapter($uid, $password)
     {
-    	$authAdapter = new Zend_Auth_Adapter_DbTable(Zend_Registry::get('database'));
-		$authAdapter
-        ->setTableName('credentials')
-        ->setIdentityColumn('uid')
-        ->setCredentialColumn('credential')
-        //->setCredentialTreatment('ALGO')//we use the class ML_Credential for it
-        ;
-        
-        $hash = self::getHash($userInfo['id'], $userInfo['membershipdate'], $password);
-        $authAdapter
-	    ->setIdentity($userInfo['id'])
-	    ->setCredential($hash)
-		;
-		
-        return $authAdapter;
+    	$authAdapter = new ML_Auth_Adapter(Zend_Registry::get('database'));
+    	$authAdapter->setTableName($this->_name)
+    	->setIdentityColumn($this->_primary)
+    	->setIdentity($uid)
+    	->setCredentialColumn("credential")
+    	->setCredential(self::getPreHash($uid, $password));
+    	
+    	return $authAdapter;
+    }
+    
+    public function setCredential($uid, $password)
+    {
+    	$hash = self::setHash($uid, $password);
+    	
+    	$stmt = $this->getAdapter()->query('INSERT INTO `credentials` (`uid`, `credential`) VALUES (?, ?) ON DUPLICATE KEY UPDATE credential=VALUES(credential)', array($uid, $hash));
+    	
+		return $stmt->rowCount();
     }
 	
 	public function _getLoginForm()

@@ -11,20 +11,25 @@ class MLValidator_MatchPassword extends Zend_Validate_Abstract
  
     public function isValid($value)
     {
+    	$Credential = ML_Credential::getInstance();
+    	
         $this->_setValue($value);
  		
         $valueString = (string) $value;
         
         if(mb_strlen($value) < 6 || mb_strlen($value) > 20) return false;
         
-        $credentialInfoData = Zend_Registry::getInstance()->get('credentialInfoDataForPasswordChange');
+    	$credentialInfoData = Zend_Registry::getInstance()->get('credentialInfoDataForPasswordChange');
         
-        $nowHash = ML_Credential::getHash($credentialInfoData['uid'], $credentialInfoData['membershipdate'] ,$value);
+        $adapter = $Credential->getAuthAdapter($credentialInfoData['uid'], $value);
+        $authenticate = $adapter->authenticate();
         
-        if($nowHash != $credentialInfoData['credential']) {
+        if($authenticate->getCode() != Zend_Auth_Result::SUCCESS)
+        {
 			$this->_error(self::MSG_WRONG_PASSWORD);
 			return false;
 		}
+		
         return true;
     }
 }

@@ -124,13 +124,8 @@ class JoinController extends Zend_Controller_Action
 		       	if(!$uid) {
 		       		throw new Exception("No ID.");
 		       	}
-		       	$cred = ML_Credential::getHash($uid, $confirmationInfo['timestamp'], $form->getValue("password"));
-	       		$Credential->insert(array(
-		        	"uid" => $uid,
-    	   			"credential" => $cred,
-       				"membershipdate" => $confirmationInfo['timestamp'],
-       				)
-	       		);
+		       	
+		       	$Credential->setCredential($uid, $form->getValue("password"));
 	       		
 	       		$Profile->insert(array("id" => $uid));
 	       		
@@ -143,7 +138,7 @@ class JoinController extends Zend_Controller_Action
     		
     		$getUserByUsername = $People->getByUsername($pre_userInfo['alias']);
     		
-    		$adapter = $Credential->getAuthAdapter($getUserByUsername, $form->getValue("password"));
+    		$adapter = $Credential->getAuthAdapter($getUserByUsername['id'], $form->getValue("password"));
     		
 	    	if($adapter) {
     	    	$auth    = Zend_Auth::getInstance();

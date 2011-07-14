@@ -25,18 +25,19 @@ class MLValidator_Password extends Zend_Validate_Abstract
         if(!$registry->isRegistered('loginUserInfo')) return false;
         $loginUserInfo = $registry->get('loginUserInfo');
         
-		$adapter = $Credential->getAuthAdapter($loginUserInfo, $value);
+		$adapter = $Credential->getAuthAdapter($loginUserInfo['id'], $value);
 		
 	    // Get our authentication adapter and check credentials
         if($adapter) {
         	$auth    = Zend_Auth::getInstance();
             $result  = $auth->authenticate($adapter);
             
-            if($result->getCode() == Zend_Auth_Result::SUCCESS) return true;
-            else {
-            	$this->_error(self::MSG_WRONG_PASSWORD);
-            	ML_AntiAttack::log(ML_AntiAttack::WRONG_CREDENTIAL);
-            }
+            if($result->isValid()) {
+            	return true;
+        	}
+        	
+            $this->_error(self::MSG_WRONG_PASSWORD);
+            ML_AntiAttack::log(ML_AntiAttack::WRONG_CREDENTIAL);
         }
         
         return false;

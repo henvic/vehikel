@@ -31,18 +31,20 @@ class PasswordController extends Zend_Controller_Action
 	
     public function unavailableAction()
     {
+    	$this->getResponse()->setHttpResponseCode(404);
     }
     
     public function recoverAction()
     {
-        if(Zend_Auth::getInstance()->hasIdentity()) {
-			$this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "logout") . "?please", array("exit"));
-		}
-    	
     	$request = $this->getRequest();
     	
     	$registry = Zend_Registry::getInstance();
         $config = $registry->get('config');
+    	
+	    if(Zend_Auth::getInstance()->hasIdentity()) {
+	        $registry->set("pleaseSignout", true);
+    	    return $this->_forward("index", "logout");
+		}
         
         $People = ML_People::getInstance();
         $Recover = ML_Recover::getInstance();
@@ -54,7 +56,7 @@ class PasswordController extends Zend_Controller_Action
         	$find = $form->getValues();
         	
         	$securitycode = sha1(md5(mt_rand(0, 1000).time().$find.microtime()).deg2rad(mt_rand(0,360)));
-        	$getUser = $registry->accountRecover; //AccountRecover.php validator who tells
+        	$getUser = $registry->accountRecover; //AccountRecover.php validator who pass this value
         	
         	$Recover->getAdapter()->query('INSERT INTO `recover` (`uid`, `securitycode`) VALUES (?, ?) ON DUPLICATE KEY UPDATE uid=VALUES(uid), securitycode=VALUES(securitycode), timestamp=CURRENT_TIMESTAMP', array($getUser['id'], $securitycode));
         	
@@ -91,15 +93,16 @@ class PasswordController extends Zend_Controller_Action
     	
     	if($auth->hasIdentity())
     	{
-    	    if(!isset($params['confirm_uid']) && !isset($params['security_code']))
-    	    {
-        	    $form = $this->_getNewPasswordForm();
-        		$uid = $auth->getIdentity();
-    	    	$registry->set("changeUserProperPassword", true);
-    	    } else {
-    	        $registry->set("pleaseSignout", true);
-    	        return $this->_forward("index", "logout");
-    	    }
+    		if(isset($params['confirm_uid'])) {
+    			$this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "logout") . "?please", array("exit"));
+    		}
+    		
+    		$form = $this->_getNewPasswordForm();
+        	$uid = $auth->getIdentity();
+    	    $registry->set("changeUserProperPassword", true);
+    	    
+    	    $signedUserInfo = $registry->get("signedUserInfo");
+    	    
     	} else {
     	    if(isset($params['confirm_uid']) && isset($params['security_code']))
     	    {
@@ -110,8 +113,6 @@ class PasswordController extends Zend_Controller_Action
     		    
     		    if(!is_object($recoverInfo))
     		    {
-    		        //error: password change not open
-    		        $this->getResponse()->setHttpResponseCode(404);
     		        return $this->_forward("unavailable");
     		    }
     		    
@@ -124,11 +125,17 @@ class PasswordController extends Zend_Controller_Action
     	        return $this->_forward("redirect", "login");
     	    }
     	}
-        
+    	
+        if($auth->hasIdentity())
+		{
+			$this->view->userInfoDataForPasswordChange = $signedUserInfo;
+		} else {
+			$userInfo = $People->getById($request->getParam("confirm_uid"));
+			$this->view->userInfoDataForPasswordChange = $userInfo;
+		}
         
 	    if($request->isPost())
 		{
-			
 			$select = $Credential->select()->where("uid = ?", $uid);
 			$credentialInfo = $Credential->fetchRow($select);
 			if(!is_object($credentialInfo)) {
@@ -140,12 +147,12 @@ class PasswordController extends Zend_Controller_Action
 			
 			if($form->isValid($request->getPost())) {
 				$password = $form->getValue("password");
-				$hash = ML_Credential::getHash($credentialInfo['uid'], $credentialInfo['membershipdate'] ,$password);
 				
-				if(isset($RecoverInfo)) {
+				if(isset($recoverInfo)) {
 					$Recover->delete($Recover->getAdapter()->quoteInto('uid = ?', $uid));
 				}
-				$Credential->getAdapter()->query('INSERT INTO `credentials` (`uid`, `credential`) VALUES (?, ?) ON DUPLICATE KEY UPDATE credential=VALUES(credential)', array($uid, $hash));
+				
+				$Credential->setCredential($uid, $password);
 				
 				$this->view->passwordReset = true;
 			}

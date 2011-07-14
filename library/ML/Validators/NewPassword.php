@@ -12,6 +12,8 @@ class MLValidator_NewPassword extends Zend_Validate_Abstract
  
     public function isValid($value)
     {
+    	$Credential = ML_Credential::getInstance();
+    	
         $this->_setValue($value);
  		
         $valueString = (string) $value;
@@ -20,8 +22,12 @@ class MLValidator_NewPassword extends Zend_Validate_Abstract
         
         $credentialInfoData = Zend_Registry::getInstance()->get('credentialInfoDataForPasswordChange');
         
-        $nowHash = ML_Credential::getHash($credentialInfoData['uid'], $credentialInfoData['membershipdate'] , $value);
-        if($nowHash == $credentialInfoData['credential']) {
+        $adapter = $Credential->getAuthAdapter($credentialInfoData['uid'], $value);
+        $authenticate = $adapter->authenticate();
+        
+        //shall not accept the same password as before
+        if($authenticate->getCode() == Zend_Auth_Result::SUCCESS)
+        {
 			$this->_error(self::MSG_SAME_PASSWORD);
 			return false;
 		}
