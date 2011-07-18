@@ -49,21 +49,32 @@ $frontController->setBaseUrl($config->webroot);
 $this->registerPluginResource("Mysession");
 $this->registerPluginResource("Myview");
 
-$documentType = new Zend_View_Helper_Doctype();
-$documentType->doctype('XHTML1_STRICT');//mudarpara strict
+$loader = new Zend_Loader_PluginLoader();
+
+$loader->addPrefixPath('Zend_View_Helper', EXTERNAL_LIBRARY_PATH . '/Zend/View/Helper/')
+       ->addPrefixPath('My_View_Helper', APPLICATION_PATH . '/views/helpers');
+
+$classFileIncCache = CACHE_PATH . '/pluginDefaultLoaderCache.php';
+if (file_exists($classFileIncCache)) {
+    require $classFileIncCache;
+}
+
+Zend_Loader_PluginLoader::setIncludeFileCache($classFileIncCache);
+
 $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
 $viewRenderer->initView();
 $viewRenderer->view->doctype('XHTML1_STRICT');
 
+/*
 //don't change to (X)HTML because of the ReCaptcha
-//$response = new Zend_Controller_Response_Http;
-
+$response = new Zend_Controller_Response_Http;
 if(isset($_SERVER['HTTP_USER_AGENT']))
 {
 	if(!strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") && isset($_SERVER['HTTP_ACCEPT']) && (strpos($_SERVER['HTTP_ACCEPT'], "xhtml+xml")))
 	{
-		//$response->setHeader('Content-Type', 'application/xhtml+xml; charset=utf-8', true);
-		//$frontController->setResponse($response);
-		//$registry->set("usingXhtmlHeader", true);
+		$response->setHeader('Content-Type', 'application/xhtml+xml; charset=utf-8', true);
+		$frontController->setResponse($response);
+		$registry->set("usingXhtmlHeader", true);
 	}
 }
+*/
