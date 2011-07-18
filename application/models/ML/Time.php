@@ -19,7 +19,6 @@ class ML_Time
 		
 		if($ago < 60*60*24*60) return floor($ago/(60*60*24))." days ago";
 		
-		//if($ago < 60*60*24*7*12)
 		return floor($ago/(60*60*24*7))." weeks ago";
 	}
 }
