@@ -10,6 +10,13 @@ class LogoutController extends Zend_Controller_Action
 		$request = $this->getRequest();
     	$params = $request->getParams();
     	
+    	$registry = Zend_Registry::getInstance();
+    	
+    	if($registry->isRegistered("signedUserInfo"))
+    	{
+    		$signedUserInfo = $registry->get("signedUserInfo");
+    	}
+    	
     	$Credential = ML_Credential::getInstance();
     	$Session = ML_Session::getInstance();
     	
@@ -33,6 +40,9 @@ class LogoutController extends Zend_Controller_Action
 	        }
     	}
     	
+    	$open_sessions = $Session->getByUid($signedUserInfo['id'], 100);
+    	
     	$this->view->logoutForm = $form;
+    	$this->view->open_sessions = $open_sessions;
     }
 }

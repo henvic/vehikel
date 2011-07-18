@@ -1,4 +1,5 @@
-<? // logout/index.phtml
+<?php // logout/index.phtml
+
 $registry = Zend_Registry::getInstance();
 $config = $registry->get("config");
 $this->headTitle("Sign out");
@@ -12,22 +13,22 @@ $signedUserInfo = $registry->get("signedUserInfo");
 <?php endif; ?>
 <h2>Sign out of <?= $this->escape($config->applicationname) ?></h2>
 <p>If you ever forget to logout from a public computer, sign out all other sessions from this page.</p>
-<table>
-<thead>Currently logged in from</thead>
-<th>
-<td>Session</td>
-<td>Last IP</td>
-<td>Last time connected</td>
-<td>Logged in</td>
-</th>
+<table class="styled">
+<caption>Activity on this account</caption>
+<thead><tr><th>Access Type</th><th>Date/Time</th></tr></thead>
+<?php $access_time_tmp = new Zend_Date(); foreach($this->open_sessions as $single_activity): ?>
 <tr>
-<td>1</td>
-<td>23423</td>
-<td>234234</td>
-<td>2342342</td>
+<td>Browser</td>
+<?php //<td><?= $this->escape($single_activity['remote_addr']); </td>?>
+<td><?php
+$access_time_tmp->set($single_activity['last_access_timestamp'], Zend_Date::TIMESTAMP);
+echo $this->escape($access_time_tmp." GMT ".$access_time_tmp->getGmtOffset()." (".ML_Time::ago($access_time_tmp, Zend_Date::TIMESTAMP).")");
+?></td>
 </tr>
+<?php endforeach; unset($single_activity); unset($access_time_tmp); ?>
 </table>
-<p>This computer is using IP address <?= $this->escape($_SERVER['REMOTE_ADDR']) ?>.
+<p>This computer is using IP address <?= $this->escape($_SERVER['REMOTE_ADDR']) ?>.<br /><br />
+There may be sessions that have not been signed out.</p>
 <?php
 if($this->remote_logout_done):
 ?>

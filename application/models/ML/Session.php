@@ -54,5 +54,35 @@ class ML_Session extends ML_getModel
    		Zend_Session::destroy(true);
 		Zend_Session::expireSessionCookie();
 	}
+	
+	/**
+	 * 
+	 * Gets a array with the information about the sessions the user is logged in at the time
+	 * ordened from the last to the first
+	 * @param big int $uid
+	 * @param $limit
+	 */
+	public function getByUid($uid, $limit = 0)
+	{
+		$select = $this->select()->where("uid = ?", $uid)
+		->order("modified DESC")->limit($limit)
+		;
+		
+		$result = $this->fetchAll($select);
+		
+		$data = $result->toArray();
+		
+		if(!empty($data))
+		{
+			$activity = array();
+			
+			foreach($data as $datum)
+			{
+				$activity[] = array("type" => "browser", "last_access_timestamp" => $datum['modified']);
+			}
+		}
+		
+		return $activity;
+	}
 }
 
