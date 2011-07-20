@@ -52,7 +52,7 @@ class JoinController extends Zend_Controller_Action
         	$mail->setBodyText($this->view->render("join/email.phtml"))
 				->setFrom($config->robotEmail->addr, $config->robotEmail->name)
 				->addTo($data['email'], $data['name'])
-				->setSubject('Your new '.$config->application.' account')
+				->setSubject('Your new '.$config->applicationname.' account')
 				->send();
 			
 			$this->view->success = true;
