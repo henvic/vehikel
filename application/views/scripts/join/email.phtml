@@ -7,9 +7,9 @@ Please confirm your e-mail address at
 <?= ($config->ssl) ? "https://" . $config->webhostssl : "http://" . $config->webhost ?><?= $this->url(array("security_code" => $this->entry['securitycode']), "join_emailconfirm") ?>
 
 
-Terms of Service - http://<?= $this->escape($this->webhost) ?><?= $this->staticUrl("/tos") ?>
-Privacy Policy - http://<?= $this->escape($this->webhost) ?><?= $this->staticUrl("/privacy") ?>
+Terms of Service - http://<?= $this->escape($config->webhost) ?><?= $this->staticUrl("/tos") ?>
+Privacy Policy - http://<?= $this->escape($config->webhost) ?><?= $this->staticUrl("/privacy") ?>
 
 -
-<?= $this->escape($this->applicationname) ?>
-<?= $this->escape($this->webhost) ?>
+<?= $this->escape($config->applicationname) ?>
+<?= $this->escape($config->webhost) ?>
