@@ -38,11 +38,9 @@ Zend_Loader_Autoloader::getInstance();
 
 require EXTERNAL_LIBRARY_PATH . '/Zend/Registry.php';
 require EXTERNAL_LIBRARY_PATH . '/Zend/Cache/Core.php';
-require EXTERNAL_LIBRARY_PATH . '/Zend/Cache/Backend/Apc.php';
 
 $sysCache = new Zend_Cache_Core(array('automatic_serialization' => true));
 $sysCache->setBackend(new Zend_Cache_Backend_File(array("cache_dir" => CACHE_PATH)));
-//$sysCache->setBackend(new Zend_Cache_Backend_Memcached());
 
 Zend_Registry::getInstance()->set("sysCache", $sysCache);
 
