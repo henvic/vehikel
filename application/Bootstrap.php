@@ -25,9 +25,12 @@ function arrayToObject($array)
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-	protected function _initCache() //sysCache initialized in Start.php
+	protected function _initSysCache()
 	{
-		$sysCache = Zend_Registry::getInstance()->get("sysCache");
+		$registry = Zend_Registry::getInstance();
+		
+		//sysCache initialized in Start.php
+		$sysCache = $registry->get("sysCache");
 		Zend_Date::setOptions(array('cache' => $sysCache));
 		Zend_Locale::setCache($sysCache);
 		Zend_Translate::setCache($sysCache);
@@ -35,6 +38,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	
 	protected function _initRun()
 	{
+		$registry = Zend_Registry::getInstance();
+		
 		if(HOST_MODULE == 'default' || HOST_MODULE == 'api') $this->registerPluginResource("Uri");
 		
 		$config_array = $this->getOptions();
@@ -47,6 +52,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		} else {
     		Zend_Mail::setDefaultTransport(new Zend_Mail_Transport_Smtp($config_array['email']['smtp'], $config_array['email']));
 		}
+		
+		$memCache = new Zend_Cache_Core(array('automatic_serialization' => true));
+		$memCache->setBackend(new Zend_Cache_Backend_Memcached($config_array['cache']['backend']['memcache']['servers']['global']));
+		$registry->set("memCache", $memCache);
 	}
 	
 	protected function _initAutoload()
