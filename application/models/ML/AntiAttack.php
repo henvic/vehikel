@@ -106,21 +106,32 @@ class ML_AntiAttack extends ML_getModel
     	return $behavior;
     }
     
-    public function randomSHA1()
-    {
-    	$food = Array();
-    	for($n = 0; $n < 35; $n++)
-    	{
-    		$food[] = mt_rand(100000, 999999);
- 		   	if($n%4) {
-    			$food[] = tan($food[$n-1] - $food[$n]);
-    		}
-    	}
-    	shuffle($food);
-    	
-    	$secret = sha1(implode($food));
-    	
-    	return $secret;
-    }
+	////
+	// Returns a random code of the specified length, containing characters that are
+	// equally likely to be any of the digits, uppercase letters, or  lowercase letters.
+	//
+	// The default length of 10 provides 839299365868340224 (62^10) possible codes.
+	//
+	// NOTE: Do not call wt_srand().  It is handled automatically in PHP 4.2.0 and above
+	//       and any additional calls are likely to DECREASE the randomness.
+	// @from http://www.codeaholics.com/randomCode.php
+	////
+	public static function randomCode($length=10){
+		$retVal = "";
+		while(strlen($retVal) < $length){
+			$nextChar = mt_rand(0, 61); // 10 digits + 26 uppercase + 26 lowercase = 62 chars
+			if(($nextChar >=10) && ($nextChar < 36)){ // uppercase letters
+				$nextChar -= 10; // bases the number at 0 instead of 10
+				$nextChar = chr($nextChar + 65); // ord('A') == 65
+			} else if($nextChar >= 36){ // lowercase letters
+				$nextChar -= 36; // bases the number at 0 instead of 36
+				$nextChar = chr($nextChar + 97); // ord('a') == 97
+			} else { // 0-9
+				$nextChar = chr($nextChar + 48); // ord('0') == 48
+			}
+			$retVal .= $nextChar;
+		}
+		return $retVal;
+	}
     
 }

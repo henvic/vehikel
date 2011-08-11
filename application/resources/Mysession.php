@@ -55,13 +55,10 @@ class Mysession extends Zend_Application_Resource_ResourceAbstract
         	}*/
         	
         	Zend_Registry::getInstance()->set('signedUserInfo', $defaultNamespace->cachedSignedUserInfo);
-        	
-			if(Zend_Auth::getInstance()->hasIdentity())
-    		{
-	    		$MagicCookies = ML_MagicCookies::getInstance();
-				$MagicCookies->get();
-	    	}
 		}
+		
+		$globalHash = ML_MagicCookies::getInstance()->getLast(true);
+	    Zend_Registry::getInstance()->set("globalHash", $globalHash);
 	}
 }
 ?>

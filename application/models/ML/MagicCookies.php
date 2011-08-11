@@ -18,8 +18,10 @@
  * @todo unit testing... There is something wrong that could be avoided if I did
  * it in first place... But I didn't :(
  */
-class ML_MagicCookies extends ML_getModel
+class ML_MagicCookies
 {
+    protected static $_hash_quantity = 0; //number of times the magiccookie was used
+    
     /**
      * Singleton instance
      *
@@ -27,7 +29,15 @@ class ML_MagicCookies extends ML_getModel
      */
     protected static $_instance = null;
 	
-	
+    //all in seconds
+	const last_max_age = "43200";
+	const max_age = "86400";
+	const authenticated_last_max_age = "432000";
+	const authenticated_max_age = "864000";
+	const memcache_prefix = "hash_";
+	const lenght = "32";//md5 => 32 characters
+	const hash_name = "hash";
+    
     /**
      * Singleton pattern implementation makes "new" unavailable
      *
@@ -53,194 +63,99 @@ class ML_MagicCookies extends ML_getModel
 
         return self::$_instance;
     }
-	
-	const MSG_INVALID_HTTP_REFERER = 'refererInvalid';
-	
-	protected $_name = "globalhash";
     
-	private function set($hashtable)
-	{
-   		$this->getAdapter()->query
-        ('INSERT INTO `'.$this->_name.'` (`uid`, `hashtable`) VALUES (?, ?)
-        ON DUPLICATE KEY UPDATE hashtable=VALUES(hashtable)',
-        array(Zend_Auth::getInstance()->getIdentity(), serialize($hashtable)));
-	}
-	
-	/**
-	 * Gets a global hash.
-	 * 
-	 * @param $maxAge is the maximum age of the
-	 * hash to get. If they are all older than it,
-	 * we create a new one
-	 * @return unknown_type
-	 */
-    public static function get($maxAge = 864000)
+    public static function getHashInfo($hash)
     {
-    	$auth = Zend_Auth::getInstance();
-    	$MagicCookies = self::getInstance();
-    	if(!$auth->hasIdentity()) {
-    		return false;
-    	}
+    	$registry = Zend_Registry::getInstance();
     	
-    	//get the secrets in the db
-    	$select = $MagicCookies->select()
-		->where("`uid` = ?", $auth->getIdentity())
-		;
-    	$check = $MagicCookies->getAdapter()->fetchRow($select);
+    	$memCache = $registry->get("memCache");
     	
-    	if(isset($check['hashtable']))
-	    	$secrets = unserialize($check['hashtable']);
+    	//sanitizing the key for memcache
+    	$hex_value = preg_replace('/[^a-f0-9]/', '', $hash);
+    	$memcache_safe_value = ML_MagicCookies::memcache_prefix . $hex_value;
     	
-    	if(!empty($secrets))
-    	{
-	    	//now we read the newer
-    		$key = key($secrets);
-    		
-	    	foreach($secrets as $conception => $secret)
-	    	{
-    			if($conception > time() - $maxAge)
-    			{
-    				$use = $secret; break;
-    			}
-    		}
-    	}
+    	$hashInfo = $memCache->load($memcache_safe_value);
     	
-    	// If no secret was available... Let's create it.
-    	if(!isset($use))
-    	{
-    		$AntiAttack = new ML_AntiAttack();
-    		$use = $AntiAttack->randomSHA1();
-    		$now = time();
-    		$secrets[$now] = $use;
-    		
-    		$MagicCookies->set($secrets);
-    	}
-    	
-    	Zend_Registry::getInstance()->set("globalHash", $use);
-    	
-    	return $use;
+    	return $hashInfo;
     }
     
-    /**
-     * Check if a given hash is valid
-     * @param $maxAge is max age of the hash in seconds (default is 20 days)
-     * @param $hash
-     * @return age in success and false in failure
-     */
-    public static function check($maxAge = 1728000, $hash = '')
+    private static function setNewLast()
     {
     	$registry = Zend_Registry::getInstance();
     	$auth = Zend_Auth::getInstance();
     	
-    	$config = $registry->get("config");
+    	$memCache = $registry->get("memCache");
     	
-    	if(!$auth->hasIdentity()) {
-    		throw new Exception("Magic cookies: user not auth'ed.");
-    	}
+    	$MagicCookiesNamespace = new Zend_Session_Namespace('MagicCookies');
     	
-    	if(isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER']!='')
-    	{
-			$referer = Zend_Uri::factory($_SERVER['HTTP_REFERER']);
-			
-			if($_SERVER['REQUEST_METHOD'] == 'GET')
-			switch($referer->getHost())
-			{
-				case $config->webhost:
-				//used hosts to develop...
-				case "localhost" :
-				case "mercury" :
-				case "127.0.0.1" :
-				case "127.0.0.2" : 
-				break;
-				default: throw new Exception("HTTP referer invalid. Don't let it happen.");
-			}
-    	}
+    	$MagicCookiesNamespace->setExpirationSeconds(($auth->hasIdentity()) ? self::authenticated_last_max_age : self::last_max_age);
     	
-    	$MagicCookies = self::getInstance();
-    	$request = Zend_Controller_Front::getInstance()->getRequest();
+    	$new_hash = md5(mt_rand().mt_rand().mt_rand());
     	
-    	//get the secrets in the db
-    	$select = $MagicCookies->select()
-		->where("`uid` = ?", $auth->getIdentity())
-		;
-    	$check = $MagicCookies->getAdapter()->fetchRow($select);
+    	$MagicCookiesNamespace->cached_hash = $new_hash;
     	
-    	if(!isset($check['hashtable'])) {
-    		throw new Exception("No hash in hashtable.");;
-    	}
-    	
-	    $secretsInit = unserialize($check['hashtable']);
-	    $secrets = $secretsInit;
-	    if(!is_array($secrets)) {
-	    	throw new Exception("0 hashs in hashtable.");
-	    }
-	    
-	    /*
-   		// delete older global hashes from the list of accepted for when hash != ''
-   		while(key($secrets) < time() - 30*86400) {
-   			// can't use array_shift because the key time() is numerical
-   			$secrets = array_slice($secrets, 1, null, true);
-   			//next(); if not working change to it... there's a bug? test it later
-   			each($secrets);
-   		}*/
-   		
-   		//just set again if anything changed
-   		if($secrets != $secretsInit) $MagicCookies->set($secrets);
-   		
-    	if(empty($hash))
-    	{
-	    	if(isset($_POST['hash'])) {
-	    		$hash = $_POST['hash'];
-	    	} elseif($request->getParam("hash")) {
-	    		$hash = $request->getParam("hash");
-	    	} else {
-	    		throw new Exception("Needed magic cookie not passed.");
-	    	}
-    	}
-    	
-    	foreach($secrets as $conception => $secret)
-	    {
-    		if($hash == $secret && $conception > time() - $maxAge)
-    		{
-    			return $conception;
-    		}
-    	}
-    	
-    	throw new Exception("Hash not found in hashtable.");
+    	$store_hash = array(
+    		"hash" => $new_hash,
+    		"timestamp" => time(),
+    		"session_id" => Zend_Session::getId(),
+   			"uid" => ($auth->hasIdentity()) ? $auth->getIdentity() : null,
+    		"remote_addr" => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : null
+   	 	);
+   	 	
+   	 	$memCache->save($store_hash, self::memcache_prefix.$new_hash, array(), ($auth->hasIdentity()) ? self::authenticated_max_age : self::max_age);
+   	 	
+    	return $new_hash;
     }
     
-    protected static $_hashnum = 0;
+    /**
+     * gets a magic cookie
+     * @param bool $set_new_on_failure flag to set if a new hash should be
+     * created in case there's not a valid one in the session cache
+     */
+    public static function getLast($set_new_on_failure = false)
+    {
+    	$MagicCookiesNamespace = new Zend_Session_Namespace('MagicCookies');
+    	
+    	if(isset($MagicCookiesNamespace->cached_hash)) {
+    		return $MagicCookiesNamespace->cached_hash;
+    	}
+    	
+    	return ($set_new_on_failure) ? self::setNewLast() : false;
+    }
+    
 	public static function formElement()
 	{
 		$request = Zend_Controller_Front::getInstance()->getRequest();
 		
 		$registry = Zend_Registry::getInstance();
 		
-		if($request->isPost())//@todo put the $time inside and
-		//and use formElement($time), only accept by _POST, ok? do something like this...
-		{
-			self::check();
-		}
-		/*if (null === self::$_instance) {
-            self::$_instance = new self();
-        }*/
+		$config = $registry->get("config");
 		
-		$hidden = new Zend_Form_Element_Hidden('hash', array("required" => true));
+		$hidden = new Zend_Form_Element_Hidden(self::hash_name, array("required" => true,
+			'filters'    => array('MagicCookies'),
+			'validators' => array(
+                array('validator' => 'MagicCookies', 'options' => array("allowed_referer_hosts" => array($config->webhost)))
+                )));
 		
 		$hidden->clearDecorators();
 		
-		$hidden->setAttrib("id", "hash".self::$_hashnum);
-		self::$_hashnum = self::$_hashnum + 1;
-		
 		//see bug http://framework.zend.com/issues/browse/ZF-8449
+		$hidden->setAttrib("id", "hash".self::$_hash_quantity);
 		
-		$hidden->setValue($registry->get('globalHash'));
+		self::$_hash_quantity += 1;
+		
+		$hidden->setValue(self::getLast(true));
 		
 		$hidden->setDecorators(array(
-    'ViewHelper',
-    'Errors',
-    array('HtmlTag', array('tag' => 'dd')),
-));
-	return $hidden;
+    		'ViewHelper',
+    		'Errors',
+    		array(
+    			'HtmlTag', array(
+    			'tag' => 'dd')
+    			)
+    		)
+    	);
+    	
+		return $hidden;
 	}
 }
