@@ -27,7 +27,6 @@ class TwitterController extends Zend_Controller_Action
 		{
 			if($twitterForm->isValid($request->getPost()))
 			{
-				ML_MagicCookies::check();
 				$msg = $twitterForm->getValue('tweet');
 				$response = $Twitter->tweet($msg);
 				

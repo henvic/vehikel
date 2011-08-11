@@ -49,8 +49,6 @@ class UploadController extends Zend_Controller_Action
 		
 		if($request->isPost() && $form->isValid($request->getPost()))
 		{
-			ML_MagicCookies::check();
-			
 			// Returns all known internal file information
 			$files = $form->file->getFileInfo();
 
