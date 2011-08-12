@@ -9,6 +9,8 @@
 
 class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
 {
+	const session_prefix = "s_";
+	
 	/**
      * Session lifetime
      *
@@ -128,7 +130,7 @@ class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
      */
     public function read($id)
     {
-    	return ($data = $this->_cache->load($id)) ? $data : '';
+    	return ($data = $this->_cache->load(self::session_prefix . $id)) ? $data : '';
     }
     
     /**
@@ -140,7 +142,7 @@ class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
      */
     public function write($id, $data)
     {
-    	$this->_cache->save($data, $id, array(), $this->_getLifetime($id));
+    	$this->_cache->save($data, self::session_prefix . $id, array(), $this->_getLifetime($id));
     	return true;
     }
     
@@ -152,7 +154,7 @@ class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
      */
     public function destroy($id)
     {
-    	return ($this->_cache->remove($id)) ? true : false;
+    	return ($this->_cache->remove(self::session_prefix . $id)) ? true : false;
     }
     
     /**
@@ -177,7 +179,7 @@ class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
     	$lifetime = $this->_lifetime;
     	
         if (!$this->_overrideLifetime) {
-            $lifetime = (int) $this->_cache->test($id);
+            $lifetime = (int) $this->_cache->test(self::session_prefix . $id);
         }
 
         return $lifetime;
