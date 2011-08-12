@@ -25,7 +25,7 @@ function arrayToObject($array)
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-	protected function _initSysCache()
+	protected function _initRun()
 	{
 		$registry = Zend_Registry::getInstance();
 		
@@ -34,17 +34,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		Zend_Date::setOptions(array('cache' => $sysCache));
 		Zend_Locale::setCache($sysCache);
 		Zend_Translate::setCache($sysCache);
-	}
-	
-	protected function _initRun()
-	{
-		$registry = Zend_Registry::getInstance();
 		
 		if(HOST_MODULE == 'default' || HOST_MODULE == 'api') $this->registerPluginResource("Uri");
 		
 		$config_array = $this->getOptions();
 		//@todo don't use it anymore as a object to avoid this overhead
-		Zend_Registry::getInstance()->set('config', arrayToObject($config_array));
+		$registry->set('config', arrayToObject($config_array));
 		
 		if(isset($config_array['email']['type']) && $config_array['email']['type'] == 'sendmail')
 		{
