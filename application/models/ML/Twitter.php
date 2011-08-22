@@ -192,7 +192,7 @@ class ML_Twitter extends ML_getModel
 			$twitterInfo['name'] == $twitterResponse['name']) return $twitterInfo;
 		
 		$this->getAdapter()->query
-			        ('INSERT INTO `twitter` (`id`, `uid`, `oauth_token`, `oauth_token_secret`, `screen_name`, `name`, `timestamp`) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE id=VALUES(id), oauth_token=VALUES(oauth_token), oauth_token_secret=VALUES(oauth_token_secret), screen_name=VALUES(screen_name), name=VALUES(name), timestamp=VALUES(timestamp)',
+			        ('INSERT INTO '.$this->getAdapter()->quoteTableAs($this->_name).' (`id`, `uid`, `oauth_token`, `oauth_token_secret`, `screen_name`, `name`, `timestamp`) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE id=VALUES(id), oauth_token=VALUES(oauth_token), oauth_token_secret=VALUES(oauth_token_secret), screen_name=VALUES(screen_name), name=VALUES(name), timestamp=VALUES(timestamp)',
         			array($twitterResponse['id'], $auth->getIdentity(), $token['oauth_token'], $token['oauth_token_secret'], $twitterResponse['screen_name'], $twitterResponse['name'], date("Y-m-d H:i:s")));
 		
         $twitterInfo_namespace->unlock();
