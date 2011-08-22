@@ -1,7 +1,12 @@
 <?php
 
-  function array_to_obj($array, &$obj)
+  function array_to_obj($array, &$obj = false)
   {
+  	if(!$obj)
+  	{
+  		$obj = new stdClass();
+  	}
+  	
     foreach ($array as $key => $value)
     {
       if (is_array($value))
@@ -16,12 +21,6 @@
     }
   return $obj;
   }
-
-function arrayToObject($array)
-{
- $object= new stdClass();
- return array_to_obj($array,$object);
-}
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
@@ -39,7 +38,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		
 		$config_array = $this->getOptions();
 		//@todo don't use it anymore as a object to avoid this overhead
-		$registry->set('config', arrayToObject($config_array));
+		$registry->set('config', array_to_obj($config_array));
 		
 		if(isset($config_array['email']['type']) && $config_array['email']['type'] == 'sendmail')
 		{
@@ -51,12 +50,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$memCache = new Zend_Cache_Core(array('automatic_serialization' => true));
 		$memCache->setBackend(new Zend_Cache_Backend_Memcached($config_array['cache']['backend']['memcache']['servers']['global']));
 		$registry->set("memCache", $memCache);
+		
+		Zend_Loader_Autoloader::getInstance()->registerNamespace('ML_');
 	}
-	
-	protected function _initAutoload()
-    {
-    	Zend_Loader_Autoloader::getInstance()->registerNamespace('ML_');
-    }
 	
 	protected function _initDatabase()
 	{
@@ -77,6 +73,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	
     protected function _initRequest()
     {
-    	require 'resources/Request'.HOST_MODULE.'NotPlugin.php';
+    	require APPLICATION_PATH . '/resources/Request'.HOST_MODULE.'NotPlugin.php';
     }
 }
