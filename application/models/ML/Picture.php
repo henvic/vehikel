@@ -37,8 +37,7 @@ class ML_Picture
         return self::$_instance;
     }
 	
-/**
-	 * @todo this function can be used in some other places where a listing is helpful.
+	/**
 	 * Usage
 	 * @param array with key => value, where key is the type of information and value is what's looked or just what's looked
 	 * @return array with a given's size datatable info and false in failure

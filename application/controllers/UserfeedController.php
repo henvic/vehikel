@@ -58,7 +58,6 @@ class UserfeedController extends Zend_Controller_Action
 		//http://validator.w3.org/feed/docs/rss2.html
 			"docs" => "http://blogs.law.harvard.edu/tech/rss",
 			"ttl" => "180",
-			//@todo pubdate and lastbuilddate maybe are important
 		); $user_data['generator'] .= (empty($config->webroot)) ? '/' : "/".$config->webroot."/";
 		
 		foreach($user_data as $field => $value)

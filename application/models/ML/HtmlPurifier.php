@@ -107,7 +107,7 @@ class ML_HtmlPurifier
 
 		$purifying = $purifier->purify($html);
 
-		//@todo AutoFormat.AutoParagraph doesn't provide <br />
+		//AutoFormat.AutoParagraph doesn't provide <br />
 		$purified = nl2br($purifying);
 
 		return $purified;

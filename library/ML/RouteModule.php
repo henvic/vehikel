@@ -156,7 +156,7 @@ class ML_Controller_Router_Route_Module extends Zend_Controller_Router_Route_Abs
     	{
     	//@todo this is a workaround for another resource: the tag system
     	//the Zend_Controller_Router_Route_Regex don't work with utf-8
-    	//despiste trying the hack http://framework.zend.com/issues/browse/ZF-6661
+    	//despite trying the hack http://framework.zend.com/issues/browse/ZF-6661
     	//it didn't work
     	//clear this part of the code when everything is ok
     	//and only let the static=>docs

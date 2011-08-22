@@ -5,18 +5,8 @@
  * It's a piece of data that only the legitimate
  * user and the server should have access to.
  * 
- * So it can be used to check requests that uses it, like deleting
- * or adding some data. If it is not there, the request should
- * not be considered.
- * 
- * We only clear the older hashs in check(), we don't call it anywhere else.
- * We don't need to check everytime the user does something, it's a waste of power.
- * 
  * @author henrique
  *
- * @todo check referrer header
- * @todo unit testing... There is something wrong that could be avoided if I did
- * it in first place... But I didn't :(
  */
 class ML_MagicCookies
 {

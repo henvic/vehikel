@@ -12,7 +12,7 @@ $accountLinks = array(
 <?php
 
 $request = Zend_Controller_Front::getInstance()->getRequest();
-//@todo $request->getActionName() isn't the complete path (ControllerName is missing), but is enough by now
+
 foreach($accountLinks as $action => $rel)
 {
 	if($action == $request->getActionName()):
