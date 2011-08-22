@@ -6,6 +6,8 @@ class ML_Credits extends ML_getModel
 	
 	const COUPON_REDEEM = "redeem";
 	
+	const base = "123456789bcdfghjklmnpqrstwxyz";// base58 -uppercase -a-e-u (better base, avoid bad words)
+	
 	/**
      * Singleton instance
      *
@@ -88,23 +90,17 @@ class ML_Credits extends ML_getModel
      */
     public static function makeUUId()
     {
-		//$base = "123456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-		//fuck and ass appearing is possible, so let's try another base :(
-		//$upper_limit = 1291467968;//1291467968 == ZZZZZZ for this ^
-		
-		$base = "123456789bcdfghjklmnpqrstuwxyz";// base58 -uppercase -a-e-u (better base, avoid bad words)
-		$lower_limit = 27000;//==2111
-		$upper_limit = 809999;//==ZZZZ
+		$lower_limit = pow(29, 3);//==2111
+		$upper_limit = pow(29, 4) - 1;//==ZZZZ
 		$time_divisor = 2.5;
-		$ptime = (int)($_SERVER['REQUEST_TIME']/$time_divisor);
+		$ptime = (int)((int)$_SERVER['REQUEST_TIME']/$time_divisor);
 		
 		$rand1 = mt_rand($lower_limit, $upper_limit);
 		$rand2 = mt_rand($lower_limit, $upper_limit);
 		
-		
-		$num1 = base_encode($ptime, $base);
-		$num2 = base_encode($rand1, $base);
-		$num3 = base_encode($rand2, $base);
+		$num1 = base_encode($ptime, self::base);
+		$num2 = base_encode($rand1, self::base);
+		$num3 = base_encode($rand2, self::base);
 		
 		$uuid = $num1.$num2.$num3.ML_Verhoeff::calcsum($ptime.$rand1.$rand2);
 		
