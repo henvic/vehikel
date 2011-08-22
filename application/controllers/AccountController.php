@@ -59,8 +59,6 @@ class AccountController extends Zend_Controller_Action
     			$changeDataLessEmail = $changeData;
     			if(isset($changeData['email'])) unset($changeDataLessEmail['email']);
     			
-    			$defaultNamespace = new Zend_Session_Namespace();
-    			unset($defaultNamespace->cachedSignedUserInfo);
     			
     			if(!empty($changeDataLessEmail)) {
     				if(isset($changeDataLessEmail['private_email'])) $changeDataLessEmail['private_email'] = 1;//just a small state protection
@@ -93,8 +91,6 @@ class AccountController extends Zend_Controller_Action
     				$signedUserInfo = array_merge($signedUserInfo, $changeDataLessEmail);
 	    			$registry->set("signedUserInfo", $signedUserInfo);
     			}
-    			
-    			$defaultNamespace->cachedSignedUserInfo = $signedUserInfo;
     			
     			if(isset($changeData['about']) && sizeof($changeData) == 1) $redirect_to_profile = true;
     		}
@@ -216,9 +212,6 @@ class AccountController extends Zend_Controller_Action
     	
     	if($request->isPost() && $form->isValid($request->getPost()))
     	{
-    		$defaultNamespace = new Zend_Session_Namespace();
-    		unset($defaultNamespace->cachedSignedUserInfo);
-    		
     		if($form->getValue("delete")) $change = $Picture->deleteAvatar($signedUserInfo);
     		elseif($form->Image->isUploaded()) {
     			$fileInfo = $form->Image->getFileInfo();
@@ -230,8 +223,6 @@ class AccountController extends Zend_Controller_Action
 	    		$signedUserInfo = $People->getById($signedUserInfo['id']);//refresh
     			$registry->set("signedUserInfo", $signedUserInfo);
     		}
-    		
-    		$defaultNamespace->cachedSignedUserInfo = $signedUserInfo;
     		
     		$form->getValues();
     	}

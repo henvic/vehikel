@@ -17,11 +17,17 @@ class EmailController extends Zend_Controller_Action
     	->where("securitycode = ?", $security_code)
     	->where("CURRENT_TIMESTAMP < TIMESTAMP(timestamp, '12:00:00')");
     	$changeInfo = $emailChange->fetchRow($select);
+    	
     	if(!is_object($changeInfo)) {
     	    $this->_redirect("/email/unconfirmed", array("exit"));
     	}
     	
     	$changeInfoData = $changeInfo->toArray();
+    	
+    	if($auth->hasIdentity() && $changeInfo['uid'] != $auth->getIdentity()) {
+    		$this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "logout") . "?please", array("exit"));
+    	}
+    	
     	$People = ML_People::getInstance();
     	try {
     		$People->update(array("email" => $changeInfoData['email']), $People->getAdapter()->quoteInto("id = ?", $changeInfoData['uid']));
@@ -31,24 +37,6 @@ class EmailController extends Zend_Controller_Action
     		$this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "index"), array("exit"));
     	}
     	
-    	if($auth->hasIdentity()) {
-    		if($auth->getIdentity() == $changeInfoData['uid']) {
-    			
-    			//clear cache
-    			$defaultNamespace = new Zend_Session_Namespace();
-    			unset($defaultNamespace->cachedSignedUserInfo);
-    			
-    			$signedUserInfo = $People->getById($changeInfoData['uid']);//refresh
-    			//$registry->set("signedUserInfo", $signedUserInfo);//not necessary because of the redirect
-    			
-    			$defaultNamespace->cachedSignedUserInfo = $signedUserInfo;
-    			
-    			$this->_redirect($this->view->StaticUrl("/email/confirmed"), array("exit"));
-    		} else {
-    		    //@todo methods to force session's cache (for the remote user) to be refreshed
-    			$this->_redirect($this->view->StaticUrl("/email/confirmed"), array("exit"));
-    		}
-    	}
 	    $this->_redirect($this->view->StaticUrl("/email/confirmed"), array("exit"));
     }
 }
