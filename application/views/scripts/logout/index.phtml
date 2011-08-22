@@ -14,21 +14,72 @@ $signedUserInfo = $registry->get("signedUserInfo");
 <h2>Sign out of <?= $this->escape($config->applicationname) ?></h2>
 <p>If you ever forget to logout from a public computer, sign out all other sessions from this page.</p>
 <table class="styled">
-<caption>Activity on this account</caption>
-<thead><tr><th>Access Type</th><th>Date/Time</th></tr></thead>
-<?php $access_time_tmp = new Zend_Date(); foreach($this->open_sessions as $single_activity): ?>
+<caption>Last activity on this account</caption>
+<thead>
 <tr>
+<th>Access Type</th>
+<th>Location (IP address)</th>
+<th>Date/Time</th>
+<th>Connection</th>
+</tr>
+</thead>
+<?php
+$current_session = Zend_Session::getId();
+$access_time_tmp = new Zend_Date();
+foreach($this->recent_activity as $single_activity): ?>
+<tr>
+<?php
+if(!$single_activity):
+?>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<?php else: ?>
 <td>Browser</td>
-<?php //<td><?= $this->escape($single_activity['remote_addr']); </td>?>
-<td><?php
-$access_time_tmp->set($single_activity['last_access_timestamp'], Zend_Date::TIMESTAMP);
-echo $this->escape($access_time_tmp." GMT ".$access_time_tmp->getGmtOffset()." (".ML_Time::ago($access_time_tmp, Zend_Date::TIMESTAMP).")");
-?></td>
+<td>
+<?php
+if(isset($single_activity['geo']) && is_array($single_activity['geo']))
+{
+	echo $this->escape($single_activity['geo']['country_name']);
+	if($single_activity['geo']['region'])
+	{
+		echo $this->escape(" (".$single_activity['geo']['region'].")");
+	}
+} else {
+	echo "-";
+}
+
+if(isset($single_activity['remote_addr']))
+{
+?>
+<br />
+(<?= $this->escape($single_activity['remote_addr']); ?>)
+<?php } ?>
+</td>
+<td>
+<?php
+if(isset($single_activity['request_time']))
+{
+	$access_time_tmp->set($single_activity['request_time'], Zend_Date::TIMESTAMP);
+	echo $this->escape($access_time_tmp." GMT ".$access_time_tmp->getGmtOffset())."<br />".$this->escape(ML_Time::ago($access_time_tmp, Zend_Date::TIMESTAMP));
+} else {
+?>-<?php } ?></td>
+<?php endif; ?>
+<td>
+<?php if($single_activity['status'] == ML_Session::OPEN_STATUS): ?>
+Active
+<?php if($current_session == $single_activity['session']) echo "<br /><small><strong>(current / this one)</strong></small>"; ?>
+<?php else: ?>
+Closed
+<?php endif; ?>
+</td>
 </tr>
 <?php endforeach; unset($single_activity); unset($access_time_tmp); ?>
 </table>
-<p>This computer is using IP address <?= $this->escape($_SERVER['REMOTE_ADDR']) ?>.<br /><br />
-There may be sessions that have not been signed out.</p>
+<p>The data show above might not be complete or accurate.
+<br /><br />
+This computer is using IP address <?= $this->escape($_SERVER['REMOTE_ADDR']) ?>.
+</p>
 <?php
 if($this->remote_logout_done):
 ?>

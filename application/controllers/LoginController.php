@@ -57,10 +57,16 @@ class LoginController extends Zend_Controller_Action
     
     public function indexAction()
     {
+    	$registry = Zend_Registry::getInstance();
+    	$auth = Zend_Auth::getInstance();
+		
+		$config = $registry->get("config");
+		
     	ML_AntiAttack::loadRules();
     	$Credential = ML_Credential::getInstance();
+    	$Log = ML_Log::getInstance();
     	
-    	if(Zend_Auth::getInstance()->hasIdentity())
+    	if($auth->hasIdentity())
     	{
     	    return $this->_forward("goback");
     	}
@@ -71,26 +77,36 @@ class LoginController extends Zend_Controller_Action
         $ensureHuman = (ML_AntiAttack::ensureHuman()) ? true : false;
         
         if($request->isPost()) {
-        	
+        
         ignore_user_abort(true);
-        	
+        
         //A way to sign in only if captcha is right. This is a workaround to signout if the captcha is wrong
 	    //I've decided to put the sign in code in the validator itself, but couldn't find a way to make the password validator
 	    //load after the captcha one (but to let it come first in code, and that's ugly on the screen) and get a result if the
 	    //validation worked. Notice that it is only useful when the captcha is required.
         if($form->isValid($request->getPost())) {//@see below
-        	if($form->getElement("remember_me")->isChecked()) Zend_Session::rememberMe(60 * 60 * 24 * 15);
-        	Zend_Session::regenerateId();
-        	$Log = ML_Log::getInstance();
+        	$Session = ML_Session::getInstance();
+        	
+        	//rememberMe and ForgetMe already regenerates the ID
+        	if($form->getElement("remember_me")->isChecked())
+        	{
+        		Zend_Session::rememberMe($config->resources->session->cookie_lifetime);
+        	} else {
+        		Zend_Session::ForgetMe();
+        	}
+        	
+        	$Session->associate($auth->getIdentity(), Zend_Session::getId());
+        	
         	$Log->action("login", null, $form->getValue("username"));
+			
         	$this->_forward("goback");
 	    } else {
 	    	//@see above
-	    	if(Zend_Auth::getInstance()->hasIdentity())
+	    	if($auth->hasIdentity())
 	    	{
-		    	Zend_Auth::getInstance()->clearIdentity();
+		    	$auth->clearIdentity();
 	   		}
-	   		$Log = ML_Log::getInstance();
+	   		
         	$Log->action("failed_login", null, $form->getValue("username"));
 		    $this->view->errorlogin = true;
 	    }//@end of workaround

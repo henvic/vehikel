@@ -4,23 +4,15 @@ class Mysession extends Zend_Application_Resource_ResourceAbstract
 {
 	public function init()
 	{
-		$config = array(
-		    'name'           => 'session',
-    		'primary'        => 'id',
-		    'modifiedColumn' => 'modified',
-    		'dataColumn'     => 'data',
-    		'lifetimeColumn' => 'lifetime'
-		);
-    	
-        Zend_Session::setSaveHandler(new Zend_Session_SaveHandler_DbTable($config));
-        
-        $sessionLifetime = (60 * 60 * 24 * 6);
-        Zend_Session::getSaveHandler()->setLifetime($sessionLifetime)->setOverrideLifetime(true);
-		Zend_Session::start();
-		
-		// Create auth instance
+		$registry = Zend_Registry::getInstance();
 		$auth = Zend_Auth::getInstance();
 		
+		$config = $registry->get("config");
+		
+        Zend_Session::setSaveHandler(new ML_Session_SaveHandler_PlusCache($registry->get("memCache")));
+        
+        Zend_Session::getSaveHandler()->setLifetime($config->resources->session->cookie_lifetime, true);
+		Zend_Session::start();
 		
 		$defaultNamespace = new Zend_Session_Namespace();
 		
@@ -31,18 +23,6 @@ class Mysession extends Zend_Application_Resource_ResourceAbstract
 		
 		if($auth->hasIdentity())
 		{
-			if(!isset($defaultNamespace->AuthInitialized))
-			{
-				 $session = ML_Session::getInstance();
-				 
-				 $session->update(
-       				Array("uid" => $auth->getIdentity(),),
-       				$session->getAdapter()->quoteInto("id = ?", Zend_Session::getId()));
-        		
-        		$defaultNamespace->AuthInitialized = true;
-        		
-			}
-			
 			//@todo make a better caching mechanism, if necessary for performance
 			//be aware that certain code may be negatively affected in terms of security
 			//like 'just after setting another email' and having a old cache in another browser's session
@@ -54,11 +34,11 @@ class Mysession extends Zend_Application_Resource_ResourceAbstract
         		if(!$defaultNamespace->cachedSignedUserInfo) throw new Exception("Can not set up session chachedSignedUserInfo");
         	}*/
         	
-        	Zend_Registry::getInstance()->set('signedUserInfo', $defaultNamespace->cachedSignedUserInfo);
+        	$registry->set('signedUserInfo', $defaultNamespace->cachedSignedUserInfo);
 		}
 		
 		$globalHash = ML_MagicCookies::getInstance()->getLast(true);
-	    Zend_Registry::getInstance()->set("globalHash", $globalHash);
+	    $registry->set("globalHash", $globalHash);
 	}
 }
 ?>

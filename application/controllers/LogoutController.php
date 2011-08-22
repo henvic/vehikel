@@ -40,9 +40,9 @@ class LogoutController extends Zend_Controller_Action
 	        }
     	}
     	
-    	$open_sessions = $Session->getByUid($signedUserInfo['id'], 100);
+    	$recent_activity = $Session->getRecentActivity($signedUserInfo['id']);
     	
     	$this->view->logoutForm = $form;
-    	$this->view->open_sessions = $open_sessions;
+    	$this->view->recent_activity = $recent_activity;
     }
 }
