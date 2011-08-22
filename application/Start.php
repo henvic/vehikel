@@ -51,6 +51,9 @@ require APPLICATION_PATH . '/models/callFilter.php';
 require EXTERNAL_LIBRARY_PATH . '/Zend/Application.php';
 require LIBRARY_PATH . '/ML/Application.php';
 
+require EXTERNAL_LIBRARY_PATH."/php-on-couch/lib/couch.php";
+require EXTERNAL_LIBRARY_PATH."/php-on-couch/lib/couchClient.php";
+require EXTERNAL_LIBRARY_PATH."/php-on-couch/lib/couchDocument.php";
 // Create application, bootstrap, and run
 try {
 $application = new ML_Application(
