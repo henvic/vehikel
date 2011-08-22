@@ -9,7 +9,6 @@
 
 class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
 {
-	const session_prefix = "s_";
 	
 	/**
      * Session lifetime
@@ -17,6 +16,13 @@ class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
      * @var int
      */
     protected $_lifetime = false;
+    
+    /**
+     * Session prefix
+     *
+     * @var string
+     */
+    protected $_sessionPrefix = "s_";
     
     /**
      * Whether or not the lifetime of an existing session should be overridden
@@ -44,7 +50,7 @@ class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
      *
      * @param int $lifetime
      * @param boolean $overrideLifetime (optional)
-     * @return Zend_Session_SaveHandler_DbTable
+     * @return Zend_Session_SaveHandler_Cache
      */
     public function setLifetime($lifetime, $overrideLifetime = null)
     {
@@ -76,12 +82,35 @@ class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
     {
         return $this->_lifetime;
     }
+    
+	/**
+     * Set the session prefix
+     *
+     * @param string $sessionPrefix
+     * @return Zend_Session_SaveHandler_Cache
+     */
+    public function setSessionPrefix($sessionPrefix)
+    {
+        $this->_sessionPrefix = $sessionPrefix;
 
+        return $this;
+    }
+	
+	/**
+     * Retrieve session prefix
+     *
+     * @return string
+     */
+    public function getSessionPrefix()
+    {
+        return $this->_sessionPrefix;
+    }
+    
     /**
      * Set whether or not the lifetime of an existing session should be overridden
      *
      * @param boolean $overrideLifetime
-     * @return Zend_Session_SaveHandler_DbTable
+     * @return Zend_Session_SaveHandler_Cache
      */
     public function setOverrideLifetime($overrideLifetime)
     {
@@ -130,7 +159,7 @@ class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
      */
     public function read($id)
     {
-    	return ($data = $this->_cache->load(self::session_prefix . $id)) ? $data : '';
+    	return ($data = $this->_cache->load($this->_sessionPrefix . $id)) ? $data : '';
     }
     
     /**
@@ -142,7 +171,7 @@ class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
      */
     public function write($id, $data)
     {
-    	$this->_cache->save($data, self::session_prefix . $id, array(), $this->_getLifetime($id));
+    	$this->_cache->save($data, $this->_sessionPrefix . $id, array(), $this->_getLifetime($id));
     	return true;
     }
     
@@ -154,7 +183,7 @@ class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
      */
     public function destroy($id)
     {
-    	return ($this->_cache->remove(self::session_prefix . $id)) ? true : false;
+    	return ($this->_cache->remove($this->_sessionPrefix . $id)) ? true : false;
     }
     
     /**
@@ -169,9 +198,9 @@ class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
 	}
 	
 	/**
-     * Retrieve session lifetime considering Zend_Session_SaveHandler_DbTable::OVERRIDE_LIFETIME
+     * Retrieve session lifetime considering Zend_Session_SaveHandler_Cache::OVERRIDE_LIFETIME
      *
-     * @param Zend_Db_Table_Row_Abstract $row
+     * @param string $id
      * @return int
      */
     protected function _getLifetime($id)
@@ -179,7 +208,7 @@ class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
     	$lifetime = $this->_lifetime;
     	
         if (!$this->_overrideLifetime) {
-            $lifetime = (int) $this->_cache->test(self::session_prefix . $id);
+            $lifetime = (int) $this->_cache->test($this->_sessionPrefix . $id);
         }
 
         return $lifetime;
