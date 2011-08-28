@@ -17,18 +17,18 @@ if($registry->isRegistered("shareInfo") && $this->tagsList)
 	}
 
 	if(!empty($keywords)) $keywords .= ", ";
-	$keywords .= $config->keywords;
+	$keywords .= $config['keywords'];
 
 	$shareInfo = $registry->get("shareInfo");
 	$this->headMeta()->appendName('description', $this->escape($shareInfo['title']));
 } else {
-	$keywords = $config->keywords;
-	$this->headMeta()->appendName('description', $config->description);
+	$keywords = $config['keywords'];
+	$this->headMeta()->appendName('description', $config['description']);
 }
 
 $this->headMeta()->appendName('keywords', $keywords);
 
-$this->webname = $config->applicationname;
+$this->webname = $config['applicationname'];
 
 if($registry->isRegistered("signedUserInfo"))
 $signedUserInfo = $registry->get("signedUserInfo");
@@ -72,7 +72,7 @@ if($registry->isRegistered("globalHash")) {
 	$this->addjsvar("global_auth_hash", $registry->get("globalHash"));
 }
 
-$this->addjsvar("webroot", $config->webroot);
+$this->addjsvar("webroot", $config['webroot']);
 
 //$this->headScript()->prependFile($this->staticversion("/javascript/plifk.js"));
 $this->headScript()->prependFile($this->staticUrl("/plifk.js"));
@@ -122,7 +122,7 @@ if(isset($signedUserInfo)):
 </div>
 </div>
 <div class="yui-b"<?php /*role="banner"*/?> id="logo">
-<h1><a href="<?= $this->url(array(), "index") ?>"><span></span><?= $this->escape($config->applicationname) ?></a></h1>
+<h1><a href="<?= $this->url(array(), "index") ?>"><span></span><?= $this->escape($config['applicationname']) ?></a></h1>
 </div>
 
 </div>

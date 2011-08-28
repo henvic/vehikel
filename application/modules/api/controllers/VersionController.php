@@ -9,7 +9,7 @@ class VersionController extends Zend_Controller_Action
 		$doc->formatOutput = true;
 		
 		$api_version = $doc->createElement("version");
-		$api_version->appendChild($doc->newTextAttribute("api", $config->api->version));
+		$api_version->appendChild($doc->newTextAttribute("api", $config['api']['version']));
 		
 		$doc->appendChild($api_version);
 		

@@ -4,7 +4,7 @@ $signedUserInfo = $registry->get("signedUserInfo");
 
 $config = $registry->get('config');
 
-$this->headTitle("Welcome to ".$config->applicationname.", ".$this->escape($signedUserInfo['name'])."!", "SET");
+$this->headTitle("Welcome to ".$config['applicationname'].", ".$this->escape($signedUserInfo['name'])."!", "SET");
 ?>
 <div class="yui-g">
 <div class="yui-u first">

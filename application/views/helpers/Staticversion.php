@@ -8,7 +8,8 @@ class My_View_Helper_staticversion extends Zend_View_Helper_Abstract
 	function __construct()
 	{
 		$registry = Zend_Registry::getInstance();
-		self::$_pre_path = mb_substr($registry->get("config")->services->S3->designBucketAddress, 0, -1);
+		$config = $registry->get("config");
+		self::$_pre_path = mb_substr($config['services']['S3']['designBucketAddress'], 0, -1);
 		
 		require APPLICATION_PATH . "/configs/static-versions.php";
 		

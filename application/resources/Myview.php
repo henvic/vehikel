@@ -27,7 +27,7 @@ class Myview extends Zend_Application_Resource_ResourceAbstract
         
         $view->addHelperPath(APPLICATION_PATH.'/views/helpers', 'My_View_Helper');
         
-        $view->headTitle()->append($config->applicationname);
+        $view->headTitle()->append($config['applicationname']);
         
         // Return it, so that it can be stored by the bootstrap
         return $view;

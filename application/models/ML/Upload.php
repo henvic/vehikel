@@ -22,12 +22,12 @@ class ML_Upload extends ML_Share
 		
 		$uploadStatus = array("bandwidth" =>
 		 array(
-		 "maxbytes" => floor($config->share->monthlyLimit*1024*1024),
+		 "maxbytes" => floor($config['share']['monthlyLimit']*1024*1024),
 		 "usedbytes" => ceil($query),
-		 "remainingbytes" => floor(($config->share->monthlyLimit*1024*1024)-($query)) 
+		 "remainingbytes" => floor(($config['share']['monthlyLimit']*1024*1024)-($query)) 
 		 ),
 		 "filesize" => array(
-		 "maxbytes" => floor($config->share->maxFileSize*1024*1024),
+		 "maxbytes" => floor($config['share']['maxFileSize']*1024*1024),
 		 )
 		 );
 		
@@ -43,7 +43,7 @@ class ML_Upload extends ML_Share
 		require_once(LIBRARY_PATH."/ML/Filters/FilenameRobot.php");
 		require_once(LIBRARY_PATH."/ML/Validators/Filename.php");
 		
-		$s3 = new Zend_Service_Amazon_S3($config->services->S3->key, $config->services->S3->secret);
+		$s3 = new Zend_Service_Amazon_S3($config['services']['S3']['key'], $config['services']['S3']['secret']);
 		
 		$filenameFilter = new MLFilter_FilenameRobot();
 		$filenameValidator = new MLValidator_Filename();
@@ -83,7 +83,7 @@ class ML_Upload extends ML_Share
 			$object_key = $userInfo['alias']."/".$upload_id."-".$download_secret."/".$filename;
 			
 			$put = $s3->putFile(
-			$fileInfo['tmp_name'], $config->services->S3->sharesBucket."/".$object_key,
+			$fileInfo['tmp_name'], $config['services']['S3']['sharesBucket']."/".$object_key,
 			array(
 			Zend_Service_Amazon_S3::S3_ACL_HEADER =>
     	      Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ,
@@ -167,9 +167,9 @@ class ML_Upload extends ML_Share
 		
 		if(isset($change_data['filename']))
 		{
-			$s3 = new Zend_Service_Amazon_S3($config->services->S3->key, $config->services->S3->secret);
+			$s3 = new Zend_Service_Amazon_S3($config['services']['S3']['key'], $config['services']['S3']['secret']);
 			
-			$bucket_plus_object_key_prefix = $config->services->S3->sharesBucket."/".$userInfo['alias']."/".$shareInfo['id']."-".$shareInfo['download_secret']."/";
+			$bucket_plus_object_key_prefix = $config['services']['S3']['sharesBucket']."/".$userInfo['alias']."/".$shareInfo['id']."-".$shareInfo['download_secret']."/";
 			$source = $bucket_plus_object_key_prefix.$shareInfo['filename'];
 			$destination = $bucket_plus_object_key_prefix.$change_data['filename'];
 			

@@ -33,7 +33,7 @@ class UploadController extends Zend_Controller_Action
 		
 		if(!$auth->hasIdentity()) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "login"), array("exit"));
 		
-		if(!$config->upload->available) $this->_forward("offline");
+		if(!$config['upload']['available']) $this->_forward("offline");
 		
 		$signedUserInfo = $registry->get('signedUserInfo');
 		

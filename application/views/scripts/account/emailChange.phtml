@@ -8,10 +8,10 @@ Hi <?= $this->escape($signedUserInfo['name']) ?> (<?= $this->escape($signedUserI
 
 If you want to use this e-mail address for your account
 confirm it at
-http://<?= $config->webhost ?><?= $this->url(array("confirm_uid" => $signedUserInfo['id'], "security_code" => $this->securitycode), "emailconfirm") ?>
+http://<?= $config['webhost'] ?><?= $this->url(array("confirm_uid" => $signedUserInfo['id'], "security_code" => $this->securitycode), "emailconfirm") ?>
 
 If it was a mistake, don't open the link above.
 
 -
-<?= $this->escape($config->applicationname) ?>
-<?= $this->escape($config->webhost) ?>
+<?= $this->escape($config['applicationname']) ?>
+<?= $this->escape($config['webhost']) ?>

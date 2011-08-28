@@ -28,7 +28,7 @@ class GarbageController extends Zend_Controller_Action
 		
 		$registry = Zend_Registry::getInstance();
 		$config = $registry->get("config");
-		$s3 = new Zend_Service_Amazon_S3($config->services->S3->key, $config->services->S3->secret);
+		$s3 = new Zend_Service_Amazon_S3($config['services']['S3']['key'], $config['services']['S3']['secret']);
 		
 		$RemoveFiles = new ML_RemoveFiles();
 		
@@ -42,7 +42,7 @@ class GarbageController extends Zend_Controller_Action
 		foreach($del_shares->toArray() as $del_share) {
 			$object_key = $del_share['alias']."/".$del_share['share']."-".$del_share['download_secret']."/".$del_share['filename'];
 			
-			if($s3->removeObject($config->services->S3->sharesBucket."/".$object_key))
+			if($s3->removeObject($config['services']['S3']['sharesBucket']."/".$object_key))
 			{
 				$deleted_shares[] = $del_share['id'];
 			}

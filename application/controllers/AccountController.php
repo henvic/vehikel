@@ -105,9 +105,9 @@ class AccountController extends Zend_Controller_Action
     			$mail = new Zend_Mail();
 		        $this->view->securitycode = $securitycode;
 				$mail->setBodyText($this->view->render("account/emailChange.phtml"))
-				->setFrom($config->robotEmail->addr, $config->robotEmail->name)
+				->setFrom($config['robotEmail']['addr'], $config['robotEmail']['name'])
 				->addTo($changeData['email'], $signedUserInfo['name'])
-				->setSubject('Changing your '.$config->application.' email')
+				->setSubject('Changing your '.$config['applicationname'].' email')
 				->send();
     			
     			$this->view->changeEmail = true;
@@ -134,13 +134,13 @@ class AccountController extends Zend_Controller_Action
     	
     	$config = $registry->get('config');
     	
-    	$twitterConf = $config->services->twitter;
+    	$twitterConf = $config['services']['twitter'];
     	
     	$params = $request->getParams();
     	
     	$Twitter = ML_Twitter::getInstance();
     	
-    	$twitterObj = new EpiTwitter($twitterConf->key, $twitterConf->secret);
+    	$twitterObj = new EpiTwitter($twitterConf['key'], $twitterConf['secret']);
     	
     	$removeTwitterForm = $Twitter->removeForm();
     	$addTwitterForm = $Twitter->addForm();

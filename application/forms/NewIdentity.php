@@ -54,7 +54,7 @@ class Form_NewIdentity extends Zend_Form
             'label'    => 'Create account!',
         ));
         
-        if($config->ssl)
+        if($config['ssl'])
         {
             $this->getElement("submit")->addValidator("Https");
             //Note: by default the submit element doesn't display a error decorator

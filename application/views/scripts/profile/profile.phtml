@@ -9,7 +9,7 @@ $Contacts = ML_Contacts::getInstance();
 
 $userInfo = $registry->get("userInfo");
 
-$this->headTitle($config->applicationname . ": " . $this->escape($userInfo['name']), "SET");
+$this->headTitle($config['applicationname'] . ": " . $this->escape($userInfo['name']), "SET");
 
 $profileInfo = $Profile->getById($userInfo['id']);
 

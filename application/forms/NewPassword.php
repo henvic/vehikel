@@ -49,7 +49,7 @@ class Form_NewPassword extends Zend_Form
             'label'    => 'Change it!'
         ));
 		
-        if($config->ssl)
+        if($config['ssl'])
         {
             $this->getElement("submit")->addValidator("Https");
             //Note: by default the submit element doesn't display a error decorator

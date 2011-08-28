@@ -32,7 +32,7 @@ $this->signUpForm->getElement("email")->getDecorator("description")->setEscape(f
 <li>Choose a username</li>
 </ol>
 <?php
-if($config->signup->inviteonly):
+if($config['signup']['inviteonly']):
 ?>
 <h2>Do you have an invite code?</h2>
 <p>To sign up, we require that you have one at the moment.</p>

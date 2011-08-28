@@ -11,7 +11,7 @@ class Mysession extends Zend_Application_Resource_ResourceAbstract
 		
         Zend_Session::setSaveHandler(new ML_Session_SaveHandler_PlusCache($registry->get("memCache")));
         
-        Zend_Session::getSaveHandler()->setLifetime($config->resources->session->cookie_lifetime, true);
+        Zend_Session::getSaveHandler()->setLifetime($config['resources']['session']['cookie_lifetime'], true);
 		Zend_Session::start();
 		
 		$defaultNamespace = new Zend_Session_Namespace();

@@ -33,7 +33,7 @@ class UploadController extends Zend_Controller_Action
 		
 		$request = $this->getRequest();
 		
-		if(!$config->upload->available) throw new Exception("Not receiving uploads now. Try later.");
+		if(!$config['upload']['available']) throw new Exception("Not receiving uploads now. Try later.");
 		
 		$userInfo = $registry->get("authedUserInfo");
 		

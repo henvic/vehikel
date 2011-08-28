@@ -4,12 +4,12 @@ Hi <?= $this->escape($this->entry['name']) ?>!
 Welcome to Plifk.
 
 Please confirm your e-mail address at
-<?= ($config->ssl) ? "https://" . $config->webhostssl : "http://" . $config->webhost ?><?= $this->url(array("security_code" => $this->entry['securitycode']), "join_emailconfirm") ?>
+<?= ($config['ssl']) ? "https://" . $config['webhostssl'] : "http://" . $config['webhost'] ?><?= $this->url(array("security_code" => $this->entry['securitycode']), "join_emailconfirm") ?>
 
 
-Terms of Service - http://<?= $this->escape($config->webhost) ?><?= $this->staticUrl("/tos") ?>
-Privacy Policy - http://<?= $this->escape($config->webhost) ?><?= $this->staticUrl("/privacy") ?>
+Terms of Service - http://<?= $this->escape($config['webhost']) ?><?= $this->staticUrl("/tos") ?>
+Privacy Policy - http://<?= $this->escape($config['webhost']) ?><?= $this->staticUrl("/privacy") ?>
 
 -
-<?= $this->escape($config->applicationname) ?>
-<?= $this->escape($config->webhost) ?>
+<?= $this->escape($config['applicationname']) ?>
+<?= $this->escape($config['webhost']) ?>

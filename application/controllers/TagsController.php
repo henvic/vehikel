@@ -44,7 +44,7 @@ class TagsController extends Zend_Controller_Action
 				
 				foreach($tagsArray as $n => $tag)
 				{
-					if($tagsCounter >= $config->tags->limit) break;
+					if($tagsCounter >= $config['tags']['limit']) break;
 					try {
 						$add = $Tags->getAdapter()->query("INSERT IGNORE INTO `".$Tags->getTableName()."` (`share`, `people`, `clean`, `raw`, `timestamp`) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)", array($shareInfo['id'], $shareInfo['byUid'], $tag['clean'], $tag['raw']));
 						if($add->rowCount()) $tagsCounter++;

@@ -6,11 +6,7 @@ class LoginForm extends Zend_Form
     {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
-    	/* Damn it!
-    	 * [15:47] <jesswa> i think the reason your code isn't working
-[15:47] <jesswa> is because $form->addElement() returns the form and not the element you just added
-[15:47] <jesswa> try changing line 14 to $this->getElement("password")->setAttrib('class', 'my-class');
-    	 */
+    	
     	$this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
     	
@@ -47,7 +43,7 @@ class LoginForm extends Zend_Form
         ));
         
         
-        if($config->ssl)
+        if($config['ssl'])
         {
             $this->getElement("login")->addValidator("Https");
             //Note: by default the submit element doesn't display a error decorator

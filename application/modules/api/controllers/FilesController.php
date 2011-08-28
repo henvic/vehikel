@@ -132,9 +132,9 @@ class FilesController extends Zend_Controller_Action
 			"filetype" => $shareInfo['type'],
 			"short" => $shareInfo['short'],
 			"description" => $shareInfo['description_filtered'],
-			"url" => "http://".$config->webhost. $router->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage"),
-			"dataurl" => $config->services->S3->sharesBucketAddress.$userInfo['alias']."/".$shareInfo['id']."-".$shareInfo['download_secret']."/".$shareInfo['filename'],
-			"shorturl" => $config->URLshortening->addr.base58_encode($shareInfo['id']),
+			"url" => "http://".$config['webhost']. $router->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage"),
+			"dataurl" => $config['services']['S3']['sharesBucketAddress'].$userInfo['alias']."/".$shareInfo['id']."-".$shareInfo['download_secret']."/".$shareInfo['filename'],
+			"shorturl" => $config['URLshortening']['addr'].base58_encode($shareInfo['id']),
 			//"views" => $shareInfo['views'],
 			"comments" => $count_comments,
 			"favorites" => $count_favs

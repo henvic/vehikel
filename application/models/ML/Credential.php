@@ -5,7 +5,7 @@ class ML_Credential extends ML_getModel
 {
 	const PASSWORD_HASH_ITERATION_COUNT = "8";
 	
-/**
+	/**
      * Singleton instance
      *
      * @var Zend_Auth
@@ -91,7 +91,7 @@ class ML_Credential extends ML_getModel
         {
         	require_once APPLICATION_PATH . '/forms/LoginForm.php';
         	
-        	$action = ($config->ssl) ? 'https://'.$config->webhostssl : '';
+        	$action = ($config['ssl']) ? 'https://'.$config['webhostssl'] : '';
         	
         	$action .= Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "login");
         	
@@ -116,7 +116,7 @@ class ML_Credential extends ML_getModel
         	require_once APPLICATION_PATH . '/forms/LogoutForm.php';
         	
             $form = new LogoutForm(array(
-                'action' => 'http://'.$config->webhost . Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "logout"),
+                'action' => 'http://'.$config['webhost'] . Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "logout"),
                 'method' => 'post',
             ));
         }
@@ -151,7 +151,7 @@ class ML_Credential extends ML_getModel
         
         if(mb_substr($link, 0, 1) == '/')// the redirect_after_login link MUST start with a '/'
         {
-            $redir_to = "http://" . $config->webhost . $link;
+            $redir_to = "http://" . $config['webhost'] . $link;
             
             Zend_Uri::setConfig(array('allow_unwise' => true));
             

@@ -37,8 +37,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		if(HOST_MODULE == 'default' || HOST_MODULE == 'api') $this->registerPluginResource("Uri");
 		
 		$config_array = $this->getOptions();
-		//@todo don't use it anymore as a object to avoid this overhead
-		$registry->set('config', array_to_obj($config_array));
+		
+		$registry->set('config', $config_array);
 		
 		if(isset($config_array['email']['type']) && $config_array['email']['type'] == 'sendmail')
 		{

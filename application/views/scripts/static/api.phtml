@@ -19,7 +19,7 @@ $this->headTitle("API | Documentation");
 
 <h3>Avatar images</h3>
 <p>The link for the avatar images are constructed in the following way:<br />
-<code><?= $config->services->S3->headshotsBucketAddress ?><strong>(user id)</strong>-<strong>(icon secret)</strong><strong>(size end)</strong>.jpg</code></p>
+<code><?= $config['services']['S3']['headshotsBucketAddress'] ?><strong>(user id)</strong>-<strong>(icon secret)</strong><strong>(size end)</strong>.jpg</code></p>
 <p>The icon secret can be retrieve by means of the /people/info method. By "size end" we mean the URI termination for the wanted size. They are: "-t" for thumbnail, "-s" for square, "-m" for small, "" (nothing) for medium and "-b" for large.
 </p>
 
@@ -27,7 +27,7 @@ $this->headTitle("API | Documentation");
 <p>The <b>dataurl</b> element in the <b>/files/info</b> response is the download link for a given object (file).</p>
 <p>This value can be cached, but can change at anytime as well as <b>filename</b> and <b>download_secret</b> can. If the file is not found you at the value of <b>dataurl</b> you should refresh the value before assuming anything (such as that the file is not available anymore). Please notice that <b>secret</b> and <b>download_secret</b> are two distinct and independent params.</p>
 <p>Appending <b>?torrent</b> to the end of the link you can get a .torrent for the file, which can be useful for the download of large files.</p>
-<p>Don't rely on the <code><?= $config->services->S3->sharesBucketAddress ?><strong>(username)</strong>/<strong>(file_id)</strong>-<strong>(download_secret)</strong>/<strong>(filename)</strong></code> pattern.<br />
+<p>Don't rely on the <code><?= $config['services']['S3']['sharesBucketAddress'] ?><strong>(username)</strong>/<strong>(file_id)</strong>-<strong>(download_secret)</strong>/<strong>(filename)</strong></code> pattern.<br />
 This is a pattern found at the <b>dataurl</b> element. <b>You should not</b> take it for granted. Instead, always use the <b>dataurl</b> value. Failure to comply with this <b>will break</b> your application sometime.</p>
 
 <h3>How to link</h3>

@@ -8,7 +8,7 @@ class StaticController extends Zend_Controller_Action
 		$registry = Zend_Registry::getInstance();
 		$config = $registry->get("config");
 		
-		$int_req_uri = mb_substr($_SERVER['REQUEST_URI'], mb_strlen($config->webroot));
+		$int_req_uri = mb_substr($_SERVER['REQUEST_URI'], mb_strlen($config['webroot']));
 		
 		$uri = explode("?", $int_req_uri, 2);
 		$find_path = (mb_substr($uri[0], -1) != '/') ? mb_substr($uri[0], 1) : mb_substr($uri[0], 1, -1);

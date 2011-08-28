@@ -32,9 +32,9 @@ class ML_Redis
     {
         if (null === self::$_instance) {
         	$registry = Zend_Registry::getInstance();
+        	$config = $registry->get("config");
         	
-        	//@todo after migrating the $config to array-style make this configuration more practical
-			$redis = new Predis\Client(array("password" => $registry->get("config")->cache->backend->redis->servers->global->password));
+			$redis = new Predis\Client($config['cache']['backend']['redis']['servers']['global']);
 			self::$_instance = $redis;
         }
 

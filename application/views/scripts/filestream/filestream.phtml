@@ -18,7 +18,7 @@ $shares = $this->paginator->getCurrentItems()->toArray();
 <div id="sharelist">
 <?php
 foreach($shares as $share):
-$download_link = $this->escape($config->services->S3->sharesBucketAddress.$userInfo['alias']."/".$share['id']."-".$share['download_secret']."/".$share['filename']);
+$download_link = $this->escape($config['services']['S3']['sharesBucketAddress'].$userInfo['alias']."/".$share['id']."-".$share['download_secret']."/".$share['filename']);
 $date = new Zend_Date();
 $date->set($share['uploadedTime'], Zend_Date::ISO_8601);
 

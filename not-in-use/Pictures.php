@@ -119,7 +119,7 @@ class ML_Pictures extends Model_getModel
 		// we won't alloc a space for the picture
 		$data = $Pictures->getPictures($resourceName, $resourceId);
 		
-		if(sizeof($data) >= $registry->config->pictures->limit) return false;
+		if(sizeof($data) >= $registry['config']['pictures']['limit']) return false;
 		
 		$insert = $this->insert(Array(
 			"postBy" => $userIdentity,
@@ -179,7 +179,7 @@ class ML_Pictures extends Model_getModel
 				$height = $entry['height'];
 			}
 
-			$pixUri = $registry->config->pictures->httppath.$id.$size[1].'.jpg';
+			$pixUri = $registry['config']['pictures']['httppath'].$id.$size[1].'.jpg';
 			$html = '<a href="'.$uri.'" title="'.$view->escape($entry['title']).'"><img src="'.$pixUri.'" width="'.$width.'" height="'.$height.'" alt="'.$view->escape($entry['title'])."\" /></a>\n";
 			
 			$files[$size[2]] = Array(

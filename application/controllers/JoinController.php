@@ -50,9 +50,9 @@ class JoinController extends Zend_Controller_Action
         	$mail = new Zend_Mail();
         	
         	$mail->setBodyText($this->view->render("join/email.phtml"))
-				->setFrom($config->robotEmail->addr, $config->robotEmail->name)
+				->setFrom($config['robotEmail']['addr'], $config['robotEmail']['name'])
 				->addTo($data['email'], $data['name'])
-				->setSubject('Your new '.$config->applicationname.' account')
+				->setSubject('Your new '.$config['applicationname'].' account')
 				->send();
 			
 			$this->view->success = true;
@@ -83,8 +83,8 @@ class JoinController extends Zend_Controller_Action
     	$Profile = new ML_Profile();
     	
         
-		if($config->ssl && (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")) {
-		    $this->_redirect("https://" . $config->webhostssl . Zend_Controller_Front::getInstance()->getRouter()->assemble(array($request->getUserParams()), "join_emailconfirm"), array("exit"));
+		if($config['ssl'] && (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")) {
+		    $this->_redirect("https://" . $config['webhostssl'] . Zend_Controller_Front::getInstance()->getRouter()->assemble(array($request->getUserParams()), "join_emailconfirm"), array("exit"));
 		}
     	
     	$select = $newUser->select();

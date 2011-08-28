@@ -82,7 +82,7 @@ class ML_Session_SaveHandler_PlusCache extends ML_Session_SaveHandler_Cache
     		
     		$this->_cache->save($request_info, $this->_sessionPrefix . $this->_lastActivityPrefix. $id, array(), $this->_getLifetime($id));
     		
-			$client = new couchClient($config->resources->db->couchdb->dsn,"web_access_log");
+			$client = new couchClient($config['resources']['db']['couchdb']['dsn'],"web_access_log");
 			
 			$request_info['_id'] = $_SERVER['REQUEST_TIME'] . "-" . mt_rand() . mt_rand();
 			

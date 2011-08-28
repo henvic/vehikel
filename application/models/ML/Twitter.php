@@ -59,7 +59,7 @@ class ML_Twitter extends ML_getModel
 		}
 		$form->setDefault("hash", $registry->get('globalHash'));
 		
-		$form->setDefault("tweet", $shareInfo['title'] . ' ' . $config->URLshortening->twitterlink.base58_encode($shareInfo['id']));
+		$form->setDefault("tweet", $shareInfo['title'] . ' ' . $config['URLshortening']['twitterlink'].base58_encode($shareInfo['id']));
 		
 		return $form;
 	}
@@ -72,9 +72,9 @@ class ML_Twitter extends ML_getModel
 		
 		$config = $registry->get('config');
 		
-    	$twitterConf = $config->services->twitter;
+    	$twitterConf = $config['services']['twitter'];
     	
-    	if(!$twitterConf->available) {
+    	if(!$twitterConf['available']) {
     		return array("error" => "unavailable");
     	}
     	
@@ -88,7 +88,7 @@ class ML_Twitter extends ML_getModel
 			return array("error" => "account_not_found");
 		}
 		
-		$twitterObj = new EpiTwitter($twitterConf->key, $twitterConf->secret, $twitterAccount['oauth_token'], $twitterAccount['oauth_token_secret']);
+		$twitterObj = new EpiTwitter($twitterConf['key'], $twitterConf['secret'], $twitterAccount['oauth_token'], $twitterAccount['oauth_token_secret']);
 		
 		$twitterInfo = new Zend_Session_Namespace('twitterInfo');
 		$recent_history = $twitterInfo->tweets_recent_history;
@@ -158,9 +158,9 @@ class ML_Twitter extends ML_getModel
 		
 		$config = $registry->get('config');
 		
-    	$twitterConf = $config->services->twitter;
+    	$twitterConf = $config['services']['twitter'];
     	
-		$twitterObj = new EpiTwitter($twitterConf->key, $twitterConf->secret);
+		$twitterObj = new EpiTwitter($twitterConf['key'], $twitterConf['secret']);
 		
 		$twitterInfo_namespace = new Zend_Session_Namespace('twitterInfo');
 		$twitterInfo_namespace->unlock();//so next time we want to read it, it fetchs

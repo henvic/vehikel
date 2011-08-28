@@ -32,7 +32,7 @@ class Form_SignUp extends Zend_Form
                 )
         ));
 		
-        if($config->signup->inviteonly)
+        if($config['signup']['inviteonly'])
         {
 	        $this->addElement('text', 'invitecode', array(
     	        'label'      => 'Invite code:',

@@ -30,7 +30,7 @@ class ProxyController extends Zend_Controller_Action
 		else $content_type = 'text/xml';
 		
 		header("Content-Type: $content_type");
-		$url = "http://".$config->apihost.$config->apiroot."/".($method)."?".getenv("QUERY_STRING");//&method=bar is being passed, but whatever...
+		$url = "http://".$config['apihost'].$config['apiroot']."/".($method)."?".getenv("QUERY_STRING");//&method=bar is being passed, but whatever...
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url); 

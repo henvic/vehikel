@@ -55,7 +55,7 @@ class CreditsController extends Zend_Controller_Action
     	$page = $request->getUserParam("page");
     	
     	$Credits = ML_Credits::getInstance();
-    	$paginator = $Credits->history($signedUserInfo['id'], $config->orders->perPage, $page);
+    	$paginator = $Credits->history($signedUserInfo['id'], $config['orders']['perPage'], $page);
 		
 		//Test if there is enough pages or not
 		if((!$paginator->count() && $page != 1) || $paginator->getCurrentPageNumber() != $page) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "orders_1stpage"), array("exit"));

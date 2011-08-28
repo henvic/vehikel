@@ -124,6 +124,9 @@ class ML_Tagschange extends ML_Tags
 	 */
 	public function add($tags_string, $shareInfo)
 	{
+		$registry = Zend_Registry::getInstance();
+		$config = $registry->get("config");
+		
 		if(!$tags_string) return false;
 
 		$shareId = $shareInfo['id'];
@@ -132,7 +135,7 @@ class ML_Tagschange extends ML_Tags
 		$oldTags = $this->get($shareId);
 		$tagsCounter = sizeof($oldTags);
 		$oldTagsCounter = $tagsCounter;
-		$tagsLimit = Zend_Registry::getInstance()->get("config")->tags->limit;
+		$tagsLimit = $config['tags']['limit'];
 		$tagsArray = $this->makeArrayOfTags($tags_string);
 
 		$cleanOldTags = array(); foreach($oldTags as $tag) {$cleanOldTags[] = $tag['clean'];}

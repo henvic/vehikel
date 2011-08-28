@@ -66,7 +66,7 @@ class PeopleController extends Zend_Controller_Action
 		
 		$userData["location"] = $profileInfo['location'];
 		
-		$userData["url"] = "http://".$config->webhost. $router->assemble(array("username" => $userInfo['alias']), "filestream_1stpage");
+		$userData["url"] = "http://".$config['webhost']. $router->assemble(array("username" => $userInfo['alias']), "filestream_1stpage");
 		
 		foreach($userData as $field => $data)
 		{

@@ -3,7 +3,7 @@ $auth = Zend_Auth::getInstance();
 $registry = Zend_Registry::getInstance();
 $config = $registry->get("config");
 $signedUserInfo = $registry->get("signedUserInfo");
-$this->headTitle($config->applicationname, "SET");
+$this->headTitle($config['applicationname'], "SET");
 ?>
 <div class="yui-g">
 <div class="yui-u first">
@@ -13,7 +13,7 @@ $this->headTitle($config->applicationname, "SET");
 </div>
 <div class="yui-u">
 <?php
-if($config->signup->inviteonly):
+if($config['signup']['inviteonly']):
 $Invites = new ML_Invites();
 $this->invites = $Invites->get();
 if(is_array($this->invites) && sizeof($this->invites) > 0):

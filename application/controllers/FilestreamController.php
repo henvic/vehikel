@@ -32,7 +32,7 @@ class FilestreamController extends Zend_Controller_Action
 		
 		$page = $request->getUserParam("page");
 		
-		$paginator = $Share->getPages($userInfo['id'], $config->share->perPage, $page);
+		$paginator = $Share->getPages($userInfo['id'], $config['share']['perPage'], $page);
 		
 		//Test if there is enough pages or not
 		if(((!$paginator->count() && $page != 1) && $page != 1) || $paginator->getCurrentPageNumber() != $page) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "filestream_1stpage"), array("exit"));

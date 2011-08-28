@@ -21,7 +21,7 @@ class PasswordController extends Zend_Controller_Action
         	}
         	
             $form = new Form_NewPassword(array(
-                'action' => ($config->ssl) ? 'https://'.$config->webhostssl . $config->webroot . $path : $config->webroot . $path,
+                'action' => ($config['ssl']) ? 'https://'.$config['webhostssl'] . $config['webroot'] . $path : $config['webroot'] . $path,
                 'method' => 'post',
             ));
             
@@ -67,9 +67,9 @@ class PasswordController extends Zend_Controller_Action
         	
 	        $mail = new Zend_Mail();
 			$mail->setBodyText($this->view->render("password/emailRecover.phtml"))
-				->setFrom($config->robotEmail->addr, $config->robotEmail->name)
+				->setFrom($config['robotEmail']['addr'], $config['robotEmail']['name'])
 				->addTo($getUser['email'], $getUser['name'])
-				->setSubject('Recover your '.$config->applicationname.' account')
+				->setSubject('Recover your '.$config['applicationname'].' account')
 				->send();
         }
     	

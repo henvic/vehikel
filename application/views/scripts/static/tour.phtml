@@ -4,7 +4,7 @@ $registry = Zend_Registry::getInstance();
 $auth = Zend_Auth::getInstance();
 
 $config = $registry->get("config");
-$monthlyLimit = $this->escape(file_size($config->share->monthlyLimit * 1024 * 1024 * 8));
+$monthlyLimit = $this->escape(file_size($config['share']['monthlyLimit'] * 1024 * 1024 * 8));
 ?>
 <div class="yui-gc">
 <div class="yui-u first">

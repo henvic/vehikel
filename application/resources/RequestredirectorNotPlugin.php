@@ -21,7 +21,7 @@ $uri = $_SERVER['REQUEST_URI'];
 if($uri == '/')
 {
 	header("HTTP/1.1 301 Moved Permanently");
-	header("Location: http://".$config->webhost."/");
+	header("Location: http://".$config['webhost']."/");
 	exit();
 }
 
@@ -33,7 +33,7 @@ else $uri = mb_substr($uri, 1);
 if($part == '~')
 {
 	//permanent redirect to webhost/shares/uri
-	$link = "http://".$config->webhost."/~".urlencode(utf8_encode($uri));
+	$link = "http://".$config['webhost']."/~".urlencode(utf8_encode($uri));
 	header("HTTP/1.1 301 Moved Permanently");
 	header("Location: ".$link);
 	exit();
@@ -56,12 +56,12 @@ if($id)//is it an ID?
 		$config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/defaultRoutes.ini');
 		$router->addConfig($config, 'routes');
 		
-		$host = $config->webhost;
+		$host = $config['webhost'];
 		
 		$link = "http://".$host.$router->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage");
 		*/
 		
-		$link = "http://" . $config->webhost . "/" . urlencode($userInfo['alias']) . "/" . $shareInfo['id'];
+		$link = "http://" . $config['webhost'] . "/" . urlencode($userInfo['alias']) . "/" . $shareInfo['id'];
 		
 		header("HTTP/1.1 301 Moved Permanently");
 		header("Location: ".$link);
@@ -70,7 +70,7 @@ if($id)//is it an ID?
 }
 
 //If nothing matches
-//$link = "http://".$config->webhost."/".urlencode(utf8_encode($uri));
-$link = "http://".$config->webhost."/not-found/".urlencode(utf8_encode($uri));
+//$link = "http://".$config['webhost']."/".urlencode(utf8_encode($uri));
+$link = "http://".$config['webhost']."/not-found/".urlencode(utf8_encode($uri));
 header("Location: ".$link);
 exit();

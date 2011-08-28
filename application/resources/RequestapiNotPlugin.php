@@ -16,7 +16,7 @@ $this->unregisterPluginResource("view");
 $this->unregisterPluginResource("layout");
 $registry = Zend_Registry::getInstance();
 $config = $registry->get("config");
-$frontController->setBaseUrl($config->apiroot);
+$frontController->setBaseUrl($config['apiroot']);
 $frontController->setParam('noViewRenderer', true);
 $frontController->addModuleDirectory(APPLICATION_PATH.'/modules'); 
 $frontController->addControllerDirectory(APPLICATION_PATH.'/modules/'.HOST_MODULE.'/controllers');

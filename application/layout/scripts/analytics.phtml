@@ -9,7 +9,7 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 </script>
 <script type="text/javascript">
 try {
-var pageTracker = _gat._getTracker("<?php echo $config->services->ganalytics->tracker_id ?>");
+var pageTracker = _gat._getTracker("<?php echo $config['services']['ganalytics']['tracker_id'] ?>");
 pageTracker._trackPageview();
 } catch(err) {}</script>
 <?php endif; ?>

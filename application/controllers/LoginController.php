@@ -27,7 +27,7 @@ class LoginController extends Zend_Controller_Action
     	    $redirLink = Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "index");
     	}
     	
-    	$this->_redirect("http://" . $config->webhost . $redirLink, array("exit"));//don't use $config->webroot . here
+    	$this->_redirect("http://" . $config['webhost'] . $redirLink, array("exit"));//don't use $config['webroot'] . here
     }
     
     /**
@@ -44,11 +44,11 @@ class LoginController extends Zend_Controller_Action
         
         $params = $request->getParams();
         
-    	if($config->ssl)
+    	if($config['ssl'])
         {
-            $login_fallback = "https://" . $config->webhostssl;// no place for $config->webroot here
+            $login_fallback = "https://" . $config['webhostssl'];// no place for $config['webroot'] here
         } else {
-            $login_fallback = "http://" . $config->webhost;
+            $login_fallback = "http://" . $config['webhost'];
         }
     	$login_fallback  .= $router->assemble(array(), "login") . "?redirect_after_login=" . $router->assemble($params, $router->getCurrentRouteName());
     	
@@ -90,7 +90,7 @@ class LoginController extends Zend_Controller_Action
         	//rememberMe and ForgetMe already regenerates the ID
         	if($form->getElement("remember_me")->isChecked())
         	{
-        		Zend_Session::rememberMe($config->resources->session->cookie_lifetime);
+        		Zend_Session::rememberMe($config['resources']['session']['cookie_lifetime']);
         	} else {
         		Zend_Session::ForgetMe();
         	}

@@ -37,11 +37,11 @@ class ML_PictureUpload extends ML_Picture
 			return false;
 		}
 		
-		$s3 = new Zend_Service_Amazon_S3($config->services->S3->key, $config->services->S3->secret);
+		$s3 = new Zend_Service_Amazon_S3($config['services']['S3']['key'], $config['services']['S3']['secret']);
 		
 		foreach($this->Sizes as $sizeInfo)
 		{
-			$s3->removeObject($config->services->S3->headshotsBucket."/".$userInfo['id'].'-'.$avatarInfo['secret'].$sizeInfo[1].'.jpg');
+			$s3->removeObject($config['services']['S3']['headshotsBucket']."/".$userInfo['id'].'-'.$avatarInfo['secret'].$sizeInfo[1].'.jpg');
 		}
 		
 		return true;
@@ -67,7 +67,7 @@ class ML_PictureUpload extends ML_Picture
 		
 		$Image = new phMagick($originalfile);
 		
-		$s3 = new Zend_Service_Amazon_S3($config->services->S3->key, $config->services->S3->secret);
+		$s3 = new Zend_Service_Amazon_S3($config['services']['S3']['key'], $config['services']['S3']['secret']);
 		
 		$Image->setImageQuality(70);
 		
@@ -122,7 +122,7 @@ class ML_PictureUpload extends ML_Picture
 			$privacy = ($size == '_h') ? Zend_Service_Amazon_S3::S3_ACL_PRIVATE :
 			Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ;
 			
-			$picAddr = $config->services->S3->headshotsBucket."/".$userInfo['id'].'-'.$new_secret.$size.'.jpg';
+			$picAddr = $config['services']['S3']['headshotsBucket']."/".$userInfo['id'].'-'.$new_secret.$size.'.jpg';
 			
 			$meta = array(Zend_Service_Amazon_S3::S3_ACL_HEADER =>
 	          $privacy,

@@ -11,7 +11,7 @@ $signedUserInfo = $registry->get("signedUserInfo");
 <h2>Logout first</h2>
 <p>Either an action you have tried to perform or a section you have tried to access can not be performed as a signed in user to the account <em><?= $this->escape($signedUserInfo['name']) ?> (<?= $this->escape($signedUserInfo['alias']) ?>)</em>. Please, sign out and try again.</p>
 <?php endif; ?>
-<h2>Sign out of <?= $this->escape($config->applicationname) ?></h2>
+<h2>Sign out of <?= $this->escape($config['applicationname']) ?></h2>
 <p>If you ever forget to logout from a public computer, sign out all other sessions from this page.</p>
 <table class="styled">
 <caption>Last activity on this account</caption>

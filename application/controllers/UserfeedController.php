@@ -37,11 +37,11 @@ class UserfeedController extends Zend_Controller_Action
 		
 		$channel_element = $doc->createElement("channel");
 		
-		$channel_element->appendChild($doc->newTextElement("description", "Recent uploads to ".$config->applicationname."."));
+		$channel_element->appendChild($doc->newTextElement("description", "Recent uploads to ".$config['applicationname']."."));
 		
 		$root_element->appendChild($channel_element);
 		
-		$user_link = "http://".$config->webhost. Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "filestream_1stpage");
+		$user_link = "http://".$config['webhost']. Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "filestream_1stpage");
 		
 		/*Instead of...
 		 * $firstElement = current($currentItems);
@@ -54,11 +54,11 @@ class UserfeedController extends Zend_Controller_Action
 			"title" => "Shared files from ".$userInfo['name'],
 			"link" => $user_link,
 			//"description" => //$profileInfo['about_filtered'], //=> it's doesn't render as expected!
-			"generator" => "http://".$config->webhost,
+			"generator" => "http://".$config['webhost'],
 		//http://validator.w3.org/feed/docs/rss2.html
 			"docs" => "http://blogs.law.harvard.edu/tech/rss",
 			"ttl" => "180",
-		); $user_data['generator'] .= (empty($config->webroot)) ? '/' : "/".$config->webroot."/";
+		); $user_data['generator'] .= (empty($config['webroot'])) ? '/' : "/".$config['webroot']."/";
 		
 		foreach($user_data as $field => $value)
 		{
@@ -70,7 +70,7 @@ class UserfeedController extends Zend_Controller_Action
 		if(!empty($iconsecret))
 		{
 			$image_element = $doc->createElement("image");
-			$picUri = $config->services->S3->headshotsBucketAddress.$userInfo['id'].'-'.$iconsecret.'-s.jpg';
+			$picUri = $config['services']['S3']['headshotsBucketAddress'].$userInfo['id'].'-'.$iconsecret.'-s.jpg';
 			$image_element->appendChild($doc->newTextElement("url", $picUri));
 			$image_element->appendChild($doc->newTextElement("title", "Shares from ".$userInfo['name']));
 			$image_element->appendChild($doc->newTextElement("link", $user_link));
@@ -79,7 +79,7 @@ class UserfeedController extends Zend_Controller_Action
 		}
 		
 		$atom_link = $doc->createElement("atom:link");
-		$atom_link->appendChild($doc->newTextAttribute("href", "http://".$config->webhost . Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "userfeed")));
+		$atom_link->appendChild($doc->newTextAttribute("href", "http://".$config['webhost'] . Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "userfeed")));
 		$atom_link->appendChild($doc->newTextAttribute("rel", "self"));
 		$atom_link->appendChild($doc->newTextAttribute("type", "application/rss+xml"));
 		$channel_element->appendChild($atom_link);
@@ -90,7 +90,7 @@ class UserfeedController extends Zend_Controller_Action
 			
 			$description = (empty($share['description_filtered'])) ? $this->view->escape($share['short']) : $share['description_filtered'];
 			
-			$link = "http://".$config->webhost. Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias'], "share_id" => $share['id']), "sharepage_1stpage");
+			$link = "http://".$config['webhost']. Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias'], "share_id" => $share['id']), "sharepage_1stpage");
 			
 			$share_date = new Zend_Date($share['uploadedTime'], Zend_Date::ISO_8601);
 			
@@ -104,7 +104,7 @@ class UserfeedController extends Zend_Controller_Action
 			
 			
 			$enclosure_element = $doc->createElement("enclosure");
-			$enclosure_element->appendChild($doc->newTextAttribute("url", $this->view->escape($config->services->S3->sharesBucketAddress.$userInfo['alias']."/".$share['id']."-".$share['download_secret']."/".$share['filename'])));
+			$enclosure_element->appendChild($doc->newTextAttribute("url", $this->view->escape($config['services']['S3']['sharesBucketAddress'].$userInfo['alias']."/".$share['id']."-".$share['download_secret']."/".$share['filename'])));
 			$enclosure_element->appendChild($doc->newTextAttribute("length", $share['fileSize']));
 			$enclosure_element->appendChild($doc->newTextAttribute("type", $share['type']));
 			

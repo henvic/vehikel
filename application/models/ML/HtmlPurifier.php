@@ -58,7 +58,7 @@ class ML_HtmlPurifier
 		{
 			$purifier_config->set('Cache.DefinitionImpl', null);
 		} else {
-			$purifier_config->set('Cache.SerializerPath', $config->htmlpurifier->cachedir);
+			$purifier_config->set('Cache.SerializerPath', $config['htmlpurifier']['cachedir']);
 		}
 
 		//check http://htmlpurifier.org/docs/enduser-customize.html

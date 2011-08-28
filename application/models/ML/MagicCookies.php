@@ -124,7 +124,7 @@ class ML_MagicCookies
 		$hidden = new Zend_Form_Element_Hidden(self::hash_name, array("required" => true,
 			'filters'    => array('MagicCookies'),
 			'validators' => array(
-                array('validator' => 'MagicCookies', 'options' => array("allowed_referer_hosts" => array($config->webhost)))
+                array('validator' => 'MagicCookies', 'options' => array("allowed_referer_hosts" => array($config['webhost'])))
                 )));
 		
 		$hidden->clearDecorators();

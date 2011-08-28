@@ -7,7 +7,7 @@ class Uri extends Zend_Application_Resource_ResourceAbstract
 	    $registry = Zend_Registry::getInstance();
 	    $config = $registry->get("config");
 	    
-		if($config->web_addr->force_lower_case && $_SERVER['REQUEST_URI'] != $config->webroot . "/")
+		if($config['web_addr']['force_lower_case'] && $_SERVER['REQUEST_URI'] != $config['webroot'] . "/")
 		{
 			$lower_request_uri = mb_strtolower($_SERVER['REQUEST_URI']);
 			$questionmark_pos = mb_strpos($lower_request_uri, "?");

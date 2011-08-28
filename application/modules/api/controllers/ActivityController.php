@@ -49,7 +49,7 @@ class ActivityController extends Zend_Controller_Action
 			$share_data = array(
 				"title" => $share['share.title'],
 				"short" => $share['share.short'],
-				"url" => "http://".$config->webhost. $router->assemble(array("username" => $share['people.alias'], "share_id" => $share['id']), "sharepage_1stpage"),
+				"url" => "http://".$config['webhost']. $router->assemble(array("username" => $share['people.alias'], "share_id" => $share['id']), "sharepage_1stpage"),
 			);
 			
 			foreach($share_data as $name => $field)

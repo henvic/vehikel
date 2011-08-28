@@ -142,7 +142,7 @@ class CommentsController extends Zend_Controller_Action
 		
 		$Comments = ML_Comments::getInstance();
 		
-		$position = $Comments->getCommentPosition($comment_id, $registry['shareInfo']['id'], $config->share->commentsPerPage);
+		$position = $Comments->getCommentPosition($comment_id, $registry['shareInfo']['id'], $config['share']['commentsPerPage']);
 		
 		if(!is_array($position)) throw new Exception("Comment $comment_id does not exists associated with this share.");
 		

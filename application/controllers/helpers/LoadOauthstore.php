@@ -12,8 +12,10 @@ class Zend_Controller_Action_Helper_LoadOauthstore extends
 		require_once EXTERNAL_LIBRARY_PATH . '/oauth-php/library/OAuthStore.php';
 		
 		$registry = Zend_Registry::getInstance();
+		$config = $registry->get("config");
 		
-		$db = $registry->get("config")->resources->db->params;
+		
+		$db = $config['resources']['db']['params'];
 		OAuthStore::instance("MySQL", array(
 			"server" => $db->host,
 			"database" => $db->dbname,

@@ -17,7 +17,7 @@ class MyReservedUsersPlugin extends Zend_Controller_Plugin_Abstract
     	$params = $request->getParams();
     	
             //avoid rendering /index.php/... 10 = letters in index.php/
-		if(mb_substr($_SERVER['REQUEST_URI'], 0, 10 + mb_strlen($config->webroot)) ==  $config->webroot . '/index.php') {
+		if(mb_substr($_SERVER['REQUEST_URI'], 0, 10 + mb_strlen($config['webroot'])) ==  $config['webroot'] . '/index.php') {
 			$request->setControllerName('doesnotexists')
                 ->setActionName('withindexdotphp');
 		}
@@ -43,7 +43,7 @@ $frontController->registerPlugin(new MyReservedUsersPlugin());
 Zend_Controller_Action_HelperBroker::getStaticHelper("Redirector")->setPrependBase(false);
 $registry = Zend_Registry::getInstance();
 $config = $registry->get("config");
-$frontController->setBaseUrl($config->webroot);
+$frontController->setBaseUrl($config['webroot']);
 
 
 $this->registerPluginResource("Mysession");
