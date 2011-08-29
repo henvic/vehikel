@@ -1,13 +1,14 @@
-<?php 
-// application/controllers/ErrorController.php
-//http://www.survivethedeepend.com/zendframeworkbook/en/1.0/handling.application.errors.gracefully
-//see $this->statusCode for view 
-/**
- * ErrorController
- */ 
+<?php
 
+/**
+ * Error controller
+ * The error action is called when a error happens (such as page not found)
+ * @author henvic
+ *
+ * @todo ajax response error handling
+ */
 class ErrorController extends Zend_Controller_Action 
-{ 
+{
     public function errorAction() 
     {
     	$registry = Zend_Registry::getInstance();
@@ -16,8 +17,7 @@ class ErrorController extends Zend_Controller_Action
     	
     	$params = $request->getParams();
     	
-        // Ensure the default view suffix is used so we always return good 
-        // content
+        // Ensure the default view suffix is used so we always return the error in the right view type
         $this->_helper->viewRenderer->setViewSuffix('phtml');
 
         // Grab the error object from the request
@@ -26,7 +26,7 @@ class ErrorController extends Zend_Controller_Action
         switch ($errors->type) { 
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER: 
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION: 
-                // 404 error -- controller or action not found 
+                // 404 error -- controller or action not found
                 $this->getResponse()->setHttpResponseCode(404);
                 if(isset($params['ajax']) && APPLICATION_ENV != 'development') exit();
                 $this->view->statusCode = 404; 

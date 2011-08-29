@@ -3,7 +3,7 @@ class LogoutController extends Zend_Controller_Action
 {
     public function indexAction()
     {
-    	if(!Zend_Auth::getInstance()->hasIdentity()) {
+    	if (!Zend_Auth::getInstance()->hasIdentity()) {
     		$this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "index"), array("exit"));
     	}
     	
@@ -12,7 +12,7 @@ class LogoutController extends Zend_Controller_Action
     	
     	$registry = Zend_Registry::getInstance();
     	
-    	if($registry->isRegistered("signedUserInfo"))
+    	if ($registry->isRegistered("signedUserInfo"))
     	{
     		$signedUserInfo = $registry->get("signedUserInfo");
     	}
@@ -23,13 +23,13 @@ class LogoutController extends Zend_Controller_Action
     	$form = $Credential->_getLogoutForm();
     	
     	
-    	if($request->isPost() && $form->isValid($request->getPost())) {
+    	if ($request->isPost() && $form->isValid($request->getPost())) {
         	
 	        ignore_user_abort(true);
 	        
 	        $unfiltered_values = $form->getUnfilteredValues();
 	        
-	        if(isset($unfiltered_values['remote_signout']))
+	        if (isset($unfiltered_values['remote_signout']))
 	        {
 	        	
 	    		$Session->remoteLogout();
