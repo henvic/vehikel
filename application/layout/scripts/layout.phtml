@@ -35,16 +35,9 @@ $signedUserInfo = $registry->get("signedUserInfo");
 
 $this->headTitle()->setSeparator(' – ');
 
-//if($registry->isRegistered("usingXhtmlHeader"))
-//{
-//	$this->headMeta()->appendHttpEquiv('Content-Type', "application/xhtml+xml; charset=utf-8");
-//} else {
-	$this->headMeta()->appendHttpEquiv('Content-Type', "text/html; charset=utf-8");
-//}
+$this->doctype('XHTML5');
 
-$this->doctype('XHTML1_STRICT');
-
-$this->headLink(array('rel' => 'favicon', 'href' => $this->staticversion("/favicon.ico"), 'type' => "image/x-icon"), 'PREPEND');
+$this->headLink(array('rel' => 'icon', 'href' => $this->staticversion("/favicon.ico"), 'type' => "image/x-icon"), 'PREPEND');
 $this->headLink(array('rel' => 'apple-touch-icon', 'href' => $this->staticversion("/images/apple-touch-icon.png")), 'PREPEND');
 
 // START Loading some Javascript
@@ -84,13 +77,14 @@ $this->headLink()->appendStylesheet($this->staticUrl("/plifk.css"));
 ?>
 <?= $this->doctype() ?>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <?= $this->headTitle() ?>
 
 <?= $this->headLink() ?>
 
 <?= $this->headMeta() ?>
+
+<meta charset="utf-8" />
 
 <?= $this->headScript() ?>
 
