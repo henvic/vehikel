@@ -24,7 +24,7 @@ foreach($this->taglist as $tag => $timesUsed):
 $highlight_tag = (1.5*$times_used_by_all_tags/$tags_num < $timesUsed) ? true : false; 
 ?>
 <?php if($highlight_tag) echo "<strong>"; ?>
-<li><a href="<?= $this->url(array("username" => $userInfo['alias'], "tag" => $tag), "tagpage_1stpage") ?>"><?= $this->escape($tag) ?></a></li>
+<li><a href="<?= $this->url(array("username" => $userInfo['alias'], "tag" => $tag), "tagpage_1stpage") ?>" rel="tag"><?= $this->escape($tag) ?></a></li>
 <?php if($highlight_tag) echo "</strong>"; ?>
 <?php endforeach; unset($highlight_tag); ?>
 </ul>
