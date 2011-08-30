@@ -1,40 +1,59 @@
 <?php
 $registry = Zend_Registry::getInstance();
-$request = new Zend_Controller_Request_Http();
-$baseuri = $request->getRequestUri();
 
-if($this->current != 1 || mb_substr($baseuri, mb_strlen($baseuri)-6) == "/page1")
-$baseuri = mb_substr($baseuri, 0, -mb_strlen(mb_strrchr(mb_substr($baseuri, 0, -1), "/")));
-if(strrchr($baseuri, "/") != "/") $baseuri = $baseuri."/";
-$baseuri = $this->escape($baseuri);
+$request = new Zend_Controller_Request_Http();
+
+$paginator_base_uri = $request->getRequestUri();
+
+if($this->current != 1 || mb_substr($paginator_base_uri, mb_strlen($paginator_base_uri)-6) == "/page1")
+{
+    $paginator_base_uri = mb_substr($paginator_base_uri, 0, -mb_strlen(mb_strrchr(mb_substr($paginator_base_uri, 0, -1), "/")));
+}
+
+if(strrchr($paginator_base_uri, "/") != "/")
+{
+    $paginator_base_uri = $paginator_base_uri."/";
+}
+
+$paginator_base_uri_escaped = $this->escape($paginator_base_uri);
+
 ?>
 <div class="pages">
-<?php if($this->pageCount):
-$pages = $this->paginator($this->current, $this->pageCount);
+<?php
+if($this->pageCount)
+{
+    $pages = $this->paginator($this->current, $this->pageCount);
 ?>
 <div class="pagination">
 <?php if (isset($this->previous)): ?>
-<a href="<?=$baseuri?><?php if($this->previous != 1): ?>page<?= $this->previous ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?><?php endif;?>" class="Prev">&lt; Previous</a>
+<a href="<?= $paginator_base_uri_escaped ?><?php if($this->previous != 1): ?>page<?= $this->previous ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?><?php endif;?>" rel="<?php echo (current($pages) != 1) ? "prev" : "first"; ?>" class="Prev">&lt; Previous</a>
 <?php else: ?>
 <span class="Prev AtStart">&lt; Previous</span>
 <?php endif; 
+
 // Numbered page links
-while(current($pages)):
-if($this->current == current($pages)): ?>
+while (current($pages)) {
+if ($this->current == current($pages)): ?>
 <span class="this-page"><?= current($pages) ?></span>
 <?php else: ?>
-<a href="<?=$baseuri?><?php if(current($pages) != 1): ?>page<?= current($pages) ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?><?php endif;?>"><?= current($pages) ?></a>
+<a href="<?= $paginator_base_uri_escaped ?><?php if(current($pages) != 1): ?>page<?= current($pages) ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?><?php endif;?>"><?= current($pages) ?></a>
 <?php endif; //the order of the test below is ultimately important
 if(current($pages) != next($pages)-1 && current($pages)): ?>
 <span class="break">...</span>
-<?php endif; endwhile;
+<?php
+endif;
+}
 
-if (isset($this->next)): ?>
-<a href="<?=$baseuri?>page<?= $this->next ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?>" class="Next">Next &gt;</a>
+if (isset($this->next)):
+?>
+<a href="<?= $paginator_base_uri_escaped ?>page<?= $this->next ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?>" rel="<?php echo ($this->next != $this->pageCount) ? "next" : "last"; ?>" class="Next">Next &gt;</a>
 <?php else: ?>
 <span class="Next AtEnd">Next &gt;</span>
 <?php endif; ?>
 </div>
-<?php endif; ?>
+<?php
+}
+reset($pages);
+?>
 <div class="Results">(<?= $this->totalItemCount ?> items)</div>
 </div>
