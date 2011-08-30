@@ -77,6 +77,7 @@ $this->headLink()->appendStylesheet($this->staticUrl("/plifk.css"));
 ?>
 <?= $this->doctype() ?>
 
+<html lang="en">
 <head>
 <?= $this->headTitle() ?>
 
@@ -85,7 +86,9 @@ $this->headLink()->appendStylesheet($this->staticUrl("/plifk.css"));
 <?= $this->headMeta() ?>
 
 <meta charset="utf-8" />
-
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
 <?= $this->headScript() ?>
 
 <?= $this->headStyle() ?>
@@ -95,7 +98,7 @@ $this->headLink()->appendStylesheet($this->staticUrl("/plifk.css"));
 <div id="bd"<?php /* role="main"*/?>>
 <div id="yui-main">
 <div class="yui-b">
-<div class="yui-g"<?php /* role="navigation"*/?> id="nav-bar"><?php
+<nav class="yui-g"<?php /* role="navigation"*/?> id="nav-bar"><?php
 if(isset($signedUserInfo)):
 ?>
 <ul>
@@ -112,13 +115,12 @@ if(isset($signedUserInfo)):
 <li>You're not signed in.</li>
 <li><a href="<?= $this->url(array(), "login") ?>" id="login-button">Sign&nbsp;in</a></li>
 </ul>
-<?php endif; ?></div>
+<?php endif; ?></nav>
 </div>
 </div>
-<div class="yui-b"<?php /*role="banner"*/?> id="logo">
+<header class="yui-b"<?php /*role="banner"*/?> id="logo">
 <h1><a href="<?= $this->url(array(), "index") ?>"><span></span><?= $this->escape($config['applicationname']) ?></a></h1>
-</div>
-
+</header>
 </div>
 <div id="hd"<?php /*role="application"*/?>>
 <?php
@@ -131,7 +133,7 @@ if($registry->isRegistered("userInfo"))
 ?>
 <?= $this->layout()->content ?>
 </div>
-<div id="ft"<?php /*role="contentinfo"*/?>><?php include("footer.phtml"); ?></div>
+<footer id="ft"<?php /*role="contentinfo"*/?>><?php include("footer.phtml"); ?></footer>
 </div>
 <?php include("analytics.phtml"); ?>
 </body>
