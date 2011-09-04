@@ -77,7 +77,7 @@ $this->headLink()->appendStylesheet($this->staticUrl("/plifk.css"));
 ?>
 <?= $this->doctype() ?>
 
-<html lang="en">
+<html lang="en"<?php /* manifest="<?= $this->staticUrl("/cache.manifest"); ?>"*/?>>
 <head>
 <?= $this->headTitle() ?>
 
