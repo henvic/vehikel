@@ -51,9 +51,13 @@ class ML_AntiAttack extends ML_getModel
 	
 	public static function captchaElement()
 	{
-		$recaptcha = new Zend_Service_ReCaptcha(
-        	Zend_Registry::get('config')->services->recaptcha->keys->public,
-        	Zend_Registry::get('config')->services->recaptcha->keys->private, array("ssl" => true, "xhtml" => true));
+	    $registry = Zend_Registry::getInstance();
+	    $config = $registry->get("config");
+	    
+	    $keys = $config['services']['recaptcha']['keys'];
+	    
+		$recaptcha = new Zend_Service_ReCaptcha($keys['public'], $keys['private'], 
+        array("ssl" => true, "xhtml" => true));
 		
         $recaptcha->setOption('theme', 'clean');
         
