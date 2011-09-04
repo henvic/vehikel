@@ -2,7 +2,7 @@
 
 $reservedUsernames = 
 array(
-"home", "recover",
+"offline", "home", "recover",
 "mail", "email", "clock", "alarm", "notice", "status",
 "search", "wiki", "shares", "upload", "account",
 "settings", "favorites", "pro", "promotion",
