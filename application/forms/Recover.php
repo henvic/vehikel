@@ -14,7 +14,8 @@ class Form_Recover extends Zend_Form
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(1, 100)),
                 array('validator' => 'accountRecover') //there's stringlenght there also
-                )
+                ),
+            'autocomplete' => 'off',
         ));
         
         $this->addElement(ML_AntiAttack::captchaElement());

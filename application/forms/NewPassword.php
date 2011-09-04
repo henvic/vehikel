@@ -16,6 +16,7 @@ class Form_NewPassword extends Zend_Form
         	    'validators' => array(
 	        		array('validator' => 'matchPassword') //there's stringlenght there
           	  ),
+    		 'autocomplete' => 'off',
            	 'required'   => true,
            	 'label'      => 'Current Password:',
         	));
@@ -30,6 +31,7 @@ class Form_NewPassword extends Zend_Form
                 array('validator' => 'newPassword'), //there's stringlenght there also
                 array('validator' => 'newPasswordRepeat'), //there's stringlenght there also and in Password.php
             ),
+            'autocomplete' => 'off',
             'required'   => true,
             'label'      => 'New Password:',
         ));
@@ -38,6 +40,7 @@ class Form_NewPassword extends Zend_Form
             'filters'    => array('StringTrim'),
             'required'   => true,
             'label'      => 'Confirm Password:',
+        	'autocomplete' => 'off',
         ));
         
         if($registry->isRegistered("changeUserProperPassword"))

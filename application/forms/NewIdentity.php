@@ -18,7 +18,8 @@ class Form_NewIdentity extends Zend_Form
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(1, 15)),
                 array('validator' => 'usernameNewUser') //there's stringlenght there also
-                )
+                ),
+            'autocomplete' => 'off'
         ));
         
         $this->addElement('password', 'password', array(
@@ -29,6 +30,7 @@ class Form_NewIdentity extends Zend_Form
                 array('validator' => 'newPasswordRepeat'), //there's stringlenght there also
                 array('validator' => 'Hardpassword')
             ),
+            'autocomplete' => 'off',
             'required'   => true,
             'label'      => 'Password:',
         ));
