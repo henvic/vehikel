@@ -1,5 +1,5 @@
 <?php
-// http://weierophinney.net/matthew/archives/165-Login-and-Authentication-with-Zend-Framework.html
+
 class LoginForm extends Zend_Form
 {
     public function init()
@@ -13,11 +13,14 @@ class LoginForm extends Zend_Form
 		$this->addElement('text', 'username', array(
             'label'      => 'Username or e-mail:',
             'required'   => true,
+            'autofocus' => 'autofocus',
             'filters'    => array('StringTrim', 'StringToLower'),
-            'validators' => array(
+		    'validators' => array(
                 array('validator' => 'username'), //there's stringlenght there
                 )
         ));
+        
+        $this->getElement("username")->setAttrib('required', 'required');
         
         $this->addElement('password', 'password', array(
         	'label'      => 'Password:',
@@ -28,6 +31,8 @@ class LoginForm extends Zend_Form
         		array('validator' => 'password'),
             ),
         ));
+        
+        $this->getElement("password")->setAttrib('required', 'required');
         
         $this->addElement('checkbox', 'remember_me', array(
             'label'    => 'Remember me'));

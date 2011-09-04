@@ -59,8 +59,6 @@ YUI({
 		}
 	};
 	Y.delegate('click', loadLoginFocus, document, '#login-button');
-	Y.on("domready", loadLoginFocus, Y);
-	
 	
 	/**
 	 * add tags with ajax
