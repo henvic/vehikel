@@ -6,4 +6,4 @@ define("HOST_MODULE", "services");//not really a 'host' here, but whatever
 
 define("APPLICATION_PATH", getEnv("APPLICATION_PATH"));
 
-require_once APPLICATION_PATH."/Start.php";
+require APPLICATION_PATH."/Start.php";
