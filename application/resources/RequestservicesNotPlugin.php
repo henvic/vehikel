@@ -36,20 +36,20 @@ if(isset($opts->a)) {
     
     if(isset($reqRoute[1]))
     {
-    	$action = $reqRoute[0];
-    	$controller = $reqRoute[1];
+        $action = $reqRoute[0];
+        $controller = $reqRoute[1];
     } else {
-    	$action = "index";
-    	$controller = $reqRoute[0];
+        $action = "index";
+        $controller = $reqRoute[0];
     }
     
     $module = "service";
     
     $request = new Zend_Controller_Request_Simple($action, $controller, $module);
     
-	$frontController->setRequest($request);
-	
-	require_once LIBRARY_PATH."/ML/RouteCLIModule.php";
+    $frontController->setRequest($request);
+    
+    require_once LIBRARY_PATH."/ML/RouteCLIModule.php";
     $frontController->setRouter(new Webf_Controller_Router_Cli());
     $frontController->setResponse(new Zend_Controller_Response_Cli());
 }

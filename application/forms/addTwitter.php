@@ -1,6 +1,6 @@
 <?php
 class Form_addTwitter extends Zend_Form
-{	
+{    
     public function init()
     {
         $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
@@ -8,7 +8,7 @@ class Form_addTwitter extends Zend_Form
         
         $this->addElement('submit', 'connectToTwitter', array(
             'label'    => 'Connect to Twitter!',
-        	'required' => true
+            'required' => true
         ));
         
         $this->addElement(ML_MagicCookies::formElement());

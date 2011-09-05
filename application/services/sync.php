@@ -27,21 +27,21 @@ echo "Sync call finished.\n";
 
 if(file_exists($newdistribution . "/" . $run_script))
 {
-	shell_exec("bash $run_script");
+    shell_exec("bash $run_script");
 }
 
 if(file_exists($newdistribution . "/" . $run_script_one_time))
 {
-	shell_exec("bash $newdistribution/$run_script_one_time");
-	unlink("$newdistribution/$run_script_one_time");
+    shell_exec("bash $newdistribution/$run_script_one_time");
+    unlink("$newdistribution/$run_script_one_time");
 }
 
 echo "Scripts calls (if any) made.\n";
 
 if(!$output || !file_exists($release) || ($last_release_md5 == @md5_file("$newdistribution/release.tar.gz")))
 {
-	echo "Nothing to do.\n";
-	exit();
+    echo "Nothing to do.\n";
+    exit();
 }
 
 echo "New distribution received!\n";
@@ -50,7 +50,7 @@ $tar_output = array();
 exec("tar xzvf $release -C $newdistribution", $tar_output, $tar_return_var);
 if($tar_return_var != 0)
 {
-	exit(1);
+    exit(1);
 }
 
 echo "New distribution unpackaged at $newdistribution\n";
@@ -61,12 +61,12 @@ echo "New distribution installed at $distribution\n";
 
 if(!file_exists("$distribution-update-log"))
 {
-	shell_exec("echo \"#Last date is the current version being used\" >> $distribution-update-log");
+    shell_exec("echo \"#Last date is the current version being used\" >> $distribution-update-log");
 }
 
 shell_exec("echo `date` >> $distribution-update-log; rm $distribution-version; echo `date` >> $distribution-version");
 
 if(file_exists($newdistribution . "/" . $run_script_on_sync))
 {
-	shell_exec("bash $run_script_on_sync");
+    shell_exec("bash $run_script_on_sync");
 }

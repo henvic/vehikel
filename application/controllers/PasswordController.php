@@ -1,7 +1,7 @@
 <?php
 class PasswordController extends Zend_Controller_Action
 {
-	protected function _getNewPasswordForm($uid = false, $security_code = false)
+    protected function _getNewPasswordForm($uid = false, $security_code = false)
     {
         $registry = Zend_Registry::getInstance();
         
@@ -11,15 +11,15 @@ class PasswordController extends Zend_Controller_Action
         
         if(!is_object($form))
         {
-        	require_once APPLICATION_PATH . '/forms/NewPassword.php';
-        	
-        	if(!$uid)
-        	{
-        		$path = Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "password");
-        	} else {
-        		$path = Zend_Controller_Front::getInstance()->getRouter()->assemble(array("confirm_uid" => $uid, "security_code" => $security_code), "password_unsigned");
-        	}
-        	
+            require_once APPLICATION_PATH . '/forms/NewPassword.php';
+            
+            if(!$uid)
+            {
+                $path = Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "password");
+            } else {
+                $path = Zend_Controller_Front::getInstance()->getRouter()->assemble(array("confirm_uid" => $uid, "security_code" => $security_code), "password_unsigned");
+            }
+            
             $form = new Form_NewPassword(array(
                 'action' => ($config['ssl']) ? 'https://'.$config['webhostssl'] . $config['webroot'] . $path : $config['webroot'] . $path,
                 'method' => 'post',
@@ -28,23 +28,23 @@ class PasswordController extends Zend_Controller_Action
         }
         return $form;
     }
-	
+    
     public function unavailableAction()
     {
-    	$this->getResponse()->setHttpResponseCode(404);
+        $this->getResponse()->setHttpResponseCode(404);
     }
     
     public function recoverAction()
     {
-    	$request = $this->getRequest();
-    	
-    	$registry = Zend_Registry::getInstance();
+        $request = $this->getRequest();
+        
+        $registry = Zend_Registry::getInstance();
         $config = $registry->get('config');
-    	
-	    if(Zend_Auth::getInstance()->hasIdentity()) {
-	        $registry->set("pleaseSignout", true);
-    	    return $this->_forward("index", "logout");
-		}
+        
+        if(Zend_Auth::getInstance()->hasIdentity()) {
+            $registry->set("pleaseSignout", true);
+            return $this->_forward("index", "logout");
+        }
         
         $People = ML_People::getInstance();
         $Recover = ML_Recover::getInstance();
@@ -53,114 +53,114 @@ class PasswordController extends Zend_Controller_Action
         
         if($request->isPost() && $form->isValid($request->getPost()))
         {
-        	$find = $form->getValues();
-        	
-        	$securitycode = sha1(md5(mt_rand(0, 1000).time().$find.microtime()).deg2rad(mt_rand(0,360)));
-        	$getUser = $registry->accountRecover; //AccountRecover.php validator who pass this value
-        	
-        	$Recover->getAdapter()->query('INSERT INTO `recover` (`uid`, `securitycode`) VALUES (?, ?) ON DUPLICATE KEY UPDATE uid=VALUES(uid), securitycode=VALUES(securitycode), timestamp=CURRENT_TIMESTAMP', array($getUser['id'], $securitycode));
-        	
-        	$this->view->securitycode = $securitycode;
-        	$this->view->recoverUser = $getUser;
-        	
-        	$this->view->recovering = true;
-        	
-	        $mail = new Zend_Mail();
-			$mail->setBodyText($this->view->render("password/emailRecover.phtml"))
-				->setFrom($config['robotEmail']['addr'], $config['robotEmail']['name'])
-				->addTo($getUser['email'], $getUser['name'])
-				->setSubject('Recover your '.$config['applicationname'].' account')
-				->send();
+            $find = $form->getValues();
+            
+            $securitycode = sha1(md5(mt_rand(0, 1000).time().$find.microtime()).deg2rad(mt_rand(0,360)));
+            $getUser = $registry->accountRecover; //AccountRecover.php validator who pass this value
+            
+            $Recover->getAdapter()->query('INSERT INTO `recover` (`uid`, `securitycode`) VALUES (?, ?) ON DUPLICATE KEY UPDATE uid=VALUES(uid), securitycode=VALUES(securitycode), timestamp=CURRENT_TIMESTAMP', array($getUser['id'], $securitycode));
+            
+            $this->view->securitycode = $securitycode;
+            $this->view->recoverUser = $getUser;
+            
+            $this->view->recovering = true;
+            
+            $mail = new Zend_Mail();
+            $mail->setBodyText($this->view->render("password/emailRecover.phtml"))
+                ->setFrom($config['robotEmail']['addr'], $config['robotEmail']['name'])
+                ->addTo($getUser['email'], $getUser['name'])
+                ->setSubject('Recover your '.$config['applicationname'].' account')
+                ->send();
         }
-    	
-    	$this->view->recoverForm = $form;
+        
+        $this->view->recoverForm = $form;
     }
     
     public function passwordAction()
     {
-    	$request = $this->getRequest();
-    	
-    	$auth = Zend_Auth::getInstance();
-    	$registry = Zend_Registry::getInstance();
-    	
-    	$People = ML_People::getInstance();
-    	$Credential = ML_Credential::getInstance();
-    	$Recover = ML_Recover::getInstance();
-    	
-    	$params = $request->getParams();
-    	
-    	$this->view->request = $request;
-    	
-    	if($auth->hasIdentity())
-    	{
-    		if(isset($params['confirm_uid'])) {
-    			$this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "logout") . "?please", array("exit"));
-    		}
-    		
-    		$form = $this->_getNewPasswordForm();
-        	$uid = $auth->getIdentity();
-    	    $registry->set("changeUserProperPassword", true);
-    	    
-    	    $signedUserInfo = $registry->get("signedUserInfo");
-    	    
-    	} else {
-    	    if(isset($params['confirm_uid']) && isset($params['security_code']))
-    	    {
-    	        $select = $Recover->select()->where("uid = ?", $request->getParam("confirm_uid"))
-    			->where("securitycode = ?", $request->getParam("security_code"))
-    			->where("CURRENT_TIMESTAMP < TIMESTAMP(timestamp, '12:00:00')");
-    		    $recoverInfo = $Recover->fetchRow($select);
-    		    
-    		    if(!is_object($recoverInfo))
-    		    {
-    		        return $this->_forward("unavailable");
-    		    }
-    		    
-        		$recoverInfoData = $recoverInfo->toArray();
-	    		
-    	    	$form = $this->_getNewPasswordForm($request->getParam("confirm_uid"), $request->getParam("security_code"));
-	    	    
-    		    $uid = $recoverInfoData['uid'];
-    	    } else {
-    	        return $this->_forward("redirect", "login");
-    	    }
-    	}
-    	
-        if($auth->hasIdentity())
-		{
-			$this->view->userInfoDataForPasswordChange = $signedUserInfo;
-		} else {
-			$userInfo = $People->getById($request->getParam("confirm_uid"));
-			$this->view->userInfoDataForPasswordChange = $userInfo;
-		}
+        $request = $this->getRequest();
         
-	    if($request->isPost())
-		{
-			$select = $Credential->select()->where("uid = ?", $uid);
-			$credentialInfo = $Credential->fetchRow($select);
-			if(!is_object($credentialInfo)) {
-				$this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "index"), array("exit"));
-			}
-			$credentialInfoData = $credentialInfo->toArray();
-			
-			Zend_Registry::getInstance()->set('credentialInfoDataForPasswordChange', $credentialInfoData);
-			
-			if($form->isValid($request->getPost())) {
-				$password = $form->getValue("password");
-				
-				if(isset($recoverInfo)) {
-					$Recover->delete($Recover->getAdapter()->quoteInto('uid = ?', $uid));
-				}
-				
-				$Credential->setCredential($uid, $password);
-				
-				$this->view->passwordReset = true;
-			}
-		}
-		
-		if(!isset($this->view->passwordReset)) {
-			$this->view->passwordForm = $form;
-		}
+        $auth = Zend_Auth::getInstance();
+        $registry = Zend_Registry::getInstance();
+        
+        $People = ML_People::getInstance();
+        $Credential = ML_Credential::getInstance();
+        $Recover = ML_Recover::getInstance();
+        
+        $params = $request->getParams();
+        
+        $this->view->request = $request;
+        
+        if($auth->hasIdentity())
+        {
+            if(isset($params['confirm_uid'])) {
+                $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "logout") . "?please", array("exit"));
+            }
+            
+            $form = $this->_getNewPasswordForm();
+            $uid = $auth->getIdentity();
+            $registry->set("changeUserProperPassword", true);
+            
+            $signedUserInfo = $registry->get("signedUserInfo");
+            
+        } else {
+            if(isset($params['confirm_uid']) && isset($params['security_code']))
+            {
+                $select = $Recover->select()->where("uid = ?", $request->getParam("confirm_uid"))
+                ->where("securitycode = ?", $request->getParam("security_code"))
+                ->where("CURRENT_TIMESTAMP < TIMESTAMP(timestamp, '12:00:00')");
+                $recoverInfo = $Recover->fetchRow($select);
+                
+                if(!is_object($recoverInfo))
+                {
+                    return $this->_forward("unavailable");
+                }
+                
+                $recoverInfoData = $recoverInfo->toArray();
+                
+                $form = $this->_getNewPasswordForm($request->getParam("confirm_uid"), $request->getParam("security_code"));
+                
+                $uid = $recoverInfoData['uid'];
+            } else {
+                return $this->_forward("redirect", "login");
+            }
+        }
+        
+        if($auth->hasIdentity())
+        {
+            $this->view->userInfoDataForPasswordChange = $signedUserInfo;
+        } else {
+            $userInfo = $People->getById($request->getParam("confirm_uid"));
+            $this->view->userInfoDataForPasswordChange = $userInfo;
+        }
+        
+        if($request->isPost())
+        {
+            $select = $Credential->select()->where("uid = ?", $uid);
+            $credentialInfo = $Credential->fetchRow($select);
+            if(!is_object($credentialInfo)) {
+                $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "index"), array("exit"));
+            }
+            $credentialInfoData = $credentialInfo->toArray();
+            
+            Zend_Registry::getInstance()->set('credentialInfoDataForPasswordChange', $credentialInfoData);
+            
+            if($form->isValid($request->getPost())) {
+                $password = $form->getValue("password");
+                
+                if(isset($recoverInfo)) {
+                    $Recover->delete($Recover->getAdapter()->quoteInto('uid = ?', $uid));
+                }
+                
+                $Credential->setCredential($uid, $password);
+                
+                $this->view->passwordReset = true;
+            }
+        }
+        
+        if(!isset($this->view->passwordReset)) {
+            $this->view->passwordForm = $form;
+        }
     }
     
 }

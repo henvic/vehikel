@@ -147,59 +147,59 @@ class ML_Controller_Router_Route_Module extends Zend_Controller_Router_Route_Abs
      */
     public function match($path, $partial = false)
     {
-    	if(HOST_MODULE == "api")
-    	{
-    		return array("controller" => "notstatic", "action" => "error", "module" => "api");
-    	}
-    	else
-    	if(HOST_MODULE == "default")
-    	{
-    	//@todo this is a workaround for another resource: the tag system
-    	//the Zend_Controller_Router_Route_Regex don't work with utf-8
-    	//despite trying the hack http://framework.zend.com/issues/browse/ZF-6661
-    	//it didn't work
-    	//clear this part of the code when everything is ok
-    	//and only let the static=>docs
-    	$path = explode("/", $path, 5);
-    	if(isset($path[2]) && $path[2] == "tags" && isset($path[3]))
-    	{//could be using regex...
-    		$username = $path[1];
-    		
-    		if($username)
-    		{
-	    		
-    			$tag = urldecode($path[3]);
-    			
-	    		if(!isset($path[4]))
-		    	{
-    				$page = "1";
-    			}
-		    	else
-    			{
-    				if(mb_substr($path[4], 0, 4) == "page")
-    				{
-    					$try_page = mb_substr($path[4], 4);
-	    				if(is_natural_dbid($try_page))
-		    			{
-    						$page = $try_page;
-    						
-	    				}
-    				}
-    			}
-    			
-		    	if(isset($page))
-		    	{
-    				return array("username" => $username,
-    						"tag" => $tag, "page" => $page,
-    						"controller" => "tagspages", "action" => "tagpage", "module" => "default");
-	    		}
-    		}
-    	}
-    	//end of workaround
-    	
-    	return array("controller" => "static", "action" => "docs", "module" => "default");
-    	}
-    	
+        if(HOST_MODULE == "api")
+        {
+            return array("controller" => "notstatic", "action" => "error", "module" => "api");
+        }
+        else
+        if(HOST_MODULE == "default")
+        {
+        //@todo this is a workaround for another resource: the tag system
+        //the Zend_Controller_Router_Route_Regex don't work with utf-8
+        //despite trying the hack http://framework.zend.com/issues/browse/ZF-6661
+        //it didn't work
+        //clear this part of the code when everything is ok
+        //and only let the static=>docs
+        $path = explode("/", $path, 5);
+        if(isset($path[2]) && $path[2] == "tags" && isset($path[3]))
+        {//could be using regex...
+            $username = $path[1];
+            
+            if($username)
+            {
+                
+                $tag = urldecode($path[3]);
+                
+                if(!isset($path[4]))
+                {
+                    $page = "1";
+                }
+                else
+                {
+                    if(mb_substr($path[4], 0, 4) == "page")
+                    {
+                        $try_page = mb_substr($path[4], 4);
+                        if(is_natural_dbid($try_page))
+                        {
+                            $page = $try_page;
+                            
+                        }
+                    }
+                }
+                
+                if(isset($page))
+                {
+                    return array("username" => $username,
+                            "tag" => $tag, "page" => $page,
+                            "controller" => "tagspages", "action" => "tagpage", "module" => "default");
+                }
+            }
+        }
+        //end of workaround
+        
+        return array("controller" => "static", "action" => "docs", "module" => "default");
+        }
+        
         $this->_setRequestKeys();
         
         $values = array();

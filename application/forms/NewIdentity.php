@@ -1,11 +1,11 @@
 <?php
 class Form_NewIdentity extends Zend_Form
-{	
+{    
     public function init()
     {
-    	$registry = Zend_Registry::getInstance();
-    	$config = $registry->get("config");
-    	
+        $registry = Zend_Registry::getInstance();
+        $config = $registry->get("config");
+        
         $this->setMethod('post');
         $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
@@ -24,7 +24,7 @@ class Form_NewIdentity extends Zend_Form
         
         $this->addElement('password', 'password', array(
             'filters'    => array('StringTrim'),
-        	'description' => "Six or more characters required; case-sensitive",
+            'description' => "Six or more characters required; case-sensitive",
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(6, 20)),
                 array('validator' => 'newPasswordRepeat'), //there's stringlenght there also
@@ -34,7 +34,7 @@ class Form_NewIdentity extends Zend_Form
             'required'   => true,
             'label'      => 'Password:',
         ));
-		
+        
         $this->addElement('password', 'password_confirm', array(
             'filters'    => array('StringTrim'),
             'required'   => true,
@@ -45,11 +45,11 @@ class Form_NewIdentity extends Zend_Form
         // add the checkbox button for the ToS
         $this->addElement('checkbox', 'tos', array(
             'label'    => 'I agree to the terms of services',
-        	'description' => '<a href="/tos" class="new-window">terms of services</a> | <a href="/privacy" class="new-window">privacy policy</a>',
-        	'required' => true,
-        	'checkedValue'    => 'agree',
-        	'validators' => array(
-        	'Alnum', array('StringLength', false, array(5,5))),
+            'description' => '<a href="/tos" class="new-window">terms of services</a> | <a href="/privacy" class="new-window">privacy policy</a>',
+            'required' => true,
+            'checkedValue'    => 'agree',
+            'validators' => array(
+            'Alnum', array('StringLength', false, array(5,5))),
         ));
         
         $this->addElement('submit', 'submit', array(

@@ -25,7 +25,7 @@ defined('LIBRARY_PATH')
 
 
 set_include_path(
-	EXTERNAL_LIBRARY_PATH . PATH_SEPARATOR .
+    EXTERNAL_LIBRARY_PATH . PATH_SEPARATOR .
     LIBRARY_PATH . PATH_SEPARATOR .
     APPLICATION_PATH . '/models' . PATH_SEPARATOR //.
     //get_include_path()

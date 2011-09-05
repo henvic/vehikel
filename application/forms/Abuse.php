@@ -1,12 +1,12 @@
 <?php
 class Form_Abuse extends Zend_Form
-{	
+{    
     public function init()
     {
-    	$auth = Zend_Auth::getInstance();
-    	
+        $auth = Zend_Auth::getInstance();
+        
         $this->setMethod('post');
-	    $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
         
         $this->addElement('text', 'abuse_reference', array(
@@ -29,12 +29,12 @@ class Form_Abuse extends Zend_Form
         ));
         
         if(!$auth->hasIdentity()) {
-        	$this->addElement(ML_AntiAttack::captchaElement());
+            $this->addElement(ML_AntiAttack::captchaElement());
         }
         
         $this->addElement('submit', 'report_abuse', array(
             'label'    => "Let us know",
-        	'required' => false
+            'required' => false
         ));
     }
 }

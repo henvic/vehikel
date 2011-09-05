@@ -1,12 +1,12 @@
 <?php
 
 class Form_SignUp extends Zend_Form
-{	
+{    
     public function init()
     {
-    	$registry = Zend_Registry::getInstance();
-    	$config = $registry->get("config");
-    	
+        $registry = Zend_Registry::getInstance();
+        $config = $registry->get("config");
+        
         $this->setMethod('post');
         $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
@@ -23,7 +23,7 @@ class Form_SignUp extends Zend_Form
         $email = $this->addElement('text', 'email', array(
             'label'      => 'E-mail address:',
             'required'   => true,
-	        'description' => '<small>Read the <a href="/privacy" class="new-window">Privacy Policy</a></small> before proceeding',
+            'description' => '<small>Read the <a href="/privacy" class="new-window">Privacy Policy</a></small> before proceeding',
             'filters'    => array('StringTrim', 'StringToLower'),
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(1, 60)),
@@ -31,19 +31,19 @@ class Form_SignUp extends Zend_Form
                 array('validator' => 'EmailAddress')
                 )
         ));
-		
+        
         if($config['signup']['inviteonly'])
         {
-	        $this->addElement('text', 'invitecode', array(
-    	        'label'      => 'Invite code:',
-        	    'required'   => true,
-        		'autoInsertNotEmptyValidator' => false,
-	            'validators' => array(
-    	            array('validator' => 'Invite'),
-	                )
-	        ));
-	        
-	        $this->getElement("invitecode")->setAttrib('class', 'smallfield');
+            $this->addElement('text', 'invitecode', array(
+                'label'      => 'Invite code:',
+                'required'   => true,
+                'autoInsertNotEmptyValidator' => false,
+                'validators' => array(
+                    array('validator' => 'Invite'),
+                    )
+            ));
+            
+            $this->getElement("invitecode")->setAttrib('class', 'smallfield');
         }
         
         $this->addElement(ML_AntiAttack::captchaElement());

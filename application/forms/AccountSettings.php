@@ -1,12 +1,12 @@
 <?php
 class Form_AccountSettings extends Zend_Form
-{	
+{    
     public function init()
     {
         $this->setMethod('post');
         $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
-	    
+        
         $this->addElement('text', 'name', array(
             'label'      => 'Name:',
             'required'   => true,
@@ -51,7 +51,7 @@ class Form_AccountSettings extends Zend_Form
         
         $about = $this->addElement('textarea', 'about', array(
             'label'      => 'About:',
-        	'description' => '<small><a href="'.$this->getView()->staticUrl("/help/html").'" class="new-window">HTML formatting</a></small>',
+            'description' => '<small><a href="'.$this->getView()->staticUrl("/help/html").'" class="new-window">HTML formatting</a></small>',
             'required'   => false,
             'filters'    => array('StringTrim'),
             'validators' => array(

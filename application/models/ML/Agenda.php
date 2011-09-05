@@ -2,13 +2,13 @@
 
 class ML_Agenda extends ML_getModel
 {
-	/**
+    /**
      * Singleton instance
      *
      */
     protected static $_instance = null;
-	
-	
+    
+    
     /**
      * Singleton pattern implementation makes "new" unavailable
      *
@@ -35,23 +35,23 @@ class ML_Agenda extends ML_getModel
         return self::$_instance;
     }
     
-	protected $_name = "agenda";
-	
-	public static function form()
-	{
-		static $form = '';
-		$registry = Zend_Registry::getInstance();
-		if(!is_object($form))
-		{
-			require_once APPLICATION_PATH . '/forms/Agenda.php';
-			 
-			$form = new Form_Agenda(array(
+    protected $_name = "agenda";
+    
+    public static function form()
+    {
+        static $form = '';
+        $registry = Zend_Registry::getInstance();
+        if(!is_object($form))
+        {
+            require_once APPLICATION_PATH . '/forms/Agenda.php';
+             
+            $form = new Form_Agenda(array(
                 'method' => 'post',
-			));
-		}
-		
-		$form->setDefault("hash", $registry->get('globalHash'));
+            ));
+        }
+        
+        $form->setDefault("hash", $registry->get('globalHash'));
 
-		return $form;
-	}
+        return $form;
+    }
 }

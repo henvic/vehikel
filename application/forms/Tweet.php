@@ -1,16 +1,16 @@
 <?php
 class Form_Tweet extends Zend_Form
-{	
+{    
     public function init()
     {
-    	$this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
-    	
-    	$registry = Zend_Registry::getInstance();
-    	
-    	$tweet = $this->addElement('textarea', 'tweet', array(
+        
+        $registry = Zend_Registry::getInstance();
+        
+        $tweet = $this->addElement('textarea', 'tweet', array(
             'label'      => 'Tell them...',
-    		'description' => '<b>or anything else...</b>',
+            'description' => '<b>or anything else...</b>',
             'required'   => true,
             'filters'    => array('StringTrim'),
             'validators' => array(

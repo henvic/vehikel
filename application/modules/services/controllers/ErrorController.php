@@ -1,14 +1,14 @@
 <?php
 class ErrorController extends Zend_Controller_Action 
 {
-	public function errorAction()
-	{
-		$errors = $this->_getParam('error_handler');
-		
-		switch ($errors->type) { 
+    public function errorAction()
+    {
+        $errors = $this->_getParam('error_handler');
+        
+        switch ($errors->type) { 
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER: 
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION: 
-				echo "Action or controller not found.\n";
+                echo "Action or controller not found.\n";
                 break; 
             default: 
                 // application error
@@ -25,6 +25,6 @@ class ErrorController extends Zend_Controller_Action
                  
                 break; 
         }
-		exit(1);
-	}
+        exit(1);
+    }
 }

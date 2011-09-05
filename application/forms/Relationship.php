@@ -1,6 +1,6 @@
 <?php
 class Form_Relationship extends Zend_Form
-{	
+{    
     public function init()
     {
         $this->setMethod('post');
@@ -15,7 +15,7 @@ class Form_Relationship extends Zend_Form
         
         $this->addElement('submit', 'update_relation', array(
             'label'    => "Change relation",
-        	'required' => false
+            'required' => false
         ));
         
         $this->addElement(ML_MagicCookies::formElement());

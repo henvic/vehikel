@@ -1,6 +1,6 @@
 <?php
 class LogoutForm extends Zend_Form
-{	
+{    
     public function init()
     {
         $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);

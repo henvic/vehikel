@@ -3,16 +3,16 @@ require EXTERNAL_LIBRARY_PATH .  '/phpass-0.3/PasswordHash.php';
 
 class ML_Credential extends ML_getModel
 {
-	const PASSWORD_HASH_ITERATION_COUNT = "8";
-	
-	/**
+    const PASSWORD_HASH_ITERATION_COUNT = "8";
+    
+    /**
      * Singleton instance
      *
      * @var Zend_Auth
      */
     protected static $_instance = null;
-	
-	
+    
+    
     /**
      * Singleton pattern implementation makes "new" unavailable
      *
@@ -39,62 +39,62 @@ class ML_Credential extends ML_getModel
         return self::$_instance;
     }
     
-	protected $_name = "credentials";
-	protected $_primary = "uid";
-	
-	static private function getPreHash($uid, $password)
-	{
-		return hash("sha384", $uid."-".$password);
-	}
-	
-	static public function setHash($uid, $password)
-	{
-    	$part_hash = self::getPreHash($uid, $password);
-    	
-    	$t_hasher = new PasswordHash(self::PASSWORD_HASH_ITERATION_COUNT, FALSE);
-    	
-    	$hash = $t_hasher->HashPassword($part_hash);
-    	
-    	return $hash;
-	}
-	
-	public function getAuthAdapter($uid, $password)
+    protected $_name = "credentials";
+    protected $_primary = "uid";
+    
+    static private function getPreHash($uid, $password)
     {
-    	$authAdapter = new ML_Auth_Adapter(Zend_Registry::get('database'));
-    	$authAdapter->setTableName($this->_name)
-    	->setIdentityColumn($this->_primary)
-    	->setIdentity($uid)
-    	->setCredentialColumn("credential")
-    	->setCredential(self::getPreHash($uid, $password));
-    	
-    	return $authAdapter;
+        return hash("sha384", $uid."-".$password);
+    }
+    
+    static public function setHash($uid, $password)
+    {
+        $part_hash = self::getPreHash($uid, $password);
+        
+        $t_hasher = new PasswordHash(self::PASSWORD_HASH_ITERATION_COUNT, FALSE);
+        
+        $hash = $t_hasher->HashPassword($part_hash);
+        
+        return $hash;
+    }
+    
+    public function getAuthAdapter($uid, $password)
+    {
+        $authAdapter = new ML_Auth_Adapter(Zend_Registry::get('database'));
+        $authAdapter->setTableName($this->_name)
+        ->setIdentityColumn($this->_primary)
+        ->setIdentity($uid)
+        ->setCredentialColumn("credential")
+        ->setCredential(self::getPreHash($uid, $password));
+        
+        return $authAdapter;
     }
     
     public function setCredential($uid, $password)
     {
-    	$hash = self::setHash($uid, $password);
-    	
-    	$stmt = $this->getAdapter()->query('INSERT INTO `credentials` (`uid`, `credential`) VALUES (?, ?) ON DUPLICATE KEY UPDATE credential=VALUES(credential)', array($uid, $hash));
-    	
-		return $stmt->rowCount();
+        $hash = self::setHash($uid, $password);
+        
+        $stmt = $this->getAdapter()->query('INSERT INTO `credentials` (`uid`, `credential`) VALUES (?, ?) ON DUPLICATE KEY UPDATE credential=VALUES(credential)', array($uid, $hash));
+        
+        return $stmt->rowCount();
     }
-	
-	public function _getLoginForm()
+    
+    public function _getLoginForm()
     {
-    	$registry = Zend_Registry::getInstance();
-    	
+        $registry = Zend_Registry::getInstance();
+        
         static $form = '';
         
         $config = $registry->get("config");
         
         if(!is_object($form))
         {
-        	require_once APPLICATION_PATH . '/forms/LoginForm.php';
-        	
-        	$action = ($config['ssl']) ? 'https://'.$config['webhostssl'] : '';
-        	
-        	$action .= Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "login");
-        	
+            require_once APPLICATION_PATH . '/forms/LoginForm.php';
+            
+            $action = ($config['ssl']) ? 'https://'.$config['webhostssl'] : '';
+            
+            $action .= Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "login");
+            
             $form = new LoginForm(array(
                 'action' => $action,
                 'method' => 'post',
@@ -103,18 +103,18 @@ class ML_Credential extends ML_getModel
         return $form;
     }
     
-	public function _getLogoutForm()
+    public function _getLogoutForm()
     {
-    	$registry = Zend_Registry::getInstance();
-    	
+        $registry = Zend_Registry::getInstance();
+        
         static $form = '';
         
         $config = $registry->get("config");
         
         if(!is_object($form))
         {
-        	require_once APPLICATION_PATH . '/forms/LogoutForm.php';
-        	
+            require_once APPLICATION_PATH . '/forms/LogoutForm.php';
+            
             $form = new LogoutForm(array(
                 'action' => 'http://'.$config['webhost'] . Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "logout"),
                 'method' => 'post',

@@ -1,11 +1,11 @@
 <?php
 
 function base58_encode($num) {
-	return base_encode($num, "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");
+    return base_encode($num, "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");
 }
 
 function base58_decode($num) {
-	return base_decode($num, "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");
+    return base_decode($num, "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");
 }
 
 function base_encode($num, $alphabet) {
@@ -40,9 +40,9 @@ function base_decode($num, $alphabet) {
 
 function file_size($size, $type_bytes = false)
 {
-	if(!$type_bytes) $size/=8;
-	//http://snipplr.com/view/4633/convert-size-in-kb-mb-gb-/
-	$filesizename = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
+    if(!$type_bytes) $size/=8;
+    //http://snipplr.com/view/4633/convert-size-in-kb-mb-gb-/
+    $filesizename = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
    
    return $size ? round($size/pow(1024, ($i = floor(log($size, 1024)))), 2) . $filesizename[$i] : '0 Bytes';   
 }
@@ -50,9 +50,9 @@ function file_size($size, $type_bytes = false)
 
 function is_natural_dbId($val)
 {
-	if(!is_natural($val)) return false;
-	
-	return (strval((int)($val)) != (string)($val)) ? false : true;
+    if(!is_natural($val)) return false;
+    
+    return (strval((int)($val)) != (string)($val)) ? false : true;
 }
 
 function is_natural($val, $acceptzero = false) {

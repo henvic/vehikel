@@ -18,15 +18,15 @@ class ML_MagicCookies
      * @var Zend_Auth
      */
     protected static $_instance = null;
-	
+    
     //all in seconds
-	const last_max_age = "43200";
-	const max_age = "86400";
-	const authenticated_last_max_age = "432000";
-	const authenticated_max_age = "864000";
-	const memcache_prefix = "hash_";
-	const lenght = "32";//md5 => 32 characters
-	const hash_name = "hash";
+    const last_max_age = "43200";
+    const max_age = "86400";
+    const authenticated_last_max_age = "432000";
+    const authenticated_max_age = "864000";
+    const memcache_prefix = "hash_";
+    const lenght = "32";//md5 => 32 characters
+    const hash_name = "hash";
     
     /**
      * Singleton pattern implementation makes "new" unavailable
@@ -56,45 +56,45 @@ class ML_MagicCookies
     
     public static function getHashInfo($hash)
     {
-    	$registry = Zend_Registry::getInstance();
-    	
-    	$memCache = $registry->get("memCache");
-    	
-    	//sanitizing the key for memcache
-    	$hex_value = preg_replace('/[^a-f0-9]/', '', $hash);
-    	$memcache_safe_value = ML_MagicCookies::memcache_prefix . $hex_value;
-    	
-    	$hashInfo = $memCache->load($memcache_safe_value);
-    	
-    	return $hashInfo;
+        $registry = Zend_Registry::getInstance();
+        
+        $memCache = $registry->get("memCache");
+        
+        //sanitizing the key for memcache
+        $hex_value = preg_replace('/[^a-f0-9]/', '', $hash);
+        $memcache_safe_value = ML_MagicCookies::memcache_prefix . $hex_value;
+        
+        $hashInfo = $memCache->load($memcache_safe_value);
+        
+        return $hashInfo;
     }
     
     private static function setNewLast()
     {
-    	$registry = Zend_Registry::getInstance();
-    	$auth = Zend_Auth::getInstance();
-    	
-    	$memCache = $registry->get("memCache");
-    	
-    	$MagicCookiesNamespace = new Zend_Session_Namespace('MagicCookies');
-    	
-    	$MagicCookiesNamespace->setExpirationSeconds(($auth->hasIdentity()) ? self::authenticated_last_max_age : self::last_max_age);
-    	
-    	$new_hash = md5(mt_rand().mt_rand().mt_rand());
-    	
-    	$MagicCookiesNamespace->cached_hash = $new_hash;
-    	
-    	$store_hash = array(
-    		"hash" => $new_hash,
-    		"timestamp" => time(),
-    		"session_id" => Zend_Session::getId(),
-   			"uid" => ($auth->hasIdentity()) ? $auth->getIdentity() : null,
-    		"remote_addr" => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : null
-   	 	);
-   	 	
-   	 	$memCache->save($store_hash, self::memcache_prefix.$new_hash, array(), ($auth->hasIdentity()) ? self::authenticated_max_age : self::max_age);
-   	 	
-    	return $new_hash;
+        $registry = Zend_Registry::getInstance();
+        $auth = Zend_Auth::getInstance();
+        
+        $memCache = $registry->get("memCache");
+        
+        $MagicCookiesNamespace = new Zend_Session_Namespace('MagicCookies');
+        
+        $MagicCookiesNamespace->setExpirationSeconds(($auth->hasIdentity()) ? self::authenticated_last_max_age : self::last_max_age);
+        
+        $new_hash = md5(mt_rand().mt_rand().mt_rand());
+        
+        $MagicCookiesNamespace->cached_hash = $new_hash;
+        
+        $store_hash = array(
+            "hash" => $new_hash,
+            "timestamp" => time(),
+            "session_id" => Zend_Session::getId(),
+               "uid" => ($auth->hasIdentity()) ? $auth->getIdentity() : null,
+            "remote_addr" => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : null
+            );
+            
+            $memCache->save($store_hash, self::memcache_prefix.$new_hash, array(), ($auth->hasIdentity()) ? self::authenticated_max_age : self::max_age);
+            
+        return $new_hash;
     }
     
     /**
@@ -104,48 +104,48 @@ class ML_MagicCookies
      */
     public static function getLast($set_new_on_failure = false)
     {
-    	$MagicCookiesNamespace = new Zend_Session_Namespace('MagicCookies');
-    	
-    	if(isset($MagicCookiesNamespace->cached_hash)) {
-    		return $MagicCookiesNamespace->cached_hash;
-    	}
-    	
-    	return ($set_new_on_failure) ? self::setNewLast() : false;
+        $MagicCookiesNamespace = new Zend_Session_Namespace('MagicCookies');
+        
+        if(isset($MagicCookiesNamespace->cached_hash)) {
+            return $MagicCookiesNamespace->cached_hash;
+        }
+        
+        return ($set_new_on_failure) ? self::setNewLast() : false;
     }
     
-	public static function formElement()
-	{
-		$request = Zend_Controller_Front::getInstance()->getRequest();
-		
-		$registry = Zend_Registry::getInstance();
-		
-		$config = $registry->get("config");
-		
-		$hidden = new Zend_Form_Element_Hidden(self::hash_name, array("required" => true,
-			'filters'    => array('MagicCookies'),
-			'validators' => array(
+    public static function formElement()
+    {
+        $request = Zend_Controller_Front::getInstance()->getRequest();
+        
+        $registry = Zend_Registry::getInstance();
+        
+        $config = $registry->get("config");
+        
+        $hidden = new Zend_Form_Element_Hidden(self::hash_name, array("required" => true,
+            'filters'    => array('MagicCookies'),
+            'validators' => array(
                 array('validator' => 'MagicCookies', 'options' => array("allowed_referer_hosts" => array($config['webhost'])))
                 )));
-		
-		$hidden->clearDecorators();
-		
-		//see bug http://framework.zend.com/issues/browse/ZF-8449
-		$hidden->setAttrib("id", "hash".self::$_hash_quantity);
-		
-		self::$_hash_quantity += 1;
-		
-		$hidden->setValue(self::getLast(true));
-		
-		$hidden->setDecorators(array(
-    		'ViewHelper',
-    		'Errors',
-    		array(
-    			'HtmlTag', array(
-    			'tag' => 'dd')
-    			)
-    		)
-    	);
-    	
-		return $hidden;
-	}
+        
+        $hidden->clearDecorators();
+        
+        //see bug http://framework.zend.com/issues/browse/ZF-8449
+        $hidden->setAttrib("id", "hash".self::$_hash_quantity);
+        
+        self::$_hash_quantity += 1;
+        
+        $hidden->setValue(self::getLast(true));
+        
+        $hidden->setDecorators(array(
+            'ViewHelper',
+            'Errors',
+            array(
+                'HtmlTag', array(
+                'tag' => 'dd')
+                )
+            )
+        );
+        
+        return $hidden;
+    }
 }

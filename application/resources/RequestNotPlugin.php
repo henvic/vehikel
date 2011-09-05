@@ -25,25 +25,25 @@ $router->addRoute(HOST_MODULE, $compat);
 
 function getCachedIni($file)//don't use this for the Zend_Application
 {
-	$registry = Zend_Registry::getInstance();
-	
-	$sysCache = $registry->get("sysCache");
-	
-	$configMTime = filemtime($file);
-	
-	$cacheId = "cachedIni_" . md5($file);
-	
-	$cacheLastMTime = $sysCache->test($cacheId);
-	
-	if ($cacheLastMTime !== false && $configMTime <= $cacheLastMTime) {
-		return $sysCache->load($cacheId, true);
-	}
-	
-	$routerConfig = new Zend_Config_Ini($file);
+    $registry = Zend_Registry::getInstance();
+    
+    $sysCache = $registry->get("sysCache");
+    
+    $configMTime = filemtime($file);
+    
+    $cacheId = "cachedIni_" . md5($file);
+    
+    $cacheLastMTime = $sysCache->test($cacheId);
+    
+    if ($cacheLastMTime !== false && $configMTime <= $cacheLastMTime) {
+        return $sysCache->load($cacheId, true);
+    }
+    
+    $routerConfig = new Zend_Config_Ini($file);
     $sysCache->save($routerConfig, $cacheId, array(), null);
-	
+    
     return $routerConfig;
-	
+    
 }
 
 $routerConfig = getCachedIni(APPLICATION_PATH . '/configs/'.HOST_MODULE.'Routes.ini');

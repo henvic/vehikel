@@ -1,6 +1,6 @@
 <?php
 class Form_DeleteComment extends Zend_Form
-{	
+{    
     public function init()
     {
         $this->setMethod('post');

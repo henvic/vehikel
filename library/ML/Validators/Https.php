@@ -19,7 +19,7 @@ require_once 'Zend/Validate/Abstract.php';
 
 class MLValidator_Https extends Zend_Validate_Abstract
 {
-	const MSG_NOT_HTTPS = 'notHttps';
+    const MSG_NOT_HTTPS = 'notHttps';
  
     protected $_messageTemplates = array(
         self::MSG_NOT_HTTPS => "This form is supposed to be sent over the HTTPS protocol only.",

@@ -1,13 +1,13 @@
 <?php
 class ML_Tags extends ML_getModel
 {
-	/**
+    /**
      * Singleton instance
      *
      * @var Zend_Auth
      */
     protected static $_instance = null;
-	
+    
     /**
      * Singleton pattern implementation makes "new" unavailable
      *
@@ -33,91 +33,91 @@ class ML_Tags extends ML_getModel
 
         return self::$_instance;
     }
-	
-	protected $_name = "tags";
+    
+    protected $_name = "tags";
 
-	public static function _form()
-	{
-		static $form = '';
-		$registry = Zend_Registry::getInstance();
-		if(!is_object($form))
-		{
-			$shareInfo = $registry->get('shareInfo');
-			$userInfo = $registry->get('userInfo');
-			 
-			require_once APPLICATION_PATH . '/forms/Tags.php';
-			 
-			$form = new Form_Tags(array(
+    public static function _form()
+    {
+        static $form = '';
+        $registry = Zend_Registry::getInstance();
+        if(!is_object($form))
+        {
+            $shareInfo = $registry->get('shareInfo');
+            $userInfo = $registry->get('userInfo');
+             
+            require_once APPLICATION_PATH . '/forms/Tags.php';
+             
+            $form = new Form_Tags(array(
                 'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage") .'?addtags',
                 'method' => 'post',
-			));
-		}
-		
-		$form->setDefault("hash", $registry->get('globalHash'));
+            ));
+        }
+        
+        $form->setDefault("hash", $registry->get('globalHash'));
 
-		return $form;
-	}
-	
-	public static function _formDelete()
-	{
-		static $form = '';
-		$registry = Zend_Registry::getInstance();
-		if(!is_object($form))
-		{
-			require_once APPLICATION_PATH . '/forms/DeleteTag.php';
-			 
-			$form = new Form_DeleteTag(array(
+        return $form;
+    }
+    
+    public static function _formDelete()
+    {
+        static $form = '';
+        $registry = Zend_Registry::getInstance();
+        if(!is_object($form))
+        {
+            require_once APPLICATION_PATH . '/forms/DeleteTag.php';
+             
+            $form = new Form_DeleteTag(array(
                 'method' => 'post',
-			));
-		}
-		
-		$form->setDefault("hash", $registry->get('globalHash'));
+            ));
+        }
+        
+        $form->setDefault("hash", $registry->get('globalHash'));
 
-		return $form;
-	}
-	
-	public function getShareTags($share_id)
-	{
-		$select = $this->select()
-		->where("share = ?", $share_id)
-		->order("timestamp ASC");
-		
-		return $this->getAdapter()->fetchAll($select);
-	}
-	
-	public function getTagPage($uid, $cleantag, $per_page, $page)
-	{
-		$select = $this->select();
-		$select->where($this->_name.".people = ?", $uid)
-		->where($this->_name.".clean = ?", $cleantag)
-		->order("timestamp ASC")
-		;
-		
-		$this->joinShareInfo($select, $this->_name, "share");
-		
-		$paginator = Zend_Paginator::factory($select);
-		$paginator->setCurrentPageNumber($page);
-		$paginator->setItemCountPerPage($per_page);
-		
-		return $paginator;
-	}
-	
-	public function getUserTags($uid)
-	{
-		$select = $this->select()->where("people = ?", $uid)
-		->order("timestamp ASC")
-		//no ->group("clean"): it would kill the counter below
-		;
-		
-		$data = $this->fetchAll($select);
-		
-		$taglist = array();
-		foreach($data->toArray() as $item)
-		{
-			if(isset($taglist[$item['clean']])) $taglist[$item['clean']] += 1;
-			else $taglist[$item['clean']] = 1;
-		}
-		
-		return $taglist;
-	}
+        return $form;
+    }
+    
+    public function getShareTags($share_id)
+    {
+        $select = $this->select()
+        ->where("share = ?", $share_id)
+        ->order("timestamp ASC");
+        
+        return $this->getAdapter()->fetchAll($select);
+    }
+    
+    public function getTagPage($uid, $cleantag, $per_page, $page)
+    {
+        $select = $this->select();
+        $select->where($this->_name.".people = ?", $uid)
+        ->where($this->_name.".clean = ?", $cleantag)
+        ->order("timestamp ASC")
+        ;
+        
+        $this->joinShareInfo($select, $this->_name, "share");
+        
+        $paginator = Zend_Paginator::factory($select);
+        $paginator->setCurrentPageNumber($page);
+        $paginator->setItemCountPerPage($per_page);
+        
+        return $paginator;
+    }
+    
+    public function getUserTags($uid)
+    {
+        $select = $this->select()->where("people = ?", $uid)
+        ->order("timestamp ASC")
+        //no ->group("clean"): it would kill the counter below
+        ;
+        
+        $data = $this->fetchAll($select);
+        
+        $taglist = array();
+        foreach($data->toArray() as $item)
+        {
+            if(isset($taglist[$item['clean']])) $taglist[$item['clean']] += 1;
+            else $taglist[$item['clean']] = 1;
+        }
+        
+        return $taglist;
+    }
 }

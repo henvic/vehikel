@@ -7,8 +7,8 @@ class ML_People extends ML_getModel
      * @var Zend_Auth
      */
     protected static $_instance = null;
-	
-	
+    
+    
     /**
      * Singleton pattern implementation makes "new" unavailable
      *
@@ -34,30 +34,30 @@ class ML_People extends ML_getModel
 
         return self::$_instance;
     }
-	
-	protected $_name = "people";
-	
+    
+    protected $_name = "people";
+    
     public function getByUsername($username)
     {
-    	$select = $this->select()
-		->where("binary `alias` = ?", $username)
-		;
-		return $this->getAdapter()->fetchRow($select);
+        $select = $this->select()
+        ->where("binary `alias` = ?", $username)
+        ;
+        return $this->getAdapter()->fetchRow($select);
     }
     
     public function getByEmail($email)
     {
-    	$select = $this->select()
-		->where("binary `email` = ?", $email)
-		;
-		
-		return $this->getAdapter()->fetchRow($select);
+        $select = $this->select()
+        ->where("binary `email` = ?", $email)
+        ;
+        
+        return $this->getAdapter()->fetchRow($select);
     }
     
     public function getById($uid)
     {
-    	$data = parent::getById($uid);
-    	
-    	return $data;
+        $data = parent::getById($uid);
+        
+        return $data;
     }
 }

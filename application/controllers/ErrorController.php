@@ -11,12 +11,12 @@ class ErrorController extends Zend_Controller_Action
 {
     public function errorAction() 
     {
-    	$registry = Zend_Registry::getInstance();
-    	
-    	$request = $this->getRequest();
-    	
-    	$params = $request->getParams();
-    	
+        $registry = Zend_Registry::getInstance();
+        
+        $request = $this->getRequest();
+        
+        $params = $request->getParams();
+        
         // Ensure the default view suffix is used so we always return the error in the right view type
         $this->_helper->viewRenderer->setViewSuffix('phtml');
 
@@ -34,21 +34,21 @@ class ErrorController extends Zend_Controller_Action
                 break; 
             default: 
                 // application error
-		        if($registry->isRegistered("notfound")) {
-                	$this->getResponse()->setHttpResponseCode(404);
-                	if(isset($params['ajax']) && APPLICATION_ENV != 'development') exit();
-                	$this->view->statusCode = 404;
-                	$this->view->message = 'Page not found';
+                if($registry->isRegistered("notfound")) {
+                    $this->getResponse()->setHttpResponseCode(404);
+                    if(isset($params['ajax']) && APPLICATION_ENV != 'development') exit();
+                    $this->view->statusCode = 404;
+                    $this->view->message = 'Page not found';
                 } else {
-                	$this->getResponse()->setHttpResponseCode(500);
-                	if(isset($params['ajax']) && APPLICATION_ENV != 'development') exit();
-                	$this->view->statusCode = 500;
-                	$this->view->message = 'Application error';
+                    $this->getResponse()->setHttpResponseCode(500);
+                    if(isset($params['ajax']) && APPLICATION_ENV != 'development') exit();
+                    $this->view->statusCode = 500;
+                    $this->view->message = 'Application error';
                 }
                 
                 break; 
         }
-    	
+        
         // pass the actual exception object to the view
         $this->view->exception = $errors->exception; 
         

@@ -7,8 +7,8 @@ class ML_Recover extends ML_getModel
      * @var Zend_Auth
      */
     protected static $_instance = null;
-	
-	
+    
+    
     /**
      * Singleton pattern implementation makes "new" unavailable
      *
@@ -34,17 +34,17 @@ class ML_Recover extends ML_getModel
 
         return self::$_instance;
     }
-	
-	protected $_name = "recover";
-	
-	public function _getRecoverForm()
+    
+    protected $_name = "recover";
+    
+    public function _getRecoverForm()
     {
         static $form = '';
         
         if(!is_object($form))
         {
-        	require_once APPLICATION_PATH . '/forms/Recover.php';
-        	
+            require_once APPLICATION_PATH . '/forms/Recover.php';
+            
             $form = new Form_Recover(array(
                 'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "recover"),
                 'method' => 'post',

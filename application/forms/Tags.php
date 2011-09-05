@@ -3,7 +3,7 @@ class Form_Tags extends Zend_Form
 {
     public function init()
     {
-    	$this->setMethod('post');
+        $this->setMethod('post');
         $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
         
@@ -20,7 +20,7 @@ class Form_Tags extends Zend_Form
         
         $this->addElement('submit', 'tagsSubmit', array(
             'label'    => 'Add',
-        	'required' => false
+            'required' => false
         ));
         
         $this->getElement("tags")->setAttrib('class', 'smallfield');

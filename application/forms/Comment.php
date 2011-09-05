@@ -1,12 +1,12 @@
 <?php
 class Form_Comment extends Zend_Form
-{	
+{    
     public function init()
-    {	
-    	if(Zend_Registry::getInstance()->isRegistered("commentInfo")) {
-    		$altLabel = true;
-    	}
-    	
+    {    
+        if(Zend_Registry::getInstance()->isRegistered("commentInfo")) {
+            $altLabel = true;
+        }
+        
         $this->setMethod('post');
         $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
@@ -16,7 +16,7 @@ class Form_Comment extends Zend_Form
         $this->addElement('textarea', 'commentMsg', array(
             'label'      => $commentLabel,
             'required'   => true,
-        	'description' => '<small><a href="/help/html" class="new-window">HTML formatting</a></small>',
+            'description' => '<small><a href="/help/html" class="new-window">HTML formatting</a></small>',
             'filters'    => array('StringTrim'),
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(1, 4096)),
@@ -25,12 +25,12 @@ class Form_Comment extends Zend_Form
         
         $this->addElement('submit', 'getCommentPreview', array(
             'label'    => 'Preview',
-        	'required' => false
+            'required' => false
         ));
         
         $this->addElement('submit', 'commentPost', array(
             'label'    => $postCommentLabel,
-        	'required' => false
+            'required' => false
         ));
         
         $this->addElement(ML_MagicCookies::formElement());

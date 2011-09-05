@@ -14,9 +14,9 @@ class MLValidator_Url extends Zend_Validate_Abstract
     {
         $valueString = (string) $value;
         $this->_setValue($valueString);
-		Zend_Uri::setConfig(array('allow_unwise' => true));
-		$check = Zend_Uri::check($value);
-		Zend_Uri::setConfig(array('allow_unwise' => false));
+        Zend_Uri::setConfig(array('allow_unwise' => true));
+        $check = Zend_Uri::check($value);
+        Zend_Uri::setConfig(array('allow_unwise' => false));
         if (!$check) {
             $this->_error(self::INVALID_URL);
             return false;

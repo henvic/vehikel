@@ -1,12 +1,12 @@
 <?php
 class Form_APIkey extends Zend_Form
-{	
+{    
     public function init()
     {
         $this->setMethod('post');
         $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
-	    
+        
         $this->addElement('text', 'application_title', array(
             'label'      => 'Application Title:',
             'required'   => true,
@@ -58,7 +58,7 @@ class Form_APIkey extends Zend_Form
         ));
         
         $this->addElement(ML_MagicCookies::formElement());
-		
+        
         $this->addElement('submit', 'submit', array(
             'label'    => 'Submit!',
         ));

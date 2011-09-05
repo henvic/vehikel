@@ -1,6 +1,6 @@
 <?php
 class Form_Recover extends Zend_Form
-{	
+{    
     public function init()
     {
         $this->setMethod('post');

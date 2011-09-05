@@ -1,6 +1,6 @@
 <?php
 class Form_DeleteAccount extends Zend_Form
-{	
+{    
     public function init()
     {
         $this->setMethod('post');
@@ -8,13 +8,13 @@ class Form_DeleteAccount extends Zend_Form
         $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
         
         $this->addElement('password', 'password', array(
-    	        'filters'    => array('StringTrim'),
-        	    'validators' => array(
-	        		array('validator' => 'matchPassword') //there's stringlenght there
-          	  ),
-           	 'required'   => true,
-           	 'label'      => 'Current Password:',
-        	));
+                'filters'    => array('StringTrim'),
+                'validators' => array(
+                    array('validator' => 'matchPassword') //there's stringlenght there
+                ),
+                'required'   => true,
+                'label'      => 'Current Password:',
+            ));
         
         $this->addElement('hash', 'no_csrf_foo', array('salt' => 'K*#%JQk74#$*%Ĉ#%R*b', 'timeout' => 600));
         

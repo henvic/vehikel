@@ -9,8 +9,8 @@ class ML_Redis
      * @var Zend_Auth
      */
     protected static $_instance = null;
-	
-	
+    
+    
     /**
      * Singleton pattern implementation makes "new" unavailable
      *
@@ -31,11 +31,11 @@ class ML_Redis
     public static function getInstance()
     {
         if (null === self::$_instance) {
-        	$registry = Zend_Registry::getInstance();
-        	$config = $registry->get("config");
-        	
-			$redis = new Predis\Client($config['cache']['backend']['redis']['servers']['global']);
-			self::$_instance = $redis;
+            $registry = Zend_Registry::getInstance();
+            $config = $registry->get("config");
+            
+            $redis = new Predis\Client($config['cache']['backend']['redis']['servers']['global']);
+            self::$_instance = $redis;
         }
 
         return self::$_instance;

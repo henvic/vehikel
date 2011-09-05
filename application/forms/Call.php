@@ -1,6 +1,6 @@
 <?php
 class Form_Call extends Zend_Form
-{	
+{    
     public function init()
     {
         $this->setMethod('post');
@@ -29,7 +29,7 @@ class Form_Call extends Zend_Form
         $this->addElement('textarea', 'phone_numbers', array(
             'label'      => "Phone numbers",
             'required'   => true,
-        	'description' => 'One number per line',
+            'description' => 'One number per line',
             'filters'    => array('StringTrim'),
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(1, 4096)),
@@ -47,113 +47,113 @@ class Form_Call extends Zend_Form
         ));*/
         
         $hours = array();
-    	for($x = 1; $x <= 12; $x++)
+        for($x = 1; $x <= 12; $x++)
         {
-        	$hours[$x] = $x;
+            $hours[$x] = $x;
         }
         
         $this->addElement('select', 'hour', array(
         'label' => 'Hour:',
         'required' => true,
-    	'multiOptions' => $hours
-    	));
-    	
-    	$minutes = array();
+        'multiOptions' => $hours
+        ));
+        
+        $minutes = array();
         for($x = 0; $x <= 59; $x++)
         {
-        	$minutes[$x] = $x;
+            $minutes[$x] = $x;
         }
         
         $this->addElement('select', 'minutes', array(
         'label' => 'Minutes:',
         'required' => true,
-    	'multiOptions' => $minutes
-    	));
-    	        
-    	$this->addElement('radio', 'period', array(
+        'multiOptions' => $minutes
+        ));
+                
+        $this->addElement('radio', 'period', array(
         'label' => 'Day Period:',
         'required' => true,
-    	'multiOptions' => array("am" => "AM", "pm" => "PM")
-    	));    	
+        'multiOptions' => array("am" => "AM", "pm" => "PM")
+        ));        
         
         $days = array();
         for($x = 1; $x <= 31; $x++)
         {
-        	$days[$x] = $x;
+            $days[$x] = $x;
         }
         
         $this->addElement('select', 'day', array(
         'label' => 'Day:',
         'required' => true,
-    	'multiOptions' => $days
-    	));
-    	
-    	$months = array(
-    		"1" => "January",
-    		"2" => "February",
-    		"3" => "March",
-    		"4" => "April",
-    		"5" => "May",
-    		"6" => "June",
-    		"7" => "July",
-    		"8" => "August",
-    		"9" => "September",
-    		"10" => "October",
-    		"11" => "November",
-    		"12" => "December"
-    	);
-    	
+        'multiOptions' => $days
+        ));
+        
+        $months = array(
+            "1" => "January",
+            "2" => "February",
+            "3" => "March",
+            "4" => "April",
+            "5" => "May",
+            "6" => "June",
+            "7" => "July",
+            "8" => "August",
+            "9" => "September",
+            "10" => "October",
+            "11" => "November",
+            "12" => "December"
+        );
+        
         $this->addElement('select', 'month', array(
         'label' => 'Month:',
         'required' => true,
-    	'multiOptions' => $months
-    	));
+        'multiOptions' => $months
+        ));
         
-    	$years = array();
+        $years = array();
         for($x = gmdate('Y'); $x <= gmdate('Y') + 5; $x++)
         {
-        	$years[$x] = $x;
+            $years[$x] = $x;
         }
         
         $this->addElement('select', 'year', array(
         'label' => 'Year:',
         'required' => true,
-    	'multiOptions' => $years
-    	));
-    	
-    	$future_date = new Zend_Date();
-    	$future_date->add("24:00:00", Zend_Date::TIMES);
-    	$future_date_array = $future_date->toArray();
-    	$am = ($future_date_array['hour'] <= 12) ? true : false;
-    	$hour_12 = ($am) ? $future_date_array['hour'] : $future_date_array['hour']-12;
-    	
-    	$this->getElement("hour")->setValue($hour_12);
-    	$this->getElement("minutes")->setValue($future_date_array['minute']);
-    	($am) ? $this->getElement("period")->setValue("am") : $this->getElement("period")->setValue("pm");   	
-    	$this->getElement("day")->setValue($future_date_array['day']);
-    	$this->getElement("month")->setValue($future_date_array['month']);
+        'multiOptions' => $years
+        ));
         
-    	
-    	if($future_date->get(Zend_Date::TIMEZONE_NAME))
-    	{
-    		$timezone = array("gmt" => "Greenwich Mean Time (GMT)");
-    	} else {
-    		$timezone = array($future_date->get(Zend_Date::TIMEZONE) => $future_date->get(Zend_Date::TIMEZONE_NAME));
-    	}
-    	 $this->addElement('select', 'timezone', array(
+        $future_date = new Zend_Date();
+        $future_date->add("24:00:00", Zend_Date::TIMES);
+        $future_date_array = $future_date->toArray();
+        $am = ($future_date_array['hour'] <= 12) ? true : false;
+        $hour_12 = ($am) ? $future_date_array['hour'] : $future_date_array['hour']-12;
+        
+        $this->getElement("hour")->setValue($hour_12);
+        $this->getElement("minutes")->setValue($future_date_array['minute']);
+        ($am) ? $this->getElement("period")->setValue("am") : $this->getElement("period")->setValue("pm");       
+        $this->getElement("day")->setValue($future_date_array['day']);
+        $this->getElement("month")->setValue($future_date_array['month']);
+        
+        
+        if($future_date->get(Zend_Date::TIMEZONE_NAME))
+        {
+            $timezone = array("gmt" => "Greenwich Mean Time (GMT)");
+        } else {
+            $timezone = array($future_date->get(Zend_Date::TIMEZONE) => $future_date->get(Zend_Date::TIMEZONE_NAME));
+        }
+         $this->addElement('select', 'timezone', array(
         'label' => 'Time Zone:',
         'required' => true,
-    	'multiOptions' => $timezone
-    	));
-    	
+        'multiOptions' => $timezone
+        ));
+        
         $this->addElement('submit', 'submit', array(
             'label'    => "Save to call",
-        	'required' => false
+            'required' => false
         ));
         
         $this->addElement('submit', 'cancel', array(
             'label'    => "Cancel call",
-        	'required' => false
+            'required' => false
         ));
         
         $this->addElement(ML_MagicCookies::formElement());

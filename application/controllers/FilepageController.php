@@ -13,39 +13,39 @@
 
 class FilepageController extends Zend_Controller_Action
 {
-	public function init()
-	{
-		$this->_helper->loadResource->pseudoshareSetUp();
-	}
-	
-	public function filepageAction()
-	{
-		$registry = Zend_Registry::getInstance();
-		$auth = Zend_Auth::getInstance();
-		$request = $this->getRequest();
-		
-		$config = $registry->get('config');
-		
-		$params = $request->getParams();
-		
-		$keys = array(
-			"deletetag" => array("tags" => "delete"),
-			"addtags" => array("tags" => "add"),
-			"favorite" => array("favorites" => "switch"),
-			"unfavorite" => array("favorites" => "switch"),
-			"tweet" => array("twitter" => "tweet"),
-		);
-		
-		$this->_helper->loadResource->pseudoshareSetUp();
-		
-		foreach ($keys as $key => $where)
-		{
-			if (array_key_exists($key, $params)) {
-				return $this->_forward(current($where), key($where));
-			}
-		}
-		
-		$userInfo = $registry->get('userInfo');
+    public function init()
+    {
+        $this->_helper->loadResource->pseudoshareSetUp();
+    }
+    
+    public function filepageAction()
+    {
+        $registry = Zend_Registry::getInstance();
+        $auth = Zend_Auth::getInstance();
+        $request = $this->getRequest();
+        
+        $config = $registry->get('config');
+        
+        $params = $request->getParams();
+        
+        $keys = array(
+            "deletetag" => array("tags" => "delete"),
+            "addtags" => array("tags" => "add"),
+            "favorite" => array("favorites" => "switch"),
+            "unfavorite" => array("favorites" => "switch"),
+            "tweet" => array("twitter" => "tweet"),
+        );
+        
+        $this->_helper->loadResource->pseudoshareSetUp();
+        
+        foreach ($keys as $key => $where)
+        {
+            if (array_key_exists($key, $params)) {
+                return $this->_forward(current($where), key($where));
+            }
+        }
+        
+        $userInfo = $registry->get('userInfo');
         $shareInfo = $registry->get("shareInfo");
         if ($registry->isRegistered("signedUserInfo")) $signedUserInfo = $registry->get("signedUserInfo");
         $registry->set("isFilepage", true);//for use by the pagination_control
@@ -109,5 +109,5 @@ class FilepageController extends Zend_Controller_Action
         
         $this->view->tagsList = $tagsList;
         $this->view->paginator = $paginator;
-	}
+    }
 }

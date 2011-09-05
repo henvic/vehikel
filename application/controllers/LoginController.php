@@ -22,12 +22,12 @@ class LoginController extends Zend_Controller_Action
         $Credential = ML_Credential::getInstance();
         
         $redirLink = $Credential->checkLinkToRedirect();
-    	if(!$redirLink)
-    	{
-    	    $redirLink = Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "index");
-    	}
-    	
-    	$this->_redirect("http://" . $config['webhost'] . $redirLink, array("exit"));//don't use $config['webroot'] . here
+        if(!$redirLink)
+        {
+            $redirLink = Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "index");
+        }
+        
+        $this->_redirect("http://" . $config['webhost'] . $redirLink, array("exit"));//don't use $config['webroot'] . here
     }
     
     /**
@@ -44,33 +44,33 @@ class LoginController extends Zend_Controller_Action
         
         $params = $request->getParams();
         
-    	if($config['ssl'])
+        if($config['ssl'])
         {
             $login_fallback = "https://" . $config['webhostssl'];// no place for $config['webroot'] here
         } else {
             $login_fallback = "http://" . $config['webhost'];
         }
-    	$login_fallback  .= $router->assemble(array(), "login") . "?redirect_after_login=" . $router->assemble($params, $router->getCurrentRouteName());
-    	
-    	$this->_redirect($login_fallback, array("exit"));
+        $login_fallback  .= $router->assemble(array(), "login") . "?redirect_after_login=" . $router->assemble($params, $router->getCurrentRouteName());
+        
+        $this->_redirect($login_fallback, array("exit"));
     }
     
     public function indexAction()
     {
-    	$registry = Zend_Registry::getInstance();
-    	$auth = Zend_Auth::getInstance();
-		
-		$config = $registry->get("config");
-		
-    	ML_AntiAttack::loadRules();
-    	$Credential = ML_Credential::getInstance();
-    	$Log = ML_Log::getInstance();
-    	
-    	if($auth->hasIdentity())
-    	{
-    	    return $this->_forward("goback");
-    	}
-    	
+        $registry = Zend_Registry::getInstance();
+        $auth = Zend_Auth::getInstance();
+        
+        $config = $registry->get("config");
+        
+        ML_AntiAttack::loadRules();
+        $Credential = ML_Credential::getInstance();
+        $Log = ML_Log::getInstance();
+        
+        if($auth->hasIdentity())
+        {
+            return $this->_forward("goback");
+        }
+        
         $request = $this->getRequest();
         $form = $Credential->_getLoginForm();
         
@@ -81,38 +81,38 @@ class LoginController extends Zend_Controller_Action
         ignore_user_abort(true);
         
         //A way to sign in only if captcha is right. This is a workaround to signout if the captcha is wrong
-	    //I've decided to put the sign in code in the validator itself, but couldn't find a way to make the password validator
-	    //load after the captcha one (but to let it come first in code, and that's ugly on the screen) and get a result if the
-	    //validation worked. Notice that it is only useful when the captcha is required.
+        //I've decided to put the sign in code in the validator itself, but couldn't find a way to make the password validator
+        //load after the captcha one (but to let it come first in code, and that's ugly on the screen) and get a result if the
+        //validation worked. Notice that it is only useful when the captcha is required.
         if($form->isValid($request->getPost())) {//@see below
-        	$Session = ML_Session::getInstance();
-        	
-        	//rememberMe and ForgetMe already regenerates the ID
-        	if($form->getElement("remember_me")->isChecked())
-        	{
-        		Zend_Session::rememberMe($config['resources']['session']['cookie_lifetime']);
-        	} else {
-        		Zend_Session::ForgetMe();
-        	}
-        	
-        	$Session->associate($auth->getIdentity(), Zend_Session::getId());
-        	
-        	$Log->action("login", null, $form->getValue("username"));
-			
-        	$this->_forward("goback");
-	    } else {
-	    	//@see above
-	    	if($auth->hasIdentity())
-	    	{
-		    	$auth->clearIdentity();
-	   		}
-	   		
-        	$Log->action("failed_login", null, $form->getValue("username"));
-		    $this->view->errorlogin = true;
-	    }//@end of workaround
+            $Session = ML_Session::getInstance();
+            
+            //rememberMe and ForgetMe already regenerates the ID
+            if($form->getElement("remember_me")->isChecked())
+            {
+                Zend_Session::rememberMe($config['resources']['session']['cookie_lifetime']);
+            } else {
+                Zend_Session::ForgetMe();
+            }
+            
+            $Session->associate($auth->getIdentity(), Zend_Session::getId());
+            
+            $Log->action("login", null, $form->getValue("username"));
+            
+            $this->_forward("goback");
+        } else {
+            //@see above
+            if($auth->hasIdentity())
+            {
+                $auth->clearIdentity();
+               }
+               
+            $Log->action("failed_login", null, $form->getValue("username"));
+            $this->view->errorlogin = true;
+        }//@end of workaround
         }
-	    $challenge = $form->getElement("challenge");
-	    if(!$ensureHuman && is_object($challenge)) $challenge->setErrorMessages(array("missingValue" => ''));//don't show missing value in the first time that asks for the captcha
-		$this->view->loginform = $form;
+        $challenge = $form->getElement("challenge");
+        if(!$ensureHuman && is_object($challenge)) $challenge->setErrorMessages(array("missingValue" => ''));//don't show missing value in the first time that asks for the captcha
+        $this->view->loginform = $form;
     }
 }

@@ -2,13 +2,13 @@
 
 class ML_Coupons extends ML_getModel
 {
-	/**
+    /**
      * Singleton instance
      *
      */
     protected static $_instance = null;
-	
-	
+    
+    
     /**
      * Singleton pattern implementation makes "new" unavailable
      *
@@ -35,16 +35,16 @@ class ML_Coupons extends ML_getModel
         return self::$_instance;
     }
     
-	protected $_name = "coupons";
-	
-	public function _RedeemForm()
+    protected $_name = "coupons";
+    
+    public function _RedeemForm()
     {
         static $form = '';
         
         if(!is_object($form))
         {
-        	require APPLICATION_PATH . '/forms/Redeem.php';
-        	
+            require APPLICATION_PATH . '/forms/Redeem.php';
+            
             $form = new Form_Redeem(array(
                 'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "do_order"),
                 'method' => 'post',

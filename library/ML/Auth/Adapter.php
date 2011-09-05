@@ -44,8 +44,8 @@
  */
 class ML_Auth_Adapter implements Zend_Auth_Adapter_Interface
 {
-	const PASSWORD_HASH_ITERATION_COUNT = "8";
-	
+    const PASSWORD_HASH_ITERATION_COUNT = "8";
+    
     /**
      * Database Connection
      *
@@ -399,7 +399,7 @@ class ML_Auth_Adapter implements Zend_Auth_Adapter_Interface
      */
     protected function _authenticateCreateSelect()
     {
-    	$dbSelect = clone $this->getDbSelect();
+        $dbSelect = clone $this->getDbSelect();
         $dbSelect->from($this->_tableName)
                  ->where($this->_zendDb->quoteIdentifier($this->_identityColumn, true) . ' = ?', $this->_identity);
 
@@ -472,15 +472,15 @@ class ML_Auth_Adapter implements Zend_Auth_Adapter_Interface
      */
     protected function _authenticateValidateResult($resultIdentity)
     {
-    	$t_hasher = new PasswordHash(self::PASSWORD_HASH_ITERATION_COUNT, FALSE);
-    	
-    	if(!$t_hasher->CheckPassword($this->_credential, $resultIdentity['credential']))
-    	{
-    		$this->_authenticateResultInfo['code'] = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
+        $t_hasher = new PasswordHash(self::PASSWORD_HASH_ITERATION_COUNT, FALSE);
+        
+        if(!$t_hasher->CheckPassword($this->_credential, $resultIdentity['credential']))
+        {
+            $this->_authenticateResultInfo['code'] = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
             $this->_authenticateResultInfo['messages'][] = 'Supplied credential is invalid.';
             return $this->_authenticateCreateAuthResult();
-    	}
-    	
+        }
+        
         $this->_resultRow = $resultIdentity;
 
         $this->_authenticateResultInfo['code'] = Zend_Auth_Result::SUCCESS;
