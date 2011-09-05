@@ -1,15 +1,20 @@
 <?php
 
+/**
+ * 
+ * verhoeff.php
+ * 
+ * The functions were modified to this class by Henrique Vicente
+ * <henriquevicente@gmail.com>
+ * 
+ * @author Anders Dahnielson
+ * @link  http://en.dahnielson.com/2006/09/verhoeff.html
+ * @desc Implementation of Verhoeff's Dihedral Group D5 Check
+ * @copyright Public domain
+ *
+ */
 class ML_Verhoeff
 {
-    // put in this class by Henrique Vicente <henriquevicente@gmail.com>
-    // calcsum returns the digit, checksum returns 0 if the number+digit is a match
-    // verhoeff.php
-    // Author: Anders Dahnielson
-    // URL: http://en.dahnielson.com/2006/09/verhoeff.html
-    // Description: Implementation of Verhoeff's Dihedral Group D5 Check
-    // Copyright: No rights reserved. 
-    
     protected static function d($j, $k)
     {
         $table = array(
@@ -50,26 +55,41 @@ class ML_Verhoeff
         return $table[$j];
     }
     
+    /**
+     * 
+     * Returns the Verhoeff checksum digit for a given number
+     * @param $number
+     * @return $digit
+     */
     public static function calcsum($number)
     {
         $c = 0;
         $n = strrev($number);
     
         $len = strlen($n);
-        for ($i = 0; $i < $len; $i++)
+        
+        for ($i = 0; $i < $len; $i++) {
             $c = self::d($c, self::p($i+1, $n[$i]));
-    
+        }
+        
         return self::inv($c);
     }
     
+    /**
+     * Checks if the last digit of a number is a Verhoeff checksum digit
+     * @param $number
+     * @return 0 if the last number is the checksum digit
+     */
     public static function checksum($number)
     {
         $c = 0;
         $n = strrev($number);
     
         $len = strlen($n);
-        for ($i = 0; $i < $len; $i++)
+        
+        for ($i = 0; $i < $len; $i++) {
             $c = self::d($c, self::p($i, $n[$i]));
+        }
     
         return $c;
     }
