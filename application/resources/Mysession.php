@@ -32,4 +32,3 @@ class Mysession extends Zend_Application_Resource_ResourceAbstract
         $registry->set("globalHash", $globalHash);
     }
 }
-?>

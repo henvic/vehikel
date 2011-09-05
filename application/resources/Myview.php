@@ -33,4 +33,3 @@ class Myview extends Zend_Application_Resource_ResourceAbstract
         return $view;
     }
 }
-?>
