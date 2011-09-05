@@ -1,19 +1,20 @@
 <?php
-class My_View_Helper_staticversion extends Zend_View_Helper_Abstract
+class My_View_Helper_StaticVersion extends Zend_View_Helper_Abstract
 {
-    protected static $_cachefiles = array();
+    protected static $_cacheFiles = array();
     
-    protected static $_pre_path = "";
+    protected static $_prePath = "";
     
     function __construct()
     {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
-        self::$_pre_path = mb_substr($config['services']['S3']['designBucketAddress'], 0, -1);
+        $designBucketAddress = $config['services']['S3']['designBucketAddress'];
+        self::$_prePath = mb_substr($designBucketAddress, 0, -1);
         
         require APPLICATION_PATH . "/configs/static-versions.php";
         
-        self::$_cachefiles = $cache_files;
+        self::$_cacheFiles = $cacheFiles;
     }
     
     /**
@@ -33,8 +34,8 @@ class My_View_Helper_staticversion extends Zend_View_Helper_Abstract
     {
         //if(APPLICATION_ENV != "production") return $path;
         return
-        self::$_pre_path.((!array_key_exists($path, self::$_cachefiles))
+        self::$_prePath.((!array_key_exists($path, self::$_cacheFiles))
         ? 
-        $path : self::$_cachefiles[$path]);
+        $path : self::$_cacheFiles[$path]);
     }
 }

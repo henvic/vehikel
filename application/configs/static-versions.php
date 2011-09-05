@@ -3,7 +3,7 @@
  * This is required by the My_View_Helper_staticversion
  */
 
-$cache_files = array(
+$cacheFiles = array(
 //    "/javascript/password.js" => "/scripts/password-min.v3.js",
 //    "/javascript/progressbar.js" => "/scripts/progressbar-min.v4.js",
 //    "/javascript/username-avail.js" => "/scripts/username-avail-min.v4.js",
@@ -29,4 +29,4 @@ $more_files = array(
     );
 }*/
 
-$cache_files = array_merge($cache_files, $more_files);
+$cacheFiles = array_merge($cacheFiles, $more_files);
