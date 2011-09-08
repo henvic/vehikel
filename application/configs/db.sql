@@ -1,13 +1,13 @@
 # ************************************************************
 # Sequel Pro SQL dump
-# Version 3348
+# Version 3408
 #
 # http://www.sequelpro.com/
 # http://code.google.com/p/sequel-pro/
 #
 # Host: 127.0.0.1 (MySQL 5.1.41-3ubuntu12.10)
 # Database: medialab
-# Generation Time: 2011-08-10 23:55:27 +0000
+# Generation Time: 2011-09-08 04:04:51 +0000
 # ************************************************************
 
 
@@ -43,7 +43,7 @@ CREATE TABLE `abuse` (
 
 CREATE TABLE `agenda` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `uid` bigint(20) NOT NULL,
+  `uid` bigint(20) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -63,7 +63,7 @@ CREATE TABLE `antiattack` (
   PRIMARY KEY (`id`),
   KEY `ip` (`ip`),
   KEY `timestamp` (`timestamp`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -85,7 +85,7 @@ CREATE TABLE `comments` (
   KEY `byUid` (`byUid`),
   CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`share`) REFERENCES `share` (`id`) ON DELETE CASCADE,
   CONSTRAINT `comments_ibfk_3` FOREIGN KEY (`byUid`) REFERENCES `people` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -121,7 +121,7 @@ CREATE TABLE `coupons` (
   `unique_use` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `hash` (`hash`)
-) ENGINE=InnoDB AUTO_INCREMENT=558188887666324 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -132,7 +132,7 @@ CREATE TABLE `credentials` (
   `uid` bigint(20) unsigned NOT NULL,
   `credential` char(60) NOT NULL DEFAULT '' COMMENT 'Credential is the concatenation of some values',
   UNIQUE KEY `user` (`uid`),
-  CONSTRAINT `credentials_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `people` (`id`) ON DELETE CASCADE
+  CONSTRAINT `credentials_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `people` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -208,7 +208,7 @@ CREATE TABLE `invites` (
 # ------------------------------------------------------------
 
 CREATE TABLE `log` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `remote_addr` varchar(40) NOT NULL,
   `cookies` varchar(256) NOT NULL,
   `dump` text NOT NULL,
@@ -218,7 +218,7 @@ CREATE TABLE `log` (
   `reason_id` bigint(20) unsigned DEFAULT NULL,
   `notes` varchar(255) DEFAULT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=318 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -233,7 +233,7 @@ CREATE TABLE `newusers` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -395,7 +395,7 @@ CREATE TABLE `people` (
   UNIQUE KEY `id` (`id`,`alias`),
   UNIQUE KEY `alias` (`alias`),
   KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -495,25 +495,6 @@ CREATE TABLE `remove_shares_files` (
 
 
 
-# Dump of table session
-# ------------------------------------------------------------
-
-CREATE TABLE `session` (
-  `id` char(32) NOT NULL DEFAULT '',
-  `uid` bigint(20) unsigned DEFAULT NULL COMMENT 'If it''s for a signed in user',
-  `modified` int(11) DEFAULT NULL,
-  `lifetime` int(11) DEFAULT NULL,
-  `data` text,
-  PRIMARY KEY (`id`),
-  KEY `uid` (`uid`),
-  KEY `modified` (`modified`),
-  KEY `lifetime` (`lifetime`),
-  KEY `modified_2` (`modified`,`lifetime`),
-  CONSTRAINT `session_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `people` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 # Dump of table share
 # ------------------------------------------------------------
 
@@ -541,7 +522,7 @@ CREATE TABLE `share` (
   KEY `tweet` (`short`),
   CONSTRAINT `share_ibfk_1` FOREIGN KEY (`id`) REFERENCES `upload_history` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `share_ibfk_2` FOREIGN KEY (`byUid`) REFERENCES `people` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='share';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='share';
 
 
 
@@ -560,7 +541,7 @@ CREATE TABLE `tags` (
   KEY `people` (`people`),
   CONSTRAINT `tags_ibfk_1` FOREIGN KEY (`share`) REFERENCES `share` (`id`) ON DELETE CASCADE,
   CONSTRAINT `tags_ibfk_2` FOREIGN KEY (`people`) REFERENCES `people` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -579,7 +560,7 @@ CREATE TABLE `transactions` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `pid` (`pid`),
   KEY `uid` (`uid`,`amount`,`sack`,`reason_type`,`reason_id`,`timestamp`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -614,7 +595,27 @@ CREATE TABLE `upload_history` (
   `uploadError` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `byUid` (`byUid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table user_sessions_lookup
+# ------------------------------------------------------------
+
+CREATE TABLE `user_sessions_lookup` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `session` char(40) NOT NULL DEFAULT '',
+  `uid` bigint(20) unsigned NOT NULL,
+  `status` enum('open','close','close_gc','close_remote') DEFAULT NULL,
+  `creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_remote_addr` varchar(40) DEFAULT NULL,
+  `end_remote_addr` varchar(40) DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `uid_2` (`uid`,`status`),
+  CONSTRAINT `user_sessions_lookup_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `people` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
