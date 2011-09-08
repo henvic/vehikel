@@ -7,7 +7,10 @@ $signedUserInfo = $registry->get("signedUserInfo");
 ?>
 <div class="yui-gc">
 <div class="yui-u first">
-<?php if(isset($_GET['please']) || $registry->isRegistered("pleaseSignout")):?>
+<?php
+if(!is_null(filter_input(INPUT_GET, "please", FILTER_UNSAFE_RAW)) ||
+ $registry->isRegistered("pleaseSignout")):
+?>
 <h2>Logout first</h2>
 <p>Either an action you have tried to perform or a section you have tried to access can not be performed as a signed in user to the account <em><?= $this->escape($signedUserInfo['name']) ?> (<?= $this->escape($signedUserInfo['alias']) ?>)</em>. Please, sign out and try again.</p>
 <?php endif; ?>
