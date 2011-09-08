@@ -27,7 +27,8 @@ class ML_Credential extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -49,11 +50,11 @@ class ML_Credential extends ML_getModel
     
     static public function setHash($uid, $password)
     {
-        $part_hash = self::getPreHash($uid, $password);
+        $partHash = self::getPreHash($uid, $password);
         
-        $t_hasher = new PasswordHash(self::PASSWORD_HASH_ITERATION_COUNT, FALSE);
+        $tHasher = new PasswordHash(self::PASSWORD_HASH_ITERATION_COUNT, FALSE);
         
-        $hash = $t_hasher->HashPassword($part_hash);
+        $hash = $tHasher->HashPassword($partHash);
         
         return $hash;
     }
@@ -74,7 +75,9 @@ class ML_Credential extends ML_getModel
     {
         $hash = self::setHash($uid, $password);
         
-        $stmt = $this->getAdapter()->query('INSERT INTO `credentials` (`uid`, `credential`) VALUES (?, ?) ON DUPLICATE KEY UPDATE credential=VALUES(credential)', array($uid, $hash));
+        $stmt = $this->getAdapter()
+         ->query('INSERT INTO `credentials` (`uid`, `credential`) VALUES (?, ?) ON DUPLICATE KEY UPDATE credential=VALUES(credential)',
+         array($uid, $hash));
         
         return $stmt->rowCount();
     }
@@ -87,13 +90,14 @@ class ML_Credential extends ML_getModel
         
         $config = $registry->get("config");
         
-        if(!is_object($form))
-        {
-            require_once APPLICATION_PATH . '/forms/LoginForm.php';
+        if (! is_object($form)) {
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
+            require APPLICATION_PATH . '/forms/LoginForm.php';
             
             $action = ($config['ssl']) ? 'https://'.$config['webhostssl'] : '';
             
-            $action .= Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "login");
+            $action .= $router->assemble(array(), "login");
             
             $form = new LoginForm(array(
                 'action' => $action,
@@ -111,12 +115,16 @@ class ML_Credential extends ML_getModel
         
         $config = $registry->get("config");
         
-        if(!is_object($form))
-        {
-            require_once APPLICATION_PATH . '/forms/LogoutForm.php';
+        if (! is_object($form)) {
+            
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
+            require APPLICATION_PATH . '/forms/LogoutForm.php';
             
             $form = new LogoutForm(array(
-                'action' => 'http://'.$config['webhost'] . Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "logout"),
+                'action' =>
+                 'http://'.$config['webhost'] .
+                  $router->assemble(array(), "logout"),
                 'method' => 'post',
             ));
         }
@@ -126,40 +134,53 @@ class ML_Credential extends ML_getModel
     /**
      * 
      * Checks if there is a link to redirect after sign in ...
-     * It has to be a internal link, so it won't accept if it makes the user goes to somewhere else instead
+     * It has to be a internal link, so it won't accept
+     * if it makes the user goes to somewhere else instead
      */
     public function checkLinkToRedirect()
     {
         $registry = Zend_Registry::getInstance();
+        
         $config = $registry->get("config");
-        if(isset($_GET['redirect_after_login']))
-        {
-            $link = $_GET['redirect_after_login'];
-        } elseif(isset($_SERVER['HTTP_REFERER'])) {
+        
+        $redirectAfterLogin = filter_input(INPUT_GET, "redirect_after_login", FILTER_UNSAFE_RAW);
+        
+        if ($redirectAfterLogin && $redirectAfterLogin != null) {
+            $testLink = $redirectAfterLogin;
+        } else if (isset($_SERVER['HTTP_REFERER'])) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            if($router->getCurrentRouteName() == "login")
-            {
-                $link = $_SERVER['HTTP_REFERER'];
-                $partial_link = explode("?redirect_after_login=",$link, 2);
+            if ($router->getCurrentRouteName() == "login") {
+                $referer = $_SERVER['HTTP_REFERER'];
+                $partialLink = explode("?redirect_after_login=", $referer, 2);
                 
-                return (isset($partial_link[1])) ? $partial_link[1] : false;
+                if (! isset($partialLink[1])) {
+                    return false;
+                } else {
+                    $testLink = $partialLink[1];
+                }
             }
         } else {
             return false;
         }
         
-        if(mb_substr($link, 0, 1) == '/')// the redirect_after_login link MUST start with a '/'
-        {
-            $redir_to = "http://" . $config['webhost'] . $link;
+        // the redirection link must start with a '/' and
+        // must not end up in the redirector again
+        // or be in another host (avoids the use of @)
+        
+        $thisPage = explode("?", $_SERVER['REQUEST_URI'], 2);
+        $thisPage = $thisPage[0];
+        
+        if (mb_substr($testLink, 0, 1) == '/' && !mb_strpos($testLink, "@") && $thisPage != $testLink) {
+            // @todo HTTPS support
+            $redirTo = "http://" . $config['webhost'] . $testLink;
             
             Zend_Uri::setConfig(array('allow_unwise' => true));
             
-            if(Zend_Uri::check($redir_to))
-            {
-                $test_uri = Zend_Uri::factory($redir_to);
+            if (Zend_Uri::check($redirTo)) {
+                $testUri = Zend_Uri::factory($redirTo);
                 
-                $path = $test_uri->getPath();
+                $path = $testUri->getPath();
                 
                 Zend_Uri::setConfig(array('allow_unwise' => false));
                 
