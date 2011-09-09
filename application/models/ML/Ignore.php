@@ -1,5 +1,5 @@
 <?php
-class ML_Ignore extends ML_getModel
+class ML_Ignore extends ML_Db
 {
 /**
      * Singleton instance

@@ -1,5 +1,5 @@
 <?php
-class ML_Recover extends ML_getModel
+class ML_Recover extends ML_Db
 {
 /**
      * Singleton instance

@@ -1,6 +1,6 @@
 <?php
 
-class ML_Agenda extends ML_getModel
+class ML_Agenda extends ML_Db
 {
     /**
      * Singleton instance

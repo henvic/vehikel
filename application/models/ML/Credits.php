@@ -1,6 +1,6 @@
 <?php
 
-class ML_Credits extends ML_getModel
+class ML_Credits extends ML_Db
 {
     const cents_USD = "cents_usd";
     

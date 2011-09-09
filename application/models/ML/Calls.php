@@ -1,6 +1,6 @@
 <?php
 
-class ML_Calls extends ML_getModel
+class ML_Calls extends ML_Db
 {
     /**
      * Singleton instance

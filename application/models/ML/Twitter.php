@@ -1,5 +1,5 @@
 <?php
-class ML_Twitter extends ML_getModel
+class ML_Twitter extends ML_Db
 {
     /**
      * Singleton instance

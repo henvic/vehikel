@@ -1,5 +1,5 @@
 <?php
-class ML_Session extends ML_getModel
+class ML_Session extends ML_Db
 {
     const OPEN_STATUS = "open";
     const CLOSE_STATUS = "close";

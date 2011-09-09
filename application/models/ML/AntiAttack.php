@@ -18,7 +18,7 @@
  *
  */
 
-class ML_AntiAttack extends ML_getModel
+class ML_AntiAttack extends ML_Db
 {
     /**
      * Access forbidden.

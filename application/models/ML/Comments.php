@@ -1,5 +1,5 @@
 <?php
-class ML_Comments extends ML_getModel
+class ML_Comments extends ML_Db
 {
     protected $_name = "comments";
     

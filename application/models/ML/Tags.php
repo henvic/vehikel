@@ -1,5 +1,5 @@
 <?php
-class ML_Tags extends ML_getModel
+class ML_Tags extends ML_Db
 {
     /**
      * Singleton instance
