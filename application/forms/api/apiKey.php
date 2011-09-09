@@ -1,18 +1,21 @@
 <?php
 class Form_APIkey extends Zend_Form
-{    
+{
     public function init()
     {
         $this->setMethod('post');
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
+        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
+        Zend_Form_Element::FILTER);
         
         $this->addElement('text', 'application_title', array(
             'label'      => 'Application Title:',
             'required'   => true,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 80))
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 80))
                 )
         ));
         
@@ -21,16 +24,19 @@ class Form_APIkey extends Zend_Form
             'required'   => false,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 1024)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 1024)),
                 )
         ));
         
         $this->addElement('textarea', 'application_notes', array(
-            'label'      => 'Notes (anything our admins should want know about your app):',
+            'label'      =>
+                'Notes (anything our admins should want know about your app):',
             'required'   => false,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 1024)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 1024)),
                 )
         ));
         
@@ -42,7 +48,8 @@ class Form_APIkey extends Zend_Form
             'required'   => false,
             'filters'    => array('StringTrim', 'UrlFilter'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 255)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 255)),
                 array('validator' => 'Url')
                 )
         ));
@@ -52,7 +59,8 @@ class Form_APIkey extends Zend_Form
             'required'   => false,
             'filters'    => array('StringTrim', 'UrlFilter'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 255)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 255)),
                 array('validator' => 'Url')
                 )
         ));

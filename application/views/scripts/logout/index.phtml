@@ -1,20 +1,22 @@
-<?php // logout/index.phtml
+<?php
 
 $registry = Zend_Registry::getInstance();
 $config = $registry->get("config");
+
 $this->headTitle("Sign out");
+
 $signedUserInfo = $registry->get("signedUserInfo");
 ?>
 <div class="yui-gc">
 <div class="yui-u first">
 <?php
-if(!is_null(filter_input(INPUT_GET, "please", FILTER_UNSAFE_RAW)) ||
+if (! is_null(filter_input(INPUT_GET, "please", FILTER_UNSAFE_RAW)) ||
  $registry->isRegistered("pleaseSignout")):
 ?>
 <h2>Logout first</h2>
-<p>Either an action you have tried to perform or a section you have tried to access can not be performed as a signed in user to the account <em><?= $this->escape($signedUserInfo['name']) ?> (<?= $this->escape($signedUserInfo['alias']) ?>)</em>. Please, sign out and try again.</p>
+<p>Either an action you have tried to perform or a section you have tried to access can not be performed as a signed in user to the account <em><?php echo $this->escape($signedUserInfo['name']) ?> (<?php echo $this->escape($signedUserInfo['alias']); ?>)</em>. Please, sign out and try again.</p>
 <?php endif; ?>
-<h2>Sign out of <?= $this->escape($config['applicationname']) ?></h2>
+<h2>Sign out of <?php echo $this->escape($config['applicationname']); ?></h2>
 <p>If you ever forget to logout from a public computer, sign out all other sessions from this page.</p>
 <table class="styled">
 <caption>Last activity on this account</caption>
@@ -27,12 +29,12 @@ if(!is_null(filter_input(INPUT_GET, "please", FILTER_UNSAFE_RAW)) ||
 </tr>
 </thead>
 <?php
-$current_session = Zend_Session::getId();
-$access_time_tmp = new Zend_Date();
-foreach($this->recent_activity as $single_activity): ?>
+$currentSession = Zend_Session::getId();
+$accessTimeTmp = new Zend_Date();
+foreach ($this->recentActivity as $singleActivity): ?>
 <tr>
 <?php
-if(!$single_activity):
+if (! $singleActivity):
 ?>
 <td>-</td>
 <td>-</td>
@@ -41,53 +43,64 @@ if(!$single_activity):
 <td>Browser</td>
 <td>
 <?php
-if(isset($single_activity['geo']) && is_array($single_activity['geo']))
-{
-	echo $this->escape($single_activity['geo']['country_name']);
-	if($single_activity['geo']['region'])
-	{
-		echo $this->escape(" (".$single_activity['geo']['region'].")");
-	}
+if (isset($singleActivity['geo']) && is_array($singleActivity['geo'])) {
+    echo $this->escape($singleActivity['geo']['country_name']);
+    if ($singleActivity['geo']['region']) {
+        echo $this->escape(" (".$singleActivity['geo']['region'].")");
+    }
 } else {
-	echo "-";
+    echo "-";
 }
 
-if(isset($single_activity['remote_addr']))
-{
+if (isset($singleActivity['remote_addr'])) {
 ?>
 <br />
-(<?= $this->escape($single_activity['remote_addr']); ?>)
-<?php } ?>
+(<?php echo $this->escape($singleActivity['remote_addr']); ?>)
+<?php
+}
+?>
 </td>
 <td>
 <?php
-if(isset($single_activity['request_time']))
-{
-	$access_time_tmp->set($single_activity['request_time'], Zend_Date::TIMESTAMP);
-	echo $this->escape($access_time_tmp." GMT ".$access_time_tmp->getGmtOffset())."<br />".$this->escape(ML_Time::ago($access_time_tmp, Zend_Date::TIMESTAMP));
+if (isset($singleActivity['request_time'])) {
+    $accessTimeTmp->set($singleActivity['request_time'], Zend_Date::TIMESTAMP);
+    echo $this->escape($accessTimeTmp . " GMT " . $accessTimeTmp->getGmtOffset()) .
+    "<br />" . $this->escape(ML_Time::ago($accessTimeTmp, Zend_Date::TIMESTAMP));
 } else {
-?>-<?php } ?></td>
+?>-<?php
+}
+?></td>
 <?php endif; ?>
 <td>
-<?php if($single_activity['status'] == ML_Session::OPEN_STATUS): ?>
+<?php
+if ($singleActivity['status'] == ML_Session::OPEN_STATUS):
+?>
 Active
-<?php if($current_session == $single_activity['session']) echo "<br /><small><strong>(current / this one)</strong></small>"; ?>
+<?php
+if ($currentSession == $singleActivity['session']) {
+    echo "<br /><small><strong>(current / this one)</strong></small>";
+}
+?>
 <?php else: ?>
 Closed
 <?php endif; ?>
 </td>
 </tr>
-<?php endforeach; unset($single_activity); unset($access_time_tmp); ?>
+<?php
+endforeach;
+unset($singleActivity);
+unset($accessTimeTmp);
+?>
 </table>
 <p>The data show above might not be complete or accurate.
 <br /><br />
-This computer is using IP address <?= $this->escape($_SERVER['REMOTE_ADDR']) ?>.
+This computer is using IP address <?php echo $this->escape($_SERVER['REMOTE_ADDR']); ?>.
 </p>
 <?php
-if($this->remote_logout_done):
+if ($this->remoteLogoutDone):
 ?>
 <p><strong>Your other sessions have been signed out!</strong></p>
 <?php endif; ?>
-<?= $this->logoutForm ?>
+<?php echo $this->logoutForm ?>
 </div>
 </div>

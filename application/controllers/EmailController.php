@@ -4,37 +4,44 @@ class EmailController extends Zend_Controller_Action
 {
     public function confirmAction()
     {
-        $request = $this->getRequest();
-        
         $auth = Zend_Auth::getInstance();
         
-        $emailChange = new ML_emailChange();
+        $router = Zend_Controller_Front::getInstance()->getRouter();
         
-        $confirm_uid = $request->getParam("confirm_uid");
-        $security_code = $request->getParam("security_code");
+        $request = $this->getRequest();
         
-        $select = $emailChange->select()->where("uid = ?", $confirm_uid)
-        ->where("securitycode = ?", $security_code)
+        $emailChange = new ML_EmailChange();
+        
+        $confirmUid = $request->getParam("confirm_uid");
+        $securityCode = $request->getParam("security_code");
+        
+        $select = $emailChange->select()->where("uid = ?", $confirmUid)
+        ->where("securitycode = ?", $securityCode)
         ->where("CURRENT_TIMESTAMP < TIMESTAMP(timestamp, '12:00:00')");
         $changeInfo = $emailChange->fetchRow($select);
         
-        if(!is_object($changeInfo)) {
+        if (! is_object($changeInfo)) {
             $this->_redirect("/email/unconfirmed", array("exit"));
         }
         
         $changeInfoData = $changeInfo->toArray();
         
-        if($auth->hasIdentity() && $changeInfo['uid'] != $auth->getIdentity()) {
-            $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "logout") . "?please", array("exit"));
+        if ($auth->hasIdentity() && $changeInfo['uid'] != $auth->getIdentity()) {
+            $this->_redirect($router->assemble(array(), "logout") . "?please", array("exit"));
         }
         
-        $People = ML_People::getInstance();
+        $people = ML_People::getInstance();
         try {
-            $People->update(array("email" => $changeInfoData['email']), $People->getAdapter()->quoteInto("id = ?", $changeInfoData['uid']));
-            $emailChange->delete($emailChange->getAdapter()->quoteInto('uid = ?', $changeInfoData['uid']));
+            $people
+            ->update(array("email" => $changeInfoData['email']),
+            $people->getAdapter()
+            ->quoteInto("id = ?", $changeInfoData['uid']));
+            
+            $emailChange->delete($emailChange->getAdapter()
+            ->quoteInto('uid = ?', $changeInfoData['uid']));
         } catch(Exception $e)
         {
-            $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "index"), array("exit"));
+            $this->_redirect($router->assemble(array(), "index"), array("exit"));
         }
         
         $this->_redirect($this->view->StaticUrl("/email/confirmed"), array("exit"));

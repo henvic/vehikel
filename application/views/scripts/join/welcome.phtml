@@ -4,18 +4,29 @@ $signedUserInfo = $registry->get("signedUserInfo");
 
 $config = $registry->get('config');
 
-$this->headTitle("Welcome to ".$config['applicationname'].", ".$this->escape($signedUserInfo['name'])."!", "SET");
+$this->headTitle("Welcome to " . $config['applicationname'] . ", " .
+ $this->escape($signedUserInfo['name']) . "!", "SET");
 ?>
 <div class="yui-g">
 <div class="yui-u first">
-<h2 class="joinconfirm">Welcome <?= $this->escape($signedUserInfo['name']) ?>!</h2>
-<p><b>Your username is <?= $this->escape($signedUserInfo['alias']) ?></b>. You're signed in and can <a href="<?= $this->url(array(), "upload") ?>" rel="nofollow">start uploading files</a>.<br /><br />
-<b>Do you use Twitter?</b> <a href="<?= $this->url(array(), "accounttwitter") ?>">Connect Plifk to your Twitter account now!</a><br /><br />
-<b>People can find you at </b> <a href="http://www.plifk.com<?= $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage") ?>">http://www.plifk.com<?= $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage") ?></a><br /><br />
+<h2 class="joinconfirm">Welcome <?php echo $this->escape($signedUserInfo['name']); ?>!</h2>
+<p><b>Your username is <?php
+echo $this->escape($signedUserInfo['alias']);
+?></b>. You're signed in and can <a href="<?php
+echo $this->url(array(), "upload");
+?>" rel="nofollow">start uploading files</a>.<br /><br />
+<b>Do you use Twitter?</b> <a href="<?php
+echo $this->url(array(), "accounttwitter");
+?>">Connect Plifk to your Twitter account now!</a><br /><br />
+<b>People can find you at </b> <a href="http://www.plifk.com<?php
+echo $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage");
+?>">http://www.plifk.com<?php
+echo $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage");
+?></a><br /><br />
 We hope you enjoy Plifk!</p>
 </div>
 <div class="yui-u">
 <h2 class="hidden">And here we go!</h2>
-<img src="<?= $this->staticversion("/illustrations/kid-with-painted-hands.jpg") ?>" alt="" width="425" height="282" /> 
+<img src="<?php echo $this->staticversion("/illustrations/kid-with-painted-hands.jpg"); ?>" alt="" width="425" height="282" /> 
 </div>
 </div>

@@ -2,22 +2,21 @@
 
 $registry = Zend_Registry::getInstance();
 
-$Credits = ML_Credits::getInstance();
+$credits = ML_Credits::getInstance();
 
 $signedUserInfo = $registry->get("signedUserInfo");
 
-$this->creditInfo = $Credits->view($signedUserInfo['id']);
+$this->creditInfo = $credits->view($signedUserInfo['id']);
  
-$currency = new Zend_Currency(
-    array(
-        'value'    => $this->creditInfo['amount']/100,
+$currency =
+new Zend_Currency(array('value' => $this->creditInfo['amount'] / 100,
         'currency' => 'USD',
-    	'display'  => Zend_Currency::USE_SHORTNAME,
+        'display'  => Zend_Currency::USE_SHORTNAME,
     )
 );
 ?>
 <ul>
-<li>Balance: <?= $this->escape($currency.' '.$currency->getShortName()) ?></li>
-<li><a href="<?= $this->url(array(), "do_order") ?>">Add funds</a></li>
-<li><a href="<?= $this->url(array(), "orders_1stpage") ?>">Orders history</a></li>
+<li>Balance: <?php echo $this->escape($currency.' '.$currency->getShortName()); ?></li>
+<li><a href="<?php echo $this->url(array(), "do_order"); ?>">Add funds</a></li>
+<li><a href="<?php echo $this->url(array(), "orders_1stpage"); ?>">Orders history</a></li>
 </ul>

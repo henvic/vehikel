@@ -8,7 +8,6 @@
  *
  * @copyright  2008 Henrique Vicente
  * @version    $Id:$
- * @link       http://thinkings.info
  * @since      File available since Release 0.1
  */
 
@@ -18,18 +17,20 @@ class SharesController extends Zend_Controller_Action
     {
         static $form = '';
 
-        if(!is_object($form))
-        {
+        if (! is_object($form)) {
             $registry = Zend_Registry::getInstance();
+            
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
             $shareInfo = $registry->get('shareInfo');
             $userInfo = $registry->get('userInfo');
             
-            require_once APPLICATION_PATH . '/forms/DeleteShare.php';
+            require APPLICATION_PATH . '/forms/DeleteShare.php';
              
-            $form = new Form_DeleteShare(array(
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "deleteshare"),
-                'method' => 'post',
-            ));
+            $form = new Form_DeleteShare(array('action' =>
+            $router->assemble(array("username" => $userInfo['alias'],
+                "share_id" => $shareInfo['id']), "deleteshare"),
+                'method' => 'post'));
         }
         return $form;
     }
@@ -38,18 +39,20 @@ class SharesController extends Zend_Controller_Action
     {
         static $form = '';
 
-        if(!is_object($form))
-        {
+        if (! is_object($form)) {
             $registry = Zend_Registry::getInstance();
+            
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
             $shareInfo = $registry->get('shareInfo');
             $userInfo = $registry->get('userInfo');
              
-            require_once APPLICATION_PATH . '/forms/Filepage.php';
+            require APPLICATION_PATH . '/forms/Filepage.php';
              
-            $form = new Form_Filepage(array(
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "editsharepage"),
-                'method' => 'post',
-            ));
+            $form = new Form_Filepage(array('action'
+            => $router->assemble(array("username" => $userInfo['alias'],
+                "share_id" => $shareInfo['id']), "editsharepage"),
+                'method' => 'post'));
         }
         
         $form->setDefault("hash", $registry->get('globalHash'));
@@ -66,21 +69,28 @@ class SharesController extends Zend_Controller_Action
         
         $this->_helper->loadResource->pseudoshareSetUp();
         
-        if($request->getActionName() == "edit" || $request->getActionName() == "delete")
-        {
-            if($auth->hasIdentity() && $registry->isRegistered("signedUserInfo") && $registry['signedUserInfo']['id'] == $registry['shareInfo']['byUid'])
-            {} else throw new Exception("Can not edit or delete this share.");
+        if ($request->getActionName() == "edit" ||
+         $request->getActionName() == "delete") {
+            if ($auth->hasIdentity() &&
+            $registry->isRegistered("signedUserInfo") &&
+             $registry['signedUserInfo']['id'] == $registry['shareInfo']['byUid']) {
+            } else {
+                 throw new Exception("Can not edit or delete this share.");
+            }
         }
     }
     
     public function editAction()
     {
         $registry = Zend_Registry::getInstance();
+        
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $signedUserInfo = $registry->get("signedUserInfo");
         
         $request = $this->getRequest();
         
-        $Share = new ML_Upload();
+        $share = new ML_Upload();
         
         $shareInfo = $registry->get("shareInfo");
         
@@ -88,18 +98,19 @@ class SharesController extends Zend_Controller_Action
         
         $form->setDefaults($shareInfo);
         
-        if($request->isPost() && $form->isValid($request->getPost()))
-        {
-            $new_shareInfo = $Share->setMeta($signedUserInfo, $shareInfo, $form->getValues(), $form->getErrors());
+        if ($request->isPost() && $form->isValid($request->getPost())) {
+            $newShareInfo =
+            $share->setMeta($signedUserInfo, $shareInfo, $form->getValues(), $form->getErrors());
             
-            if($new_shareInfo && !empty($new_shareInfo))
-            {
-                $registry->set("shareInfo", $new_shareInfo);
-                $form->setDefaults($new_shareInfo);
-                $shareInfo = $new_shareInfo;
+            if ($newShareInfo && ! empty($newShareInfo)) {
+                $registry->set("shareInfo", $newShareInfo);
+                $form->setDefaults($newShareInfo);
+                $shareInfo = $newShareInfo;
             }
             
-            $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $signedUserInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage"), array("exit"));
+            $this->_redirect($router->assemble(array("username" =>
+            $signedUserInfo['alias'], "share_id" => $shareInfo['id']),
+            "sharepage_1stpage"), array("exit"));
         }
         
         $this->view->editForm = $form;
@@ -110,22 +121,28 @@ class SharesController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         $registry = Zend_Registry::getInstance();
         
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $request = $this->getRequest();
-        $Share = new ML_Upload();
+        $share = new ML_Upload();
         
         $signedUserInfo = $registry->get("signedUserInfo");
         $shareInfo = $registry->get("shareInfo");
         
         $form = $this->_deleteForm();
-        if($request->isPost() && 
-            $form->isValid($request->getPost())
-        )
-        {
+        if ($request->isPost() && 
+            $form->isValid($request->getPost())) {
             $forget = $form->getValue("forget");
-            if(!empty($forget)) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $signedUserInfo['alias']), "filestream_1stpage"), array("exit"));
+            if (! empty($forget)) {
+                $this->_redirect($router->assemble(array("username"
+                => $signedUserInfo['alias']), 
+                "filestream_1stpage"), array("exit"));
+            }
             
-            $Share->deleteShare($shareInfo, $signedUserInfo);
-            $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $signedUserInfo['alias']), "filestream_1stpage") . "?share-erased=true", array("exit"));
+            $share->deleteShare($shareInfo, $signedUserInfo);
+            $this->_redirect($router->assemble(array("username" =>
+            $signedUserInfo['alias']),
+            "filestream_1stpage") . "?share-erased=true", array("exit"));
         }
          
         $this->view->deleteForm = $form;

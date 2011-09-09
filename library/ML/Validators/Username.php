@@ -1,5 +1,5 @@
 <?php
-require_once 'Zend/Validate/Abstract.php';
+//require_once 'Zend/Validate/Abstract.php';
 
 class MLValidator_Username extends Zend_Validate_Abstract
 {
@@ -17,13 +17,12 @@ class MLValidator_Username extends Zend_Validate_Abstract
          
         $valueString = (string) $value;
         
-        $People = new ML_People();
+        $people = new ML_People();
         
-        if(mb_strstr($value, "@"))
-        {
-            $getUserByEmail = $People->getByEmail($value);
+        if (mb_strstr($value, "@")) {
+            $getUserByEmail = $people->getByEmail($value);
             
-            if(empty($getUserByEmail)) {
+            if (empty($getUserByEmail)) {
                 $this->_error(self::MSG_EMAIL_NOT_FOUND);
                 return false;
             }
@@ -33,28 +32,29 @@ class MLValidator_Username extends Zend_Validate_Abstract
             return true;
         }
         
-        if(mb_strlen($value) == 0) return false;
+        if (mb_strlen($value) == 0) {
+            return false;
+        }
         
-        if(mb_strlen($value) > 20)
-        {
+        if (mb_strlen($value) > 20) {
             $this->_error(self::MSG_USERNAME_NOT_FOUND);
             return false;
         }
         
-        if(preg_match('#([^a-z0-9_-]+)#is', $value) || $value == '0')
-        {
+        if (preg_match('#([^a-z0-9_-]+)#is', $value) || $value == '0') {
             $this->_error(self::MSG_USERNAME_NOT_FOUND);
             return false;
         }
         
-        $getUserByUsername = $People->getByUsername($value);
-           if(empty($getUserByUsername)) {
-               $this->_error(self::MSG_USERNAME_NOT_FOUND);
-               return false;
-           }
-           
-           Zend_Registry::getInstance()->set("loginUserInfo", $getUserByUsername);
-           
+        $getUserByUsername = $people->getByUsername($value);
+        
+        if (empty($getUserByUsername)) {
+           $this->_error(self::MSG_USERNAME_NOT_FOUND);
+           return false;
+        }
+        
+        Zend_Registry::getInstance()->set("loginUserInfo", $getUserByUsername);
+        
         return true;
     }
 }

@@ -3,10 +3,10 @@ $registry = Zend_Registry::getInstance();
 
 $userInfo = $registry->get("userInfo");
 
-if(!is_array($this->ignore_status)):
+if (!is_array($this->ignoreStatus)):
 $this->headTitle("Block ".$this->escape($userInfo['name'])."?");
 ?>
-<h2>Block <?= $this->escape($userInfo['name']) ?>?</h2>
+<h2>Block <?php echo $this->escape($userInfo['name']); ?>?</h2>
 <p>By blocking someone you limit his/her possibilities of interaction with you and your data.</p>
 <h3>This is what happens</h3>
 <ul>
@@ -14,14 +14,16 @@ $this->headTitle("Block ".$this->escape($userInfo['name'])."?");
 <li>The user is silently (no notice or alert is given) blocked;</li>
 <li>The user is impossibilited  of creating new or editing old comments on your pages;</li>
 </ul>
-<?php else:
+<?php
+else:
 $this->headTitle("Unblock ".$this->escape($userInfo['name'])."?");
 ?>
-<h2>Do you want to unblock <?= $this->escape($userInfo['name']) ?>?</h2>
+<h2>Do you want to unblock <?php echo $this->escape($userInfo['name']); ?>?</h2>
 <p>You should know before hand</p>
 <ul>
 <li>Favorites and contact relations are not recovered;</li>
 <li>Unblocking does not make you unblocked if the other part blocked you;</li>
 <li>The user is silently (no notice or alert is given) unblocked;</li> 
-<?php endif; ?>
-<?= $this->ignore_form ?>
+<?php
+endif;
+echo $this->ignoreForm;

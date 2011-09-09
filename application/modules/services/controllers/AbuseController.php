@@ -3,47 +3,58 @@ class AbuseController extends Zend_Controller_Action
 {
     public function getAction()
     {
-        $Service = new ML_Service();
-        $Abuse = new ML_Abuse();
+        $service = new ML_Service();
+        $abuse = new ML_Abuse();
         
-        $select = $Abuse->select();
+        $select = $abuse->select();
         
-        $abuses_num = $Abuse->getAdapter()->fetchOne($Abuse->select()->where("solution = ?", "unsolved")->from($Abuse->getTableName(), 'count(*)'));
+        $abusesNum =
+         $abuse->getAdapter()->fetchOne($abuse->select()
+          ->where("solution = ?", "unsolved")
+          ->from($abuse->getTableName(), 'count(*)'));
         
-        $Service->putString("Number of abuses waiting for solution: $abuses_num\n\n");
+        $service->putString("Number of abuses waiting for solution: $abusesNum\n\n");
         
-        $id = ($abuses_num == 1) ? "" : $Service->getInput("Abuse ID (enter to unsolved oldest)? ");
-        if($id == "" && $abuses_num == 0) {
+        if ($abusesNum == 1) {
+            $id = "";
+        } else {
+            $id = $service->getInput("Abuse ID (enter to unsolved oldest)? ");
+        }
+        
+        if ($id == "" && $abusesNum == 0) {
             die;
         }
-        if(empty($id))
-        {
+        if (empty($id)) {
             $select->where("solution = ?", "unsolved");
             $select->order("timestamp ASC")->limit(1);
         } else {
             $select->where("id = ?", $id);
         }
         
-        $row = $Abuse->fetchRow($select);
+        $row = $abuse->fetchRow($select);
         
-        if(!is_object($row)) {
+        if (! is_object($row)) {
             die("Nothing to solve.\n");
         }
         
-        $row_data = $row->toArray();
+        $rowData = $row->toArray();
         
-        $Service->putString(print_r($row_data, true));
+        $service->putString(print_r($rowData, true));
         
-        $is_solved = $Service->getInput("Change solution status (unsolved/solved/notabuse)? ");
+        $isSolved = $service->getInput("Change solution status (unsolved/solved/notabuse)? ");
         
-        switch($is_solved)
-        {
-            case "unsolved" : case "solved" : case "notabuse" : break;
-            default : die("Status not changed.\n");
+        switch ($isSolved) {
+            case "unsolved":
+            case "solved":
+            case "notabuse":
+                break;
+            default :
+                die("Status not changed.\n");
+                break;
         }
         
-        $Abuse->update(array("solution" => $is_solved), $row_data['id']);
+        $abuse->update(array("solution" => $isSolved), $rowData['id']);
         
-        $Service->putString("Status changed to $is_solved\n");
+        $service->putString("Status changed to $isSolved\n");
     }
 }

@@ -10,13 +10,16 @@ class ApiController extends Zend_Controller_Action
     public function authorizeAction()
     {
         $auth = Zend_Auth::getInstance();
+        
         $store = OAuthStore::instance();
         
         $registry = Zend_Registry::getInstance();
         
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $request = $this->getRequest();
         
-        if(!Zend_Auth::getInstance()->hasIdentity()) {
+        if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
         }
         
@@ -25,22 +28,24 @@ class ApiController extends Zend_Controller_Action
         
         $form = $this->_authorizeForm();
         // Check if there is a valid request token in the current request
-        // Returns an array with the consumer key, consumer secret, token, token secret and token type.
+        // Returns an array with the
+        //consumer key, consumer secret, token, token secret and token type.
         $rs = $server->authorizeVerify();
         $consumer = $store->getConsumer($rs['consumer_key'], $auth->getIdentity());
         $this->view->consumerInfo = $consumer;
         
-        if($request->isPost() && $form->isValid($request->getPost()))
-        {
+        if ($request->isPost() && $form->isValid($request->getPost())) {
             $values = $form->getValues();
-            if(isset($values['allow'])) $authorized = true;
-            elseif(isset($values['deny'])) $authorized = false;
+            if (isset($values['allow'])) {
+                $authorized = true;
+            } else if (isset($values['deny'])) {
+                $authorized = false;
+            }
             
-            if(isset($authorized))
-            {
+            if (isset($authorized)) {
                 $server->authorizeFinish($authorized, $auth->getIdentity());
                 //If no oauth_callback, the user is redirected to
-                $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "accountapps") . "?new_addition", array("exit"));
+                $this->_redirect($router->assemble(array(), "accountapps") . "?new_addition", array("exit"));
             }
         }
         
@@ -52,7 +57,7 @@ class ApiController extends Zend_Controller_Action
         $store = OAuthStore::instance();
         $auth = Zend_Auth::getInstance();
         
-        if(!Zend_Auth::getInstance()->hasIdentity()) {
+        if (! Zend_Auth::getInstance()->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
         }
         
@@ -63,18 +68,21 @@ class ApiController extends Zend_Controller_Action
     
     public function applyAction()
     {
-        $store = OAuthStore::instance();
         $auth = Zend_Auth::getInstance();
         
-        if(!Zend_Auth::getInstance()->hasIdentity()) {
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
+        $store = OAuthStore::instance();
+        
+        if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
         }
         
         $request = $this->getRequest();
         
         $form = $this->_apiKeyForm();
-        if($request->isPost() && $form->isValid($request->getPost()))
-        {
+        
+        if ($request->isPost() && $form->isValid($request->getPost())) {
             $data = $form->getValues();
             
             $consumer = array(
@@ -90,7 +98,7 @@ class ApiController extends Zend_Controller_Action
             
             $key = $store->updateConsumer($consumer, $auth->getIdentity());
             
-            $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("api_key" => $key), "api_key"), array("exit"));
+            $this->_redirect($router->assemble(array("api_key" => $key), "api_key"), array("exit"));
         }
         
         $this->view->apiKeyForm = $form;
@@ -101,7 +109,7 @@ class ApiController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         $store = OAuthStore::instance();
         
-        if(!Zend_Auth::getInstance()->hasIdentity()) {
+        if (! Zend_Auth::getInstance()->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
         }
         
@@ -115,10 +123,11 @@ class ApiController extends Zend_Controller_Action
         
         $form->setDefaults($consumer);
         
-        if($consumer['application_commercial'] == 1) $form->getElement("application_commercial")->setOptions(array("checked" => true));
+        if ($consumer['application_commercial'] == 1) {
+            $form->getElement("application_commercial")->setOptions(array("checked" => true));
+        }
         
-        if($request->isPost() && $form->isValid($request->getPost()))
-        {
+        if ($request->isPost() && $form->isValid($request->getPost())) {
             $data = $form->getValues();
             
             $consumer = array_merge($consumer, array(
@@ -140,9 +149,11 @@ class ApiController extends Zend_Controller_Action
     public function keydeleteAction()
     {
         $auth = Zend_Auth::getInstance();
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $store = OAuthStore::instance();
         
-        if(!Zend_Auth::getInstance()->hasIdentity()) {
+        if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
         }
         
@@ -153,12 +164,10 @@ class ApiController extends Zend_Controller_Action
         $consumer = $store->getConsumer($params['api_key'], $auth->getIdentity());
         
         $form = $this->_deleteForm($consumer);
-        if($request->isPost() && 
-            $form->isValid($request->getPost())
-        )
-        {
+        if ($request->isPost() &&
+         $form->isValid($request->getPost())) {
             $store->deleteConsumer($params['api_key'], $auth->getIdentity());
-            $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "apikeys") . "?api_key_deleted=".$params['api_key'], array("exit"));
+            $this->_redirect($router->assemble(array(), "apikeys") . "?api_key_deleted=".$params['api_key'], array("exit"));
         }
         
         $this->view->form = $form;
@@ -168,17 +177,18 @@ class ApiController extends Zend_Controller_Action
     protected function _apiKeyForm($consumer = false)
     {
         static $form = '';
+        
         $registry = Zend_Registry::getInstance();
         
-        if(!is_object($form))
-        {
-            require_once APPLICATION_PATH . '/forms/api/apiKey.php';
+        if (! is_object($form)) {
+            $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            if(!$consumer)
-            {
-                $action = Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "apply_api_key");
+            require APPLICATION_PATH . '/forms/api/apiKey.php';
+            
+            if (! $consumer) {
+                $action = $router->assemble(array(), "apply_api_key");
             } else {
-                $action = Zend_Controller_Front::getInstance()->getRouter()->assemble(array("api_key" => $consumer['consumer_key']), "api_key");
+                $action = $router->assemble(array("api_key" => $consumer['consumer_key']), "api_key");
             }
             
             $form = new Form_APIkey(array(
@@ -193,14 +203,17 @@ class ApiController extends Zend_Controller_Action
     protected function _deleteForm($consumer)
     {
         static $form = '';
-        $registry = Zend_Registry::getInstance();
         
-        if(!is_object($form))
-        {
-            require_once APPLICATION_PATH . '/forms/api/apiKeyDelete.php';
+        if (! is_object($form)) {
+            
+            $registry = Zend_Registry::getInstance();
+            
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
+            require APPLICATION_PATH . '/forms/api/apiKeyDelete.php';
             
             $form = new Form_DeleteApiKey(array(
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array("api_key" => $consumer['consumer_key']), "api_key_delete"),
+                'action' => $router->assemble(array("api_key" => $consumer['consumer_key']), "api_key_delete"),
                 'method' => 'post',
             ));
         }
@@ -211,11 +224,11 @@ class ApiController extends Zend_Controller_Action
     protected function _authorizeForm()
     {
         static $form = '';
+        
         $registry = Zend_Registry::getInstance();
         
-        if(!is_object($form))
-        {
-            require_once APPLICATION_PATH . '/forms/api/authorize.php';
+        if (! is_object($form)) {
+            require APPLICATION_PATH . '/forms/api/authorize.php';
             
             $form = new Form_authorize(array(
                 'action' => '',

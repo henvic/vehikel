@@ -2,9 +2,12 @@
 $this->headTitle("Application Authorization request");
 ?>
 <h2>Application Authorization request</h2>
-<p><strong><?= $this->escape($this->consumerInfo['application_title']) ?></strong> wants read/write (no delete) access to your account. Do you want to grant this access level?<br />
+<p><strong><?php
+echo $this->escape($this->consumerInfo['application_title']);
+?></strong> wants read/write (no delete) access to your account. Do you want to grant this access level?<br />
 <?php if($this->consumerInfo['application_descr']): ?>
 Application description
-<blockquote><?= $this->escape($this->consumerInfo['application_descr']) ?></blockquote>
+<blockquote><?php echo $this->escape($this->consumerInfo['application_descr']); ?></blockquote>
 <?php endif; ?></p>
-<?= $this->authorizeForm ?>
+<?php
+echo $this->authorizeForm;

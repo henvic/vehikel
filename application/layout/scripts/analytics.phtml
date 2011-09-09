@@ -1,5 +1,5 @@
 <?php
-//should not use <?= var ?\> here or it will print it (wrong)
+//should not use <?php echo var ?\> here or it will print it (wrong)
 //don't know why...
 if(APPLICATION_ENV == "production"):
 ?>
@@ -12,4 +12,4 @@ try {
 var pageTracker = _gat._getTracker("<?php echo $config['services']['ganalytics']['tracker_id'] ?>");
 pageTracker._trackPageview();
 } catch(err) {}</script>
-<?php endif; ?>
+<?php endif;

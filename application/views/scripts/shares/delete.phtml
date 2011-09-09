@@ -5,13 +5,25 @@ $shareInfo = $registry->get('shareInfo');
 
 $this->headTitle("Delete this file?");
 ?>
-<h2><a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage") ?>"><?= $this->escape($shareInfo['title']) ?></a></h2>
+<h2><a href="<?php
+echo $this->url(array("username" => $userInfo['alias'],
+"share_id" => $shareInfo['id']),
+"sharepage_1stpage");
+?>"><?php echo $this->escape($shareInfo['title']); ?></a></h2>
 <h3>Do you really want to delete this file?</h3>
-<?php if(!empty($shareInfo['description_filtered'])): ?>
+<?php if (! empty($shareInfo['description_filtered'])): ?>
 <div id="descriptionBox">
-<p class="somehtml"><?= $shareInfo['description_filtered'] ?></p>
+<p class="somehtml"><?php echo $shareInfo['description_filtered']; ?></p>
 </div>
 <?php else: ?>
-<p><?php echo ($shareInfo['short']) ? "<em>Short description:</em> " . $this->escape($shareInfo['short']) : "<small class=\"nodescr\">(No description available)</small>"; ?></p>
-<?php endif; ?>
-<?= $this->deleteForm ?>
+<p><?php
+
+if ($shareInfo['short']) {
+    echo "<em>Short description:</em> " . $this->escape($shareInfo['short']);
+} else {
+    echo "<small class=\"nodescr\">(No description available)</small>";
+}
+?></p>
+<?php
+endif;
+echo $this->deleteForm;

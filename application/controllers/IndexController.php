@@ -22,13 +22,11 @@ class IndexController extends Zend_Controller_Action
     
     public function indexAction()
     {
-        if
-        (Zend_Auth::getInstance()->hasIdentity())
-        {
+        $auth = Zend_Auth::getInstance();
+        
+        if ($auth->hasIdentity()) {
             $this->_forward("signed");
-        }
-        else
-        {
+        } else {
             $this->_forward("unsigned");
         }
     }

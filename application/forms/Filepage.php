@@ -1,11 +1,13 @@
 <?php
 class Form_Filepage extends Zend_Form
-{    
+{
     public function init()
     {
         $this->setMethod('post');
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
+        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
+        Zend_Form_Element::FILTER);
         
         $this->addElement('text', 'title', array(
             'label'      => 'Title:',
@@ -19,10 +21,12 @@ class Form_Filepage extends Zend_Form
         $this->addElement('text', 'filename', array(
             'label'      => 'Filename:',
             'required'   => true,
-            'description' => "Don't forget the extension (i.e., .txt, .jpg, .pdf)",
+            'description' =>
+                "Don't forget the extension (i.e., .txt, .jpg, .pdf)",
             'filters'    => array('StringTrim', 'StringToLower', 'Filename'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 60)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 60)),
                 array('validator' => 'filename')
                 )
         ));
@@ -33,17 +37,21 @@ class Form_Filepage extends Zend_Form
             'required'   => false,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 120)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 120)),
                 )
         ));
         
         $this->addElement('textarea', 'description', array(
             'label'      => 'Description:',
             'required'   => false,
-            'description' => '<small><a href="/help/html" class="new-window">HTML formatting</a></small>',
+            'description' =>
+                '<small><a href="/help/html" class="new-window">'.
+                'HTML formatting</a></small>',
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 4096)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 4096)),
                 )
         ));
         

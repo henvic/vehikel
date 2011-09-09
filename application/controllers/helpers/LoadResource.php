@@ -11,17 +11,20 @@ class Zend_Controller_Action_Helper_LoadResource extends Zend_Controller_Action_
     public function pseudoshareSetUp ()
     {
         $registry = Zend_Registry::getInstance();
+        
         $request = $this->getRequest();
+        
         if ($request->getUserParam('username') &&
          ! $registry->isRegistered("userInfo")) {
             //avoid calling the DB again for nothing
-            if (isset($registry['signedUserInfo']) && $registry['signedUserInfo']['alias'] ==
-             $request->getUserParam('username')) {
+            if (isset($registry['signedUserInfo']) &&
+            $registry['signedUserInfo']['alias'] == $request->getUserParam('username')) {
                 $userInfo = $registry['signedUserInfo'];
             } else {
-                $People = ML_People::getInstance();
-                $userInfo = $People->getByUsername(
-                $request->getUserParam('username'));
+                $people = ML_People::getInstance();
+                
+                $userInfo = $people
+                 ->getByUsername($request->getUserParam('username'));
             }
             if (!$userInfo) {
                 $registry->set("notfound", true);
@@ -32,18 +35,16 @@ class Zend_Controller_Action_Helper_LoadResource extends Zend_Controller_Action_
             $this->getRequest()
                 ->getUserParams());
             if ($this->getRequest()->getUserParam("share_id")) {
-                $Share = ML_Share::getInstance();
-                $shareInfo = $Share->getById(
-                $this->getRequest()
+                $share = ML_Share::getInstance();
+                $shareInfo = $share->getById($this->getRequest()
                     ->getUserParam("share_id"));
                 if (!$shareInfo) {
                     $registry->set("notfound", true);
                     throw new Exception("Share does not exists.");
-                } else 
-                    if ($shareInfo['byUid'] != $userInfo['id']) {
+                } else if ($shareInfo['byUid'] != $userInfo['id']) {
                         $registry->set("notfound", true);
                         throw new Exception("Share owned by another user.");
-                    }
+                }
                 $registry->set("shareInfo", $shareInfo);
             }
         }

@@ -1,10 +1,11 @@
 <?php
 
 class AccountController extends Zend_Controller_Action
-{   
+{
     public function init()
     {
-        if (!Zend_Auth::getInstance()->hasIdentity()) {
+        $auth = Zend_Auth::getInstance();
+        if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
         }
     }
@@ -15,19 +16,21 @@ class AccountController extends Zend_Controller_Action
         
         $registry = Zend_Registry::getInstance();
         
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $config = $registry->get("config");
         
-        $People = ML_People::getInstance();
+        $people = ML_People::getInstance();
         
-        $Profile = new ML_Profile();
+        $profile = new ML_Profile();
         
-        $Account = new ML_Account();
+        $account = new ML_Account();
         
-        $form = $Account->_getSettingsForm();
+        $form = $account->_getSettingsForm();
         
         $signedUserInfo = $registry->get("signedUserInfo");
         
-        $profileInfo = $Profile->getById($signedUserInfo['id']);
+        $profileInfo = $profile->getById($signedUserInfo['id']);
         
         //only data that can be changed can be here
         $listOfData = array(
@@ -50,60 +53,75 @@ class AccountController extends Zend_Controller_Action
             $rec = $form->getValues();
             
             //update
-            foreach($listOfData as $key => $value)
-            {
-                if (empty($errors[$key]) && $rec[$key] != $value) $changeData[$key] = $rec[$key];
+            foreach ($listOfData as $key => $value) {
+                if (empty($errors[$key]) && $rec[$key] != $value) {
+                    $changeData[$key] = $rec[$key];
+                }
             }
             
             if (!empty($changeData)) {
                 $changeDataLessEmail = $changeData;
-                if (isset($changeData['email'])) unset($changeDataLessEmail['email']);
                 
+                if (isset($changeData['email'])) {
+                    unset($changeDataLessEmail['email']);
+                }
                 
                 if (!empty($changeDataLessEmail)) {
-                    if (isset($changeDataLessEmail['private_email'])) $changeDataLessEmail['private_email'] = 1;//just a small state protection
+                    //just a small state protection
+                    if (isset($changeDataLessEmail['private_email'])) {
+                        $changeDataLessEmail['private_email'] = 1;
+                    }
                     
                     $profileFields = array("website", "location", "about");
                     
                     $changeProfileData = array();
-                    foreach($profileFields as $field)
-                    {
-                        if (isset($changeDataLessEmail[$field]))
-                        {
+                    
+                    foreach ($profileFields as $field) {
+                        if (isset($changeDataLessEmail[$field])) {
                             $changeProfileData[$field] = $changeDataLessEmail[$field];
                             unset($changeDataLessEmail[$field]);
                         }
                     }
                     
-                    if (!empty($changeDataLessEmail))
-                    $People->update($changeDataLessEmail, $People->getAdapter()->quoteInto("id = ?", $signedUserInfo['id']));
+                    if (! empty($changeDataLessEmail)) {
+                        $people->update($changeDataLessEmail, 
+                        $people->getAdapter()
+                            ->quoteInto("id = ?", $signedUserInfo['id']));
+                    }
                     
-                    if (!empty($changeProfileData))
-                    {
-                        if (isset($changeProfileData['about']))
-                        {
+                    if (! empty($changeProfileData)) {
+                        if (isset($changeProfileData['about'])) {
                             $purifier = ML_HtmlPurifier::getInstance();
-                            $changeProfileData['about_filtered'] = $purifier->purify($changeProfileData['about']);
+                            
+                            $changeProfileData['about_filtered'] =
+                            $purifier->purify($changeProfileData['about']);
                         }
-                        $Profile->update($changeProfileData, $People->getAdapter()->quoteInto("id = ?", $signedUserInfo['id']));
+                        
+                        $profile->update($changeProfileData,
+                         $people->getAdapter()->quoteInto("id = ?", $signedUserInfo['id']));
                     }
                     
                     $signedUserInfo = array_merge($signedUserInfo, $changeDataLessEmail);
+                    
                     $registry->set("signedUserInfo", $signedUserInfo);
                 }
                 
-                if (isset($changeData['about']) && sizeof($changeData) == 1) $redirect_to_profile = true;
+                if (isset($changeData['about']) && sizeof($changeData) == 1) {
+                    $redirectToProfile = true;
+                }
             }
             
-            if (isset($changeData['email']))
-            {
+            if (isset($changeData['email'])) {
                 //changeEmail table
-                $emailChange = new ML_emailChange();
+                $emailChange = new ML_EmailChange();
                 
-                $securitycode = $emailChange->askNew($signedUserInfo['id'], $changeData['email'], $signedUserInfo['name']);
+                $securitycode =
+                $emailChange->askNew($signedUserInfo['id'], $changeData['email'], $signedUserInfo['name']);
                 
                 $mail = new Zend_Mail();
+                
                 $this->view->securitycode = $securitycode;
+                
                 $mail->setBodyText($this->view->render("account/emailChange.phtml"))
                 ->setFrom($config['robotEmail']['addr'], $config['robotEmail']['name'])
                 ->addTo($changeData['email'], $signedUserInfo['name'])
@@ -111,9 +129,10 @@ class AccountController extends Zend_Controller_Action
                 ->send();
                 
                 $this->view->changeEmail = true;
-            } elseif (isset($redirect_to_profile))
-            {
-                $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $signedUserInfo['alias']), "profile")."?about_check=true", array("exit"));
+            } else if (isset($redirectToProfile)) {
+                $this->_redirect($router
+                 ->assemble(array("username" => $signedUserInfo['alias']),
+                  "profile")."?about_check=true", array("exit"));
             }
         }
         
@@ -127,65 +146,64 @@ class AccountController extends Zend_Controller_Action
         require_once EXTERNAL_LIBRARY_PATH . '/twitter-async/EpiOAuth.php';
         require_once EXTERNAL_LIBRARY_PATH . '/twitter-async/EpiTwitter.php';
         
-        $request = $this->getRequest();
-        
         $auth = Zend_Auth::getInstance();
+        
         $registry = Zend_Registry::getInstance();
         
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $config = $registry->get('config');
+        
+        $request = $this->getRequest();
         
         $twitterConf = $config['services']['twitter'];
         
         $params = $request->getParams();
         
-        $Twitter = ML_Twitter::getInstance();
+        $twitter = ML_Twitter::getInstance();
         
         $twitterObj = new EpiTwitter($twitterConf['key'], $twitterConf['secret']);
         
-        $removeTwitterForm = $Twitter->removeForm();
-        $addTwitterForm = $Twitter->addForm();
+        $removeTwitterForm = $twitter->removeForm();
+        $addTwitterForm = $twitter->addForm();
         
-        if ($request->isPost())
-        {
-            if ($removeTwitterForm->isValid($request->getPost()))
-            {
-                $Twitter->delete($Twitter->getAdapter()->quoteInto('uid = ?', $auth->getIdentity()));
-            } elseif ($addTwitterForm->isValid($request->getPost()))
-            {
+        if ($request->isPost()) {
+            if ($removeTwitterForm->isValid($request->getPost())) {
+                $twitter->delete($twitter->getAdapter()->quoteInto('uid = ?', $auth->getIdentity()));
+            } else if ($addTwitterForm->isValid($request->getPost())) {
                 $twitterAuthenticateUrl = $twitterObj->getAuthenticateUrl();
-                if (Zend_Uri::check($twitterAuthenticateUrl))
-                {
+                if (Zend_Uri::check($twitterAuthenticateUrl)) {
                     $this->_redirect($twitterAuthenticateUrl, array("exit"));
                 }
             }
         }
         
-        $twitterInfo = $Twitter->getSignedUserTwitterAccount();
+        $twitterInfo = $twitter->getSignedUserTwitterAccount();
         
         if (isset($params['oauth_token']) && !is_array($twitterInfo)) {
             try {
                     $twitterObj->setToken($params['oauth_token']);
                     $token = $twitterObj->getAccessToken();
-                    $token = array('oauth_token' => $token->oauth_token, 'oauth_token_secret' => $token->oauth_token_secret);
                     
-                    $Twitter->setTwitterAccount($token);
-                    $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "accounttwitter"), array("exit"));
-                } catch(Exception $e)
-                {
-                    $this->view->twitterApiError = true;
-                }
+                    $tokenArray = array('oauth_token' => $token->oauth_token,
+                    'oauth_token_secret' => $token->oauth_token_secret);
+                    
+                    $twitter->setTwitterAccount($tokenArray);
+                    
+                    $this->_redirect($router->assemble(array(), "accounttwitter"), array("exit"));
+            } catch (Exception $e) {
+                $this->view->twitterApiError = true;
+            }
         }
-        
-        if (!is_array($twitterInfo))
-        {
+        if (! is_array($twitterInfo)) {
             $this->view->getTwitterOauth = true;
-        } else {//how old is the data retrieved from Twitter?
+        } else {
+            //how old is the data retrieved from Twitter?
             $lastCheckDate  = new Zend_Date($twitterInfo['timestamp'], Zend_Date::ISO_8601);
-            if ($lastCheckDate->getTimestamp() < time()-86400)
-            {
+            if ($lastCheckDate->getTimestamp() < time() - 86400) {
                 try {
-                    $Twitter->setTwitterAccount(false, $twitterInfo);
-                    $twitterInfo = $Twitter->getSignedUserTwitterAccount();
+                    $twitter->setTwitterAccount(false, $twitterInfo);
+                    $twitterInfo = $twitter->getSignedUserTwitterAccount();
                 } catch(Exception $e)
                 {
                     $this->view->invalidTwitterAccount = true;
@@ -205,22 +223,23 @@ class AccountController extends Zend_Controller_Action
         
         $signedUserInfo = $registry->get("signedUserInfo");
         
-        $Picture = new ML_PictureUpload();
-        $People = ML_People::getInstance();
+        $picture = new ML_PictureUpload();
+        $people = ML_People::getInstance();
         
-        $form = $Picture->_getPictureForm();
+        $form = $picture->_getPictureForm();
         
-        if ($request->isPost() && $form->isValid($request->getPost()))
-        {
-            if ($form->getValue("delete")) $change = $Picture->deleteAvatar($signedUserInfo);
-            elseif ($form->Image->isUploaded()) {
+        if ($request->isPost() && $form->isValid($request->getPost())) {
+            if ($form->getValue("delete")) {
+                $change = $picture->deleteAvatar($signedUserInfo);
+            } else if ($form->Image->isUploaded()) {
                 $fileInfo = $form->Image->getFileInfo();
                 
-                $change = $Picture->setAvatar($signedUserInfo, $fileInfo['Image']['tmp_name']);
+                $change = $picture->setAvatar($signedUserInfo, $fileInfo['Image']['tmp_name']);
             }
             
             if (isset($change) && $change) {
-                $signedUserInfo = $People->getById($signedUserInfo['id']);//refresh
+                //refresh
+                $signedUserInfo = $people->getById($signedUserInfo['id']);
                 $registry->set("signedUserInfo", $signedUserInfo);
             }
             
@@ -234,17 +253,19 @@ class AccountController extends Zend_Controller_Action
     {
         $auth = Zend_Auth::getInstance();
         
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $request = $this->getRequest();
+        
         $params = $request->getParams();
         
         $this->_helper->loadOauthstore->setinstance();
         
         $store = OAuthStore::instance();
         
-        if (isset($params['revoke_token']))
-        {
+        if (isset($params['revoke_token'])) {
             $store->deleteConsumerAccessToken($params['revoke_token'], $auth->getIdentity());
-            $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "accountapps"), array("exit"));
+            $this->_redirect($router->assemble(array(), "accountapps"), array("exit"));
         }
         
         $listConsumer = $store->listConsumerTokens($auth->getIdentity());

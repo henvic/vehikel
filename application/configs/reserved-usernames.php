@@ -13,8 +13,10 @@ array(
 "contacts", "error", "favorites", "ignore",
 "index", "invites", "join", "login", "password",
 "profile", "docs", "logout", "report-abuse", "proxy", "progress", "feed",
-"not-found", "dev", "blog", "username", "your-username", "your-password", "password",
-"spam", "support", "safety", "security", "welcome", "payment", "transaction", "transactions",
+"not-found", "dev", "blog", "username", "your-username",
+"your-password", "password",
+"spam", "support", "safety", "security", "welcome",
+"payment", "transaction", "transactions",
 "order", "orders", "upgrade", "pay", "payment", "cart",
 "call", "agenda", "0"
 );

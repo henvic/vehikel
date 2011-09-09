@@ -8,48 +8,80 @@
  */
 class My_View_Helper_avatar extends Zend_View_Helper_Abstract
 {
-     public function avatar($people_object, $size = "small")
+     public function avatar($person, $size = "small")
      {
-         $registry = Zend_Registry::getInstance();
-         $config = $registry->get("config");
-        $Picture = ML_Picture::getInstance();
+        $registry = Zend_Registry::getInstance();
+        $config = $registry->get("config");
+        $picture = ML_Picture::getInstance();
+        $router = Zend_Controller_Front::getInstance()->getRouter();
         
-        if(isset($people_object['people_deleted.id']) && !empty($people_object['people_deleted.id']))
-        {
-            $uid = $people_object['people_deleted.id'];
-            $name = $people_object['people_deleted.name'];
-        }
-        elseif(isset($people_object['people.id']))
-        {
-            $uid = $people_object['people.id'];
-            $alias = $people_object['people.alias'];
-            $name = $people_object['people.name'];
-            $avatarInfo = $people_object['people.avatarInfo'];
+        if (isset($person['people_deleted.id']) &&
+         ! empty($person['people_deleted.id'])) {
+            $uid = $person['people_deleted.id'];
+            $name = $person['people_deleted.name'];
+        } else if (isset($person['people.id'])) {
+            $uid = $person['people.id'];
+            $alias = $person['people.alias'];
+            $name = $person['people.name'];
+            $avatarInfo = $person['people.avatarInfo'];
         } else {
-            $uid = $people_object['id'];
-            $alias = $people_object['alias'];
-            $name = $people_object['name'];
-            $avatarInfo = $people_object['avatarInfo'];
+            $uid = $person['id'];
+            $alias = $person['alias'];
+            $name = $person['name'];
+            $avatarInfo = $person['avatarInfo'];
         }
         
-        if(isset($avatarInfo)) $picInfo = unserialize($avatarInfo);
-        $sizeInfo = $Picture->getSizeInfo($size);
+        if (isset($avatarInfo)) {
+            $picInfo = unserialize($avatarInfo);
+        }
         
-        if(!isset($alias))
-        {
-            //$html = '<img src="'.$config['services']['S3']['designBucketAddress'].'images/noavatar'.$sizeInfo['typeextension'].'.gif" width="'.$sizeInfo['dimension'].'" height="'.$sizeInfo['dimension'].'" class="uid-'.$uid.'" alt="" />';
+        $sizeInfo = $picture->getSizeInfo($size);
+        
+        if (! isset($alias)) {
+            //$html = '<img src="'.
+            //$config['services']['S3']['designBucketAddress'].
+            //'images/noavatar'.
+            //$sizeInfo['typeextension'].'.gif" width="'.$sizeInfo['dimension'].
+            //'" height="'.$sizeInfo['dimension'].'" class="uid-'.
+            //$uid.'" alt="" />';
             $html = '';
-        }
-        elseif(!$picInfo || empty($picInfo))
-        {
-            $height = ($sizeInfo['name'] == "square") ? $sizeInfo['dimension'] : round($sizeInfo['dimension']*2/3);
-            $html = '<a href="'.Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $alias), "filestream_1stpage").'/"><img src="'.$config['services']['S3']['designBucketAddress'].'images/happy-face'.$sizeInfo['typeextension'].'.png" width="'.$sizeInfo['dimension'].'" height="'.$height.'" alt="('.$this->view->escape($alias).' has no picture)"'." class=\"uid-".$uid."\" /></a>\n";
+        } else if (! $picInfo || empty($picInfo)) {
+            if ($sizeInfo['name'] == "square") {
+                $height = $sizeInfo['dimension'];
+            } else {
+                $height = round($sizeInfo['dimension'] * 2 / 3);
+            }
+            
+            $html = '<a href="' .
+                 $router->assemble(array("username" => $alias), 
+                "filestream_1stpage") . '/"><img src="' .
+                 $config['services']['S3']['designBucketAddress'] .
+                 'images/happy-face' . $sizeInfo['typeextension'] .
+                 '.png" width="' . $sizeInfo['dimension'] . '" height="' .
+                 $height . '" alt="(' . $this->view->escape($alias) .
+                 ' has no picture)"' . " class=\"uid-" . $uid . "\" /></a>\n";
         } else {
-            $picUri = $config['services']['S3']['headshotsBucketAddress'].$uid.'-'.$picInfo['secret'].$sizeInfo['typeextension'].'.jpg';
+            $picUri = $config['services']['S3']['headshotsBucketAddress'] .
+                $uid . '-' . $picInfo['secret'] . $sizeInfo['typeextension'] .
+                '.jpg';
             
-            $dim = (isset($picInfo['sizes'][$sizeInfo['urihelper']]['w']) && isset($picInfo['sizes'][$sizeInfo['urihelper']]['h'])) ? ' width="'.$picInfo['sizes'][$sizeInfo['urihelper']]['w'].'" height="'.$picInfo['sizes'][$sizeInfo['urihelper']]['h'].'"' : '';
+            if (isset($picInfo['sizes'][$sizeInfo['urihelper']]['w']) &&
+             isset($picInfo['sizes'][$sizeInfo['urihelper']]['h'])) {
+                $dim = ' width="' .
+                 $picInfo['sizes'][$sizeInfo['urihelper']]['w'] .
+                 '" height="' .
+                 $picInfo['sizes'][$sizeInfo['urihelper']]['h'] . '"';
+            } else {
+                $dim = '';
+            }
             
-            $html = '<a href="'.$this->view->url(array("username" => $alias), "filestream_1stpage").'" title="'.$this->view->escape($name).'"><img src="'.$picUri.'"'.$dim.' alt="'.$this->view->escape($alias)."\" class=\"uid-".$uid."\" /></a>\n";
+            $html = '<a href="' .
+                 $this->view->url(array("username" => $alias), 
+                "filestream_1stpage") . '" title="' .
+                 $this->view->escape($name) .
+                 '"><img src="' . $picUri . '"' . $dim . ' alt="' .
+                 $this->view->escape($alias) . "\" class=\"uid-" . $uid .
+                 "\" /></a>\n";
         }
         return $html;
      }

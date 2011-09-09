@@ -13,17 +13,16 @@ $accountLinks = array(
 
 $request = Zend_Controller_Front::getInstance()->getRequest();
 
-foreach($accountLinks as $action => $rel)
-{
-	if($action == $request->getActionName()):
-	?>
-	<li class="active"><a href="<?= current($rel) ?>"><?= key($rel) ?></a></li>
-	<?php
-	else :
-	?>
-	<li><a href="<?= current($rel) ?>"><?= key($rel) ?></a></li>
-	<?php
-	endif;
+foreach ($accountLinks as $action => $rel) {
+    if ($action == $request->getActionName()) :
+    ?>
+    <li class="active"><a href="<?php echo current($rel) ?>"><?php echo key($rel) ?></a></li>
+    <?php
+    else :
+    ?>
+    <li><a href="<?php echo current($rel) ?>"><?php echo key($rel) ?></a></li>
+    <?php
+    endif;
 }
 unset($action);
 unset($rel);

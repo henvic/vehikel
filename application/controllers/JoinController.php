@@ -7,23 +7,24 @@ class JoinController extends Zend_Controller_Action
 {
     public function indexAction()
     {
-        $request = $this->getRequest();
-        
         $auth = Zend_Auth::getInstance();
         $registry = Zend_Registry::getInstance();
         
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $config = $registry->get('config');
         
-        if (Zend_Auth::getInstance()->hasIdentity()) {
-            $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "logout") . "?please", array("exit"));
+        $request = $this->getRequest();
+        
+        if ($auth->hasIdentity()) {
+            $this->_redirect($router->assemble(array(), "logout") . "?please", array("exit"));
         }
         
         $signUp = ML_Signup::getInstance();
         
         $form = $signUp->_getSignUpForm();
         
-        if ($request->isPost() && $form->isValid($request->getPost()))
-        {
+        if ($request->isPost() && $form->isValid($request->getPost())) {
             $data = $form->getValues();
             
             $signUp->getAdapter()->beginTransaction();
@@ -31,10 +32,13 @@ class JoinController extends Zend_Controller_Action
             try {
                 $newUserInfo = $signUp->newUser($data['name'], $data['email']);
                 
-                if (isset($data['invitecode']) && !empty($data['invitecode']) && !$registry->isRegistered("inviteCompleteBefore") && !$registry->isRegistered("inviteMultiple"))
-                {
-                    $Invites = new ML_Invites();
-                    $Invites->update(array("used" => "1"), $Invites->getAdapter()->quoteInto("hash = ?", $data['invitecode']));
+                if (isset($data['invitecode']) && ! empty($data['invitecode']) &&
+                 ! $registry->isRegistered("inviteCompleteBefore") &&
+                 ! $registry->isRegistered("inviteMultiple")) {
+                    $invites = new ML_Invites();
+                    $invites->update(array("used" => "1"),
+                     $invites->getAdapter()
+                     ->quoteInto("hash = ?", $data['invitecode']));
                 }
                 
                 $signUp->getAdapter()->commit();
@@ -67,42 +71,49 @@ class JoinController extends Zend_Controller_Action
     
     public function confirmAction()
     {
+        $auth = Zend_Auth::getInstance();
+        
         $request = $this->getRequest();
+        
         $registry = Zend_Registry::getInstance();
+        
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $config = $registry->get("config");
         
-        if (Zend_Auth::getInstance()->hasIdentity()) {
+        if ($auth->hasIdentity()) {
             $registry->set("pleaseSignout", true);
             return $this->_forward("index", "logout");
         }
         
-        
         $newUser = ML_Signup::getInstance();
-        $Credential = ML_Credential::getInstance();
-        $People = ML_People::getInstance();
-        $Profile = new ML_Profile();
-        
+        $credential = ML_Credential::getInstance();
+        $people = ML_People::getInstance();
+        $profile = new ML_Profile();
         
         if ($config['ssl'] && (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")) {
-            $this->_redirect("https://" . $config['webhostssl'] . Zend_Controller_Front::getInstance()->getRouter()->assemble(array($request->getUserParams()), "join_emailconfirm"), array("exit"));
+            $this->_redirect("https://" . $config['webhostssl'] .
+              $router->assemble(array($request->getUserParams()), 
+              "join_emailconfirm"), array("exit"));
         }
         
         $select = $newUser->select();
-        $security_code = $request->getParam("security_code");
+        $securityCode = $request->getParam("security_code");
+        
         $select
-               ->where('securitycode = ?', $security_code)
-               ->where('timestamp >= ?', date("Y-m-d H:i:s", time()-(48*60*60)));
+        ->where('securitycode = ?', $securityCode)
+        ->where('timestamp >= ?', date("Y-m-d H:i:s", time()-(48*60*60)));
         
         $confirmationInfo = $newUser->fetchRow($select);
         
-        if (!is_object($confirmationInfo)) {
+        if (! is_object($confirmationInfo)) {
             $this->getResponse()->setHttpResponseCode(404);
             return $this->_forward("unavailable");
         }
         
         $confirmationInfo = $confirmationInfo->toArray();
         
-           $form = $newUser->_getIdentityForm($security_code);
+           $form = $newUser->_getIdentityForm($securityCode);
            
         if ($request->isPost() && $form->isValid($request->getPost())) {
             $newUser->getAdapter()->beginTransaction();
@@ -110,23 +121,23 @@ class JoinController extends Zend_Controller_Action
             try {
                 $newUser->delete($newUser->getAdapter()->quoteInto('id = ?', $confirmationInfo['id']));
                 
-                  $pre_userInfo = (array(
+                  $preUserInfo = (array(
                         "alias"          => $form->getValue("newusername"),
                         "membershipdate" => $confirmationInfo['timestamp'],
                         "name"           => $confirmationInfo['name'],
                         "email"          => $confirmationInfo['email'],
                   ));
                    
-                   $People->insert($pre_userInfo);
+                   $people->insert($preUserInfo);
             
-                   $uid = $People->getAdapter()->lastInsertId();
-                   if (!$uid) {
+                   $uid = $people->getAdapter()->lastInsertId();
+                   if (! $uid) {
                        throw new Exception("No ID.");
                    }
                    
-                   $Credential->setCredential($uid, $form->getValue("password"));
+                   $credential->setCredential($uid, $form->getValue("password"));
                    
-                   $Profile->insert(array("id" => $uid));
+                   $profile->insert(array("id" => $uid));
                    
                    $newUser->getAdapter()->commit();
             } catch(Exception $e)
@@ -135,23 +146,20 @@ class JoinController extends Zend_Controller_Action
                 throw $e;
             }
             
-            $getUserByUsername = $People->getByUsername($pre_userInfo['alias']);
+            $getUserByUsername = $people->getByUsername($preUserInfo['alias']);
             
-            $adapter = $Credential->getAuthAdapter($getUserByUsername['id'], $form->getValue("password"));
+            $adapter = $credential->getAuthAdapter($getUserByUsername['id'], $form->getValue("password"));
             
             if ($adapter) {
-                $auth    = Zend_Auth::getInstance();
                 $result  = $auth->authenticate($adapter);
-                
-                if ($result->getCode() != Zend_Auth_Result::SUCCESS)
-                {
+                if ($result->getCode() != Zend_Auth_Result::SUCCESS) {
                     throw new Exception("Could not authenticate 'just created' user");
                 }
             }
             
             Zend_Session::regenerateId();
             
-            $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "join_welcome"), array("exit"));
+            $this->_redirect($router->assemble(array(), "join_welcome"), array("exit"));
         }
         
         $this->view->entry = $confirmationInfo;
@@ -160,11 +168,13 @@ class JoinController extends Zend_Controller_Action
     
     public function welcomeAction()
     {
-        if (!Zend_Auth::getInstance()->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
+        $auth = Zend_Auth::getInstance();
+        
+        if (! $auth->hasIdentity()) {
+            Zend_Controller_Front::getInstance()
+            ->registerPlugin(new ML_Plugins_LoginRedirect());
         }
         
-        //$this->view->alias = $form->getValue("newusername");
         $this->view->joined = true;
     }
 }

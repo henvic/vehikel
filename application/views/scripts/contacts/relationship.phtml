@@ -4,11 +4,18 @@ $userInfo = $registry->get("userInfo");
 
 $this->headTitle("Contacts | Relationship", "PREPEND");
 ?>
-<h2>Contact relationship with <?= $this->escape($userInfo['name']) ?></h2>
-<?php if($this->cannot_add_ignored): ?>
+<h2>Contact relationship with <?php echo $this->escape($userInfo['name']) ?></h2>
+<?php if ($this->cannotAddIgnored): ?>
 <p>You are currently ignoring this user.<br /><br />
-You need to <a href="<?= $this->url(array("username" => $userInfo['alias']), "contact_relationship_ignore") ?>">unblock</a> this person before you add as a contact.</p>
+You need to <a href="<?php
+echo $this->url(array("username" => $userInfo['alias']),
+"contactRelationshipIgnore");
+?>">unblock</a> this person before you add as a contact.</p>
 <?php else: ?>
-<?= $this->relationshipForm ?>
-<p>Or <a href="<?= $this->url(array("username" => $userInfo['alias']), "contact_relationship_ignore") ?>">block</a> <?= $this->escape($userInfo['name']) ?>.</p>
-<?php endif; ?>
+<?php echo $this->relationshipForm; ?>
+<p>Or <a href="<?php
+echo $this->url(array("username" => $userInfo['alias']),
+"contactRelationshipIgnore");
+?>">block</a> <?php echo $this->escape($userInfo['name']) ?>.</p>
+<?php
+endif;

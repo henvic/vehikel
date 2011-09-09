@@ -126,8 +126,7 @@ class ML_Auth_Adapter implements Zend_Auth_Adapter_Interface
      * @return void
      */
     public function __construct(Zend_Db_Adapter_Abstract $zendDb = null, $tableName = null, $identityColumn = null,
-                                $credentialColumn = null)
-    {
+                                $credentialColumn = null) {
         $this->_setDbAdapter($zendDb);
 
         if (null !== $tableName) {
@@ -157,7 +156,7 @@ class ML_Auth_Adapter implements Zend_Auth_Adapter_Interface
         /**
          * If no adapter is specified, fetch default database adapter.
          */
-        if(null === $this->_zendDb) {
+        if (null === $this->_zendDb) {
             // require_once 'Zend/Db/Table/Abstract.php';
             $this->_zendDb = Zend_Db_Table_Abstract::getDefaultAdapter();
             if (null === $this->_zendDb) {
@@ -241,7 +240,7 @@ class ML_Auth_Adapter implements Zend_Auth_Adapter_Interface
     {
         if (is_integer($flag)) {
             $this->_ambiguityIdentity = (1 === $flag ? true : false);
-        } elseif (is_bool($flag)) {
+        } else if (is_bool($flag)) {
             $this->_ambiguityIdentity = $flag;
         }
         return $this;
@@ -296,7 +295,7 @@ class ML_Auth_Adapter implements Zend_Auth_Adapter_Interface
             }
             return $returnObject;
 
-        } elseif (null !== $omitColumns) {
+        } else if (null !== $omitColumns) {
 
             $omitColumns = (array) $omitColumns;
             foreach ($this->_resultRow as $resultColumn => $resultValue) {
@@ -364,13 +363,13 @@ class ML_Auth_Adapter implements Zend_Auth_Adapter_Interface
 
         if ($this->_tableName == '') {
             $exception = 'A table must be supplied for the Zend_Auth_Adapter_DbTable authentication adapter.';
-        } elseif ($this->_identityColumn == '') {
+        } else if ($this->_identityColumn == '') {
             $exception = 'An identity column must be supplied for the Zend_Auth_Adapter_DbTable authentication adapter.';
-        } elseif ($this->_credentialColumn == '') {
+        } else if ($this->_credentialColumn == '') {
             $exception = 'A credential column must be supplied for the Zend_Auth_Adapter_DbTable authentication adapter.';
-        } elseif ($this->_identity == '') {
+        } else if ($this->_identity == '') {
             $exception = 'A value for the identity was not provided prior to authentication with Zend_Auth_Adapter_DbTable.';
-        } elseif ($this->_credential === null) {
+        } else if ($this->_credential === null) {
             $exception = 'A credential value was not provided prior to authentication with Zend_Auth_Adapter_DbTable.';
         }
 
@@ -453,7 +452,7 @@ class ML_Auth_Adapter implements Zend_Auth_Adapter_Interface
             $this->_authenticateResultInfo['code'] = Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND;
             $this->_authenticateResultInfo['messages'][] = 'A record with the supplied identity could not be found.';
             return $this->_authenticateCreateAuthResult();
-        } elseif (count($resultIdentities) > 1 && false === $this->getAmbiguityIdentity()) {
+        } else if (count($resultIdentities) > 1 && false === $this->getAmbiguityIdentity()) {
             $this->_authenticateResultInfo['code'] = Zend_Auth_Result::FAILURE_IDENTITY_AMBIGUOUS;
             $this->_authenticateResultInfo['messages'][] = 'More than one record matches the supplied identity.';
             return $this->_authenticateCreateAuthResult();
@@ -472,10 +471,10 @@ class ML_Auth_Adapter implements Zend_Auth_Adapter_Interface
      */
     protected function _authenticateValidateResult($resultIdentity)
     {
-        $t_hasher = new PasswordHash(self::PASSWORD_HASH_ITERATION_COUNT, FALSE);
+        $tHasher = new PasswordHash(self::PASSWORD_HASH_ITERATION_COUNT, FALSE);
         
-        if(!$t_hasher->CheckPassword($this->_credential, $resultIdentity['credential']))
-        {
+        if (! $tHasher->CheckPassword($this->_credential,
+         $resultIdentity['credential'])) {
             $this->_authenticateResultInfo['code'] = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
             $this->_authenticateResultInfo['messages'][] = 'Supplied credential is invalid.';
             return $this->_authenticateCreateAuthResult();

@@ -2,7 +2,7 @@
 
 require_once EXTERNAL_LIBRARY_PATH . '/normal/UtfNormal.php';
 
-class ML_Tagschange extends ML_Tags
+class ML_TagsChange extends ML_Tags
 {
     /**
      * RawFilter takes a string and process it
@@ -12,14 +12,16 @@ class ML_Tagschange extends ML_Tags
      */
     public function RawFilter($tagstring)
     {
-        $tagstring = mb_ereg_replace (' +', ' ', trim($tagstring));
-        $tagstring = mb_ereg_replace("[\r\t\n]","",$tagstring);
+        $tagstring = mb_ereg_replace(' +', ' ', trim($tagstring));
+        $tagstring = mb_ereg_replace("[\r\t\n]", "", $tagstring);
 
         // http://www.asciitable.com/
         $tagstring = trim($tagstring, "\x22\x27\x26\x2C");
 
-        if(ctype_punct($tagstring)) $tagstring = '';
-
+        if (ctype_punct($tagstring)) {
+            $tagstring = '';
+        }
+        
         return $tagstring;
     }
 
@@ -31,27 +33,27 @@ class ML_Tagschange extends ML_Tags
      */
     public function makeArrayOfTags($tags)
     {
-        $tagsArray = Array();
+        $tagsArray = array();
         $expTags = explode(" ", $tags);
-        $tempArray = Array();
+        $tempArray = array();
         $openTag = 0;
         $counter = 0;
 
-        if(is_string($tags)) $tags = Array($tags);
+        if (is_string($tags)) {
+            $tags = array($tags);
+        }
 
         // making "words together"
-        foreach($expTags as $string)
-        {
-            if($openTag == 0)
-            {
-                if(mb_substr($string, 0, 1) == '"') {
+        foreach ($expTags as $string) {
+            if ($openTag == 0) {
+                if (mb_substr($string, 0, 1) == '"') {
                     $openTag = 1;
                     $string = mb_substr($string, 1);
                 }
                 $tempArray[$counter] = $string;
                 $counter++;
             } else {
-                if(mb_substr($string, -1) == '"') {
+                if (mb_substr($string, -1) == '"') {
                     $openTag = 0;
                     $string = mb_substr($string, 0, -1);
                 }
@@ -64,13 +66,18 @@ class ML_Tagschange extends ML_Tags
         //so we only use the first found
         //or two things with the same cleantag
         $cleantags = array();
-        foreach($tempArray as $key => $string)
-        {
+        foreach ($tempArray as $key => $string) {
             $rawString = $this->RawFilter($string);
             $cleanString = $this->normalize($rawString);
-            if(!empty($rawString) && !empty($cleanString) && !in_array($cleanString, $cleantags)) {
-                if($cleanString > 60) $cleanString = mb_substr($cleanString, 0, 59);
-                if($rawString > 60) $rawString = mb_substr($rawString, 0, 59);
+            
+            if (!empty($rawString) && !empty($cleanString) &&
+            !in_array($cleanString, $cleantags)) {
+                if ($cleanString > 60) {
+                    $cleanString = mb_substr($cleanString, 0, 59);
+                }
+                if ($rawString > 60) {
+                    $rawString = mb_substr($rawString, 0, 59);
+                }
                 $tag = Array("raw" => $rawString, "clean" => $cleanString);
                 $tagsArray[] = $tag;
                 $cleantags[] = $cleanString;
@@ -110,24 +117,28 @@ class ML_Tagschange extends ML_Tags
 
         $cleantag = mb_substr($cleaning, 0, 50);
 
-        if(empty($cleantag)) return false;
+        if (empty($cleantag)) {
+            return false;
+        }
 
         return $cleantag;
     }
     
     /**
      *
-     * @param $tags_string the tag string received by the means of a form
+     * @param $tagsString the tag string received by the means of a form
      * @param $shareInfo
      * @param $userInfo
      * @return unknown_type
      */
-    public function add($tags_string, $shareInfo)
+    public function add($tagsString, $shareInfo)
     {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
-        if(!$tags_string) return false;
+        if (! $tagsString) {
+            return false;
+        }
 
         $shareId = $shareInfo['id'];
         $uid = $shareInfo['byUid'];
@@ -136,25 +147,35 @@ class ML_Tagschange extends ML_Tags
         $tagsCounter = sizeof($oldTags);
         $oldTagsCounter = $tagsCounter;
         $tagsLimit = $config['tags']['limit'];
-        $tagsArray = $this->makeArrayOfTags($tags_string);
+        $tagsArray = $this->makeArrayOfTags($tagsString);
 
-        $cleanOldTags = array(); foreach($oldTags as $tag) {$cleanOldTags[] = $tag['clean'];}
+        $cleanOldTags = array();
+        
+        foreach ($oldTags as $tag) {
+            $cleanOldTags[] = $tag['clean'];
+        }
 
-        foreach($tagsArray as $n => $tag)
-        {
-            if($tagsLimit <= $tagsCounter) break;
+        foreach ($tagsArray as $n => $tag) {
+            if ($tagsLimit <= $tagsCounter) {
+                break;
+            }
                 
-            if(!in_array($tag['clean'], $cleanOldTags))
-            {
-                if($tag['clean'] > 40) $tag['clean'] = mb_substr($tag['clean'], 0, 39);
-                if($tag['raw'] > 40) $tag['raw'] = mb_substr($tag['raw'], 0, 39);
+            if (! in_array($tag['clean'], $cleanOldTags)) {
+                if ($tag['clean'] > 40) {
+                    $tag['clean'] = mb_substr($tag['clean'], 0, 39);
+                }
+                if ($tag['raw'] > 40) {
+                    $tag['raw'] = mb_substr($tag['raw'], 0, 39);
+                }
                 
                 $tag['share'] = $shareId;
                 $tag['people'] = $uid;
+                
                 try {
                     $this->insert($tag);
                     $tagsCounter++;
-                } catch(Exception $e) {}
+                } catch(Exception $e) {
+                }
             }
         }
         

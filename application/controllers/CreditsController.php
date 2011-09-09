@@ -1,10 +1,12 @@
 <?php
 
 class CreditsController extends Zend_Controller_Action
-{   
+{
     public function init()
     {
-        if(!Zend_Auth::getInstance()->hasIdentity()) {
+        $auth = Zend_Auth::getInstance();
+        
+        if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
         }
     }
@@ -17,21 +19,20 @@ class CreditsController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $Credits = ML_Credits::getInstance();
+        $credits = ML_Credits::getInstance();
         
-        $Coupons = ML_Coupons::getInstance();
+        $coupons = ML_Coupons::getInstance();
         
-        $redeemForm = $Coupons->_RedeemForm();
+        $redeemForm = $coupons->_RedeemForm();
         
-        if($request->isPost()) {
-            if($redeemForm->isValid($request->getPost()))
-            {
-                $transaction_id = $Credits->couponTransaction($signedUserInfo['id'], $redeemForm->getValue("redeem"));
+        if ($request->isPost()) {
+            if ($redeemForm->isValid($request->getPost())) {
+                $transactionId =
+                $credits->couponTransaction($signedUserInfo['id'], $redeemForm->getValue("redeem"));
                 
-                if($transaction_id)
-                {
+                if ($transactionId) {
                     $redeemForm->setDefault("redeem", "");
-                    $this->view->transaction_id = $transaction_id;
+                    $this->view->transactionId = $transactionId;
                 }
             }
         }
@@ -46,6 +47,9 @@ class CreditsController extends Zend_Controller_Action
     public function ordersAction()
     {
         $registry = Zend_Registry::getInstance();
+        
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $config = $registry->get("config");
         
         $signedUserInfo = $registry->get("signedUserInfo");
@@ -54,12 +58,16 @@ class CreditsController extends Zend_Controller_Action
         
         $page = $request->getUserParam("page");
         
-        $Credits = ML_Credits::getInstance();
-        $paginator = $Credits->history($signedUserInfo['id'], $config['orders']['perPage'], $page);
+        $credits = ML_Credits::getInstance();
+        $paginator = $credits->history($signedUserInfo['id'], $config['orders']['perPage'], $page);
         
         //Test if there is enough pages or not
-        if((!$paginator->count() && $page != 1) || $paginator->getCurrentPageNumber() != $page) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "orders_1stpage"), array("exit"));
-        
+        if ((! $paginator->count() && $page != 1) ||
+         $paginator->getCurrentPageNumber() != $page) {
+            $this->_redirect($router
+                ->assemble(array(), "orders_1stpage"), array("exit"));
+        }
+         
         $this->view->paginator = $paginator;
     }
     
@@ -72,20 +80,20 @@ class CreditsController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $order_pid = $request->getUserParam("order_pid");
+        $orderPid = $request->getUserParam("order_pid");
         
-        $Credits = ML_Credits::getInstance();
+        $credits = ML_Credits::getInstance();
         
-        $order = $Credits->getByPId($order_pid);
-        if(!$order || $order['uid'] != $signedUserInfo['id'])
-        {
+        $order = $credits->getByPId($orderPid);
+        
+        if (! $order || $order['uid'] != $signedUserInfo['id']) {
             $registry->set("notfound", true);
             throw new Exception("Order doesn't exists.");
         }
-        if($order['reason_type'] == 'redeem')
-        {
-            $Coupons = ML_Coupons::getInstance();
-            $this->view->order_coupon = $Coupons->getById($order['reason_id']);
+        
+        if ($order['reason_type'] == 'redeem') {
+            $coupons = ML_Coupons::getInstance();
+            $this->view->orderCoupon = $coupons->getById($order['reason_id']);
         }
         
         $this->view->order = $order;

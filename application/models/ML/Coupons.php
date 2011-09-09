@@ -23,7 +23,8 @@ class ML_Coupons extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -41,12 +42,13 @@ class ML_Coupons extends ML_getModel
     {
         static $form = '';
         
-        if(!is_object($form))
-        {
+        if (! is_object($form)) {
+            
+            $router = Zend_Controller_Front::getInstance()->getRouter();    
             require APPLICATION_PATH . '/forms/Redeem.php';
             
             $form = new Form_Redeem(array(
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "do_order"),
+                'action' => $router->assemble(array(), "do_order"),
                 'method' => 'post',
             ));
         }

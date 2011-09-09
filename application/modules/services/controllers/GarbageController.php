@@ -1,6 +1,6 @@
 <?php
 
-class GarbageController extends Zend_Controller_Action 
+class GarbageController extends Zend_Controller_Action
 {
     /*
      * public function removeleftoversAction()
@@ -28,42 +28,49 @@ class GarbageController extends Zend_Controller_Action
         
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
-        $s3 = new Zend_Service_Amazon_S3($config['services']['S3']['key'], $config['services']['S3']['secret']);
         
-        $RemoveFiles = new ML_RemoveFiles();
+        $s3config = $config['services']['S3'];
         
-        $select = $RemoveFiles->select();
+        $s3 = new Zend_Service_Amazon_S3($s3config['key'], $s3config['secret']);
+        
+        $removeFiles = new ML_RemoveFiles();
+        
+        $select = $removeFiles->select();
         $select->order("timestamp ASC")->limit(50);
         
-        $del_shares = $RemoveFiles->fetchAll($select);
+        $delShares = $removeFiles->fetchAll($select);
         
-        $deleted_shares = array();
+        $deletedShares = array();
         
-        foreach($del_shares->toArray() as $del_share) {
-            $object_key = $del_share['alias']."/".$del_share['share']."-".$del_share['download_secret']."/".$del_share['filename'];
+        foreach ($delShares->toArray() as $delShare) {
+            $objectKey = $delShare['alias'] . "/" . $delShare['share'] . "-" .
+            $delShare['download_secret'] . "/" . $delShare['filename'];
             
-            if($s3->removeObject($config['services']['S3']['sharesBucket']."/".$object_key))
-            {
-                $deleted_shares[] = $del_share['id'];
+            $object = $s3config['sharesBucket'] . "/" . $objectKey;
+            
+            if ($s3->removeObject($object)) {
+                $deletedShares[] = $delShare['id'];
             }
         }
         
-        if(!empty($deleted_shares)) {
-            $querystring = "DELETE from `".$RemoveFiles->getTableName()."` WHERE ";
+        if (! empty($deletedShares)) {
+            $querystring = "DELETE from `" . $removeFiles->getTableName() . "` WHERE ";
             do {
-                $line = $RemoveFiles->getAdapter()->quoteInto("id = ?", current($deleted_shares));
+                $line = $removeFiles->getAdapter()->quoteInto("id = ?", current($deletedShares));
                 $querystring .= $line;
                 
-                next($deleted_shares);
+                next($deletedShares);
                 
-                if(current($deleted_shares)) $querystring.=" OR ";
+                if (current($deletedShares)) {
+                    $querystring .= " OR ";
+                }
                 
-            } while(current($deleted_shares));
+            } while (current($deletedShares));
             
-            $RemoveFiles->getAdapter()->query($querystring);
+            $removeFiles->getAdapter()->query($querystring);
         }
         
-        echo "Cleaned ".count($deleted_shares)." files from storage.\n";
+        echo "Cleaned ".count($deletedShares)." files from storage.\n";
     }
     
     public function cleanantiattackAction()
@@ -86,14 +93,18 @@ class GarbageController extends Zend_Controller_Action
         $this->cleantableolddata("emailChange", 48*60*60);
     }
     
-    public function cleantableolddata($table_name, $age)
+    public function cleantableolddata($tableName, $age)
     {//todo similar to this other things
         $getModel = new ML_getModel();
-        if(empty($table_name) || !ctype_alnum($table_name)) throw new Exception("Table not given or not accepted.\n");
+        if (empty($tableName) || ! ctype_alnum($tableName)) {
+            throw new Exception("Table not given or not accepted.\n");
+        }
         
-        $num_deleted = $getModel->getAdapter()->delete($table_name, $getModel->getAdapter()->quoteInto("timestamp < ?", date("Y-m-d H:i:s", time()-($age))));
+        $numDelete = $getModel->getAdapter()
+         ->delete($tableName, $getModel->getAdapter()
+         ->quoteInto("timestamp < ?", date("Y-m-d H:i:s", time()-($age))));
         
-        echo "Number of rows with age > $age (seconds) deleted in $table_name: ".$num_deleted."\n";
+        echo "Number of rows with age > $age (seconds) deleted in $tableName: ".$numDelete."\n";
     }
     
 }

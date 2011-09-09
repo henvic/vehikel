@@ -1,5 +1,5 @@
 <?php
-require_once 'Zend/Validate/Abstract.php';
+//require_once 'Zend/Validate/Abstract.php';
 
 
 class MLValidator_NewPassword extends Zend_Validate_Abstract
@@ -12,22 +12,25 @@ class MLValidator_NewPassword extends Zend_Validate_Abstract
  
     public function isValid($value)
     {
-        $Credential = ML_Credential::getInstance();
+        $registry = Zend_Registry::getInstance();
+        
+        $credential = ML_Credential::getInstance();
         
         $this->_setValue($value);
          
         $valueString = (string) $value;
         
-        if(mb_strlen($value) < 6 || mb_strlen($value) > 20) return false;
+        if (mb_strlen($value) < 6 || mb_strlen($value) > 20) {
+            return false;
+        }
         
-        $credentialInfoData = Zend_Registry::getInstance()->get('credentialInfoDataForPasswordChange');
+        $credInfo = $registry->get('credentialInfoDataForPasswordChange');
         
-        $adapter = $Credential->getAuthAdapter($credentialInfoData['uid'], $value);
-        $authenticate = $adapter->authenticate();
+        $adapter = $credential->getAuthAdapter($credInfo['uid'], $value);
+        $resp = $adapter->authenticate();
         
         //shall not accept the same password as before
-        if($authenticate->getCode() == Zend_Auth_Result::SUCCESS)
-        {
+        if ($resp->getCode() == Zend_Auth_Result::SUCCESS) {
             $this->_error(self::MSG_SAME_PASSWORD);
             return false;
         }

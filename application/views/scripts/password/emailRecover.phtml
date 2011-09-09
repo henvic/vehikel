@@ -3,16 +3,35 @@
 $registry = Zend_Registry::getInstance();
 $config = $registry->get('config');
 ?>
-Hi <?= $this->escape($this->recoverUser['name']) ?>!
+Hi <?php echo $this->escape($this->recoverUser['name']); ?>!
 
-Your username at Plifk is <?= $this->escape($this->recoverUser['alias']) ?>.
+Your username at Plifk is <?php echo $this->escape($this->recoverUser['alias']); ?>.
 
 If you remember your password you can login right now at
-<?= ($config['ssl']) ? "https://" . $config['webhostssl'] : "http://" . $config['webhost'] ?><?= $this->url(array(), "login") ?>
+<?php
+
+if ($config['ssl']) {
+    echo "https://" . $config['webhostssl'];
+} else {
+    echo "http://" . $config['webhost'];
+}
+
+echo $this->url(array(), "login");
+?>
 
 If you need to set a new password go to
-<?= ($config['ssl']) ? "https://" . $config['webhostssl'] : "http://" . $config['webhost'] ?><?= $this->url(array("confirm_uid" => $this->recoverUser['id'], "security_code" => $this->securitycode), "password_unsigned") ?>
+<?php
+
+if ($config['ssl']) {
+    echo "https://" . $config['webhostssl'];
+} else {
+    echo "http://" . $config['webhost'];
+}
+
+echo $this->url(array("confirm_uid" => $this->recoverUser['id'],
+"security_code" => $this->securitycode), "password_unsigned");
+?>
 
 -
-Plifk
-www.plifk.com
+<?php echo $this->escape($config['applicationname']); ?>
+<?php echo $this->escape($config['webhost']);

@@ -4,14 +4,14 @@ $registry = Zend_Registry::getInstance();
 $config = $registry->get('config');
 $signedUserInfo = $registry->get("signedUserInfo");
 ?>
-Hi <?= $this->escape($signedUserInfo['name']) ?> (<?= $this->escape($signedUserInfo['alias']) ?>).
+Hi <?php echo $this->escape($signedUserInfo['name']) ?> (<?php echo $this->escape($signedUserInfo['alias']) ?>).
 
 If you want to use this e-mail address for your account
 confirm it at
-http://<?= $config['webhost'] ?><?= $this->url(array("confirm_uid" => $signedUserInfo['id'], "security_code" => $this->securitycode), "emailconfirm") ?>
+http://<?php echo $config['webhost'] ?><?php echo $this->url(array("confirm_uid" => $signedUserInfo['id'], "security_code" => $this->securitycode), "emailconfirm") ?>
 
 If it was a mistake, don't open the link above.
 
 -
-<?= $this->escape($config['applicationname']) ?>
-<?= $this->escape($config['webhost']) ?>
+<?php echo $this->escape($config['applicationname']); ?>
+<?php echo $this->escape($config['webhost']);

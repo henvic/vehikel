@@ -1,6 +1,6 @@
 <?php
 class ML_Comments extends ML_getModel
-{    
+{
     protected $_name = "comments";
     
 /**
@@ -25,7 +25,8 @@ class ML_Comments extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -43,16 +44,13 @@ class ML_Comments extends ML_getModel
         $query = $this->select()->where("share = ?", $share['id'])
         ->where("uid = ?", $uid)
         ->where("NOW() < TIMESTAMP(lastModified, '00:00:05')")
-        ->where("comments = ?", $msg)
-        ;
+        ->where("comments = ?", $msg);
         
         $resp = $this->getAdapter()->fetchAll($query);
         
-        if(is_array($resp))
-        {
-            foreach($resp as $item)
-            {
-                if($item['comments'] == $msg) {
+        if (is_array($resp)) {
+            foreach ($resp as $item) {
+                if ($item['comments'] == $msg) {
                     return $item['id'];
                 }
             }
@@ -60,72 +58,85 @@ class ML_Comments extends ML_getModel
         
         $purifier = ML_HtmlPurifier::getInstance();
         
-        $msg_filtered = $purifier->purify($msg);
+        $msgFiltered = $purifier->purify($msg);
         
-        $this->getAdapter()->query("INSERT INTO `".$this->_name."` (`uid`, `share`, `byUid`, `comments`, `comments_filtered`, `timestamp`) SELECT ?, ?, ?, ?, ?, CURRENT_TIMESTAMP FROM DUAL", array($uid, $share['id'], $share['byUid'], $msg, $msg_filtered));
+        $this->getAdapter()
+         ->query("INSERT INTO `" . $this->_name .
+          "` (`uid`, `share`, `byUid`, `comments`, `comments_filtered`, `timestamp`) SELECT ?, ?, ?, ?, ?, CURRENT_TIMESTAMP FROM DUAL",
+          array($uid, $share['id'], $share['byUid'], $msg, $msgFiltered));
         
         return $this->getAdapter()->lastInsertId();
     }
     
-    public function count($share_id)
+    public function count($shareId)
     {
-        $query = $this->select()->from($this->_name, 'count(*)')->where("share = ?", $share_id);
+        $query = $this->select()
+            ->from($this->_name, 'count(*)')
+            ->where("share = ?", $shareId);
+        
         return $this->getAdapter()->fetchOne($query);
     }
     
-    public function getCommentsPages($share_id, $per_page, $page)
+    public function getCommentsPages($shareId, $perPage, $page)
     {
         $select = $this->select();
         $select
-        ->where($this->_name.".share = ?", $share_id)
-        ->order("timestamp ASC")
-        ;
+        ->where($this->_name.".share = ?", $shareId)
+        ->order("timestamp ASC");
         
         $this->joinPeopleInfo($select, $this->_name, "uid");
         
         $paginator = Zend_Paginator::factory($select);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setItemCountPerPage($per_page);
+        $paginator->setItemCountPerPage($perPage);
         
         return $paginator;
     }
     
-    public function getCommentPosition($comment_id, $share_id, $per_page)
+    public function getCommentPosition($commentId, $shareId, $perPage)
     {
         $this->getAdapter()->query("set @aaaaa:=0");
         
-        $query = $this->getAdapter()->fetchOne(
-            "select position from (select * from(select @aaaaa:=@aaaaa+1 as position, id from comments where share = ? order by timestamp ASC) as positions where id = ?) as position;", 
-        array($share_id, $comment_id));
+        $query = $this->getAdapter()
+        ->fetchOne("select position from (select * from(select @aaaaa:=@aaaaa+1 as position, id from comments where share = ? order by timestamp ASC) as positions where id = ?) as position;", 
+        array($shareId, $commentId));
         
         $this->getAdapter()->query("set @aaaaa:=0");
         
-        $page = ceil($query/$per_page);
+        $page = ceil($query/$perPage);
         
-        $rel_pos = $query - ($per_page*($page - 1));
+        $relPos = $query - ($perPage*($page - 1));
         
-        return ($query) ? array("page" => $page, "page_position" => $rel_pos,
-                "absolute_position" => $query) : false;
+        if ($query) {
+            return array("page" => $page, "page_position" => $relPos,
+                "absolute_position" => $query);
+        }
+        return false;
     }
     
     public function _addForm()
     {
         static $form = '';
 
-        if(!is_object($form))
-        {
+        if (! is_object($form)) {
             $registry = Zend_Registry::getInstance();
+            
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
             $userInfo = $registry->get("userInfo");
             $shareInfo = $registry->get('shareInfo');
             
-            if($registry->isRegistered('commentInfo'))
-            {
-                $action = Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id'], "comment_id" => $registry['commentInfo']['id']), "editcomment");
+            if ($registry->isRegistered('commentInfo')) {
+                $action = $router->assemble(array("username" => $userInfo['alias'],
+                 "share_id" => $shareInfo['id'],
+                 "comment_id" => $registry['commentInfo']['id']),
+                 "editcomment");
+            
             } else {
-                $action = Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage");
+                $action = $router->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage");
             }
              
-            require_once APPLICATION_PATH . '/forms/Comment.php';
+            require APPLICATION_PATH . '/forms/Comment.php';
             
             //we use #previewComment here because if it is not for publishment, we
             //want to preview what is there and if it is, the user will be redirected 

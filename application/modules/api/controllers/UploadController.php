@@ -5,17 +5,18 @@ class UploadController extends Zend_Controller_Action
     protected function _uploadForm()
     {
         $router = new Zend_Controller_Router_Rewrite();
-        $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/defaultRoutes.ini');
-        $router->addConfig($config, 'routes');
+        
+        $routeConfig =
+        new Zend_Config_Ini(APPLICATION_PATH . '/configs/defaultRoutes.ini');
+        
+        $router->addConfig($routeConfig, 'routes');
         
         static $form = '';
         
-        if(!is_object($form))
-        {
-            require_once APPLICATION_PATH . '/forms/api/uploadForm.php';
+        if (! is_object($form)) {
+            require APPLICATION_PATH . '/forms/api/uploadForm.php';
             
             $form = new Form_Upload(array(
-                'action' => $router->assemble(array(), "upload"),
                 'method' => 'post',
             ));
         }
@@ -33,27 +34,25 @@ class UploadController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        if(!$config['upload']['available']) throw new Exception("Not receiving uploads now. Try later.");
+        if (! $config['upload']['available']) {
+            throw new Exception("Not receiving uploads now. Try later.");
+        }
         
         $userInfo = $registry->get("authedUserInfo");
         
-        $Share = new ML_Upload();
+        $share = new ML_Upload();
         
-        $uploadStatus = $Share->getUploadStatus($userInfo['id']);
+        $uploadStatus = $share->getUploadStatus($userInfo['id']);
         
         $registry->set("uploadStatus", $uploadStatus);
         
         $form = $this->_uploadForm();
         
-        if($request->isPost()) {
+        if ($request->isPost()) {
             ignore_user_abort(true);
-            //it doesn't seems to be working
-            //the idea is to let it open to the user to exit the page if it takes too long
-            //not a major problem since the upload to s3 should be real quick
         }
         
-        if($request->isPost() && $form->isValid($request->getPost()))
-        {
+        if ($request->isPost() && $form->isValid($request->getPost())) {
             // Returns all known internal file information
             $files = $form->file->getFileInfo();
 
@@ -63,7 +62,8 @@ class UploadController extends Zend_Controller_Action
             $file = key($files);
             $info = current($files);
             
-            if($info['error'] != 0 || $info['tmp_name'] == '' || !is_uploaded_file($info['tmp_name'])) {
+            if ($info['error'] != 0 || $info['tmp_name'] == '' ||
+             ! is_uploaded_file($info['tmp_name'])) {
                 throw new Exception("Upload error. File info problem.");
             }
             
@@ -74,23 +74,28 @@ class UploadController extends Zend_Controller_Action
             $details['title'] = $form->getValue("title");
             $details['description'] = $form->getValue("description");
             
-            $newFileId = $Share->addFile($info, $userInfo, false, $details);
-            if($newFileId) {
-                $shareInfo = $Share->getById($newFileId);
+            $newFileId = $share->addFile($info, $userInfo, false, $details);
+            
+            if ($newFileId) {
+                $shareInfo = $share->getById($newFileId);
                 
                 $doc = new ML_Dom();
                 $doc->formatOutput = true;
-                $file_element = $doc->createElement("file");
-                $id_element = $doc->createElement("id");
-                $id_element->appendChild($doc->createTextNode($newFileId));
-                $file_element->appendChild($id_element);
-                $md5_element = $doc->createElement("md5sum");
-                $md5_element->appendChild($doc->createTextNode($shareInfo['md5']));
-                $file_element->appendChild($md5_element);
-                $doc->appendChild($file_element);
+                $fileElement = $doc->createElement("file");
+                $idElement = $doc->createElement("id");
+                $idElement->appendChild($doc->createTextNode($newFileId));
+                $fileElement->appendChild($idElement);
+                
+                $md5Element = $doc->createElement("md5sum");
+                $md5Element
+                ->appendChild($doc->createTextNode($shareInfo['md5']));
+                
+                $fileElement->appendChild($md5Element);
+                $doc->appendChild($fileElement);
                 $this->_helper->printResponse($doc);
+            } else {
+                throw new Exception("Upload error.");
             }
-            else throw new Exception("Upload error.");
         } else {
             throw new Exception("Upload error. Not valid.");
         }
@@ -104,21 +109,22 @@ class UploadController extends Zend_Controller_Action
         
         $userInfo = $registry->get("authedUserInfo");
         
-        $Share = new ML_Upload();
+        $share = new ML_Upload();
         
-        $uploadStatus = $Share->getUploadStatus($userInfo['id']);
+        $uploadStatus = $share->getUploadStatus($userInfo['id']);
         
         $doc = new ML_Dom();
         $doc->formatOutput = true;
         
-        $root_element = $doc->createElement("user");
-        $doc->appendChild($root_element);
+        $rootElement = $doc->createElement("user");
+        $doc->appendChild($rootElement);
         
-        $root_element->appendChild($doc->newTextAttribute('id', $userInfo['id']));
+        $rootElement
+        ->appendChild($doc->newTextAttribute('id', $userInfo['id']));
         
-        $username_element = $doc->createElement("username");
-        $username_element->appendChild($doc->createTextNode($userInfo['alias']));
-        $root_element->appendChild($username_element);
+        $usernameElement = $doc->createElement("username");
+        $usernameElement->appendChild($doc->createTextNode($userInfo['alias']));
+        $rootElement->appendChild($usernameElement);
         
         $bandwidth = $uploadStatus['bandwidth'];
         $bandwidthInfo = array(
@@ -130,17 +136,26 @@ class UploadController extends Zend_Controller_Action
             "remainingkb" => floor($bandwidth['remainingbytes']/8),
         );
         
-        $bandwidth_element = $doc->createElement("bandwidth");
-        foreach($bandwidthInfo as $field => $data)
-        {
-            $bandwidth_element->appendChild($doc->newTextAttribute($field, $data));
-        }
-        $root_element->appendChild($bandwidth_element);
+        $bandwidthElement = $doc->createElement("bandwidth");
         
-        $filesize_element = $doc->createElement("filesize");
-        $filesize_element->appendChild($doc->newTextAttribute('maxbytes', floor($uploadStatus['filesize']['maxbytes'])));
-        $filesize_element->appendChild($doc->newTextAttribute('maxkb', floor($uploadStatus['filesize']['maxbytes']/8)));
-        $root_element->appendChild($filesize_element);
+        foreach ($bandwidthInfo as $field => $data) {
+            $bandwidthElement
+            ->appendChild($doc->newTextAttribute($field, $data));
+        }
+        $rootElement->appendChild($bandwidthElement);
+        
+        $filesizeElement = $doc->createElement("filesize");
+        $filesizeElement
+        ->appendChild($doc
+         ->newTextAttribute('maxbytes',
+          floor($uploadStatus['filesize']['maxbytes'])));
+        
+        $filesizeElement
+        ->appendChild($doc
+         ->newTextAttribute('maxkb',
+          floor($uploadStatus['filesize']['maxbytes']/8)));
+        
+        $rootElement->appendChild($filesizeElement);
         
         $this->_helper->printResponse($doc);
     }

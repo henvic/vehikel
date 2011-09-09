@@ -4,7 +4,8 @@ abstract class Controller_TestCase extends Zend_Test_PHPUnit_ControllerTestCase
     protected function setUp()
     {
         $this->bootstrap=array($this, 'appBootstrap');
-        Zend_Auth::getInstance()->setStorage(new Zend_Auth_Storage_NonPersistent());
+        $storage = new Zend_Auth_Storage_NonPersistent();
+        Zend_Auth::getInstance()->setStorage($storage);
         parent::setUp();
     }
 

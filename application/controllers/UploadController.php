@@ -7,12 +7,13 @@ class UploadController extends Zend_Controller_Action
         static $form = '';
         $registry = Zend_Registry::getInstance();
 
-        if(!is_object($form))
-        {
-            require_once APPLICATION_PATH . '/forms/Upload.php';
+        if (! is_object($form)) {
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
+            require APPLICATION_PATH . '/forms/Upload.php';
              
             $form = new Form_Upload(array(
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "upload"),
+                'action' => $router->assemble(array(), "upload"),
                 'method' => 'post',
             ));
         }
@@ -25,30 +26,36 @@ class UploadController extends Zend_Controller_Action
         
         $auth = Zend_Auth::getInstance();
         $registry = Zend_Registry::getInstance();
+        
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $config = $registry->get("config");
         
         $request = $this->getRequest();
         
-        $Share = new ML_Upload();
+        $share = new ML_Upload();
         
-        if(!$auth->hasIdentity()) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "login"), array("exit"));
+        if (! $auth->hasIdentity()) {
+            $this->_redirect($router->assemble(array(), "login"), array("exit"));
+        }
         
-        if(!$config['upload']['available']) $this->_forward("offline");
+        if (! $config['upload']['available']) {
+            $this->_forward("offline");
+        }
         
         $signedUserInfo = $registry->get('signedUserInfo');
         
-        $uploadStatus = $Share->getUploadStatus($auth->getIdentity());
+        $uploadStatus = $share->getUploadStatus($auth->getIdentity());
         
         $registry->set("uploadStatus", $uploadStatus);
         
         $form = $this->_uploadForm();
         
-        if($request->isPost()) {
+        if ($request->isPost()) {
             ignore_user_abort(true);
         }
         
-        if($request->isPost() && $form->isValid($request->getPost()))
-        {
+        if ($request->isPost() && $form->isValid($request->getPost())) {
             // Returns all known internal file information
             $files = $form->file->getFileInfo();
 
@@ -58,7 +65,8 @@ class UploadController extends Zend_Controller_Action
             $num = -1;
             foreach ($files as $file => $info) {
                 $num++;
-                if($info['error'] != 0 || $info['tmp_name'] == '' || !is_uploaded_file($info['tmp_name'])) {
+                if ($info['error'] != 0 || $info['tmp_name'] == '' ||
+                 ! is_uploaded_file($info['tmp_name'])) {
                     $fileErrors[] = $file;
                     continue;
                 }
@@ -66,21 +74,27 @@ class UploadController extends Zend_Controller_Action
             }
             
             $uploaded = array();
-            foreach($fileInfo as $num => $file)
-            {
+            foreach ($fileInfo as $num => $file) {
                 set_time_limit(100);
-                $newFileId = $Share->addFile($file, $signedUserInfo);
-                if($newFileId) {
+                $newFileId = $share->addFile($file, $signedUserInfo);
+                if ($newFileId) {
                     $uploaded[] = $newFileId;
                 }
             }
 
-            $up_num = sizeof($uploaded);
-            if($up_num > 1) {
+            $upNum = sizeof($uploaded);
+            if ($upNum > 1) {
+                
                 //@todo batch editing. Load like /upload/batchedit/id1/id2/id3...
-                $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $signedUserInfo['alias']), "filestream_1stpage") . "?uploaded=true", array("exit"));
-            } elseif($up_num == 1) {
-                $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $signedUserInfo['alias'], "share_id" => $uploaded[0]), "editsharepage"), array("exit"));
+                $this->_redirect($router->assemble(array("username" =>
+                $signedUserInfo['alias']), "filestream_1stpage") . "?uploaded=true", array("exit"));
+                
+            } else if ($upNum == 1) {
+                
+                $this->_redirect($router->assemble(array("username" =>
+                $signedUserInfo['alias'], "share_id" => $uploaded[0]),
+                "editsharepage"), array("exit"));
+                
             }
         }
         

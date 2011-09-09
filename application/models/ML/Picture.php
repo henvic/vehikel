@@ -2,6 +2,24 @@
 
 class ML_Picture
 {
+    /** Explantion for the $sizes array data:
+     * 0: urihelper: for the links, i.e., /pictures/<id>/s is for the small pic
+     * 1: typeextension: for the picture uri, i.e., <id>/sq.jpg
+     * 2: name: the name of the resource
+     * 3: dimension: the largest possible dimension for that picture resource
+     */
+    protected $_sizes = array(//array("h", "-h", "huge", 2048),
+        array("b", "-b", "large", 1024),
+        array("m", "", "medium", 500),
+        array("s", "-m", "small", 240),
+        array("t", "-t", "thumbnail", 100),
+        array("sq", "-s", "square", 48),
+    );
+    
+    // the types below are given as in the $sizes array order
+    protected $_sizeTypes =
+     array("urihelper", "typeextension", "name", "dimension");
+    
     /**
      * Singleton instance
      *
@@ -25,7 +43,8 @@ class ML_Picture
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -38,8 +57,8 @@ class ML_Picture
     }
     
     /**
-     * Usage
-     * @param array with key => value, where key is the type of information and value is what's looked or just what's looked
+     * Get image size infos
+     * @param array with key => value, where key is the type of information
      * @return array with a given's size datatable info and false in failure
      */
     public function getSizeInfo($sizeNeedle)
@@ -47,25 +66,23 @@ class ML_Picture
         $match = false;
         $hasKey = false;
         
-        if(is_array($sizeNeedle))
-        {
+        if (is_array($sizeNeedle)) {
             $hasKey = true;
             
-            $key = array_search(key($sizeNeedle), $this->sizeTypes, true);
+            $key = array_search(key($sizeNeedle), $this->_sizeTypes, true);
             
             $sizeNeedle = current($sizeNeedle);
         }
         
-        foreach($this->Sizes as $size)
-        {
-            if(in_array($sizeNeedle, $size))
-            {
-                if($hasKey)
-                {
-                    if($size[$key] != $sizeNeedle) continue;
+        foreach ($this->_sizes as $size) {
+            if (in_array($sizeNeedle, $size)) {
+                if ($hasKey) {
+                    if ($size[$key] != $sizeNeedle) {
+                        continue;
+                    }
                 }
                 
-                $match = array_combine($this->sizeTypes, $size);
+                $match = array_combine($this->_sizeTypes, $size);
             }
         }
         
@@ -74,36 +91,16 @@ class ML_Picture
     
     /**
      * Calls the function above for each size and return
-     * for every element $Sizes the appropriate data
+     * for every element $sizes the appropriate data
      * @return array with information for each size
      */
     public function getSizesInfo()
     {
-        $data = Array();
-        foreach($this->Sizes as $size)
-        {
-            $data[] = $this->getSizeInfo(Array("name" => $size[2]));
+        $data = array();
+        foreach ($this->_sizes as $size) {
+            $data[] = $this->getSizeInfo(array("name" => $size[2]));
         }
         
         return $data;
     }
-    // There is a copy of this ($Sizes and $sizeTypes) in the Avatar helper
-    /** Explantion for the $Sizes:
-     * [0] => urihelper: for the links, i.e., /pictures/<id>/s is for the small pic (unused)
-     * [1] => typeextension: for the picture uri, i.e., <id>/sq.jpg
-     * [2] => name: the name of the resource
-     * [3] => dimension: the largest possible dimension for that picture resource
-     */
-    protected $Sizes = Array(
-        //Array("h", "-h", "huge", 2048),
-        Array("b", "-b", "large", 1024),
-        Array("m", "", "medium", 500),
-        Array("s", "-m", "small", 240),
-        Array("t", "-t", "thumbnail", 100),
-        Array("sq", "-s", "square", 48),
-    );
-    
-    // the types below are given as in the $Sizes array order
-    protected $sizeTypes = Array("urihelper", "typeextension", "name", "dimension");
-    
 }

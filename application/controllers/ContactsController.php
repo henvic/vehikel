@@ -11,18 +11,25 @@ class ContactsController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         $registry = Zend_Registry::getInstance();
         
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $request = $this->getRequest();
         
         $page = $request->getUserParam("page");
         
         $userInfo = $registry->get("userInfo");
         
-        $Contacts = ML_Contacts::getInstance();
+        $contacts = ML_Contacts::getInstance();
         
-        $paginator = $Contacts->getReverseContactsPage($userInfo['id'], 30, $page);
+        $paginator = $contacts->getReverseContactsPage($userInfo['id'], 30, $page);
         
         //Test if there is enough pages or not
-        if((!$paginator->count() && $page != 1) || $paginator->getCurrentPageNumber() != $page) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "contactsrev_1stpage"), array("exit"));
+        if ((! $paginator->count() && $page != 1) ||
+         $paginator->getCurrentPageNumber() != $page) {
+         $this->_redirect($router->assemble(array("username"
+            => $userInfo['alias']), 
+            "contactsrev_1stpage"), array("exit"));
+        }
         
         $this->view->paginator = $paginator;
     }
@@ -32,18 +39,23 @@ class ContactsController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         $registry = Zend_Registry::getInstance();
         
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $request = $this->getRequest();
         
         $page = $request->getUserParam("page");
         
         $userInfo = $registry->get("userInfo");
         
-        $Contacts = ML_Contacts::getInstance();
+        $contacts = ML_Contacts::getInstance();
         
-        $paginator = $Contacts->getContactsPage($userInfo['id'], 30, $page);
-        
-        //Test if there is enough pages or not
-        if((!$paginator->count() && $page != 1) || $paginator->getCurrentPageNumber() != $page) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "contacts_1stpage"), array("exit"));
+        $paginator = $contacts->getContactsPage($userInfo['id'], 30, $page);
+             //Test if there is enough pages or not
+        if ((! $paginator->count() && $page != 1) ||
+         $paginator->getCurrentPageNumber() != $page) {
+            $this->_redirect($router->assemble(array("username" => $userInfo['alias']), 
+            "contacts_1stpage"), array("exit"));
+        }
         
         $this->view->paginator = $paginator;
     }
@@ -53,6 +65,8 @@ class ContactsController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         $registry = Zend_Registry::getInstance();
         
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
         $request = $this->getRequest();
         $page = $request->getUserParam("page");
         
@@ -60,12 +74,17 @@ class ContactsController extends Zend_Controller_Action
         
         if($userInfo['id'] != $auth->getIdentity()) throw new Exception("403 Forbidden: you can see your own ignored list only.");
         
-        $Ignore = ML_Ignore::getInstance();
+        $ignore = ML_Ignore::getInstance();
         
-        $paginator = $Ignore->getIgnorePage($userInfo['id'], 30, $page);
+        $paginator = $ignore->getIgnorePage($userInfo['id'], 30, $page);
         
         //Test if there is enough pages or not
-        if((!$paginator->count() && $page != 1) || $paginator->getCurrentPageNumber() != $page) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "ignore_1stpage"), array("exit"));
+        if ((! $paginator->count() && $page != 1) ||
+         $paginator->getCurrentPageNumber() != $page) {
+            $this->_redirect($router->assemble(array("username"
+            => $userInfo['alias']), 
+            "ignore_1stpage"), array("exit"));
+        }
         
         $this->view->paginator = $paginator;
     }
@@ -73,12 +92,10 @@ class ContactsController extends Zend_Controller_Action
     protected function _relationshipForm()
     {
         static $form = '';
-
-        if(!is_object($form))
-        {
+        if (! is_object($form)) {
             $registry = Zend_Registry::getInstance();
             $userInfo = $registry->get("userInfo");
-            require_once APPLICATION_PATH . '/forms/Relationship.php';
+            require APPLICATION_PATH . '/forms/Relationship.php';
             
             $form = new Form_Relationship(array(
                 'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "contact_relationship"),
@@ -93,51 +110,71 @@ class ContactsController extends Zend_Controller_Action
     {
         $auth = Zend_Auth::getInstance();
         $registry = Zend_Registry::getInstance();
+        
+        $router = Zend_Controller_Front::getInstance()->getRouter();
         $request = $this->getRequest();
         
         $userInfo = $registry->get("userInfo");
         
-        $Contacts = ML_Contacts::getInstance();
-        $Ignore = ML_Ignore::getInstance();
+        $contacts = ML_Contacts::getInstance();
+        $ignore = ML_Ignore::getInstance();
         
-        if(!Zend_Auth::getInstance()->hasIdentity()) {
+        if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
         }
         
-        if($auth->getIdentity() == $userInfo['id']) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "contacts_1stpage"), array("exit"));
-        //throw new Exception("Can't have a self-relationship.");
+        //avoids self-relationship
+        if ($auth->getIdentity() == $userInfo['id']) {
+            $this->_redirect($router->assemble(array("username"
+             => $userInfo['alias']), "contacts_1stpage"), array("exit"));
+        }
         
-        $relationship = $Contacts->getInfo($auth->getIdentity(), $userInfo['id']);
+        $relationship = $contacts->getInfo($auth->getIdentity(), $userInfo['id']);
         
-        $ignore_status = (isset($relationship['id'])) ? false : $Ignore->status($auth->getIdentity(), $userInfo['id']);
-        if(is_array($ignore_status)) $this->view->cannot_add_ignored = $ignore_status;
-        else {
+        if (isset($relationship['id'])) {
+            $ignoreStatus = false;
+        } else {
+            $ignoreStatus = $ignore->status($auth->getIdentity(), $userInfo['id']);
+        }
+        
+        
+        if (is_array($ignoreStatus)) {
+            $this->view->cannotAddIgnored = $ignoreStatus;
+        } else {
             $form = $this->_relationshipForm();
             
-            if(isset($relationship['id'])) $form->getElement("contact_relation")->setOptions(array("checked" => true));
+            if (isset($relationship['id'])) {
+                $form->getElement("contact_relation")->setOptions(array("checked" => true));
+            }
             
-            if($request->isPost() && $form->isValid($request->getPost()))
-            {
+            if ($request->isPost() && $form->isValid($request->getPost())) {
                 $wantContact = $form->getElement("contact_relation")->isChecked();
                 
-                if($wantContact && !isset($relationship['id']))
-                {
-                    $Contacts->getAdapter()->query("INSERT IGNORE INTO `".$Contacts->getTableName()."` (uid, has, friend) SELECT ?, ?, ? FROM DUAL WHERE not exists (select * from `ignore` where ignore.uid = ? AND ignore.ignore = ?)", array($auth->getIdentity(), $userInfo['id'], 0, $userInfo['id'], $auth->getIdentity()));
-                    $change_rel = "?new_contact";
-                }
-                elseif(!$wantContact && isset($relationship['id']))
-                {
-                    $Contacts->delete(
-                        $Contacts->getAdapter()->quoteInto("uid = ? AND ", $auth->getIdentity()).
-                        $Contacts->getAdapter()->quoteInto("has = ?", $userInfo['id'])
+                if ($wantContact && ! isset($relationship['id'])) {
+                    $contacts->getAdapter()->query("INSERT IGNORE INTO `" .
+                     $contacts->getTableName() .
+                     "` (uid, has, friend) SELECT ?, ?, ? FROM DUAL WHERE not exists (select * from `ignore` where ignore.uid = ? AND ignore.ignore = ?)",
+                     array($auth->getIdentity(), $userInfo['id'], 0, 
+                    $userInfo['id'], $auth->getIdentity()));
+                    $changeRel = "?new_contact";
+                } else if (! $wantContact && isset($relationship['id'])) {
+                    $contacts->delete($contacts->getAdapter()
+                    ->quoteInto("uid = ? AND ", $auth->getIdentity()).
+                    $contacts->getAdapter()
+                    ->quoteInto("has = ?", $userInfo['id'])
                     );
                     
-                    $change_rel = "?removed_contact";
-                } else $change_rel = '';
+                    $changeRel = "?removed_contact";
+                } else {
+                    $changeRel = '';
+                }
                 
-                $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "profile").$change_rel, array("exit"));
+                $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "profile").$changeRel, array("exit"));
                 
-                //if(isset($new_rel) && $new_rel) $form->getElement("contact_relation")->setOptions(array("checked" => true));
+                /*if (isset($new_rel) && $new_rel) {
+                    $form->getElement("contact_relation")->setOptions(
+                    array("checked" => true));
+                }*/
             }
         }
         

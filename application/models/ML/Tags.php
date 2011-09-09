@@ -22,7 +22,8 @@ class ML_Tags extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -39,17 +40,22 @@ class ML_Tags extends ML_getModel
     public static function _form()
     {
         static $form = '';
+        
         $registry = Zend_Registry::getInstance();
-        if(!is_object($form))
-        {
+        
+        if (! is_object($form)) {
             $shareInfo = $registry->get('shareInfo');
             $userInfo = $registry->get('userInfo');
+            
+            $router = Zend_Controller_Front::getInstance()->getRouter();
              
-            require_once APPLICATION_PATH . '/forms/Tags.php';
+            require APPLICATION_PATH . '/forms/Tags.php';
              
-            $form = new Form_Tags(array(
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage") .'?addtags',
-                'method' => 'post',
+            $form = new Form_Tags(array('action' =>
+            $router->assemble(array("username" => $userInfo['alias'], 
+                        "share_id" => $shareInfo['id']), "sharepage_1stpage") .
+                        '?addtags',
+                        'method' => 'post',
             ));
         }
         
@@ -61,9 +67,10 @@ class ML_Tags extends ML_getModel
     public static function _formDelete()
     {
         static $form = '';
+        
         $registry = Zend_Registry::getInstance();
-        if(!is_object($form))
-        {
+        
+        if (! is_object($form)) {
             require_once APPLICATION_PATH . '/forms/DeleteTag.php';
              
             $form = new Form_DeleteTag(array(
@@ -76,28 +83,26 @@ class ML_Tags extends ML_getModel
         return $form;
     }
     
-    public function getShareTags($share_id)
-    {
+    public function getShareTags ($shareId) {
         $select = $this->select()
-        ->where("share = ?", $share_id)
+        ->where("share = ?", $shareId)
         ->order("timestamp ASC");
         
         return $this->getAdapter()->fetchAll($select);
     }
     
-    public function getTagPage($uid, $cleantag, $per_page, $page)
+    public function getTagPage($uid, $cleantag, $perPage, $page)
     {
         $select = $this->select();
         $select->where($this->_name.".people = ?", $uid)
         ->where($this->_name.".clean = ?", $cleantag)
-        ->order("timestamp ASC")
-        ;
+        ->order("timestamp ASC");
         
         $this->joinShareInfo($select, $this->_name, "share");
         
         $paginator = Zend_Paginator::factory($select);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setItemCountPerPage($per_page);
+        $paginator->setItemCountPerPage($perPage);
         
         return $paginator;
     }
@@ -112,10 +117,13 @@ class ML_Tags extends ML_getModel
         $data = $this->fetchAll($select);
         
         $taglist = array();
-        foreach($data->toArray() as $item)
-        {
-            if(isset($taglist[$item['clean']])) $taglist[$item['clean']] += 1;
-            else $taglist[$item['clean']] = 1;
+        
+        foreach ($data->toArray() as $item) {
+            if (isset($taglist[$item['clean']])) {
+                $taglist[$item['clean']] += 1;
+            } else {
+                $taglist[$item['clean']] = 1;
+            }
         }
         
         return $taglist;

@@ -4,20 +4,23 @@ class Zend_Controller_Action_Helper_VerifyIdentity extends
 {
     public function direct()
     {
-        if(OAuthRequestVerifier::requestIsSigned())
-        {
+        if (OAuthRequestVerifier::requestIsSigned()) {
             try {
+                
                 $req = new OAuthRequestVerifier();
-                $auth_uid = $req->verify();
-                if($auth_uid)
-                {
-                    $People = ML_People::getInstance();
-                    $authedUserInfo = $People->getById($auth_uid);
+                $authUid = $req->verify();
+                
+                if ($authUid) {
+                    $registry = Zend_Registry::getInstance();
                     
-                    Zend_Registry::getInstance()->set("authedUserInfo", $authedUserInfo);
+                    $people = ML_People::getInstance();
+                    $authedUserInfo = $people->getById($authUid);
+                    
+                    $registry->set("authedUserInfo", $authedUserInfo);
                 }
-            } catch(OAuthException $e)//If user authentication fails
+            } catch(OAuthException $e)
             {
+                //If user authentication fails
                 header('HTTP/1.1 401 Unauthorized');
                 header('WWW-Authenticate: OAuth realm=""');
                 header('Content-Type: text/plain; charset=utf8');

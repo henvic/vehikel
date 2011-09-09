@@ -1,53 +1,47 @@
 <?php
 class ML_Dom extends DOMDocument
 {
-    public function newTextAttribute($name, $text)
-    {
-        $root_attr = $this->createAttribute($name);
-        $root_text = $this->createTextNode($text);
-        $root_attr->appendChild($root_text);
+    public function newTextAttribute($name, $text) {
+        $rootAttr = $this->createAttribute($name);
+        $rootText = $this->createTextNode($text);
+        $rootAttr->appendChild($rootText);
         
-        return $root_attr;
+        return $rootAttr;
     }
     
-    public function newTextElement($name, $text)
-    {
+    public function newTextElement($name, $text) {
         $element = $this->createElement($name);
-        $root_text = $this->createTextNode($text);
-        $element->appendChild($root_text);
+        $rootText = $this->createTextNode($text);
+        $element->appendChild($rootText);
         
         return $element;
     }
     
-    public function newTextAttributes($element, $array_of_attributes)
+    public function newTextAttributes($element, $arrayOfAttributes)
     {
-        foreach($array_of_attributes as $key => $value)
-        {
+        foreach ($arrayOfAttributes as $key => $value) {
             $element->appendChild($this->NewTextAttribute($key, $value));
         }
     }
     
-    public function newTextElements($element, $array_of_elements)
+    public function newTextElements($element, $arrayOfElements)
     {
-        foreach($array_of_elements as $key => $value)
-        {
+        foreach ($arrayOfElements as $key => $value) {
             $element->appendChild($this->NewTextElement($key, $value));
         }
     }
     
-    public function newMultipleTextElements($root_element, $element_name, $array_of_multiple_elements) {
-        foreach($array_of_multiple_elements as $array_of_element)
-        {
-            $element = $root_element->appendChild($this->newTextElement($element_name, null));
-            $this->newTextElements($element, $array_of_element);
+    public function newMultipleTextElements($rootElement, $elementName, $arrayOfMultipleElements) {
+        foreach ($arrayOfMultipleElements as $arrayOfElement) {
+            $element = $rootElement->appendChild($this->newTextElement($elementName, null));
+            $this->newTextElements($element, $arrayOfElement);
         }
     }
     
-    public function newMultipleTextAttributes($root_element, $element_name, $array_of_multiple_attributes) {
-        foreach($array_of_multiple_attributes as $array_of_attributes)
-        {
-            $element = $root_element->appendChild($this->newTextElement($element_name, null));
-            $this->newTextAttributes($element, $array_of_attributes);
+    public function newMultipleTextAttributes($rootElement, $elementName, $arrayOfMultipleAttributes) {
+        foreach ($arrayOfMultipleAttributes as $arrayOfAttributes) {
+            $element = $rootElement->appendChild($this->newTextElement($elementName, null));
+            $this->newTextAttributes($element, $arrayOfAttributes);
         }
     }
 }

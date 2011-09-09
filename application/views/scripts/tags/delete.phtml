@@ -5,6 +5,12 @@ $shareInfo = $registry->get('shareInfo');
 
 $this->headTitle("Delete ".$this->escape($shareInfo['title']) . " tag");
 ?>
-<h2>Delete <a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage") ?>"><?= $this->escape($shareInfo['title']) ?></a> tag</h2>
-<p>Are you sure you want to remove the tag <strong><?= $this->escape($this->tag['raw']) ?></strong> from this?</p>
-<?= $this->deleteTagForm ?>
+<h2>Delete <a href="<?php
+echo $this->url(array("username" => $userInfo['alias'],
+"share_id" => $shareInfo['id']), "sharepage_1stpage");
+?>"><?php echo $this->escape($shareInfo['title']) ?></a> tag</h2>
+<p>Are you sure you want to remove the tag <strong><?php
+echo $this->escape($this->tag['raw']);
+?></strong> from this?</p>
+<?php
+echo $this->deleteTagForm;

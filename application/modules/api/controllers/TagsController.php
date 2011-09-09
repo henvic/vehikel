@@ -10,28 +10,30 @@ class TagsController extends Zend_Controller_Action
         
         $userInfo = $registry->get("userInfo");
         
-        $Tags = ML_Tags::getInstance();
+        $tags = ML_Tags::getInstance();
         
-        $taglist = $Tags->getUserTags($userInfo['id']);
+        $taglist = $tags->getUserTags($userInfo['id']);
         
         $doc = new ML_Dom();
         $doc->formatOutput = true;
         
-        $root_element = $doc->createElement("who");
-        $root_element->appendChild($doc->newTextAttribute('id', $userInfo['id']));
-        $doc->appendChild($root_element);
+        $rootElement = $doc->createElement("who");
         
-        $tags_element = $doc->createElement("tags");
+        $rootElement
+        ->appendChild($doc->newTextAttribute('id', $userInfo['id']));
         
-        foreach($taglist as $tag => $count)
-        {
-            $tag_element = $doc->createElement("tag");
-            $tag_element->appendChild($doc->createTextNode($tag));
-            $tag_element->appendChild($doc->newTextAttribute('count', $count));
-            $tags_element->appendChild($tag_element);
+        $doc->appendChild($rootElement);
+        
+        $tagsElement = $doc->createElement("tags");
+        
+        foreach ($taglist as $tag => $count) {
+            $tagElement = $doc->createElement("tag");
+            $tagElement->appendChild($doc->createTextNode($tag));
+            $tagElement->appendChild($doc->newTextAttribute('count', $count));
+            $tagsElement->appendChild($tagElement);
         }
         
-        $root_element->appendChild($tags_element);
+        $rootElement->appendChild($tagsElement);
         
         $this->_helper->printResponse($doc);
     }

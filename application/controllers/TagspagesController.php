@@ -9,7 +9,10 @@ class TagspagesController extends Zend_Controller_Action
     public function tagpageAction()
     {
         $registry = Zend_Registry::getInstance();
-        $Tags = ML_Tags::getInstance();
+        
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
+        $tags = ML_Tags::getInstance();
         
         $request = $this->getRequest();
         
@@ -18,13 +21,18 @@ class TagspagesController extends Zend_Controller_Action
         $cleanTag = $request->getUserParam("tag");
         $page = $request->getUserParam("page");
         
-        $paginator = $Tags->getTagPage($userInfo['id'], $cleanTag, 25, $page);
+        $paginator = $tags->getTagPage($userInfo['id'], $cleanTag, 25, $page);
         
         //Test if there is enough pages or not
-        if((!$paginator->count() && $page != 1) || $paginator->getCurrentPageNumber() != $page) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias'], "tag" => $cleanTag), "tagpage_1stpage"), array("exit"));
+        if ((! $paginator->count() && $page != 1) ||
+         $paginator->getCurrentPageNumber() != $page) {
+            $this->_redirect($router->assemble(array("username"
+            => $userInfo['alias'], "tag" => $cleanTag), 
+            "tagpage_1stpage"), array("exit"));
+        }
         
-        if(!$paginator->count())//If not, send 404 error code header
-        {
+        //If not, send 404 error code header
+        if (! $paginator->count()) {
             $this->getResponse()->setHttpResponseCode(404);
         }
         
@@ -34,13 +42,14 @@ class TagspagesController extends Zend_Controller_Action
     
     public function taglistAction()
     {
-        //no pagination for this action because it would interfere with tagpage method
+        //no pagination for this action
+        //because it would interfere with tagpage method
         $registry = Zend_Registry::getInstance();
         
         $userInfo = $registry->get("userInfo");
         
-        $Tags = ML_Tags::getInstance();
+        $tags = ML_Tags::getInstance();
         
-        $this->view->taglist = $Tags->getUserTags($userInfo['id']);
+        $this->view->taglist = $tags->getUserTags($userInfo['id']);
     }
 }

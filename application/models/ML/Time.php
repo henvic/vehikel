@@ -4,12 +4,12 @@ class ML_Time
 {
     public static function ago($date, $format = null)
     {
-        $zend_date = new Zend_Date();
+        $zendDate = new Zend_Date();
         
         if(!$format) $format = Zend_Date::ISO_8601;
-        $zend_date->set($date, $format);
+        $zendDate->set($date, $format);
         
-        $ago = time()-$zend_date->getTimestamp();
+        $ago = time()-$zendDate->getTimestamp();
         
         if($ago < 120) return "less than $ago seconds ago";
         

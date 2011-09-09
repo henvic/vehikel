@@ -11,10 +11,12 @@
  * at the production server as a safe-guard and because you can never
  * trust that the user's behaviour will be the intended one
  * 
- * i.e., imagine if for some reason the user makes a script that tries to
- * log in the web service over HTTP without the proper API methods or something like that.
+ * i.e., imagine if for some reason the user makes a script that tries
+ * to log in the web service over HTTP without the proper API methods
+ * or something like that
+ * 
  */
-require_once 'Zend/Validate/Abstract.php';
+//require_once 'Zend/Validate/Abstract.php';
 
 
 class MLValidator_Https extends Zend_Validate_Abstract
@@ -22,13 +24,13 @@ class MLValidator_Https extends Zend_Validate_Abstract
     const MSG_NOT_HTTPS = 'notHttps';
  
     protected $_messageTemplates = array(
-        self::MSG_NOT_HTTPS => "This form is supposed to be sent over the HTTPS protocol only.",
+        self::MSG_NOT_HTTPS =>
+         "This form is supposed to be sent over the HTTPS protocol only.",
     );
  
     public function isValid($value)
     {
-        if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")
-        {
+        if (! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on") {
             $this->_error(self::MSG_NOT_HTTPS);
             return false;
         }

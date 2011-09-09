@@ -3,11 +3,11 @@
 /**
  * Error controller
  * The error action is called when a error happens (such as page not found)
- * @author henvic
+ * @author Henrique Vicente <henriquevicente@gmail.com>
  *
  * @todo ajax response error handling
  */
-class ErrorController extends Zend_Controller_Action 
+class ErrorController extends Zend_Controller_Action
 {
     public function errorAction() 
     {
@@ -17,7 +17,8 @@ class ErrorController extends Zend_Controller_Action
         
         $params = $request->getParams();
         
-        // Ensure the default view suffix is used so we always return the error in the right view type
+        // Ensure the default view suffix is used
+        // so we always return the error in the right view type
         $this->_helper->viewRenderer->setViewSuffix('phtml');
 
         // Grab the error object from the request
@@ -28,20 +29,29 @@ class ErrorController extends Zend_Controller_Action
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION: 
                 // 404 error -- controller or action not found
                 $this->getResponse()->setHttpResponseCode(404);
-                if(isset($params['ajax']) && APPLICATION_ENV != 'development') exit();
+                
+                if (isset($params['ajax']) && APPLICATION_ENV != 'development') {
+                    exit();
+                }
+                
                 $this->view->statusCode = 404; 
                 $this->view->message = 'Page not found'; 
                 break; 
             default: 
                 // application error
-                if($registry->isRegistered("notfound")) {
+                if ($registry->isRegistered("notfound")) {
                     $this->getResponse()->setHttpResponseCode(404);
-                    if(isset($params['ajax']) && APPLICATION_ENV != 'development') exit();
+                    if (isset($params['ajax']) && APPLICATION_ENV != 'development') {
+                        exit();
+                    }
                     $this->view->statusCode = 404;
                     $this->view->message = 'Page not found';
                 } else {
                     $this->getResponse()->setHttpResponseCode(500);
-                    if(isset($params['ajax']) && APPLICATION_ENV != 'development') exit();
+                    if (isset($params['ajax']) &&
+                     APPLICATION_ENV != 'development') {
+                        exit();
+                    }
                     $this->view->statusCode = 500;
                     $this->view->message = 'Application error';
                 }

@@ -23,7 +23,8 @@ class ML_Recover extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -41,12 +42,13 @@ class ML_Recover extends ML_getModel
     {
         static $form = '';
         
-        if(!is_object($form))
-        {
-            require_once APPLICATION_PATH . '/forms/Recover.php';
+        if (! is_object($form)) {
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
+            require APPLICATION_PATH . '/forms/Recover.php';
             
             $form = new Form_Recover(array(
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "recover"),
+                'action' => $router->assemble(array(), "recover"),
                 'method' => 'post',
             ));
         }

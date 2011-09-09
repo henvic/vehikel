@@ -7,17 +7,20 @@ $this->headTitle("Payment");
 ?>
 <h2>Your cart</h2>
 <?php
-if(!$this->cart):
+if (!$this->cart):
 ?>
 <p>You have nothing on your cart.</p>
 <?php else: ?>
 <table class="styled">
 <thead><tr><th>Quantity</th><th>Product</th><th>Price</th><th></th></tr></thead>
 <tbody>
-<?php foreach($this->cart['items'] as $item):?>
-<td><?= $item['quantity'] ?></td>
-<td class="left"><?= $item['product']['name'] ?></td>
-<td class="left">$<?= $item['product']['price']*$item['quantity'] . ' ' . $item['product']['price_unit']?></td>
+<?php foreach ($this->cart['items'] as $item): ?>
+<td><?php echo $item['quantity']; ?></td>
+<td class="left"><?php echo $item['product']['name']; ?></td>
+<td class="left">$<?php
+echo $item['product']['price'] * $item['quantity'] . ' '
+. $item['product']['price_unit'];
+?></td>
 <td>Remove</td>
 <?php endforeach; ?>
 <tr>

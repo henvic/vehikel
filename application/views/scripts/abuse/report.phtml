@@ -2,10 +2,13 @@
 $this->headTitle("Report abuse");
 ?>
 <h2>Report abuse</h2>
-<p>Thank you for helping us to fight abuse.<br /><br />
-<?php if(!$this->report_done): ?>
+<p>Thank you for helping us to fight abuse.<br />
+<br />
+<?php
+if (! $this->reportDone) :
+?>
 Please check the link before submitting an abuse record.</p>
-<?= $this->abuseForm; ?>
+<?php echo $this->abuseForm; ?>
 <?php else: ?>
 <p><strong>Report sent!</strong></p>
-<?php endif; ?>
+<?php endif;

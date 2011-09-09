@@ -8,12 +8,20 @@ $signedUserInfo = $registry->get("signedUserInfo");
 ?>
 <div class="yui-ge">
 <div class="yui-u first">
-<h2>Your account balance / History <?php if($this->paginator->getCurrentPageNumber() > 1) echo ' (continuing...)'; ?></h2>
-<?= $this->partial("/credits/info.phtml"); ?>
-<?= $this->render("/credits/transactions-table.phtml"); ?>
-<?php if($this->paginator->count() > 1) echo $this->paginator; ?>
+<h2>Your account balance / History <?php
+if ($this->paginator->getCurrentPageNumber() > 1) {
+    echo ' (continuing...)';
+}
+?></h2>
+<?php echo $this->partial("/credits/info.phtml"); ?>
+<?php echo $this->render("/credits/transactions-table.phtml"); ?>
+<?php
+if ($this->paginator->count() > 1) {
+    echo $this->paginator;
+}
+?>
 </div>
 <div class="yui-u accountside">
-<?= $this->partial("/account/menu.phtml"); ?>
+<?php echo $this->partial("/account/menu.phtml"); ?>
 </div>
 </div>

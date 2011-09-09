@@ -6,8 +6,11 @@ class PeopleController extends Zend_Controller_Action
     {
         //@todo route: do it the right way!
         $router = new Zend_Controller_Router_Rewrite();
-        $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/defaultRoutes.ini');
-        $router->addConfig($config, 'routes');
+        
+        $routeConfig =
+         new Zend_Config_Ini(APPLICATION_PATH . '/configs/defaultRoutes.ini');
+        
+        $router->addConfig($routeConfig, 'routes');
         
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
@@ -16,70 +19,84 @@ class PeopleController extends Zend_Controller_Action
         
         $params = $request->getParams();
         
-        $People = ML_People::getInstance();
-        $Profile = new ML_Profile();
-        $Share = ML_Share::getInstance();
+        $people = ML_People::getInstance();
+        $profile = new ML_Profile();
+        $share = ML_Share::getInstance();
         
-        if(isset($params['username']))
-        {
-            $userInfo = $People->getByUsername($params['username']);
-        } elseif(isset($params['user_id']))
-        {
-            $userInfo = $People->getById($params['user_id']);
-        } elseif(isset($params['email']))
-        {
-            $userInfo = $People->getByEmail($params['email']);
+        if (isset($params['username'])) {
+            $userInfo = $people->getByUsername($params['username']);
+        } else if (isset($params['user_id'])) {
+            $userInfo = $people->getById($params['user_id']);
+        } else if (isset($params['email'])) {
+            $userInfo = $people->getByEmail($params['email']);
             
-            if(!empty($userInfo) && $userInfo['private_email'] == true) {
+            if (! empty($userInfo) && $userInfo['private_email'] == true) {
                 $registry->set("notfound", true);
                 throw new Exception("User not found.");
             }
+        } else {
+            throw new Exception("No user params were given.");
         }
-        else throw new Exception("No user params were given.");
         
-        if(empty($userInfo)) {
+        if (empty($userInfo)) {
             $registry->set("notfound", true);
             throw new Exception("User not found.");
         }
         
-        $profileInfo = $Profile->getById($userInfo['id']);
+        $profileInfo = $profile->getById($userInfo['id']);
         
         $doc = new ML_Dom();
         $doc->formatOutput = true;
         
-        $root_element = $doc->createElement("person");
-        $doc->appendChild($root_element);
+        $rootElement = $doc->createElement("person");
+        $doc->appendChild($rootElement);
         
-        $root_element->appendChild($doc->newTextAttribute('id', $userInfo['id']));
+        $rootElement
+        ->appendChild($doc->newTextAttribute('id', $userInfo['id']));
         
         $avatarInfo = unserialize($userInfo['avatarInfo']);
-        $iconsecret = (isset($avatarInfo['secret'])) ? $avatarInfo['secret'] : '';
         
-        $root_element->appendChild($doc->newTextAttribute('iconsecret', $iconsecret));
+        if (isset($avatarInfo['secret'])) {
+            $iconSecret = $avatarInfo['secret'];
+        } else {
+            $iconSecret = '';
+        }
+        
+        $rootElement
+        ->appendChild($doc->newTextAttribute('iconsecret', $iconSecret));
         
         $userData = array(
             "username" => $userInfo['alias'],
             "realname" => $userInfo['name'],
         );
         
-        if(!$userInfo['private_email']) $userData["mbox_sha1sum"] = sha1("mailto:".$userInfo['email']);
+        if (! $userInfo['private_email']) {
+            $userData["mbox_sha1sum"] = sha1("mailto:".$userInfo['email']);
+        }
         
         $userData["location"] = $profileInfo['location'];
         
-        $userData["url"] = "http://".$config['webhost']. $router->assemble(array("username" => $userInfo['alias']), "filestream_1stpage");
+        $userData["url"] = "http://" . $config['webhost'] .
+         $router->assemble(array("username" => $userInfo['alias']),
+         "filestream_1stpage");
         
-        foreach($userData as $field => $data)
-        {
-            $root_element->appendChild($doc->newTextElement($field, $data));
+        foreach ($userData as $field => $data) {
+            $rootElement->appendChild($doc->newTextElement($field, $data));
         }
         
-        $shares_counter = $Share->getAdapter()->fetchOne($Share->select()->from($Share->getTableName(), 'count(*)')->where("byUid = ?", $userInfo['id']));
+        $sharesCounter =
+        $share->getAdapter()->fetchOne($share->select()
+         ->from($share->getTableName(), 'count(*)')
+         ->where("byUid = ?", $userInfo['id']));
         
-        $shares_element = $doc->createElement("files");
-        $shares_counter_element = $doc->createElement("count");
-        $shares_counter_element->appendChild($doc->createTextNode($shares_counter));
-        $shares_element->appendChild($shares_counter_element);
-        $root_element->appendChild($shares_element);
+        $sharesElement = $doc->createElement("files");
+        $sharesCounterElement = $doc->createElement("count");
+        
+        $sharesCounterElement
+        ->appendChild($doc->createTextNode($sharesCounter));
+        
+        $sharesElement->appendChild($sharesCounterElement);
+        $rootElement->appendChild($sharesElement);
         
         $this->_helper->printResponse($doc);
     }

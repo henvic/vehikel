@@ -5,34 +5,46 @@ $shareInfo = $registry->get('shareInfo');
 
 $this->headTitle("Who counts ".$this->escape($shareInfo['title'])." as a favorite", "PREPEND");
 ?>
-<a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage") ?>"><h2>Who counts <?= $this->escape($shareInfo['title']) ?> as a favorite</h2></a>
-<?php if(!$this->paginator->getTotalItemCount()): ?>
+<a href="<?php
+echo $this->url(array("username" => $userInfo['alias'],
+"share_id" => $shareInfo['id']), "sharepage_1stpage");
+?>"><h2>Who counts <?php echo $this->escape($shareInfo['title']) ?> as a favorite</h2></a>
+<?php if (!$this->paginator->getTotalItemCount()): ?>
 <ul>
 <li>No one counts this item as a favorite.</li>
 </ul>
 <?php else: ?>
 <ul>
 <?php
-foreach($this->paginator->getCurrentItems()->toArray() as $fav):
+foreach ($this->paginator->getCurrentItems()->toArray() as $fav):
 $favoritedDate = new Zend_Date($fav['timestamp'], Zend_Date::ISO_8601);
 ?>
-<li><a href="<?=$this->url(array("username" => $fav['people.alias']), "filestream_1stpage")?>"><?= $this->escape($fav['people.name']) ?></a> added this as <a href="<?= $this->url(array("username" => $fav['people.alias']), "userfav_1stpage") ?>">favorite</a> on <?= $favoritedDate->get(Zend_Date::DATE_LONG);?></li>
+<li><a href="<?php
+echo $this->url(array("username" => $fav['people.alias']),
+"filestream_1stpage");
+?>"><?php
+echo $this->escape($fav['people.name']); ?></a> added this as <a href="<?php
+echo $this->url(array("username" => $fav['people.alias']),
+"userfav_1stpage");
+?>">favorite</a> on <?php echo $favoritedDate->get(Zend_Date::DATE_LONG);?></li>
 <?php
 endforeach;
 ?>
 </ul>
 <?php
-if($this->paginator->count() > 1):
+if ($this->paginator->count() > 1):
 echo $this->paginator;
 else:
 ?>
 <p><small>
 <?php
-if($this->paginator->getTotalItemCount() > 1): ?>
-(<?= $this->paginator->getTotalItemCount() ?> persons counts this item as a favorite)
+if ($this->paginator->getTotalItemCount() > 1): ?>
+(<?php echo $this->paginator->getTotalItemCount(); ?> persons counts this item as a favorite)
 <?php else: ?>
-(<?= $this->paginator->getTotalItemCount() ?> person count this item as a favorite)
+(<?php echo $this->paginator->getTotalItemCount(); ?> person count this item as a favorite)
 <?php endif; ?>
 </small>
 </p>
-<?php endif; endif; ?>
+<?php
+endif;
+endif;

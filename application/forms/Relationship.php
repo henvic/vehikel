@@ -1,14 +1,16 @@
 <?php
 class Form_Relationship extends Zend_Form
-{    
+{
     public function init()
     {
         $this->setMethod('post');
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
+        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
+        Zend_Form_Element::FILTER);
         
-        $contactRelation = $this->addElement('checkbox', 'contact_relation', array(
-            'label'    => 'Contact'));
+        $contactRelation = $this->addElement('checkbox', 'contact_relation', 
+        array('label' => 'Contact'));
          /*
         $this->addElement('checkbox', 'friend_relation', array(
             'label'    => 'Friend'));*/

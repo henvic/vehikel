@@ -1,5 +1,5 @@
 <?php
-require_once 'Zend/Validate/Abstract.php';
+//require_once 'Zend/Validate/Abstract.php';
 
 class MLValidator_MatchPassword extends Zend_Validate_Abstract
 {
@@ -11,21 +11,27 @@ class MLValidator_MatchPassword extends Zend_Validate_Abstract
  
     public function isValid($value)
     {
-        $Credential = ML_Credential::getInstance();
+        $registry = Zend_Registry::getInstance();
+        
+        $credential = ML_Credential::getInstance();
         
         $this->_setValue($value);
          
         $valueString = (string) $value;
         
-        if(mb_strlen($value) < 6 || mb_strlen($value) > 20) return false;
+        if (mb_strlen($value) < 6 || mb_strlen($value) > 20) {
+            return false;
+        }
         
-        $credentialInfoData = Zend_Registry::getInstance()->get('credentialInfoDataForPasswordChange');
+        $credentialInfoData =
+         $registry->get('credentialInfoDataForPasswordChange');
         
-        $adapter = $Credential->getAuthAdapter($credentialInfoData['uid'], $value);
+        $adapter = $credential->getAuthAdapter($credentialInfoData['uid'], 
+        $value);
+        
         $authenticate = $adapter->authenticate();
         
-        if($authenticate->getCode() != Zend_Auth_Result::SUCCESS)
-        {
+        if ($authenticate->getCode() != Zend_Auth_Result::SUCCESS) {
             $this->_error(self::MSG_WRONG_PASSWORD);
             return false;
         }

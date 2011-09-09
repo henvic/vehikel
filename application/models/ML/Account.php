@@ -6,12 +6,13 @@ class ML_Account
     {
         static $form = '';
         
-        if(!is_object($form))
-        {
-            require_once APPLICATION_PATH . '/forms/AccountSettings.php';
+        if (! is_object($form)) {
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
+            require APPLICATION_PATH . '/forms/AccountSettings.php';
             
             $form = new Form_AccountSettings(array(
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "account"),
+                'action' => $router->assemble(array(), "account"),
                 'method' => 'post',
             ));
         }

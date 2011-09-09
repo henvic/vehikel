@@ -5,7 +5,10 @@ class CallController extends Zend_Controller_Action
     public function init()
     {
         $registry = Zend_Registry::getInstance();
-        if(!Zend_Auth::getInstance()->hasIdentity()) {
+        
+        $auth = Zend_Auth::getInstance();
+        
+        if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
         }
     }
@@ -15,13 +18,13 @@ class CallController extends Zend_Controller_Action
         $registry = Zend_Registry::getInstance();
         $signedUserInfo = $registry->get("signedUserInfo");
         
-        $Calls = ML_Calls::getInstance();
-        $form = $Calls->form();
+        $calls = ML_Calls::getInstance();
+        $form = $calls->form();
         
-        $Credits = ML_Credits::getInstance();
+        $credits = ML_Credits::getInstance();
         
-        $Credits->transaction($signedUserInfo['id'], -111, ML_Credits::cents_USD, "transfer", "0");
+        $credits->transaction($signedUserInfo['id'], -111, ML_Credits::cents_USD, "transfer", "0");
         
-        $this->view->call_form = $form;
+        $this->view->callForm = $form;
     }
 }

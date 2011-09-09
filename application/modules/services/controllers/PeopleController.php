@@ -5,66 +5,63 @@ class PeopleController extends Zend_Controller_Action
     {
         $registry = Zend_Registry::getInstance();
         
-        $Service = new ML_Service();
+        $service = new ML_Service();
         
-        $Timecheck = new ML_Timecheck();
+        $timecheck = new ML_Timecheck();
         
-        $People = new ML_People();
+        $people = new ML_People();
         
-        $PeopleDeleted = new ML_PeopleDeleted();
+        $peopleDeleted = new ML_PeopleDeleted();
         
-        $Service->putString("WARNING! WARNING! WARNING!\n===========================\n");
+        $service->putString("WARNING!\n========\n");
         
-        $Service->putString("DON'T type the user data. Use COPY/PASTE.\n");
+        $service->putString("DON'T type the user data. Use COPY/PASTE.\n");
         
-        $Service->requestConfirmAction("Delete user");
+        $service->requestConfirmAction("Delete user");
         
-        $Timecheck->reset();
+        $timecheck->reset();
         
-        $entered_user_id = $Service->getInput("Delete User of id: ");
+        $enteredUserId = $service->getInput("Delete User of id: ");
         
-        $Timecheck->check(60);
-        $Timecheck->reset();
+        $timecheck->check(60);
+        $timecheck->reset();
         
-        $entered_user_alias = $Service->getInput("Delete User of alias: ");
+        $enteredUserAlias = $service->getInput("Delete User of alias: ");
         
-        $Timecheck->check(40);
+        $timecheck->check(40);
         
-        $userInfo = $People->getById($entered_user_id);
+        $userInfo = $people->getById($enteredUserId);
         
-        if(!is_array($userInfo))
-        {
+        if (! is_array($userInfo)) {
             die("User Not Found by ID.\n");
         }
         
-        if($userInfo['id'] != $entered_user_id)
-        {
+        if ($userInfo['id'] != $enteredUserId) {
             throw new Exception("Wrong ID retrieved?");
         }
         
-        if($userInfo['alias'] != $entered_user_alias)
-        {
+        if ($userInfo['alias'] != $enteredUserAlias) {
             die("Alias does NOT match user id. Please, be careful.\n");
         }
         
-        $Service->putString("USER INFORMATION\n=================\n");
+        $service->putString("USER INFORMATION\n=================\n");
         
-        $Service->putString(print_r($userInfo, true));
+        $service->putString(print_r($userInfo, true));
         
-        $Timecheck->reset();
+        $timecheck->reset();
         
-        $Service->requestConfirmAction("Please DO confirm alias, email, name and id.\n\nDelete this user");
+        $service->requestConfirmAction("Please DO confirm alias, email, name and id.\n\nDelete this user");
         
-        $Service->requestConfirmAction("Confirm");
+        $service->requestConfirmAction("Confirm");
         
-        $Timecheck->check(180);
+        $timecheck->check(180);
         
-        $Service->putString("Sleeping for three seconds.\nAfter that, deleting the user. Use ^C to cancel\n");
+        $service->putString("Sleeping for three seconds.\nAfter that, deleting the user. Use ^C to cancel\n");
         sleep(3);
         
         $registry->set("canDeleteAccount", true);
         
-        $PeopleDeleted->deleteAccount($userInfo, sha1(serialize($userInfo)));
+        $peopleDeleted->deleteAccount($userInfo, sha1(serialize($userInfo)));
         
         echo "User account deleted.\n";
     }

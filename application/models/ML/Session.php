@@ -8,7 +8,7 @@ class ML_Session extends ML_getModel
     const RECENT_ACCESS_INTERVAL = "2 DAY";
     const RECENT_ACCESS_SECONDS = "172800";
     
-    protected $cache = '';
+    protected $_cache = '';
     
     protected $_sessionPrefix;
     
@@ -36,11 +36,11 @@ class ML_Session extends ML_getModel
         
         $this->_cache = $handler;
         
-        $session_handler = Zend_Session::getSaveHandler();
+        $sessionHandler = Zend_Session::getSaveHandler();
         
-        $this->_sessionPrefix = $session_handler->getSessionPrefix();
+        $this->_sessionPrefix = $sessionHandler->getSessionPrefix();
         
-        $this->_lastActivityPrefix = $session_handler->getlastActivityPrefix();
+        $this->_lastActivityPrefix = $sessionHandler->getlastActivityPrefix();
         
         parent::__construct($config);
     }
@@ -51,7 +51,8 @@ class ML_Session extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     public static function getInstance()
     {
@@ -95,21 +96,21 @@ class ML_Session extends ML_getModel
         
         $close = array();
         
-        foreach($list as $key => $one_session)
-        {
-            if($one_session['status'] != self::OPEN_STATUS)
-            {
+        foreach ($list as $key => $oneSession) {
+            if ($oneSession['status'] != self::OPEN_STATUS) {
                 continue;
             }
             
-            $test_session = $this->_cache->test($this->getSessionPrefix() . $one_session['session']);
+            $testSession = $this->_cache->test($this->getSessionPrefix() . $oneSession['session']);
             
-            if(!$test_session)
-            {
-                $stmt = 'UPDATE '.$this->getAdapter()->quoteTableAs($this->_name).' SET `status` = ?, `end` = CURRENT_TIMESTAMP WHERE `uid` = ? AND `session` = ?';
-                $this->getAdapter()->query($stmt, array(self::CLOSE_GC_STATUS, $uid, $one_session['session']));
+            if (! $testSession) {
+                $stmt = 'UPDATE ' . $this->getAdapter()->quoteTableAs($this->_name) .
+                ' SET `status` = ?, `end` = CURRENT_TIMESTAMP WHERE `uid` = ? AND `session` = ?';
                 
-                $close[] = $one_session['session'];
+                $this->getAdapter()->query($stmt,
+                 array(self::CLOSE_GC_STATUS, $uid, $oneSession['session']));
+                
+                $close[] = $oneSession['session'];
             }
         }
         
@@ -118,53 +119,61 @@ class ML_Session extends ML_getModel
     
     public function removeSessions($list, $exception = null)
     {
-        foreach($list as $one_session)
-        {
-            if($one_session['session'] != $exception)
-            {
-                $this->_cache->remove($this->_sessionPrefix . $one_session['session']);
+        foreach ($list as $oneSession) {
+            if ($oneSession['session'] != $exception) {
+                $this->_cache->remove($this->_sessionPrefix . $oneSession['session']);
             }
         }
     }
     
     public function removeAllSessions($uid)
     {
-        $sessions_list = $this->listRecentSessionsMeta($uid, true);
+        $sessionsList = $this->listRecentSessionsMeta($uid, true);
         
-        $this->removeSessions($sessions_list);
+        $this->removeSessions($sessionsList);
     }
     
     public function logout()
     {
-        $Log = ML_Log::getInstance();
-        $Log->action("logout");
+        $log = ML_Log::getInstance();
+        $log->action("logout");
         $auth = Zend_Auth::getInstance();
         
-        $old_uid = $auth->getIdentity();
+        $oldUid = $auth->getIdentity();
         
         $auth->clearIdentity();
         
-        $old_sid = Zend_Session::getId();
+        $oldSid = Zend_Session::getId();
         
-           Zend_Session::regenerateId();
-           Zend_Session::destroy(true);
+        Zend_Session::regenerateId();
+        Zend_Session::destroy(true);
+        
         Zend_Session::expireSessionCookie();
-        $stmt = 'UPDATE '.$this->getAdapter()->quoteTableAs($this->_name).' SET `status` = ?, `end` = CURRENT_TIMESTAMP, `end_remote_addr` = ? WHERE `session` = ?';
-        $this->getAdapter()->query($stmt, array(self::CLOSE_STATUS, ($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null, $old_sid));
+        $stmt = 'UPDATE ' . $this->getAdapter()->quoteTableAs($this->_name) .
+         ' SET `status` = ?, `end` = CURRENT_TIMESTAMP, `end_remote_addr` = ? WHERE `session` = ?';
+        
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+            $remoteAddr = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $remoteAddr = null;
+        }
+        
+        $this->getAdapter()->query($stmt,
+         array(self::CLOSE_STATUS, $remoteAddr, $oldSid));
     }
     
     public function remoteLogout()
     {
         $auth = Zend_Auth::getInstance();
         
-        $Log = ML_Log::getInstance();
-        $Log->action("remote_logout");
+        $log = ML_Log::getInstance();
+        $log->action("remote_logout");
         
-        $sessions_list = $this->listRecentSessionsMeta($auth->getIdentity());
+        $sessionsList = $this->listRecentSessionsMeta($auth->getIdentity());
         
-        $current_sid = Zend_Session::getId();
+        $currentSid = Zend_Session::getId();
         
-        $this->removeSessions($sessions_list, $current_sid);
+        $this->removeSessions($sessionsList, $currentSid);
         
         $stmt = 'UPDATE '.
             $this->getAdapter()->quoteTableAs($this->_name).' '.
@@ -172,23 +181,21 @@ class ML_Session extends ML_getModel
             'WHERE `status` = ? AND `uid` = ? AND `session` != ?'
             ;
         
-        $this->getAdapter()->query(
-            $stmt, array(
+        $this->getAdapter()->query($stmt, array(
                 self::CLOSE_REMOTE_STATUS,
                 ($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null,
                 self::OPEN_STATUS,
                 $auth->getIdentity(),
-                $current_sid
-                )
-            );
+                $currentSid
+                ));
     }
     
-    protected function listRecentSessionsMeta($uid, $only_open = false)
+    protected function listRecentSessionsMeta($uid, $onlyOpen = false)
     {
-        $sql = "SELECT * FROM ".$this->getAdapter()->quoteTableAs($this->_name)." WHERE uid = ? AND (status = ?";
+        $sql = "SELECT * FROM " . $this->getAdapter()
+        ->quoteTableAs($this->_name) . " WHERE uid = ? AND (status = ?";
 
-        if(!$only_open)
-        {
+        if (! $onlyOpen) {
             $sql.=" OR end > DATE_SUB(NOW(), INTERVAL ".self::RECENT_ACCESS_INTERVAL.")";
         }
         
@@ -200,7 +207,13 @@ class ML_Session extends ML_getModel
         
         $result = $query->fetchAll();
         
-        return (is_array($result)) ? $result : array();
+        if (is_array($result)) {
+            $dataResult = $result;
+        } else {
+            $dataResult = array();
+        }
+        
+        return $dataResult;
     }
     
     /**
@@ -213,30 +226,30 @@ class ML_Session extends ML_getModel
     {
         $this->meta_gc($uid);
         
-        $sessions_list = $this->listRecentSessionsMeta($uid);
+        $sessionsList = $this->listRecentSessionsMeta($uid);
         
         $activity = array();
         
-        foreach($sessions_list as $one_session)
-        {
-            $last_activity_info = $this->_cache->load($this->getSessionPrefix() . $this->_lastActivityPrefix . $one_session['session']);
+        foreach ($sessionsList as $oneSession) {
+            $lastActivityInfo = $this->_cache->load($this->getSessionPrefix() . $this->_lastActivityPrefix . $oneSession['session']);
             
-            if(is_array($last_activity_info))
-            {
-                $last_activity_info['session'] = $one_session['session'];
+            if (is_array($lastActivityInfo)) {
+                $lastActivityInfo['session'] = $oneSession['session'];
                 
-                $last_activity_info['status'] = $one_session['status'];
+                $lastActivityInfo['status'] = $oneSession['status'];
                 
-                if(extension_loaded("geoip") && geoip_db_avail(GEOIP_COUNTRY_EDITION) && isset($last_activity_info['remote_addr']))
-                {
-                    $last_activity_info['geo'] = @geoip_record_by_name($last_activity_info['remote_addr']);
+                if (extension_loaded("geoip") &&
+                 geoip_db_avail(GEOIP_COUNTRY_EDITION) &&
+                 isset($lastActivityInfo['remote_addr'])) {
+                    $lastActivityInfo['geo'] = @geoip_record_by_name($lastActivityInfo['remote_addr']);
                 } else {
-                    $last_activity_info['geo'] = false;
+                    $lastActivityInfo['geo'] = false;
                 }
                 
-                if(isset($last_activity_info['request_time']) && $last_activity_info['request_time'] > ((int)$_SERVER['REQUEST_TIME'] - self::RECENT_ACCESS_SECONDS))
-                {
-                    $activity[] = $last_activity_info;
+                if (isset($lastActivityInfo['request_time']) &&
+                 $lastActivityInfo['request_time'] >
+                 ((int) $_SERVER['REQUEST_TIME'] - self::RECENT_ACCESS_SECONDS)) {
+                    $activity[] = $lastActivityInfo;
                 }
             }
         }
@@ -244,14 +257,19 @@ class ML_Session extends ML_getModel
         return $activity;
     }
     
-    public function associate($uid, $session_id)
+    public function associate($uid, $sessionId)
     {
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+            $remoteAddr = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $remoteAddr = null;
+        }
+        
         $data = array(
             "uid" => $uid,
-            "session" => $session_id,
+            "session" => $sessionId,
             "status" => self::OPEN_STATUS,
-            "creation_remote_addr" => ($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null
-        );
+            "creation_remote_addr" => $remoteAddr);
         
         $this->insert($data);
     }

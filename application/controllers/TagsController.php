@@ -6,7 +6,6 @@
  *
  * @copyright  2009 Henrique Vicente
  * @version    $Id:$
- * @link       http://thinkings.info
  * @since      File available since Release 0.1
  */
 
@@ -26,29 +25,39 @@ class TagsController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $Tags = new ML_Tagschange();
+        $tags = new ML_TagsChange();
         
         $params = $request->getParams();
         
-        if($auth->getIdentity() == $shareInfo['byUid']) {
+        if ($auth->getIdentity() == $shareInfo['byUid']) {
             
-            $tagsForm = $Tags->_form();
+            $tagsForm = $tags->_form();
             
-            if($request->isPost() && $tagsForm->isValid($request->getPost()))
-            {
-                $tagsArray = $Tags->makeArrayOfTags($tagsForm->getValue('tags'));
+            if ($request->isPost() && $tagsForm->isValid($request->getPost())) {
+                $tagsArray = $tags->makeArrayOfTags($tagsForm->getValue('tags'));
                 
-                //It's not guaranteed to work within the tags limit margin, but it's more than ok
-                $old_tags = $Tags->getShareTags($shareInfo['id']);
-                $tagsCounter = sizeof($old_tags);
+                //It's not guaranteed to work within the tags limit margin,
+                //but it's more than ok
+                $oldTags = $tags->getShareTags($shareInfo['id']);
+                $tagsCounter = sizeof($oldTags);
                 
-                foreach($tagsArray as $n => $tag)
-                {
-                    if($tagsCounter >= $config['tags']['limit']) break;
+                foreach ($tagsArray as $n => $tag) {
+                    if ($tagsCounter >= $config['tags']['limit']) {
+                        break;
+                    }
+                    
                     try {
-                        $add = $Tags->getAdapter()->query("INSERT IGNORE INTO `".$Tags->getTableName()."` (`share`, `people`, `clean`, `raw`, `timestamp`) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)", array($shareInfo['id'], $shareInfo['byUid'], $tag['clean'], $tag['raw']));
-                        if($add->rowCount()) $tagsCounter++;
-                    } catch(Exception $e) {}
+                        $add = $tags->getAdapter()
+                        ->query("INSERT IGNORE INTO `" . $tags->getTableName() .
+                         "` (`share`, `people`, `clean`, `raw`, `timestamp`) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)",
+                        array($shareInfo['id'], $shareInfo['byUid'], 
+                        $tag['clean'], $tag['raw']));
+                        
+                        if ($add->rowCount()) {
+                            $tagsCounter ++;
+                        }
+                    } catch (Exception $e) {
+                    }
                 }
             }
         }
@@ -60,42 +69,40 @@ class TagsController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         $registry = Zend_Registry::getInstance();
         
+        $router = $this->getFrontController()->getRouter();
+        
         $userInfo = $registry->get("userInfo");
         $shareInfo = $registry->get("shareInfo");
         
         $request = $this->getRequest();
         
-        $Tags = new ML_Tagschange();
+        $tags = new ML_TagsChange();
         
         $params = $request->getParams();
         
-        if($auth->getIdentity() == $shareInfo['byUid']) {
-            $select = $Tags->select()
+        if ($auth->getIdentity() == $shareInfo['byUid']) {
+            $select = $tags->select()
             ->where("id = ?", $params['deletetag'])
             ->where("share = ?", $shareInfo['id'])
             ->where("people = ?", $shareInfo['byUid']);
             
-            $row = $Tags->fetchRow($select);
+            $row = $tags->fetchRow($select);
             
-            if(is_object($row)) {
-                $form = $Tags->_formDelete();
+            if (is_object($row)) {
+                $form = $tags->_formDelete();
                 $this->view->tag = $row->toArray();
                 $this->view->deleteTagForm = $form;
                 
-                if($request->isPost() && $form->isValid($request->getPost()))
-                {
+                if ($request->isPost() && $form->isValid($request->getPost())) {
                     $row->delete();
-                    $is_deleted = true;
+                    $isDeleted = true;
                 }
             }
         }
-        
-        if($this->_request->isXmlHttpRequest())
-        {
+        if ($this->_request->isXmlHttpRequest()) {
             $this->_forward("tags");
-        } elseif(!is_object($row) || isset($is_deleted))
-        {
-            $this->_redirect($this->getFrontController()->getRouter()->assemble($params, "sharepage_1stpage"), array("exit"));
+        } else if (! is_object($row) || isset($isDeleted)) {
+            $this->_redirect($router->assemble($params, "sharepage_1stpage"), array("exit"));
         }
     }
     
@@ -105,21 +112,22 @@ class TagsController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         
+        $router = $this->getFrontController()->getRouter();
+        
         $params = $request->getParams();
         
-        if($this->_request->isXmlHttpRequest())
-        {
+        if ($this->_request->isXmlHttpRequest()) {
             $this->_helper->layout->disableLayout();
         } else {
-            $this->_redirect($this->getFrontController()->getRouter()->assemble($params, "sharepage_1stpage"), array("exit"));
+            $this->_redirect($router->assemble($params, "sharepage_1stpage"), array("exit"));
         }
         
         $registry = Zend_Registry::getInstance();
         $shareInfo = $registry->get("shareInfo");
         
-        $Tags = ML_Tags::getInstance();
+        $tags = ML_Tags::getInstance();
         
-        $tagsList = $Tags->getShareTags($shareInfo['id']);
+        $tagsList = $tags->getShareTags($shareInfo['id']);
         
         $this->view->tagsList = $tagsList;
     }

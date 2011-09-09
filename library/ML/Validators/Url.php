@@ -1,6 +1,6 @@
 <?php
-require_once 'Zend/Validate/Abstract.php';
-require_once 'Zend/Validate/Hostname.php';
+//require_once 'Zend/Validate/Abstract.php';
+//require_once 'Zend/Validate/Hostname.php';
 
 class MLValidator_Url extends Zend_Validate_Abstract
 {

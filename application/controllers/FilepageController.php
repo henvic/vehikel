@@ -7,7 +7,6 @@
  *
  * @copyright  2009 Henrique Vicente
  * @version    $Id:$
- * @link       http://thinkings.info
  * @since      File available since Release 0.1
  */
 
@@ -37,9 +36,7 @@ class FilepageController extends Zend_Controller_Action
         );
         
         $this->_helper->loadResource->pseudoshareSetUp();
-        
-        foreach ($keys as $key => $where)
-        {
+        foreach ($keys as $key => $where) {
             if (array_key_exists($key, $params)) {
                 return $this->_forward(current($where), key($where));
             }
@@ -47,50 +44,49 @@ class FilepageController extends Zend_Controller_Action
         
         $userInfo = $registry->get('userInfo');
         $shareInfo = $registry->get("shareInfo");
-        if ($registry->isRegistered("signedUserInfo")) $signedUserInfo = $registry->get("signedUserInfo");
+        
+        if ($registry->isRegistered("signedUserInfo")) {
+            $signedUserInfo = $registry->get("signedUserInfo");
+        }
+        
         $registry->set("isFilepage", true);//for use by the pagination_control
         $page = $request->getUserParam("page");
         
-        $Share = ML_Share::getInstance();
-        $Tags = ML_Tags::getInstance();
+        $share = ML_Share::getInstance();
+        $tags = ML_Tags::getInstance();
         
-        $People = ML_People::getInstance();
-        $Comments = ML_Comments::getInstance();
-        $Twitter = ML_Twitter::getInstance();
-        $Ignore = ML_Ignore::getInstance();
+        $people = ML_People::getInstance();
+        $comments = ML_Comments::getInstance();
+        $twitter = ML_Twitter::getInstance();
+        $ignore = ML_Ignore::getInstance();
         
         
-        $paginator = $Comments->getCommentsPages($shareInfo['id'], $config['share']['commentsPerPage'], $page);
+        $paginator = $comments->getCommentsPages($shareInfo['id'], $config['share']['commentsPerPage'], $page);
         
         //Test if there is enough pages or not
         if ((!$paginator->count() && $page != 1) || $paginator->getCurrentPageNumber() != $page) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage"), array("exit"));
         
-        $tagsList = $Tags->getShareTags($shareInfo['id']);
+        $tagsList = $tags->getShareTags($shareInfo['id']);
         
-        if ($auth->hasIdentity())
-        {
-            $Ignore = ML_Ignore::getInstance();
+        if ($auth->hasIdentity()) {
+            $ignore = ML_Ignore::getInstance();
             
-            if ($auth->getIdentity() == $userInfo['id'] 
-            || !$Ignore->status($userInfo['id'], $auth->getIdentity())
-            )
-            {
-                $commentForm = $Comments->_addForm();
+            if ($auth->getIdentity() == $userInfo['id'] ||
+            !$ignore->status($userInfo['id'], $auth->getIdentity())) {
+                $commentForm = $comments->_addForm();
                 
                 //should The comment form processing should be in the CommentsController?
-                if ($request->isPost() && $commentForm->isValid($request->getPost()))
-                {
+                if ($request->isPost() && $commentForm->isValid($request->getPost())) {
                     $newCommentMsg = $commentForm->getValue('commentMsg');
                     $previewFlag = $commentForm->getValue('getCommentPreview');
                     
-                    if (!empty($previewFlag)) {//check if it is a post or preview
+                    //check if it is a post or preview
+                    if (!empty($previewFlag)) {
                         $this->view->commentPreview = $newCommentMsg;
-                    }
-                    else
-                    {
-                        $newComment = $Comments->add($newCommentMsg, $auth->getIdentity(), $shareInfo);
+                    } else {
+                        $newComment = $comments->add($newCommentMsg, $auth->getIdentity(), $shareInfo);
                         
-                        if (!$newComment) {
+                        if (! $newComment) {
                             $newComment = "#commentPreview";
                             $this->view->commentPreview = $newCommentMsg;
                         } else {
@@ -102,8 +98,9 @@ class FilepageController extends Zend_Controller_Action
                 
                 $this->view->commentForm = $commentForm;
                 
-                if ($Twitter->getSignedUserTwitterAccount())
-                 $this->view->twitterForm = $Twitter->form();
+                if ($twitter->getSignedUserTwitterAccount()) {
+                    $this->view->twitterForm = $twitter->form();
+                }
             }
         }
         

@@ -1,11 +1,11 @@
 <ul>
-<li class="first"><?= $this->escape($config['applicationname']) ?></li>
-<li><a href="<?= $this->url(array(), "index"); ?>">Home</a></li>
-<li><a href="<?= $this->staticUrl("/tos") ?>">Terms of Service</a></li>
-<li><a href="<?= $this->staticUrl("/privacy") ?>">Privacy Policy</a></li>
-<li><a href="<?= $this->staticUrl("/api") ?>">API</a></li>
-<li><a href="<?= $this->staticUrl("/help") ?>">Help</a></li>
-<li><a href="<?= $this->staticUrl("/about") ?>">About</a></li>
+<li class="first"><?php echo $this->escape($config['applicationname']) ?></li>
+<li><a href="<?php echo $this->url(array(), "index"); ?>">Home</a></li>
+<li><a href="<?php echo $this->staticUrl("/tos") ?>">Terms of Service</a></li>
+<li><a href="<?php echo $this->staticUrl("/privacy") ?>">Privacy Policy</a></li>
+<li><a href="<?php echo $this->staticUrl("/api") ?>">API</a></li>
+<li><a href="<?php echo $this->staticUrl("/help") ?>">Help</a></li>
+<li><a href="<?php echo $this->staticUrl("/about") ?>">About</a></li>
 <li><a href="http://blog.plifk.com/" class="new-window">Blog</a></li>
-<li><a href="<?= $this->url(array(), "report_abuse"); ?>">Report abuse</a></li>
+<li><a href="<?php echo $this->url(array(), "report_abuse") ?>">Report abuse</a></li>
 </ul>

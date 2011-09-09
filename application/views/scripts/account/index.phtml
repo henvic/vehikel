@@ -5,26 +5,27 @@ $config = $registry->get("config");
 $this->headTitle("Your account overview");
 $signedUserInfo = $registry->get("signedUserInfo");
 
-$this->accountForm->getElement("about")->getDecorator("description")->setEscape(false);
+$this->accountForm
+->getElement("about")->getDecorator("description")->setEscape(false);
 
 ?>
 <div class="yui-ge">
 <div class="yui-u first">
-<h2>Welcome, <?= $this->escape($signedUserInfo['name']) ?></h2>
-<?= $this->render("/credits/info.phtml"); ?>
+<h2>Welcome, <?php echo $this->escape($signedUserInfo['name']) ?></h2>
+<?php echo $this->render("/credits/info.phtml"); ?>
 <?php if(isset($this->changeEmail) && $this->changeEmail): ?>
 <strong>You have set a new e-mail address for your account. But before you start using it we require you validate it. We have sent you an e-mail to the new address confirming this operation.</strong>
 <?php endif; ?>
-<?= $this->accountForm ?>
+<?php echo $this->accountForm ?>
 <br />
 <h4>More options</h4>
 <ul>
-<li><a href="<?= $this->url(array(), "accountapps") ?>">Applications</a></li>
-<li><b><a href="<?=$this->url(array(), "logout")?>?remote" id="remote_signout_link" rel="nofollow">Remote logout</a></b>: if you ever forget to logout from a public computer, use remote logout.</li>
-<li><a href="<?=$this->url(array(), "accountdelete")?>" rel="nofollow" class="warning">Delete your account</a></li>
+<li><a href="<?php echo $this->url(array(), "accountapps") ?>">Applications</a></li>
+<li><b><a href="<?php echo$this->url(array(), "logout")?>?remote" id="remote_signout_link" rel="nofollow">Remote logout</a></b>: if you ever forget to logout from a public computer, use remote logout.</li>
+<li><a href="<?php echo$this->url(array(), "accountdelete")?>" rel="nofollow" class="warning">Delete your account</a></li>
 </ul>
 </div>
 <div class="yui-u accountside">
-<?= $this->render("/account/menu.phtml"); ?>
+<?php echo $this->render("/account/menu.phtml"); ?>
 </div>
 </div>

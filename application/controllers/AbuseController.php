@@ -7,15 +7,15 @@ class AbuseController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         $request = $this->getRequest();
         
-        $Abuse = new ML_Abuse();
-        $form = $Abuse->form();
+        $abuse = new ML_Abuse();
+        $form = $abuse->form();
         
         if ($request->isPost() && $form->isValid($request->getPost())) {
-            $Abuse->insert(
+            $abuse->insert(
             array("referer" => $form->getValue("abuse_reference"), 
             "description" => $form->getValue("abuse_description"), 
             "byUid" => $auth->getIdentity(), "byAddr" => $_SERVER['REMOTE_ADDR']));
-            $this->view->report_done = true;
+            $this->view->reportDone = true;
         }
         $this->view->abuseForm = $form;
     }

@@ -1,5 +1,5 @@
 <?php
-require_once 'Zend/Validate/Abstract.php';
+//require_once 'Zend/Validate/Abstract.php';
 
 class MLValidator_Redeem extends Zend_Validate_Abstract
 {
@@ -12,7 +12,8 @@ class MLValidator_Redeem extends Zend_Validate_Abstract
     protected $_messageTemplates = array(
         self::INVALID_Redeem   => "Invalid redeem code",
         self::USED_Redeem       => "This redeem code is no longer valid",
-        self::YUSED_Redeem       => "You already used this redeem code during this promotion",
+        self::YUSED_Redeem       =>
+            "You already used this redeem code during this promotion",
         self::NOTFOUND_Redeem  => "Redeem code not found",
         self::EMPTY_Redeem     => "Empty redeem code"
     );
@@ -26,52 +27,46 @@ class MLValidator_Redeem extends Zend_Validate_Abstract
         $valueString = (string) $value;
         $this->_setValue($valueString);
         
-        if(mb_strlen($value) > 16)
-        {
+        if (mb_strlen($value) > 16) {
             $this->_error(self::INVALID_Redeem);
             return false;
         }
         
-        if(empty($value))
-        {
+        if (empty($value)) {
             $this->_error(self::EMPTY_Redeem);
             return false;
         }
         
-        $Coupons = new ML_Coupons();
+        $coupons = new ML_Coupons();
         
-        $select = $Coupons->select()
+        $select = $coupons->select()
         ->where("hash = ?", mb_strtolower($value))
         ->order("active DESC")//to garantee showing the newest
         ;
         
-        $row = $Coupons->fetchRow($select);
+        $row = $coupons->fetchRow($select);
         
-        if(!is_object($row))
-        {
+        if (!is_object($row)) {
             $this->_error(self::NOTFOUND_Redeem);
             return false;
         }
         
         $token = $row->toArray();
         
-        if(!$token['active']) {
+        if (!$token['active']) {
             $this->_error(self::USED_Redeem);
             return false;
         }
         
-        $coupon_data = $row->toArray();
-        if(!$coupon_data['unique_use'])
-        {
-            $Credits = ML_Credits::getInstance();
-            $is_it_used = $Credits->fetchRow($Credits->select()
+        $couponData = $row->toArray();
+        if (! $couponData['unique_use']) {
+            $credits = ML_Credits::getInstance();
+            $isItUsed = $credits->fetchRow($credits->select()
                 ->where("uid = ?", $signedUserInfo['id'])
                 ->where("reason_type = ?", ML_Credits::COUPON_REDEEM)
-                ->where("reason_id = ?", $coupon_data['id'])
-            );
+                ->where("reason_id = ?", $couponData['id']));
             
-            if(is_object($is_it_used))
-            {
+            if (is_object($isItUsed)) {
                 $this->_error(self::YUSED_Redeem);
                 return false;
             }

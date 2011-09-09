@@ -8,19 +8,29 @@ $this->headTitle("API | Your Keys");
 <?php else: ?>
 <dl>
 <?php
-foreach($this->listConsumers as $consumer):
+foreach ($this->listConsumers as $consumer):
 ?>
-<dt><a href="<?= $this->url(array("api_key" => $consumer['consumer_key']), "api_key") ?>"><?= $this->escape($consumer['application_title']) ?></a></dt>
+<dt><a href="<?php
+echo $this->url(array("api_key" => $consumer['consumer_key']), "api_key");
+?>"><?php
+echo $this->escape($consumer['application_title']);
+?></a></dt>
 <dd>
 <ul>
-<li><strong>Key:</strong> <?= $this->escape($consumer['consumer_key']) ?></li>
-<li><strong>Secret:</strong> <?= $this->escape($consumer['consumer_secret']) ?></li>
-<li><strong>Issued:</strong> <?php $date = new Zend_Date(); $date->set($consumer['issue_date'], Zend_Date::ISO_8601); echo $date->get(Zend_Date::DATE_LONG); ?></li>
-<li><strong>Application URI:</strong> <i><?= $this->escape($consumer['application_uri']) ?></i></li>
-<li><strong>Description:</strong> <i><?= $this->escape($consumer['application_descr']) ?></i></li>
+<li><strong>Key:</strong> <?php echo $this->escape($consumer['consumer_key']); ?></li>
+<li><strong>Secret:</strong> <?php echo $this->escape($consumer['consumer_secret']); ?></li>
+<li><strong>Issued:</strong> <?php
+$date = new Zend_Date(); $date->set($consumer['issue_date'], Zend_Date::ISO_8601);
+echo $date->get(Zend_Date::DATE_LONG); 
+?></li>
+<li><strong>Application URI:</strong> <i><?php
+echo $this->escape($consumer['application_uri']); 
+?></i></li>
+<li><strong>Description:</strong> <i><?php echo $this->escape($consumer['application_descr']); ?></i></li>
 </ul>
 </dd>
 <?php endforeach; ?>
 </dl>
 <?php endif; ?>
-<p><strong><a href="<?= $this->url(array(), "apply_api_key")?>">Apply for a new API key</a></strong></p>
+<p><strong><a href="<?php
+echo $this->url(array(), "apply_api_key") ?>">Apply for a new API key</a></strong></p>

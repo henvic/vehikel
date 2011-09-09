@@ -4,25 +4,26 @@ $config = $registry->get("config");
 
 $this->headTitle("Join Plifk", "SET");
 
-if($this->success): ?>
+if ($this->success): ?>
 <div class="yui-g">
 <div class="yui-u first">
-<h2 class="joinfirststep">Hi <?= $this->escape($this->entry['name']) ?>!</h2>
+<h2 class="joinfirststep">Hi <?php echo $this->escape($this->entry['name']) ?>!</h2>
 <p>Please check your e-mail inbox and follow the instructions.<br /><br />
-You gave us the following e-mail address: <strong><?= $this->escape($this->entry['email']) ?></strong>.</p>
+You gave us the following e-mail address: <strong><?php echo $this->escape($this->entry['email']) ?></strong>.</p>
 </div>
 <div class="yui-u">
 <h2>You've Got Mail!</h2>
-<img src="<?= $this->staticversion("/illustrations/girl-with-thumbs-up.jpg") ?>" alt="" width="424" height="283" />
+<img src="<?php echo $this->staticversion("/illustrations/girl-with-thumbs-up.jpg") ?>" alt="" width="424" height="283" />
 </div>
 </div>
-<?php else:
+<?php
+else:
 $this->signUpForm->getElement("email")->getDecorator("description")->setEscape(false);
 ?>
 <div class="yui-ge">
 <div class="yui-u first">
 <h2>Sign up for a Plifk account</h2>
-<?= $this->signUpForm ?>
+<?php echo $this->signUpForm; ?>
 </div>
 <div class="yui-u">
 <h2>In just three steps</h2>
@@ -32,15 +33,15 @@ $this->signUpForm->getElement("email")->getDecorator("description")->setEscape(f
 <li>Choose a username</li>
 </ol>
 <?php
-if($config['signup']['inviteonly']):
+if ($config['signup']['inviteonly']):
 ?>
 <h2>Do you have an invite code?</h2>
 <p>To sign up, we require that you have one at the moment.</p>
-</p>
 <?php endif; ?>
 <?php /*<h2>I think I'm about to sign up...</h2>
-<img src="<?= $this->staticversion("/illustrations/girl-thinking.jpg") ?>" alt="" width="424" height="283" />
+<img src="<?php echo $this->staticversion("/illustrations/girl-thinking.jpg") ?>" alt="" width="424" height="283" />
 */?>
 </div>
 </div>
-<?php endif; ?>
+<?php
+endif;

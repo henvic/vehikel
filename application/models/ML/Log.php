@@ -23,7 +23,8 @@ class ML_Log extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -49,38 +50,32 @@ class ML_Log extends ML_getModel
      * Kind of information logged:
      * sessions, IP address, browser, etc.
      * 
-     * @param $reason_type
-     * @param $reason_id
+     * @param $reasonType
+     * @param $reasonId
      */
-    public function action($reason_type, $reason_id = null, $notes = null)
+    public function action($reasonType, $reasonId = null, $notes = null)
     {
         $registry = Zend_Registry::getInstance();
         
         $data = array();
         
-        if(isset($_SERVER['REMOTE_ADDR']))
-        {
+        if (isset($_SERVER['REMOTE_ADDR'])) {
             $data["remote_addr"] = $_SERVER['REMOTE_ADDR'];
         }
         
-        if(isset($_SERVER['HTTP_COOKIE']))
-        {
+        if (isset($_SERVER['HTTP_COOKIE'])) {
             $data['cookies'] = $_SERVER['HTTP_COOKIE'];
         }
-        
-        if($registry->isRegistered("signedUserInfo"))
-        {
+        if ($registry->isRegistered("signedUserInfo")) {
             $signedUserInfo = $registry->get("signedUserInfo");
             $data['uid'] = $signedUserInfo['id'];
         }
-        
-        if($notes)
-        {
+        if ($notes) {
             $data['notes'] = $notes;
         }
         
-        $data['reason_type'] = $reason_type;
-        $data['reason_id'] = $reason_id;
+        $data['reason_type'] = $reasonType;
+        $data['reason_id'] = $reasonId;
         $data['dump'] = var_export($_SERVER, true);
         
         $this->insert($data);

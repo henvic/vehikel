@@ -5,13 +5,18 @@ class VersionController extends Zend_Controller_Action
     {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
+        
+        $apiConfig = $config['api'];
+        
         $doc = new ML_Dom();
         $doc->formatOutput = true;
         
-        $api_version = $doc->createElement("version");
-        $api_version->appendChild($doc->newTextAttribute("api", $config['api']['version']));
+        $apiVersion = $doc->createElement("version");
         
-        $doc->appendChild($api_version);
+        $apiVersion
+        ->appendChild($doc->newTextAttribute("api", $apiConfig['version']));
+        
+        $doc->appendChild($apiVersion);
         
         $this->_helper->printResponse($doc);
     }

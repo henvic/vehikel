@@ -6,52 +6,57 @@ $registry = Zend_Registry::getInstance();
 <thead><tr><th>Order Number</th><th>Date and time</th><th>Transaction</th><th>Net amount</th></tr></thead>
 <tbody>
 <?php
-if($this->paginator && !$this->paginator->getTotalItemCount()): ?>
+if ($this->paginator && !$this->paginator->getTotalItemCount()): ?>
 <p>There is nothing here for you.</p>
-<?php else:
-if($this->paginator)
-{
-	$items = $this->paginator->getCurrentItems()->toArray();
+<?php
+else: if ($this->paginator) {
+    $items = $this->paginator->getCurrentItems()->toArray();
 } else {
-	$items = array($this->order);
+    $items = array($this->order);
 }
-foreach($items as $order):
 
-$order_date = new Zend_Date();
-$order_date->set($order['timestamp'], Zend_Date::ISO_8601);
-$order_currency = new Zend_Currency(
+foreach ($items as $order):
+
+$orderDate = new Zend_Date();
+$orderDate->set($order['timestamp'], Zend_Date::ISO_8601);
+$orderCurrency = new Zend_Currency(
     array(
         'value'    => $order['amount']/100,
         'currency' => 'USD',
-    	'display'  => Zend_Currency::USE_SHORTNAME,
+        'display'  => Zend_Currency::USE_SHORTNAME,
     )
 );
 
 ?>
 <tr>
-<td><?php
-if(!isset($this->order)):?>
-<a href="<?= $this->url(array("order_pid" => $order['pid']), "order") ?>">
+<td><?php if (!isset($this->order)): ?>
+<a href="<?php echo $this->url(array("order_pid" => $order['pid']), "order"); ?>">
 <?php endif; ?>
-<?= $this->escape(ML_Credits::printFormatedUUId($order['pid'])) ?>
+<?php echo $this->escape(ML_Credits::printFormatedUUId($order['pid'])); ?>
 <?php
-if(isset($this->order)):?></a>
+if (isset($this->order)):
+?></a>
 <?php endif; ?>
 </td>
-<td><?= $this->escape($order_date) ?></td>
+<td><?php echo $this->escape($orderDate); ?></td>
 <td class="left">
 <?php
-switch($order['reason_type'])
-{
-	case "transfer" : $order_type = ($order['amount'] > 0) ? 'Paid' : 'Credited'; break;
-	case "redeem" : $order_type = "Coupon redeemed"; break;
-	default : $order_type = "Unknown";
+switch ($order['reason_type']) {
+    case "transfer" :
+        $orderType = ($order['amount'] > 0) ? 'Paid' : 'Credited';
+        break;
+    case "redeem" :
+        $orderType = "Coupon redeemed";
+        break;
+    default :
+        $orderType = "Unknown";
+        break;
 }
 
-echo $this->escape($order_type);
+echo $this->escape($orderType);
 ?>
 </td>
-<td class="right"><?= $this->escape($order_currency.' '.$order_currency->getShortName()) ?></td>
+<td class="right"><?php echo $this->escape($orderCurrency.' '.$orderCurrency->getShortName()) ?></td>
 </tr>
 <?php endforeach; endif; ?>
 </tbody>

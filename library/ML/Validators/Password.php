@@ -1,5 +1,5 @@
 <?php
-require_once 'Zend/Validate/Abstract.php';
+//require_once 'Zend/Validate/Abstract.php';
 
 
 class MLValidator_Password extends Zend_Validate_Abstract
@@ -14,7 +14,7 @@ class MLValidator_Password extends Zend_Validate_Abstract
     {    
         $registry = Zend_Registry::getInstance();
         
-        $Credential = ML_Credential::getInstance();
+        $credential = ML_Credential::getInstance();
         
         $this->_setValue($value);
          
@@ -25,14 +25,14 @@ class MLValidator_Password extends Zend_Validate_Abstract
         if(!$registry->isRegistered('loginUserInfo')) return false;
         $loginUserInfo = $registry->get('loginUserInfo');
         
-        $adapter = $Credential->getAuthAdapter($loginUserInfo['id'], $value);
+        $adapter = $credential->getAuthAdapter($loginUserInfo['id'], $value);
         
         // Get our authentication adapter and check credentials
-        if($adapter) {
+        if ($adapter) {
             $auth    = Zend_Auth::getInstance();
             $result  = $auth->authenticate($adapter);
             
-            if($result->isValid()) {
+            if ($result->isValid()) {
                 return true;
             }
             

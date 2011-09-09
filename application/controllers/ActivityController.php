@@ -4,7 +4,9 @@ class ActivityController extends Zend_Controller_Action
 {
     public function recentAction()
     {
-        if(!Zend_Auth::getInstance()->hasIdentity()) {
+        $auth = $auth;
+        
+        if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
         }
         

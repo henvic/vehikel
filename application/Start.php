@@ -1,7 +1,8 @@
 <?php
 
 defined('EXTERNAL_LIBRARY_PATH')
-    or define('EXTERNAL_LIBRARY_PATH', realpath(getenv('EXTERNAL_LIBRARY_PATH')));
+    or define('EXTERNAL_LIBRARY_PATH',
+    realpath(getenv('EXTERNAL_LIBRARY_PATH')));
 
 
 defined('CACHE_PATH')
@@ -24,8 +25,7 @@ defined('LIBRARY_PATH')
     or define('LIBRARY_PATH', realpath(APPLICATION_PATH.'/../library'));
 
 
-set_include_path(
-    EXTERNAL_LIBRARY_PATH . PATH_SEPARATOR .
+set_include_path(EXTERNAL_LIBRARY_PATH . PATH_SEPARATOR .
     LIBRARY_PATH . PATH_SEPARATOR .
     APPLICATION_PATH . '/models' . PATH_SEPARATOR //.
     //get_include_path()
@@ -39,7 +39,8 @@ Zend_Loader_Autoloader::getInstance();
 require EXTERNAL_LIBRARY_PATH . '/Zend/Registry.php';
 require EXTERNAL_LIBRARY_PATH . '/Zend/Cache/Core.php';
 
-//@todo refactory callFilter.php and check library/ML/RouteModule.php for workarounds & do the proper thing
+//@todo refactory callFilter.php
+//@todo redo the library/ML/RouteModule.php the proper way
 require APPLICATION_PATH . '/models/callFilter.php';
 
 /** ML_Application */
@@ -69,8 +70,7 @@ $application->bootstrap()->run();
 } catch(Exception $e)
 {
         header('HTTP/1.1 500 Internal Server Error');
-        if(APPLICATION_ENV == "production")
-        {
+        if (APPLICATION_ENV == "production") {
                 header('HTTP/1.1 500 Internal Server Error');
                 echo("Error loading application.\n");
                 exit(1);

@@ -1,18 +1,21 @@
 <?php
 class Form_AccountSettings extends Zend_Form
-{    
+{
     public function init()
     {
         $this->setMethod('post');
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
+        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
+        Zend_Form_Element::FILTER);
         
         $this->addElement('text', 'name', array(
             'label'      => 'Name:',
             'required'   => true,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 50))
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 50))
                 )
         ));
         
@@ -21,8 +24,10 @@ class Form_AccountSettings extends Zend_Form
             'required'   => true,
             'filters'    => array('StringTrim', 'StringToLower'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 60)),
-                array('validator' => 'emailCheckUser'), //there's stringlenght there also
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 60)),
+                array('validator' =>
+                    'emailCheckUser'), //stringlenght there also
                 array('validator' => 'EmailAddress')
                 )
         ));
@@ -35,7 +40,8 @@ class Form_AccountSettings extends Zend_Form
             'required'   => false,
             'filters'    => array('StringTrim', 'UrlFilter'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 100)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 100)),
                 array('validator' => 'Url')
                 )
         ));
@@ -45,21 +51,24 @@ class Form_AccountSettings extends Zend_Form
             'required'   => false,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 40)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 40)),
                 )
         ));
         
         $about = $this->addElement('textarea', 'about', array(
             'label'      => 'About:',
-            'description' => '<small><a href="'.$this->getView()->staticUrl("/help/html").'" class="new-window">HTML formatting</a></small>',
+            'description' =>
+                '<small><a href="' .
+                $this->getView()->staticUrl("/help/html") .
+                '" class="new-window">HTML formatting</a></small>',
             'required'   => false,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(0, 4096)),
+                array('validator' =>
+                    'StringLength', 'options' => array(0, 4096)),
                 )
         ));
-        
-        
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'Save!',

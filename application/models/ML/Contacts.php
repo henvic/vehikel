@@ -24,7 +24,8 @@ class ML_Contacts extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -36,35 +37,31 @@ class ML_Contacts extends ML_getModel
         return self::$_instance;
     }
     
-    public function getReverseContactsPage($uid, $per_page, $page)
+    public function getReverseContactsPage($uid, $perPage, $page)
     {
-        return $this->getContactsPage($uid, $per_page, $page, true);
+        return $this->getContactsPage($uid, $perPage, $page, true);
     }
     
-    public function getContactsPage($uid, $per_page, $page, $reverse = false)
+    public function getContactsPage($uid, $perPage, $page, $reverse = false)
     {
-        if($reverse) {
-            $uid_f = 'has';
-            $has_f = 'uid';
+        if ($reverse) {
+            $uidF = 'has';
+            $hasF = 'uid';
         } else {
-            $uid_f = 'uid';
-            $has_f = 'has';
+            $uidF = 'uid';
+            $hasF = 'has';
         }
         
         $select = $this->select();
         $select
-        ->where($this->_name.".".$uid_f." = ?", $uid)
-        ->order($this->_name.".since DESC")
-        ;
+        ->where($this->_name.".".$uidF." = ?", $uid)
+        ->order($this->_name.".since DESC");
         
-        //$select->joinLeft("contacts as reverse", "reverse.uid = contacts.has", array("reverse.since as reverse.since", "reverse.friend as reverse.friend"));
-        //doesn't work 'faking the select with a VIEW' neither. Needs other structure found in joinPeopleInfo(), etc.
-        
-        $this->joinPeopleInfo($select, $this->_name, $has_f);
+        $this->joinPeopleInfo($select, $this->_name, $hasF);
         
         $paginator = Zend_Paginator::factory($select);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setItemCountPerPage($per_page);
+        $paginator->setItemCountPerPage($perPage);
         
         return $paginator;
     }
@@ -72,14 +69,12 @@ class ML_Contacts extends ML_getModel
     public function getInfo($uid, $has)
     {
         $query = $this->select()->where("uid = ?", $uid)
-        ->where("has = ?", $has)
-        ;
+        ->where("has = ?", $has);
         
         $relationship = $this->getAdapter()->fetchRow($query);
         
         $reverseQuery = $this->select()->where("has = ?", $uid)
-        ->where("uid = ?", $has)
-        ;
+        ->where("uid = ?", $has);
         
         $reverseRelationship = $this->getAdapter()->fetchRow($reverseQuery);
         

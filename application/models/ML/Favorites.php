@@ -23,7 +23,8 @@ class ML_Favorites extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -37,9 +38,12 @@ class ML_Favorites extends ML_getModel
     
     protected $_name = "favorites";
 
-    public function count($share_id)
+    public function count($shareId)
     {
-        $query = $this->select()->from($this->_name, 'count(*)')->where("share = ?", $share_id);
+        $query = $this->select()
+         ->from($this->_name, 'count(*)')
+         ->where("share = ?", $shareId);
+        
         return $this->getAdapter()->fetchOne($query);
     }
     
@@ -55,9 +59,9 @@ class ML_Favorites extends ML_getModel
         else return $data[0];
     }
     
-    public function getUserPage($uid, $per_page, $page)
+    public function getUserPage($uid, $perPage, $page)
     {
-        $Share = ML_Share::getInstance();
+        $share = ML_Share::getInstance();
         
         $select = $this->select();
         
@@ -65,13 +69,18 @@ class ML_Favorites extends ML_getModel
         
         $select->order("E.timestamp DESC");
         
-        $select->from(
-            array('E' => 'favorites'), array("id", "share", "byUid", "timestamp")
-        );
+        $select->from(array('E' => 'favorites'),
+                      array("id", "share", "byUid", "timestamp"));
         
-        $select->joinInner("share", "`E`.`share` = `share`.`id`", array("title as share.title", "fileSize as share.fileSize", "short as share.short", "filename as share.filename"));
+        $select->joinInner("share", "`E`.`share` = `share`.`id`",
+         array("title as share.title",
+               "fileSize as share.fileSize",
+               "short as share.short",
+               "filename as share.filename"));
         
-        $select->joinInner("people as D", "`E`.`byUid` = `D`.`id`", array("name as people.name", "alias as people.alias", "avatarInfo as people.avatarInfo"));
+        $select->joinInner("people as D", "`E`.`byUid` = `D`.`id`",
+         array("name as people.name", "alias as people.alias",
+         "avatarInfo as people.avatarInfo"));
         
         $select->where("`E`.`uid` = ?", $uid);
         
@@ -95,24 +104,23 @@ WHERE `E`.`uid` = '33' ORDER BY `E`.`timestamp` DESC
         
         $paginator = Zend_Paginator::factory($select);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setItemCountPerPage($per_page);
+        $paginator->setItemCountPerPage($perPage);
         
         return $paginator;
     }
     
-    public function getSharePage($share_id, $per_page, $page)
+    public function getSharePage($shareId, $perPage, $page)
     {
         
         $select = $this->select();
-        $select->where($this->_name.".share = ?", $share_id)
-        ->order($this->_name.".timestamp DESC")
-        ;
+        $select->where($this->_name.".share = ?", $shareId)
+        ->order($this->_name.".timestamp DESC");
         
         $this->joinPeopleInfo($select, $this->_name, "uid");
         
         $paginator = Zend_Paginator::factory($select);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setItemCountPerPage($per_page);
+        $paginator->setItemCountPerPage($perPage);
         
         return $paginator;
     }
@@ -121,9 +129,8 @@ WHERE `E`.`uid` = '33' ORDER BY `E`.`timestamp` DESC
     {
         static $form = '';
         $registry = Zend_Registry::getInstance();
-        if(!is_object($form))
-        {
-            require_once APPLICATION_PATH . '/forms/Favorite.php';
+        if (! is_object($form)) {
+            require APPLICATION_PATH . '/forms/Favorite.php';
              
             $form = new Form_Favorite(array(
                 'method' => 'post',

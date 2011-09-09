@@ -4,30 +4,39 @@ class StaticController extends Zend_Controller_Action
 {
     public function docsAction()
     {
-        $request = $this->getRequest();
         $registry = Zend_Registry::getInstance();
+        
         $config = $registry->get("config");
         
-        $int_req_uri = mb_substr($_SERVER['REQUEST_URI'], mb_strlen($config['webroot']));
+        $request = $this->getRequest();
         
-        $uri = explode("?", $int_req_uri, 2);
-        $find_path = (mb_substr($uri[0], -1) != '/') ? mb_substr($uri[0], 1) : mb_substr($uri[0], 1, -1);
+        $intReqUri = mb_substr($_SERVER['REQUEST_URI'], mb_strlen($config['webroot']));
         
-        if(!mb_strpos($find_path, ".") && !mb_strpos($find_path, "\\"))
-        {
-            $get_fs_path = APPLICATION_PATH."/views/scripts/static/".$find_path.".phtml";
-            $find_path_realpath = realpath($get_fs_path);//security... check if exists, etc
-            if($find_path_realpath && $find_path_realpath == $get_fs_path) //check if it's really a path that exists
-            {
+        $uri = explode("?", $intReqUri, 2);
+        
+        if (mb_substr($uri[0], -1) != '/') {
+            $findPath = mb_substr($uri[0], 1);
+        } else {
+            $findPath = mb_substr($uri[0], 1, -1);;
+        }
+        
+        if (! mb_strpos($findPath, ".") && ! mb_strpos($findPath, "\\")) {
+            $getFsPath = APPLICATION_PATH . "/views/scripts/static/" . $findPath . ".phtml";
+            
+            //security: check if exists, etc
+            $findPathRealpath = realpath($getFsPath);
+            
+            //security / consistency: avoids '../' in the path
+            if ($findPathRealpath && $findPathRealpath == $getFsPath) {
                 $found = true;
                 //instead of docs.phtml...
-                $this->_helper->viewRenderer->setScriptAction($find_path);
+                $this->_helper->viewRenderer->setScriptAction($findPath);
             }
         }
         
-        //IF NOT FOUND
-        if(!isset($found)) {
-            $this->_forward("notstatic");//workaround to say a page does not exists
+        //If not found dispatch to a method which doesn't exists
+        if (! isset($found)) {
+            $this->_forward("notstatic");
         }
     }
 }

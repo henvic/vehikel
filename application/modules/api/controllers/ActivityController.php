@@ -6,79 +6,92 @@ class ActivityController extends Zend_Controller_Action
     {
         //@todo route: do it the right way!
         $router = new Zend_Controller_Router_Rewrite();
-        $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/defaultRoutes.ini');
-        $router->addConfig($config, 'routes');
+        
+        $routeConfig =
+         new Zend_Config_Ini(APPLICATION_PATH . '/configs/defaultRoutes.ini');
+         
+        $router->addConfig($routeConfig, 'routes');
         
         $registry = Zend_Registry::getInstance();
         
         $config = $registry->get("config");
         
         $this->_helper->verifyIdentity();
-        $Recent = new ML_Recent();
+        $recent = new ML_Recent();
         
-        if(!$registry->isRegistered("authedUserInfo")) throw new Exception("Not authenticated.");
+        if (! $registry->isRegistered("authedUserInfo")) {
+            throw new Exception("Not authenticated.");
+        }
         
         $userInfo = $registry->get("authedUserInfo");
         
-        $uploads = $Recent->contactsUploads($userInfo['id']);
+        $uploads = $recent->contactsUploads($userInfo['id']);
         
         //send response
         $doc = new ML_Dom();
         $doc->formatOutput = true;
         
-        $root_element = $doc->createElement("items");
-        $doc->appendChild($root_element);
+        $rootElement = $doc->createElement("items");
+        $doc->appendChild($rootElement);
         
-        foreach($uploads as $share)
-        {
-            $share_element = $doc->createElement("item");
+        foreach ($uploads as $share) {
+            $shareElement = $doc->createElement("item");
             
             $avatarInfo = unserialize($share['people.avatarInfo']);
-            $iconsecret = (isset($avatarInfo['secret'])) ? $avatarInfo['secret'] : '';
             
-            $share_data = array(
+            if (isset($avatarInfo['secret'])) {
+                $iconSecret = $avatarInfo['secret'];
+            } else {
+                $iconSecret = '';
+            }
+            
+            $shareData = array(
                 "type" => "file",
                 "id" => $share['id'],
             );
             
-            foreach($share_data as $name => $field)
-            {
-                $share_element->appendChild($doc->newTextAttribute($name, $field));
+            foreach ($shareData as $name => $field) {
+                $shareElement
+                 ->appendChild($doc->newTextAttribute($name, $field));
             }
             
-            $share_data = array(
+            $shareData = array(
                 "title" => $share['share.title'],
                 "short" => $share['share.short'],
-                "url" => "http://".$config['webhost']. $router->assemble(array("username" => $share['people.alias'], "share_id" => $share['id']), "sharepage_1stpage"),
-            );
+                "url" => "http://".$config['webhost'] .
+                 $router->assemble(array("username" => $share['people.alias'],
+                  "share_id" => $share['id']), "sharepage_1stpage"));
             
-            foreach($share_data as $name => $field)
-            {
-                $share_element->appendChild($doc->newTextElement($name, $field));
+            foreach ($shareData as $name => $field) {
+                $shareElement->appendChild($doc->newTextElement($name, $field));
             }
             
-            $filesize_element = $doc->createElement("filesize");
-            $filesize_element->appendChild($doc->newTextAttribute("bits", $share['share.fileSize']));
-            $filesize_element->appendChild($doc->newTextAttribute("kbytes", ceil($share['share.fileSize']/(1024*8))));
-            $share_element->appendChild($filesize_element);
+            $filesizeElement = $doc->createElement("filesize");
+            $filesizeElement->appendChild($doc
+             ->newTextAttribute("bits", $share['share.fileSize']));
             
-            $owner_element = $doc->createElement("owner");
+            $filesizeElement->appendChild($doc
+             ->newTextAttribute("kbytes",
+              ceil($share['share.fileSize']/(1024*8))));
+             
+            $shareElement->appendChild($filesizeElement);
             
-            $share_data = array(
+            $ownerElement = $doc->createElement("owner");
+            
+            $shareData = array(
                 "id" => $share['people.id'],
                 "alias" => $share['people.alias'],
                 "realname" => $share['people.name'],
-                "iconsecret" => $iconsecret,
-            );
+                "iconsecret" => $iconSecret);
             
-            foreach($share_data as $name => $field)
-            {
-                $owner_element->appendChild($doc->newTextAttribute($name, $field));
+            foreach ($shareData as $name => $field) {
+                $ownerElement
+                 ->appendChild($doc->newTextAttribute($name, $field));
             }
             
-            $share_element->appendChild($owner_element);
+            $shareElement->appendChild($ownerElement);
             
-            $root_element->appendChild($share_element);
+            $rootElement->appendChild($shareElement);
         }
         
         $this->_helper->printResponse($doc);

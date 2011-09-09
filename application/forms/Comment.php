@@ -1,25 +1,36 @@
 <?php
 class Form_Comment extends Zend_Form
-{    
+{
     public function init()
     {    
-        if(Zend_Registry::getInstance()->isRegistered("commentInfo")) {
+        if (Zend_Registry::getInstance()->isRegistered("commentInfo")) {
             $altLabel = true;
         }
         
         $this->setMethod('post');
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
+        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
+        Zend_Form_Element::FILTER);
         
-        $commentLabel = (isset($altLabel)) ? "Edit your comment:" : "Add your comment:";
-        $postCommentLabel = (isset($altLabel)) ? 'Save Changes' : 'Post comment';
+        if (isset($altLabel)) {
+            $commentLabel = "Edit your comment:";
+            $postCommentLabel = "Save Changes";
+        } else {
+            $commentLabel = "Add your comment:";
+            $postCommentLabel = "Post comment";
+        }
+        
         $this->addElement('textarea', 'commentMsg', array(
             'label'      => $commentLabel,
             'required'   => true,
-            'description' => '<small><a href="/help/html" class="new-window">HTML formatting</a></small>',
+            'description' =>
+                '<small><a href="/help/html" class="new-window">' .
+                'HTML formatting</a></small>',
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 4096)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 4096)),
                 )
         ));
         

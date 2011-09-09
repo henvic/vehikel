@@ -3,4 +3,4 @@ $this->headTitle("Can't change your password");
 ?>
 <h2>Can't change your password</h2>
 <p>We are sorry, but you can't change your password. Most likely you tried to recover your account and we emailed you a link that you could use to set up a new password and you took longer than we would expect.</p>
-<p><small><a href="<?= $this->url(array(), "recover") ?>">Lost your username or password?</a></small></p>
+<p><small><a href="<?php echo $this->url(array(), "recover") ?>">Lost your username or password?</a></small></p>

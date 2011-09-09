@@ -1,11 +1,13 @@
 <?php
 class Form_Upload extends Zend_Form
-{    
+{
     public function init()
     {
         $this->setMethod('post');
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
+        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
+        Zend_Form_Element::FILTER);
         
         $registry = Zend_Registry::getInstance();
         $authedUserInfo = $registry->get('authedUserInfo');
@@ -14,27 +16,33 @@ class Form_Upload extends Zend_Form
         $this->setAttrib('enctype', 'multipart/form-data');
         $this->setMethod('post');
         
-        $File = new Zend_Form_Element_File('file');
-        $File->setLabel('Files:');
-        $File->setRequired(true);
-        $File->addValidator('Count', false, array('min' => 1, 'max' => 1));
+        $file = new Zend_Form_Element_File('file');
+        $file->setLabel('Files:');
+        $file->setRequired(true);
+        $file->addValidator('Count', false, array('min' => 1, 'max' => 1));
         
-        $maxFileSize = ($uploadStatus['bandwidth']['remainingbytes'] > 0) ? $uploadStatus['filesize']['maxbytes']: 0;
+        if ($uploadStatus['bandwidth']['remainingbytes'] > 0) {
+            $maxFileSize = $uploadStatus['filesize']['maxbytes'];
+        } else {
+            $maxFileSize = 0;
+        }
         
-        $File->addValidator('Size', false, $maxFileSize);
+        $file->addValidator('Size', false, $maxFileSize);
         
-        $File->setMaxFileSize($maxFileSize*2);// hack for not showing 'the file exceeds the defined form size'
+        // hack for not showing 'the file exceeds the defined form size'
+        $file->setMaxFileSize($maxFileSize*2);
         
-        /*$File->setMultiFile(1);*/
+        /*$file->setMultiFile(1);*/
         
-        $this->addElement($File, 'file');
+        $this->addElement($file, 'file');
         
         $title = $this->addElement('text', 'title', array(
             'label'      => 'Title:',
             'required'   => false,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 100))
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 100))
                 )
         ));
         
@@ -43,7 +51,8 @@ class Form_Upload extends Zend_Form
             'required'   => false,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 120)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 120)),
                 )
         ));
         
@@ -52,7 +61,8 @@ class Form_Upload extends Zend_Form
             'required'   => false,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 4096)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 4096)),
                 )
         ));
     }

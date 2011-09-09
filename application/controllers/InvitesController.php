@@ -6,8 +6,10 @@ class InvitesController extends Zend_Controller_Action
     {
         $auth = Zend_Auth::getInstance();
         
-        if(!$auth->hasIdentity()) {
-            $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "index"), array("exit"));
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
+        if (! $auth->hasIdentity()) {
+            $this->_redirect($router->assemble(array(), "index"), array("exit"));
         }
     }
 }

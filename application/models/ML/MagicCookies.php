@@ -10,7 +10,8 @@
  */
 class ML_MagicCookies
 {
-    protected static $_hash_quantity = 0; //number of times the magiccookie was used
+    //number of times the magic cookie was used
+    protected static $_hashQuantity = 0;
     
     /**
      * Singleton instance
@@ -42,7 +43,8 @@ class ML_MagicCookies
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -61,10 +63,10 @@ class ML_MagicCookies
         $memCache = $registry->get("memCache");
         
         //sanitizing the key for memcache
-        $hex_value = preg_replace('/[^a-f0-9]/', '', $hash);
-        $memcache_safe_value = ML_MagicCookies::memcache_prefix . $hex_value;
+        $hexValue = preg_replace('/[^a-f0-9]/', '', $hash);
+        $memcacheSafeValue = ML_MagicCookies::memcache_prefix . $hexValue;
         
-        $hashInfo = $memCache->load($memcache_safe_value);
+        $hashInfo = $memCache->load($memcacheSafeValue);
         
         return $hashInfo;
     }
@@ -76,41 +78,57 @@ class ML_MagicCookies
         
         $memCache = $registry->get("memCache");
         
-        $MagicCookiesNamespace = new Zend_Session_Namespace('MagicCookies');
+        $magicCookiesNamespace = new Zend_Session_Namespace('MagicCookies');
         
-        $MagicCookiesNamespace->setExpirationSeconds(($auth->hasIdentity()) ? self::authenticated_last_max_age : self::last_max_age);
+        if ($auth->hasIdentity()) {
+            $expiration = self::authenticated_last_max_age;
+            $maxAge = self::authenticated_max_age;
+        } else {
+            $expiration = self::last_max_age;
+            $maxAge = self::max_age;
+        }
         
-        $new_hash = md5(mt_rand().mt_rand().mt_rand());
+        $magicCookiesNamespace->setExpirationSeconds($expiration);
         
-        $MagicCookiesNamespace->cached_hash = $new_hash;
+        $newHash = md5(mt_rand().mt_rand().mt_rand());
         
-        $store_hash = array(
-            "hash" => $new_hash,
+        $magicCookiesNamespace->cachedHash = $newHash;
+        
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+            $remoteAddr = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $remoteAddr = null;
+        }
+        
+        $storeHash = array(
+            "hash" => $newHash,
             "timestamp" => time(),
             "session_id" => Zend_Session::getId(),
-               "uid" => ($auth->hasIdentity()) ? $auth->getIdentity() : null,
-            "remote_addr" => (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : null
-            );
+            "uid" => ($auth->hasIdentity()) ? $auth->getIdentity() : null,
+            "remote_addr" => $remoteAddr);
             
-            $memCache->save($store_hash, self::memcache_prefix.$new_hash, array(), ($auth->hasIdentity()) ? self::authenticated_max_age : self::max_age);
+            $memCache->save($storeHash,
+             self::memcache_prefix . $newHash,
+             array(),
+             $maxAge);
             
-        return $new_hash;
+        return $newHash;
     }
     
     /**
      * gets a magic cookie
-     * @param bool $set_new_on_failure flag to set if a new hash should be
+     * @param bool $setNewOnFailure flag to set if a new hash should be
      * created in case there's not a valid one in the session cache
      */
-    public static function getLast($set_new_on_failure = false)
+    public static function getLast($setNewOnFailure = false)
     {
-        $MagicCookiesNamespace = new Zend_Session_Namespace('MagicCookies');
+        $magicCookiesNamespace = new Zend_Session_Namespace('MagicCookies');
         
-        if(isset($MagicCookiesNamespace->cached_hash)) {
-            return $MagicCookiesNamespace->cached_hash;
+        if (isset($magicCookiesNamespace->cachedHash)) {
+            return $magicCookiesNamespace->cachedHash;
         }
         
-        return ($set_new_on_failure) ? self::setNewLast() : false;
+        return ($setNewOnFailure) ? self::setNewLast() : false;
     }
     
     public static function formElement()
@@ -121,18 +139,20 @@ class ML_MagicCookies
         
         $config = $registry->get("config");
         
-        $hidden = new Zend_Form_Element_Hidden(self::hash_name, array("required" => true,
-            'filters'    => array('MagicCookies'),
-            'validators' => array(
-                array('validator' => 'MagicCookies', 'options' => array("allowed_referer_hosts" => array($config['webhost'])))
-                )));
+        $hidden = new Zend_Form_Element_Hidden(self::hash_name,
+         array("required" => true,
+             'filters'    => array('MagicCookies'),
+             'validators' => array(
+               array('validator' => 'MagicCookies', 'options' =>
+                array("allowed_referer_hosts" => array($config['webhost'])))
+                 )));
         
         $hidden->clearDecorators();
         
         //see bug http://framework.zend.com/issues/browse/ZF-8449
-        $hidden->setAttrib("id", "hash".self::$_hash_quantity);
+        $hidden->setAttrib("id", "hash".self::$_hashQuantity);
         
-        self::$_hash_quantity += 1;
+        self::$_hashQuantity += 1;
         
         $hidden->setValue(self::getLast(true));
         
@@ -143,8 +163,7 @@ class ML_MagicCookies
                 'HtmlTag', array(
                 'tag' => 'dd')
                 )
-            )
-        );
+            ));
         
         return $hidden;
     }

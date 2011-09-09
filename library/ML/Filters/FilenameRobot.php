@@ -17,13 +17,13 @@ class MLFilter_FilenameRobot implements Zend_Filter_Interface
 {
     public function filter($value)
     {
-        $value = mb_ereg_replace (' +', ' ', trim($value));
-        $value = mb_ereg_replace("[\r\t\n]","",$value);
+        $value = mb_ereg_replace(' +', ' ', trim($value));
+        $value = mb_ereg_replace("[\r\t\n]", "", $value);
         
         // http://www.asciitable.com/
         $value = trim($value, "\x22\x27\x26\x2C");
         
-        // using http://svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/includes/normal/
+        // svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/includes/normal/
         require_once EXTERNAL_LIBRARY_PATH . '/normal/UtfNormal.php';
         $value = UtfNormal::cleanUp($value);
         $value = mb_strtolower($value, "UTF-8");
@@ -37,8 +37,7 @@ class MLFilter_FilenameRobot implements Zend_Filter_Interface
         $value = str_replace($bye, '', $value);
         
         $end = mb_strlen($value);
-        if($end > 60)
-        {
+        if ($end > 60) {
             $value = mb_substr($value, $end - 60);
         }
         

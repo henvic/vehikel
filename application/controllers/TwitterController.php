@@ -13,37 +13,35 @@ class TwitterController extends Zend_Controller_Action
         
         $config = $registry->get("config");
         
+        $router = $this->getFrontController()->getRouter();
+        
         $userInfo = $registry->get("userInfo");
         $shareInfo = $registry->get("shareInfo");
         
         $request = $this->getRequest();
         $params = $request->getParams();
         
-        $Twitter = ML_Twitter::getInstance();
+        $twitter = ML_Twitter::getInstance();
         
-        $twitterForm = $Twitter->form();
+        $twitterForm = $twitter->form();
         
-        if($request->isPost())
-        {
-            if($twitterForm->isValid($request->getPost()))
-            {
+        if ($request->isPost()) {
+            if ($twitterForm->isValid($request->getPost())) {
                 $msg = $twitterForm->getValue('tweet');
-                $response = $Twitter->tweet($msg);
+                $response = $twitter->tweet($msg);
                 
                 $this->view->tweetResponse = $response;
             } else {
                 $errors = $twitterForm->getErrors();
-                if(in_array("stringLengthTooLong", $errors['tweet']))
-                {
+                if (in_array("stringLengthTooLong", $errors['tweet'])) {
                     $this->view->tweetResponse = array("error" => "msg_too_long");
                 }
             }
         } else {
         }
         
-        if(!$this->_request->isXmlHttpRequest())
-        {
-            $this->_redirect($this->getFrontController()->getRouter()->assemble($params, "sharepage_1stpage"), array("exit"));
+        if (! $this->_request->isXmlHttpRequest()) {
+            $this->_redirect($router->assemble($params, "sharepage_1stpage"), array("exit"));
         } else {
             $this->_helper->layout->disableLayout();
         }

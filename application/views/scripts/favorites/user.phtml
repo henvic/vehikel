@@ -3,20 +3,44 @@ $auth = Zend_Auth::getInstance();
 $registry = Zend_Registry::getInstance();
 $userInfo = $registry->get('userInfo');
 
-if($userInfo['id'] == $auth->getIdentity()) $title = "Your favorites"; else $title = $this->escape($userInfo['name'])."'s favorites";
+if ($userInfo['id'] == $auth->getIdentity()) {
+    $title = "Your favorites";
+} else {
+    $title = $this->escape($userInfo['name']) . "'s favorites";
+}
+
 $this->headTitle($title, "PREPEND");
 ?>
-<h2><?= $title ?></h2>
+<h2><?php echo $title ?></h2>
 <ul>
-<?php if(!$this->paginator->getTotalItemCount()): ?>
-<li>Nothing is counted as a favorite by <?= $this->escape($userInfo['name']) ?>.</li>
+<?php if (! $this->paginator->getTotalItemCount()): ?>
+<li>Nothing is counted as a favorite by <?php echo $this->escape($userInfo['name']); ?>.</li>
 <?php
 else:
-foreach($this->paginator->getCurrentItems()->toArray() as $fav):
+foreach ($this->paginator->getCurrentItems()->toArray() as $fav):
 $favoritedDate = new Zend_Date($fav['timestamp'], Zend_Date::ISO_8601);
 ?>
-<li><a href="<?=$this->url(array("username" => $fav['people.alias'], "share_id" => $fav['share']), "sharepage_1stpage")?>"><b><?= $this->escape($fav['share.title']) ?></b></a><?php if($fav['share.filename'] != $fav['share.title']): ?> <em><?= $this->escape($fav['share.filename']) ?></em><?php endif; ?> <?= file_size($fav['share.fileSize']) ?> by <a href="<?=$this->url(array("username" => $fav['people.alias']), "filestream_1stpage")?>"><?= $this->escape($fav['people.name']) ?></a> was added as favorite on <?= $favoritedDate->get(Zend_Date::DATE_LONG);?></li>
-<?php endforeach; ?>
-<?php if($this->paginator->count() > 1) echo $this->paginator; ?>
-<?php endif; ?>
+<li><a href="<?php
+echo $this->url(array("username" => $fav['people.alias'],
+"share_id" => $fav['share']),
+"sharepage_1stpage");
+?>"><b><?php echo $this->escape($fav['share.title']); ?></b></a><?php
+if ($fav['share.filename'] != $fav['share.title']): ?> <em><?php
+echo $this->escape($fav['share.filename']);
+?></em><?php endif; ?> <?php
+echo file_size($fav['share.fileSize']);
+?> by <a href="<?php
+echo $this->url(array("username" => $fav['people.alias']),
+"filestream_1stpage");
+?>"><?php
+echo $this->escape($fav['people.name']);
+?></a> was added as favorite on <?php echo $favoritedDate->get(Zend_Date::DATE_LONG);?></li>
+<?php
+endforeach;
+
+if ($this->paginator->count() > 1) {
+    echo $this->paginator;
+}
+
+endif; ?>
 </ul>

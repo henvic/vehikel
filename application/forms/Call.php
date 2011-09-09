@@ -1,28 +1,32 @@
 <?php
 class Form_Call extends Zend_Form
-{    
+{
     public function init()
     {
         $this->setMethod('post');
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
+        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
+        Zend_Form_Element::FILTER);
         
         $this->addElement('text', 'motive', array(
             'label'      => 'Motive:',
             'required'   => true,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 250))
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 250))
                 )
         ));
         
-        /** @todo there should be a validator for knowing if the record_id really exists **/
+        /** @todo validator for knowing if the record_id really exists **/
         $this->addElement('text', 'record_id', array(
             'label'      => 'Recording ID:',
             'required'   => true,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 250))
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 250))
                 )
         ));
         
@@ -32,23 +36,24 @@ class Form_Call extends Zend_Form
             'description' => 'One number per line',
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 4096)),
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 4096)),
                 )
         ));
         
-        /** @todo there should be a validator for knowing if the group really exists **/
+        /** @todo validator for knowing if the group really exists **/
         /*$this->addElement('text', 'group', array(
             'label'      => 'Recipient Group:',
             'required'   => true,
             'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 250))
+                array('validator' =>
+                    'StringLength', 'options' => array(1, 250))
                 )
         ));*/
         
         $hours = array();
-        for($x = 1; $x <= 12; $x++)
-        {
+        for ($x = 1; $x <= 12; $x++) {
             $hours[$x] = $x;
         }
         
@@ -59,8 +64,7 @@ class Form_Call extends Zend_Form
         ));
         
         $minutes = array();
-        for($x = 0; $x <= 59; $x++)
-        {
+        for ($x = 0; $x <= 59; $x++) {
             $minutes[$x] = $x;
         }
         
@@ -77,8 +81,7 @@ class Form_Call extends Zend_Form
         ));        
         
         $days = array();
-        for($x = 1; $x <= 31; $x++)
-        {
+        for ($x = 1; $x <= 31; $x++) {
             $days[$x] = $x;
         }
         
@@ -110,8 +113,7 @@ class Form_Call extends Zend_Form
         ));
         
         $years = array();
-        for($x = gmdate('Y'); $x <= gmdate('Y') + 5; $x++)
-        {
+        for ($x = gmdate('Y'); $x <= gmdate('Y') + 5; $x++) {
             $years[$x] = $x;
         }
         
@@ -121,24 +123,32 @@ class Form_Call extends Zend_Form
         'multiOptions' => $years
         ));
         
-        $future_date = new Zend_Date();
-        $future_date->add("24:00:00", Zend_Date::TIMES);
-        $future_date_array = $future_date->toArray();
-        $am = ($future_date_array['hour'] <= 12) ? true : false;
-        $hour_12 = ($am) ? $future_date_array['hour'] : $future_date_array['hour']-12;
+        $futureDate = new Zend_Date();
+        $futureDate->add("24:00:00", Zend_Date::TIMES);
+        $futureDateArray = $futureDate->toArray();
+        $am = ($futureDateArray['hour'] <= 12) ? true : false;
         
-        $this->getElement("hour")->setValue($hour_12);
-        $this->getElement("minutes")->setValue($future_date_array['minute']);
-        ($am) ? $this->getElement("period")->setValue("am") : $this->getElement("period")->setValue("pm");       
-        $this->getElement("day")->setValue($future_date_array['day']);
-        $this->getElement("month")->setValue($future_date_array['month']);
+        if ($am) {
+            $this->getElement("period")->setValue("am");
+            $hourPart = $futureDateArray['hour'];
+        } else {
+            $this->getElement("period")->setValue("pm");
+            $hourPart = $futureDateArray['hour']-12;
+        }
+        
+        $this->getElement("hour")->setValue($hourPart);
+        $this->getElement("minutes")->setValue($futureDateArray['minute']);
+               
+        $this->getElement("day")->setValue($futureDateArray['day']);
+        $this->getElement("month")->setValue($futureDateArray['month']);
         
         
-        if($future_date->get(Zend_Date::TIMEZONE_NAME))
-        {
+        if ($futureDate->get(Zend_Date::TIMEZONE_NAME)) {
             $timezone = array("gmt" => "Greenwich Mean Time (GMT)");
         } else {
-            $timezone = array($future_date->get(Zend_Date::TIMEZONE) => $future_date->get(Zend_Date::TIMEZONE_NAME));
+            $timezone = array(
+            $futureDate->get(Zend_Date::TIMEZONE) =>
+            $futureDate->get(Zend_Date::TIMEZONE_NAME));
         }
          $this->addElement('select', 'timezone', array(
         'label' => 'Time Zone:',

@@ -2,4 +2,6 @@
 $this->headTitle("E-mail address confirmed");
 ?>
 <h2>New email address confirmed</h2>
-<p>Go to your <a href="<?= $this->url(array(), "account") ?>">Account Settings</a> to see the new email address set for your account.</p>
+<p>Go to your <a href="<?php
+echo $this->url(array(), "account");
+?>">Account Settings</a> to see the new email address set for your account.</p>

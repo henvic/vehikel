@@ -11,12 +11,15 @@ class Zend_Controller_Action_Helper_LoadApiresource extends
         
         $params = $request->getParams();
         
-        $People = ML_People::getInstance();
+        $people = ML_People::getInstance();
         
-        if(!isset($params['user_id'])) throw new Exception("User param not given.");
+        if (! isset($params['user_id'])) {
+            throw new Exception("User param not given.");
+        }
         
-        $userInfo = $People->getById($params['user_id']);
-        if(empty($userInfo)) {
+        $userInfo = $people->getById($params['user_id']);
+        
+        if (empty($userInfo)) {
             $registry->set("notfound", true);
             throw new Exception("User not found.");
         }
@@ -32,12 +35,15 @@ class Zend_Controller_Action_Helper_LoadApiresource extends
         
         $params = $request->getParams();
         
-        $Share = ML_Share::getInstance();
+        $share = ML_Share::getInstance();
         
-        if(!isset($params['file_id'])) throw new Exception("File ID param not given.");
+        if (! isset($params['file_id'])) {
+            throw new Exception("File ID param not given.");
+        }
         
-        $shareInfo = $Share->getById($params['file_id']);
-        if(empty($shareInfo)) {
+        $shareInfo = $share->getById($params['file_id']);
+        
+        if (empty($shareInfo)) {
             $registry->set("notfound", true);
             throw new Exception("File not found.");
         }

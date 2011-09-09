@@ -3,22 +3,33 @@ $registry = Zend_Registry::getInstance();
 $userInfo = $registry->get('userInfo');
 $shareInfo = $registry->get('shareInfo');
 $auth = Zend_Auth::getInstance();
-$Favorites = ML_Favorites::getInstance();
-if(!$this->favoriteForm):
-if($auth->hasIdentity() && $auth->getIdentity() != $shareInfo['byUid']) {
+$favorites = ML_Favorites::getInstance();
+if (!$this->favoriteForm):
+if ($auth->hasIdentity() && $auth->getIdentity() != $shareInfo['byUid']) {
 ?>
-<?php if($Favorites->isFavorite($auth->getIdentity(), $shareInfo['id'])): ?>
+<?php if ($favorites->isFavorite($auth->getIdentity(), $shareInfo['id'])): ?>
 You count this file as a favorite, <a href="?unfavorite" rel="nofollow">undo</a>?
 <?php else: ?>
 You can <a href="?favorite" rel="nofollow">add this file as a favorite</a>!
 <?php endif; ?>
-<?php } elseif(!$auth->hasIdentity()) { ?>
-Sign in to favorite this file.
-<?php }
-endif; if($this->favoriteForm) {
-	$this->headTitle($this->escape($shareInfo['title']) . " as a favorite?");	
+<?php
+} else if (!$auth->hasIdentity()) {
 ?>
-<h2><a href="<?= $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage") ?>"><?= $this->escape($shareInfo['title']) ?></a> as a favorite?</h2>
-<p>Are you sure you want to <?php if(!$this->favorite_del): ?>favorite this<?php else: ?>remove this from your favorites<?php endif;?>?</p>
-<?= $this->favoriteForm ?>
-<?php } ?>
+Sign in to favorite this file.
+<?php
+}
+endif;
+
+if ($this->favoriteForm) {
+    $this->headTitle($this->escape($shareInfo['title']) . " as a favorite?");    
+?>
+<h2><a href="<?php
+echo $this->url(array("username" => $userInfo['alias'],
+"share_id" => $shareInfo['id']), "sharepage_1stpage");
+?>"><?php echo $this->escape($shareInfo['title']); ?></a> as a favorite?</h2>
+<p>Are you sure you want to <?php
+if (! $this->favoriteDel):
+?>favorite this<?php else: ?>remove this from your favorites<?php endif;?>?</p>
+<?php
+echo $this->favoriteForm;
+}

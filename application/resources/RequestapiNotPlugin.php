@@ -7,7 +7,8 @@
  * 
  */
 
-require_once 'RequestNotPlugin.php';
+require 'RequestNotPlugin.php';
+
 $router->addConfig($routerConfig, "apiroutes");
 
 $this->registerPluginResource("Api");
@@ -23,8 +24,11 @@ $frontController->addControllerDirectory(APPLICATION_PATH.'/modules/'.HOST_MODUL
 
 $response = new Zend_Controller_Response_Http;
 
-if(isset($_GET['response_format']) && $_GET['response_format'] == 'json') $content_type = 'application/json';
-else $content_type = 'text/xml';
+if (filter_input(INPUT_GET, "response_format", FILTER_UNSAFE_RAW) == 'json') {
+    $contentType = 'application/json';
+} else {
+    $contentType = 'text/xml';
+}
 
-$response->setHeader('Content-Type', $content_type.'; charset=utf-8', true);
+$response->setHeader('Content-Type', $contentType.'; charset=utf-8', true);
 $frontController->setResponse($response);

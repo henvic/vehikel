@@ -9,7 +9,7 @@ class ML_Application extends Zend_Application
     protected $_configCache;
     protected $_useCache;
 
-    public function __construct($environment, $options = null, Zend_Cache_Core $configCache = null, $useCache)
+    public function __construct($environment, $options, Zend_Cache_Core $configCache, $useCache)
     {
         $this->_configCache = $configCache;
         $this->_useCache = $useCache;
@@ -18,8 +18,7 @@ class ML_Application extends Zend_Application
     
     protected function _loadConfig($file)
     {
-        if($this->_useCache == false)
-        {
+        if ($this->_useCache == false) {
             return parent::_loadConfig($file);
         }
         
@@ -27,9 +26,13 @@ class ML_Application extends Zend_Application
         
         $cacheId = "application_conf_" . md5($file . $this->getEnvironment());
         $cacheLastMTime = $this->_configCache->test($cacheId);
-        if ($cacheLastMTime !== false && $configMTime <= $cacheLastMTime) { //Valid cache?
+        
+        //Valid cache?
+        if ($cacheLastMTime !== false &&
+         $configMTime <= $cacheLastMTime) {
             return $this->_configCache->load($cacheId, true);
         }
+        
         $config = parent::_loadConfig($file);
         $this->_configCache->save($config, $cacheId, array(), null);
         

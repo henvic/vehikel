@@ -1,11 +1,14 @@
 <?php
-class CharTranslation {
-    /*
-     * Based on http://www.tellinya.com/read/2008/03/05/322.html
-     * - Henrique
-     */
-
-    static public function normalize($html){
+/**
+ * 
+ * Translates latin characters to english-similar ones
+ * Adapted from http://www.tellinya.com/read/2008/03/05/322.html
+ *
+ */
+class CharTranslation
+{
+    static public function normalize($html)
+    {
         $translationTable = array();
         //--
         $translationTable[0x00E1] = "a"; $translationTable[0x00C1] = "A"; $translationTable[0x0102] = "A";
@@ -80,28 +83,30 @@ class CharTranslation {
         
         
         //-- We now begin the conversion
-        $ascii_html = "";
-        for($i=0;$i<strlen($html);$i++){
+        $asciiHtml = "";
+        for ($i = 0; $i < strlen($html); $i ++) {
             $bytes = 0;
-            if(ord($html[$i]) <= (0xFF/2)){
+            if (ord($html[$i]) <= (0xFF / 2)) {
                 //-- This is ASCII so we carry on!
-                $ascii_html.=$html[$i];
+                $asciiHtml .= $html[$i];
                 continue;
             }
-            $char = self::ordUTF8($html,$i,$bytes);
+            $char = self::ordUTF8($html, $i, $bytes);
             //-- No length? Funny but let's continue ...
-            if(!$bytes){  continue; }
-            $i += $bytes-1; // We add bytes-1 as for adds 1 by default!
-            if(!isset($translationTable[$char])){
+            if (! $bytes) {
+                continue;
+            }
+            $i += $bytes - 1; // We add bytes-1 as for adds 1 by default!
+            if (! isset($translationTable[$char])) {
                 //-- Not ASCII so we replace it with a space!
-                $ascii_html .= " ";
+                $asciiHtml .= " ";
                 continue;
             }
             //-- We use the converion table to convert
-            $ascii_html .= $translationTable[$char];
+            $asciiHtml .= $translationTable[$char];
         }
         //-- We are ASCII only!
-        return $ascii_html;
+        return $asciiHtml;
     }
 
 }

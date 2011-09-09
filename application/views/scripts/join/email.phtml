@@ -1,15 +1,26 @@
-<?php $config = Zend_Registry::getInstance()->get('config'); ?>
-Hi <?= $this->escape($this->entry['name']) ?>!
+<?php
+$config = Zend_Registry::getInstance()->get('config');
+?>
+Hi <?php echo $this->escape($this->entry['name']) ?>!
 
-Welcome to Plifk.
+Welcome to <?php echo $this->escape($config['applicationname']); ?>.
 
 Please confirm your e-mail address at
-<?= ($config['ssl']) ? "https://" . $config['webhostssl'] : "http://" . $config['webhost'] ?><?= $this->url(array("security_code" => $this->entry['securitycode']), "join_emailconfirm") ?>
+<?php
+
+if ($config['ssl']) {
+    echo "https://" . $config['webhostssl'];
+} else {
+    echo "http://" . $config['webhost'];
+}
+
+echo $this->url(array("security_code" => $this->entry['securitycode']), "join_emailconfirm");
+?>
 
 
-Terms of Service - http://<?= $this->escape($config['webhost']) ?><?= $this->staticUrl("/tos") ?>
-Privacy Policy - http://<?= $this->escape($config['webhost']) ?><?= $this->staticUrl("/privacy") ?>
+Terms of Service - http://<?php echo $this->escape($config['webhost']) ?><?php echo $this->staticUrl("/tos") ?>
+Privacy Policy - http://<?php echo $this->escape($config['webhost']) ?><?php echo $this->staticUrl("/privacy") ?>
 
 -
-<?= $this->escape($config['applicationname']) ?>
-<?= $this->escape($config['webhost']) ?>
+<?php echo $this->escape($config['applicationname']); ?>
+<?php echo $this->escape($config['webhost']);

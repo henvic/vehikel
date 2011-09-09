@@ -1,5 +1,5 @@
 <?php
-require_once 'PHPUnit/Framework/TestCase.php';
+require 'PHPUnit/Framework/TestCase.php';
 /**
  * test case.
  */

@@ -26,7 +26,7 @@ if($this->pageCount)
 ?>
 <div class="pagination">
 <?php if (isset($this->previous)): ?>
-<a href="<?= $paginator_base_uri_escaped ?><?php if($this->previous != 1): ?>page<?= $this->previous ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?><?php endif;?>" rel="<?php echo (current($pages) != 1) ? "prev" : "first"; ?>" class="Prev">&lt; Previous</a>
+<a href="<?php echo $paginator_base_uri_escaped ?><?php if($this->previous != 1): ?>page<?php echo $this->previous ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?><?php endif;?>" rel="<?php echo (current($pages) != 1) ? "prev" : "first"; ?>" class="Prev">&lt; Previous</a>
 <?php else: ?>
 <span class="Prev AtStart">&lt; Previous</span>
 <?php endif; 
@@ -34,9 +34,9 @@ if($this->pageCount)
 // Numbered page links
 while (current($pages)) {
 if ($this->current == current($pages)): ?>
-<span class="this-page"><?= current($pages) ?></span>
+<span class="this-page"><?php echo current($pages) ?></span>
 <?php else: ?>
-<a href="<?= $paginator_base_uri_escaped ?><?php if(current($pages) != 1): ?>page<?= current($pages) ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?><?php endif;?>"><?= current($pages) ?></a>
+<a href="<?php echo $paginator_base_uri_escaped ?><?php if(current($pages) != 1): ?>page<?php echo current($pages) ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?><?php endif;?>"><?php echo current($pages) ?></a>
 <?php endif; //the order of the test below is ultimately important
 if(current($pages) != next($pages)-1 && current($pages)): ?>
 <span class="break">...</span>
@@ -46,7 +46,7 @@ endif;
 
 if (isset($this->next)):
 ?>
-<a href="<?= $paginator_base_uri_escaped ?>page<?= $this->next ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?>" rel="<?php echo ($this->next != $this->pageCount) ? "next" : "last"; ?>" class="Next">Next &gt;</a>
+<a href="<?php echo $paginator_base_uri_escaped ?>page<?php echo $this->next ?><?php if($registry->isRegistered("isFilepage")) echo '#comments'; ?>" rel="<?php echo ($this->next != $this->pageCount) ? "next" : "last"; ?>" class="Next">Next &gt;</a>
 <?php else: ?>
 <span class="Next AtEnd">Next &gt;</span>
 <?php endif; ?>
@@ -55,5 +55,5 @@ if (isset($this->next)):
 }
 reset($pages);
 ?>
-<div class="Results">(<?= $this->totalItemCount ?> items)</div>
+<div class="Results">(<?php echo $this->totalItemCount ?> items)</div>
 </div>

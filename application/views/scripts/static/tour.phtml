@@ -13,28 +13,23 @@ $monthlyLimit = $this->escape(file_size($config['share']['monthlyLimit'] * 1024 
 <p>Upload your files to your account, and let people know how to reach you here.</p>
 </div>
 <div class="yui-u">
-<?php /*<h2>Progress of your upload(s)</h2>
-<div id="uploadprogress">
-<div class="percentage" style="width: 43%;">43%</div>
-</div>
-<small id="uploadprogressinfo"><acronym title="Estimated Time of Arrival">ETA</acronym>: 122 seconds; 1.04MB - 3.12MB</small>*/?>
 <h2>Share your files</h2>
 <div id="bandwidth">
 <div class="used" style="width: 0%;"></div>
 <div class="available" style="padding-left: 0%; width: 100%;">100%</div>
 </div>
-<small id="bandwidthinfo">Each month you can upload up to <?= $monthlyLimit ?>.</small>
+<small id="bandwidthinfo">Each month you can upload up to <?php echo $monthlyLimit ?>.</small>
 </div>
 </div>
 <hr />
 <div id="tour-screenshots">
 <h3>Listing of the files shared by a user</h3>
 <p>
-<a href="http://www.plifk.com/henvic" class="new-window"><img src="<?= $this->staticversion("/images/tour/stream.v1.png") ?>" alt="A user file list example" width="446" height="346" /></a>
+<a href="http://www.plifk.com/henvic" class="new-window"><img src="<?php echo $this->staticversion("/images/tour/stream.v1.png") ?>" alt="A user file list example" width="446" height="346" /></a>
 </p>
 <h3>Details about a file</h3>
 <p>
-<a href="http://www.plifk.com/henvic/114" class="new-window"><img src="<?= $this->staticversion("/images/tour/file-details.v1.png") ?>" alt="A file page example" width="446" height="346" /></a>
+<a href="http://www.plifk.com/henvic/114" class="new-window"><img src="<?php echo $this->staticversion("/images/tour/file-details.v1.png") ?>" alt="A file page example" width="446" height="346" /></a>
 </p>
-<?php if(!$auth->hasIdentity()): ?><strong><a href="<?= $this->url(array(), "join") ?>" class="new-window">Join us</a></strong><?php endif; ?>
+<?php if(!$auth->hasIdentity()): ?><strong><a href="<?php echo $this->url(array(), "join") ?>" class="new-window">Join us</a></strong><?php endif; ?>
 </div>

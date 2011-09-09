@@ -6,7 +6,8 @@ class ML_Credits extends ML_getModel
     
     const COUPON_REDEEM = "redeem";
     
-    const base = "123456789bcdfghjklmnpqrstwxyz";// base58 -uppercase -a-e-u (better base, avoid bad words)
+    // base58 -uppercase -a-e-u (better base, avoid bad words)
+    const base = "123456789bcdfghjklmnpqrstwxyz";
     
     /**
      * Singleton instance
@@ -29,7 +30,8 @@ class ML_Credits extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -54,8 +56,7 @@ class ML_Credits extends ML_getModel
         $query = $this->select()
         ->from($this->_name, "sack, SUM(amount) as amount")
         ->where("binary `uid` = ?", $uid)
-        ->where("sack = ?", $sack)
-        ;
+        ->where("sack = ?", $sack);
         
         $resp = $this->getAdapter()->fetchRow($query);
         
@@ -64,7 +65,7 @@ class ML_Credits extends ML_getModel
     
     /**
      * 
-     * Shows the limit of debit for a given user (so that he/she still can make new payments)
+     * The debit limit for a given user
      * @param $uid
      * @return limit
      */
@@ -90,13 +91,13 @@ class ML_Credits extends ML_getModel
      */
     public static function makeUUId()
     {
-        $lower_limit = pow(29, 3);//==2111
-        $upper_limit = pow(29, 4) - 1;//==ZZZZ
-        $time_divisor = 2.5;
-        $ptime = (int)((int)$_SERVER['REQUEST_TIME']/$time_divisor);
+        $lowerLimit = pow(29, 3);//==2111
+        $upperLimit = pow(29, 4) - 1;//==ZZZZ
+        $timeDivisor = 2.5;
+        $ptime = (int)((int)$_SERVER['REQUEST_TIME']/$timeDivisor);
         
-        $rand1 = mt_rand($lower_limit, $upper_limit);
-        $rand2 = mt_rand($lower_limit, $upper_limit);
+        $rand1 = mt_rand($lowerLimit, $upperLimit);
+        $rand2 = mt_rand($lowerLimit, $upperLimit);
         
         $num1 = base_encode($ptime, self::base);
         $num2 = base_encode($rand1, self::base);
@@ -110,8 +111,13 @@ class ML_Credits extends ML_getModel
     
     public static function printFormatedUUId($uuid)
     {
-        $formatted_uuid = mb_strtoupper(mb_substr($uuid, 0, -9).'-'.mb_substr($uuid, -9, -5).'-'.mb_substr($uuid, -5, -1).'-'.mb_substr($uuid, -1));
-        return $formatted_uuid;
+        $formattedUuid =
+         mb_strtoupper(mb_substr($uuid, 0, - 9) . '-' .
+         mb_substr($uuid, - 9, - 5) . '-' .
+         mb_substr($uuid, - 5, - 1) . '-' .
+         mb_substr($uuid, - 1));
+         
+        return $formattedUuid;
     }
     
     /**
@@ -119,19 +125,17 @@ class ML_Credits extends ML_getModel
      * @param $uid
      * @param $amount (negative: debited, positive: credited)
      * @param $sack
-     * @param $override_credit_limit when true the transaction will be made regardless of any incurring debit
+     * @param $overrideCreditLimit when true the transaction is made regardless of any debit status
      */
-    public function transaction($uid, $amount, $sack, $type, $id, $override_credit_limit = false)
+    public function transaction($uid, $amount, $sack, $type, $id, $overrideCreditLimit = false)
     {
-        $Log = ML_Log::getInstance();
-        if(!is_int($amount))
-        {
+        $log = ML_Log::getInstance();
+        if (! is_int($amount)) {
             throw new Exception("Transaction's amount must be a integer");
         }
         
         $this->getAdapter()->beginTransaction();
-        if($override_credit_limit)
-        {
+        if ($overrideCreditLimit) {
             $this->insert(array("pid" => $this->makeUUId(), "uid" => $uid, "amount" => $amount, "sack" => $sack, "reason_type" => $type, "reason_id" => $id));
         } else {
             $this->getAdapter()->query("
@@ -147,10 +151,10 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
         
         
         
-        $transaction_id = $this->getAdapter()->lastInsertId();
-        $Log->action("transaction", $transaction_id);
+        $transactionId = $this->getAdapter()->lastInsertId();
+        $log->action("transaction", $transactionId);
         $this->getAdapter()->commit();
-        return $transaction_id;
+        return $transactionId;
     }
     
     /**
@@ -160,59 +164,60 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
      */
     public function couponTransaction($uid, $coupon)
     {
-        $Coupons = ML_Coupons::getInstance();
-        $Log = ML_Log::getInstance();
+        $coupons = ML_Coupons::getInstance();
+        $log = ML_Log::getInstance();
         
         $this->getAdapter()->beginTransaction();
-        $select = $Coupons->select();
-        $select->where("hash = ?", $coupon)->where("active = ?", true)
-        ;
+        $select = $coupons->select();
+        $select->where("hash = ?", $coupon)->where("active = ?", true);
         
-        $row = $Coupons->fetchRow($select);
-        if(is_object($row))
-        {
-            $coupon_data = $row->toArray();
+        $row = $coupons->fetchRow($select);
+        if (is_object($row)) {
+            $couponData = $row->toArray();
             
-            if($coupon_data['unique_use'] && !$Coupons->update(array("active" => false), $this->getAdapter()->quoteInto("hash = ?", $coupon_data['hash'])))
-            {
+            if ($couponData['unique_use'] &&
+             ! $coupons->update(array("active" => false), 
+            $this->getAdapter()
+                ->quoteInto("hash = ?", $couponData['hash']))) {
                 throw new Exception("Error changing the active status of the coupon to false.");
             }
-            
-            if(!$coupon_data['unique_use'])
-            {
-                //then checks if it was already used by this user: using fetchRow 'cause 1 result is enough
-                $is_it_used = $this->fetchRow($this->select()
+            if (! $couponData['unique_use']) {
+                //then checks if it was already used by this user:
+                //using fetchRow 'cause 1 result is enough
+                $isItUsed = $this->fetchRow($this->select()
                 ->where("binary `uid` = ?", $uid)
                 ->where("reason_type = ?", ML_Credits::COUPON_REDEEM)
-                ->where("binary `reason_id` = ?", $coupon_data['id']));
+                ->where("binary `reason_id` = ?", $couponData['id']));
                 
-                if(is_object($is_it_used))
-                {
+                if (is_object($isItUsed)) {
                     $this->getAdapter()->rollBack();
                     return false;
                 }
             }
             
-            $this->insert(array("pid" => $this->makeUUId(), "uid" => $uid, "amount" => $coupon_data['amount'], "sack" => $coupon_data['sack'], "reason_type" => self::COUPON_REDEEM, "reason_id" => $coupon_data['id']));
-            $transaction_id = $this->getAdapter()->lastInsertId();
-            $Log->action("transaction", $transaction_id);
+            $this->insert(array("pid" => $this->makeUUId(), "uid" => $uid, 
+            "amount" => $couponData['amount'], "sack" => $couponData['sack'], 
+            "reason_type" => self::COUPON_REDEEM, 
+            "reason_id" => $couponData['id']));
+            
+            $transactionId = $this->getAdapter()->lastInsertId();
+            $log->action("transaction", $transactionId);
             
             $this->getAdapter()->commit();
             
-            return $transaction_id;
+            return $transactionId;
         }
     }
     
-    public function history($uid, $per_page, $page)
+    public function history($uid, $perPage, $page)
     {
         $select = $this->select()
         ->where("binary `uid` = ?", $uid)
-        ->order("timestamp DESC")
-        ;
+        ->order("timestamp DESC");
         
         $paginator = Zend_Paginator::factory($select);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setItemCountPerPage($per_page);
+        $paginator->setItemCountPerPage($perPage);
         
         return $paginator;
     }
@@ -220,8 +225,7 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
     public function getByPId($id)
     {
         $select = $this->select()
-        ->where("binary `pid` = ?", $id)
-        ;
+        ->where("binary `pid` = ?", $id);
         
         return $this->getAdapter()->fetchRow($select);
     }

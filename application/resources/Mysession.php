@@ -21,10 +21,9 @@ class Mysession extends Zend_Application_Resource_ResourceAbstract
             $defaultNamespace->initialized = true;
         }
         
-        if($auth->hasIdentity())
-        {
-            $People = ML_People::getInstance();
-            $signedUserInfo = $People->getById($auth->getIdentity());
+        if ($auth->hasIdentity()) {
+            $people = ML_People::getInstance();
+            $signedUserInfo = $people->getById($auth->getIdentity());
             $registry->set('signedUserInfo', $signedUserInfo);
         }
         

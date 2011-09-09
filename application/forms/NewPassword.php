@@ -6,15 +6,20 @@ class Form_NewPassword extends Zend_Form
     {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
-        $this->setMethod('post');
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
         
-        if(Zend_Auth::getInstance()->hasIdentity()) {
+        $auth = Zend_Auth::getInstance();
+        
+        $this->setMethod('post');
+        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
+        Zend_Form_Element::FILTER);
+        
+        if ($auth->hasIdentity()) {
             $this->addElement('password', 'currentpassword', array(
                 'filters'    => array('StringTrim'),
                 'validators' => array(
-                    array('validator' => 'matchPassword') //there's stringlenght there
+                    array('validator' => 'matchPassword') //stringlenght there
                 ),
              'autocomplete' => 'off',
                 'required'   => true,
@@ -28,8 +33,10 @@ class Form_NewPassword extends Zend_Form
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(6, 20)),
                 array('validator' => 'Hardpassword'),
-                array('validator' => 'newPassword'), //there's stringlenght there also
-                array('validator' => 'newPasswordRepeat'), //there's stringlenght there also and in Password.php
+                array('validator' => 'newPassword'), //stringlenght there also
+                array('validator' =>
+                    'newPasswordRepeat'
+                ), //stringlenght there also and in Password.php
             ),
             'autocomplete' => 'off',
             'required'   => true,
@@ -43,8 +50,7 @@ class Form_NewPassword extends Zend_Form
             'autocomplete' => 'off',
         ));
         
-        if($registry->isRegistered("changeUserProperPassword"))
-        {
+        if ($registry->isRegistered("changeUserProperPassword")) {
             $this->addElement(ML_AntiAttack::captchaElement());
         }
         
@@ -52,21 +58,17 @@ class Form_NewPassword extends Zend_Form
             'label'    => 'Change it!'
         ));
         
-        if($config['ssl'])
-        {
+        if ($config['ssl']) {
             $this->getElement("submit")->addValidator("Https");
-            //Note: by default the submit element doesn't display a error decorator
+            
+            //By default the submit element doesn't display a error decorator
             $this->getElement("submit")->addDecorator("Errors");
         }
         
-        if(Zend_Auth::getInstance()->hasIdentity()) {
+        if ($auth->hasIdentity()) {
             $this->addElement(ML_MagicCookies::formElement());
-        }
-        
-        //$registry['jsfiles'][$this->getView()->staticversion("/javascript/password.js")] = "prepend";
-        
-        if(Zend_Auth::getInstance()->hasIdentity()) {
-            $this->getElement("currentpassword")->setAttrib('class', 'smallfield');
+            $this->getElement("currentpassword")
+                ->setAttrib('class', 'smallfield');
         }
         
         $this->getElement("password")->setAttrib('class', 'smallfield');

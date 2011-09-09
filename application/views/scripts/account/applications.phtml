@@ -21,16 +21,29 @@ $this->headTitle("Applications you use");
 foreach($this->listConsumerTokens as $consumer): ?>
 <tr>
 <td>
-<?php $appuri = $this->escape($consumer['application_uri']); if(empty($appuri)): ?>
-<b><?= $this->escape($consumer['application_title']) ?></b>
+<?php
+$appuri = $this->escape($consumer['application_uri']);
+if(empty($appuri)):
+?>
+<b><?php echo $this->escape($consumer['application_title']) ?></b>
 <?php else: ?>
-<a href="<?= $this->escape($consumer['application_uri']) ?>"><b><?= $this->escape($consumer['application_title']) ?></b></a>
+<a href="<?php
+echo $this->escape($consumer['application_uri']);
+?>"><b><?php
+echo $this->escape($consumer['application_title']) ?></b></a>
 <?php endif; ?>
 </td>
-<td><?= $this->escape($consumer['application_descr']) ?></td>
-<td><?php $date = new Zend_Date(); $date->set($consumer['timestamp'], Zend_Date::ISO_8601); echo $date->get(Zend_Date::TIME_SHORT).' '.$date->get(Zend_Date::DATE_LONG); ?></td>
+<td><?php echo $this->escape($consumer['application_descr']) ?></td>
+<td><?php
+$date = new Zend_Date();
+$date->set($consumer['timestamp'], Zend_Date::ISO_8601);
+echo $date->get(Zend_Date::TIME_SHORT) . ' ' . $date->get(Zend_Date::DATE_LONG); ?></td>
 <td>read and write</td>
-<td><a href="<?= $this->url(array(), "accountapps") ?>?revoke_token=<?= $this->escape($consumer['token']) ?>&hash=<?= $registry->get("globalHash") ?>">Revoke?</a></td>
+<td><a href="<?php
+echo $this->url(array(), "accountapps");
+?>?revoke_token=<?php
+echo $this->escape($consumer['token']);
+?>&hash=<?php echo $registry->get("globalHash") ?>">Revoke?</a></td>
 </tr>
 <?php endforeach; ?>
 </tbody>
@@ -38,9 +51,10 @@ foreach($this->listConsumerTokens as $consumer): ?>
 <?php else: ?>
 <p>No application has access to your account right now.</p>
 <?php endif; ?>
-<p>If you are a developer using the Plifk API, <a href="<?= $this->url(array(), "apikeys") ?>" title="Your API keys">your keys are here</a>.</p>
+<p>If you are a developer using the Plifk API, <a href="<?php
+echo $this->url(array(), "apikeys") ?>" title="Your API keys">your keys are here</a>.</p>
 </div>
 <div class="yui-u accountside">
-<?= $this->render("/account/menu.phtml"); ?>
+<?php echo $this->render("/account/menu.phtml"); ?>
 </div>
 </div>

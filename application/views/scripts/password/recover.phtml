@@ -2,12 +2,13 @@
 $this->headTitle("Recover your account");
 ?>
 <h2>Recover your account</h2>
-<?php if(!isset($this->recovering)): ?>
+<?php if (! isset($this->recovering)): ?>
 <p><b>Lost your password?</b> Have you checked if capital letters is on or off?<br />
 <b>Forgot your username?</b> It's on the address you can hand to other people to find you.</p>
 <h3>The tips aren't enough?</h3>
 <p>We can help you by sending an e-mail with your username and a link to reset your password.</p>
-<?= $this->recoverForm ?>
+<?php echo $this->recoverForm; ?>
 <?php else : ?>
 <p>We have sent you an e-mail with your username and a link you can use to set a new password if you need to.</p>
-<?php endif; ?>
+<?php
+endif;

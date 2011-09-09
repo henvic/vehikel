@@ -6,20 +6,22 @@ $config = $registry->get("config");
 
 $this->headTitle($config['applicationname'], "SET");
 
-$Credential = ML_Credential::getInstance();
-$this->loginform = $Credential->_getLoginForm();
+$credential = ML_Credential::getInstance();
+$this->loginform = $credential->_getLoginForm();
 ?>
 
 <div class="yui-ge">
 <div class="yui-u first" id="home-page">
 <h2>Uploading and sharing your files is now easy and free. <small>Create your Plifk account now.</small></h2>
-<img src="<?= $this->staticversion("/images/globe.jpg")?>" alt="Share your files with the world." width="170" height="141" />
+<img src="<?php echo $this->staticversion("/images/globe.jpg")?>" alt="Share your files with the world." width="170" height="141" />
 <p class="home-info">
 Get your www.plifk.com/username</p>
 <ul id="home-buttons">
-<li class="join"><p><a href="<?= $this->url(array(), "join")?>">Join&nbsp;us</a> in just three steps.</p></li>
+<li class="join"><p><a href="<?php echo $this->url(array(), "join")?>">Join&nbsp;us</a> in just three steps.</p></li>
 <li class="tour"><p><a href="/tour">Take the tour</a>, check it out.</p></li>
-<li class="about"><p>Upload up to <?= file_size($config['share']['monthlyLimit'] * 1024 * 1024 * 8) ?> <em>every month.</em></p></li>
+<li class="about"><p>Upload up to <?php
+echo file_size($config['share']['monthlyLimit'] * 1024 * 1024 * 8);
+?> <em>every month.</em></p></li>
 </ul>
 </div>
 <div class="yui-u">
@@ -38,9 +40,11 @@ array(425, 282)
 );*/
 ?>
 <h2>Access your account</h2>
-<?= $this->loginform ?>
-<p><small><a href="<?= $this->url(array(), "recover") ?>">Lost your username or password?</a><br />
-<b>Not already a user? <a href="<?= $this->url(array(), "join") ?>">Join us</a>.</b></small></p>
-<a href="http://www.twitter.com/plifk" class="new-window"><img src="<?= $this->staticversion("/images/follow_bird_us-b.png") ?>" alt="Follow Plifk on Twitter" /></a>
+<?php echo $this->loginform; ?>
+<p><small><a href="<?php echo $this->url(array(), "recover") ?>">Lost your username or password?</a><br />
+<b>Not already a user? <a href="<?php echo $this->url(array(), "join"); ?>">Join us</a>.</b></small></p>
+<a href="http://www.twitter.com/plifk" class="new-window"><img src="<?php
+echo $this->staticversion("/images/follow_bird_us-b.png");
+?>" alt="Follow Plifk on Twitter" /></a>
 </div>
 </div>

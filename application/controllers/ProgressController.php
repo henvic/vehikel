@@ -10,13 +10,11 @@ class ProgressController extends Zend_Controller_Action
             array('updateMethodName' => 'Zend_ProgressBar_Update', 
             'finishMethodName' => 'Zend_ProgressBar_Finish'));
             do {
-                $progress = Zend_File_Transfer_Adapter_Http::getProgress(
-                array('progress' => $adapter));
+                $progress = Zend_File_Transfer_Adapter_Http::getProgress(array('progress' => $adapter));
             } while (! $progress['done']);
         } else {
             $adapter = new Zend_ProgressBar_Adapter_JsPull();
-            Zend_File_Transfer_Adapter_Http::getProgress(
-            array('progress' => $adapter));
+            Zend_File_Transfer_Adapter_Http::getProgress(array('progress' => $adapter));
         }
         exit();
     }

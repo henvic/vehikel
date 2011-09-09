@@ -9,19 +9,19 @@ $signedUserInfo = $registry->get("signedUserInfo");
 <?php
 
 $avatarprofile = $this->avatarprofile($signedUserInfo);
-if($avatarprofile) {
-	echo $avatarprofile; 
+if ($avatarprofile) {
+    echo $avatarprofile; 
 } else {
 ?><p><b>You don't have a picture.</b></p>
 <?php
-	$this->submitPictureForm->removeElement("delete");
+    $this->submitPictureForm->removeElement("delete");
 }
 
 ?>
 <p>We can take almost any picture in the most common formats (JPEG, PNG and GIF). But a landscape JPEG with the important content in the center and aspect ratio 3:2 is advised to better suit on the layout. The file size can be up to 1&nbsp;MB.</p>
-<?= $this->submitPictureForm ?>
+<?php echo $this->submitPictureForm ?>
 </div>
 <div class="yui-u accountside">
-<?= $this->render("/account/menu.phtml"); ?>
+<?php echo $this->render("/account/menu.phtml"); ?>
 </div>
 </div>

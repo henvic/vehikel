@@ -1,12 +1,14 @@
 <?php
 class Form_Upload extends Zend_Form
-{    
+{
     public function init()
     {
         $registry = Zend_Registry::getInstance();
         
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
+        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
+        Zend_Form_Element::FILTER);
         
         $signedUserInfo = $registry->get('signedUserInfo');
         $uploadStatus = $registry->get("uploadStatus");
@@ -14,22 +16,25 @@ class Form_Upload extends Zend_Form
         $this->setAttrib('enctype', 'multipart/form-data');
         $this->setMethod('post');
         
-        $File = new Zend_Form_Element_File('file');
-        $File->setRequired(false);
-        $File->setLabel('What do you want to share today?');
+        $file = new Zend_Form_Element_File('file');
+        $file->setRequired(false);
+        $file->setLabel('What do you want to share today?');
         
-        $maxFileSize = ($uploadStatus['bandwidth']['remainingbytes'] > 0) ? $uploadStatus['filesize']['maxbytes']: 0;
+        if ($uploadStatus['bandwidth']['remainingbytes'] > 0) {
+            $maxFileSize = $uploadStatus['filesize']['maxbytes'];
+        } else {
+            $maxFileSize = 0;
+        }
         
-        $File->addValidator('Size', false, $maxFileSize);
+        $file->addValidator('Size', false, $maxFileSize);
         
-        $File->setMaxFileSize($maxFileSize);
-        //$File->setMaxFileSize($maxFileSize*2);// hack for not showing 'the file exceeds the defined form size'
+        $file->setMaxFileSize($maxFileSize);
         
-        $File->setMultiFile(4);
+        $file->setMultiFile(4);
         
-        $File->addValidator('Count', false, array('min' => 0, 'max' => 4));
+        $file->addValidator('Count', false, array('min' => 0, 'max' => 4));
         
-        $this->addElement($File, 'file');
+        $this->addElement($file, 'file');
         
         $this->addElement(ML_MagicCookies::formElement());
         

@@ -23,7 +23,8 @@ class ML_Signup extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -41,28 +42,32 @@ class ML_Signup extends ML_getModel
     {
         static $form = '';
         
-        if(!is_object($form))
-        {
+        if (! is_object($form)) {
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
             require APPLICATION_PATH . '/forms/SignUp.php';
             
             $form = new Form_SignUp(array(
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "join"),
+                'action' => $router->assemble(array(), "join"),
                 'method' => 'post',
             ));
         }
         return $form;
     }
     
-    public function _getIdentityForm($security_code)
+    public function _getIdentityForm($securityCode)
     {
         static $form = '';
         
-        if(!is_object($form))
-        {
+        if (! is_object($form)) {
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
             require APPLICATION_PATH . '/forms/NewIdentity.php';
             
             $form = new Form_NewIdentity(array(
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array("security_code" => $security_code), "join_emailconfirm"),
+                'action' =>
+                 $router->assemble(array("security_code" => $securityCode),
+                 "join_emailconfirm"),
                 'method' => 'post',
             ));
         }
@@ -74,12 +79,12 @@ class ML_Signup extends ML_getModel
         //securitycode is just a random hexnumber
         $securitycode = sha1($name.$email.mt_rand(-54300, 105000).microtime());
         
-        $this->getAdapter()->query
-        ('INSERT INTO `'.$this->_name.'` (`email`, `name`, `timestamp`, `securitycode`) SELECT ?, ?, CURRENT_TIMESTAMP, ? FROM DUAL
-        WHERE NOT EXISTS (select * from `people` where people.email = ?) ON DUPLICATE KEY UPDATE name=VALUES(name), timestamp=VALUES(timestamp), securitycode=VALUES(securitycode)',
+        $this->getAdapter()->query('INSERT INTO `' . $this->_name .
+        '` (`email`, `name`, `timestamp`, `securitycode`) SELECT ?, ?, CURRENT_TIMESTAMP, ? FROM DUAL WHERE NOT EXISTS (select * from `people` where people.email = ?) ON DUPLICATE KEY UPDATE name=VALUES(name), timestamp=VALUES(timestamp), securitycode=VALUES(securitycode)',
         array($email, $name, $securitycode, $email));
         
-        return Array("name" => $name, "email" => $email, "securitycode" => $securitycode);
+        return array("name" => $name,
+         "email" => $email, "securitycode" => $securitycode);
     }
     
 }

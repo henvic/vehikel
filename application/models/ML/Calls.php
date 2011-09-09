@@ -23,7 +23,8 @@ class ML_Calls extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -41,13 +42,15 @@ class ML_Calls extends ML_getModel
     {
         static $form = '';
         $registry = Zend_Registry::getInstance();
-        if(!is_object($form))
-        {
-            require_once APPLICATION_PATH . '/forms/Call.php';
+        if (! is_object($form)) {
+            
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
+            require APPLICATION_PATH . '/forms/Call.php';
              
             $form = new Form_Call(array(
                 'method' => 'post',
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array(), "call")
+                'action' => $router->assemble(array(), "call")
             
             ));
         }

@@ -23,7 +23,8 @@ class ML_People extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -40,16 +41,15 @@ class ML_People extends ML_getModel
     public function getByUsername($username)
     {
         $select = $this->select()
-        ->where("binary `alias` = ?", $username)
-        ;
+        ->where("binary `alias` = ?", $username);
+        
         return $this->getAdapter()->fetchRow($select);
     }
     
     public function getByEmail($email)
     {
         $select = $this->select()
-        ->where("binary `email` = ?", $email)
-        ;
+        ->where("binary `email` = ?", $email);
         
         return $this->getAdapter()->fetchRow($select);
     }

@@ -6,9 +6,9 @@ $registry = Zend_Registry::getInstance();
 $signedUserInfo = $registry->get("signedUserInfo");
 
 
-$Recent = new ML_Recent();
-$comments = $Recent->commentsInSharesOf($auth->getIdentity());
-$uploads = $Recent->contactsUploads($auth->getIdentity());
+$recent = new ML_Recent();
+$comments = $recent->commentsInSharesOf($auth->getIdentity());
+$uploads = $recent->contactsUploads($auth->getIdentity());
 ?>
 <h2>Recent activity</h2>
 <?php 
@@ -20,10 +20,19 @@ if(empty($uploads) && empty($comments)):
 <h3>Some uploads by your contacts</h3>
 <ul>
 <?php
-foreach($uploads as $recent):
+foreach ($uploads as $recent):
 ?>
 <li>
-<b><a href="<?= $this->url(array("username" => $recent['people.alias'], "share_id" => $recent['share.id']), "sharepage_1stpage") ?>"><?= $this->escape($recent['share.title']) ?></a></b> by <a href="<?= $this->url(array("username" => $recent['people.alias']), "filestream_1stpage") ?>"><?= $this->escape($recent['people.name']) ?></a>
+<b><a href="<?php
+echo $this->url(array("username" => $recent['people.alias'],
+"share_id" => $recent['share.id']),
+"sharepage_1stpage");
+?>"><?php
+echo $this->escape($recent['share.title']);
+?></a></b> by <a href="<?php
+echo $this->url(array("username" => $recent['people.alias']),
+"filestream_1stpage");
+?>"><?php echo $this->escape($recent['people.name']) ?></a>
 </li>
 <?php endforeach; ?>
 </ul>
@@ -33,25 +42,35 @@ foreach($uploads as $recent):
 <ul>
 <?php
 //@todo get from people_deleted also
-foreach($comments as $recent):
+foreach ($comments as $recent):
 ?>
-<li><b><a href="<?= $this->url(array("username" => $signedUserInfo['alias'], "share_id" => $recent['share.id']), "sharepage_1stpage") ?>"><?= $this->escape($recent['share.title']) ?></a></b></li>
+<li><b><a href="<?php
+echo $this->url(array("username" => $signedUserInfo['alias'],
+"share_id" => $recent['share.id']),
+"sharepage_1stpage")
+?>"><?php
+echo $this->escape($recent['share.title']); ?></a></b></li>
 <?php endforeach; ?>
 </ul>
 <?php endif; ?>
 <?php
 /*
- * $commentsLeftElsewhere = $Recent->commentsLeftBy($auth->getIdentity(), true);
+ * $commentsLeftElsewhere = $recent->commentsLeftBy($auth->getIdentity(), true);
  * if(!empty($commentsLeftElsewhere)): ?>
 <h4>Comments you've left elsewhere</h4>
 <?php
 foreach($commentsLeftElsewhere as $recent):
 ?>
 <h4>Your comments</h4>
-<p><?= $this->escape($recent['comments']) ?><br />
-<em>In <strong><a href="<?= $this->escape($recent['people.alias'].'/'.$recent['share.id']) ?>/"><?= $this->escape($recent['share.title']) ?></a> <?= file_size($recent['share.fileSize']) ?></strong></em><br />
-by <?= $this->avatar($recent, "square") ?></p>
+<p><?php echo $this->escape($recent['comments']) ?><br />
+<em>In <strong><a href="<?php
+echo $this->escape($recent['people.alias'] . '/' . $recent['share.id']);
+?>/"><?php
+echo $this->escape($recent['share.title']);
+?></a> <?php
+echo file_size($recent['share.fileSize'])
+?></strong></em><br />
+by <?php echo $this->avatar($recent, "square") ?></p>
 <?php endforeach; ?>
 <?php endif; ?>
 */
-?>

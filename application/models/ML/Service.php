@@ -8,7 +8,10 @@ class ML_Service
     
     public function getInput($what = '', $chars = 100)
     {
-        if($what) fwrite(STDOUT, "$what: ");
+        if ($what) {
+            fwrite(STDOUT, "$what: ");
+        }
+        
         $stdin = fopen('php://stdin', 'r');
         $data  = mb_substr(fgets($stdin, 100), 0, -1);
         fclose($stdin);
@@ -18,10 +21,9 @@ class ML_Service
     
     public function requestConfirmAction($what)
     {
-        $are_you_sure = $this->getInput("$what (yes/no)?");
+        $confirm = $this->getInput("$what (yes/no)?");
         
-        if($are_you_sure != 'yes')
-        {
+        if ($confirm != 'yes') {
             die("Operation canceled.\n");
         }
     }

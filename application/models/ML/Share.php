@@ -23,7 +23,8 @@ class ML_Share extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -39,26 +40,32 @@ class ML_Share extends ML_getModel
     
     public function getInfo($shareId, $uid)
     {
-        //http://www.thesitewizard.com/webdesign/create-good-filenames.shtml tips for users
-        $select = $this->select()->where("id = ?", $shareId)->where("byUid = ?", $uid);
+        // tips for users:
+        // http://www.thesitewizard.com/webdesign/create-good-filenames.shtml
+        $select = $this->select()
+         ->where("id = ?", $shareId)->where("byUid = ?", $uid);
+         
         $shareInfo = $this->fetchRow($select);
-        if(!is_object($shareInfo)) return false;
+        
+        if (!is_object($shareInfo)) {
+            return false;
+        }
         
         $data = $shareInfo->toArray();
         
         return $data;
     }
     
-    public function getPages($uid, $per_page, $page)
+    public function getPages($uid, $perPage, $page)
     {
         $select = $this->select();
+        
         $select->where("byUid = ?", $uid)
-        ->order("uploadedTime DESC")
-        ;
+        ->order("uploadedTime DESC");
         
         $paginator = Zend_Paginator::factory($select);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setItemCountPerPage($per_page);
+        $paginator->setItemCountPerPage($perPage);
         
         return $paginator;
     }

@@ -66,30 +66,36 @@ class ML_Session_SaveHandler_PlusCache extends ML_Session_SaveHandler_Cache
         $config = $registry->get("config");
         
         //if user is identified, save additional information
-        if($auth->hasIdentity())
-        {
-            $request_info = array(
+        if ($auth->hasIdentity()) {
+            $frontController = Zend_Controller_Front::getInstance();
+            $couchDbConfig = $config['resources']['db']['couchdb']['dsn'];
+            
+            $requestInfo = array(
                 "http_user_agent" => $_SERVER['HTTP_USER_AGENT'],
                 "request_method" => $_SERVER['REQUEST_METHOD'],
                 "remote_addr" => $_SERVER['REMOTE_ADDR'],
                 "request_time" => (int)$_SERVER['REQUEST_TIME'],
                 "request_method" => $_SERVER['REQUEST_METHOD'],
                 "request_uri" => $_SERVER['REQUEST_URI'],
-                "http_response_code" => Zend_Controller_Front::getInstance()->getResponse()->getHttpResponseCode(),
+                "http_response_code" =>
+                 $frontController->getResponse()->getHttpResponseCode(),
                 "session" => $id,
                 "uid" => $auth->getIdentity()
             );
             
-            $this->_cache->save($request_info, $this->_sessionPrefix . $this->_lastActivityPrefix. $id, array(), $this->_getLifetime($id));
+            $this->_cache->save($requestInfo, 
+             $this->_sessionPrefix . $this->_lastActivityPrefix . $id, array(), 
+             $this->_getLifetime($id));
             
-            $client = new couchClient($config['resources']['db']['couchdb']['dsn'],"web_access_log");
+            $client = new couchClient($couchDbConfig, "web_access_log");
             
-            $request_info['_id'] = $_SERVER['REQUEST_TIME'] . "-" . mt_rand() . mt_rand();
+            $requestInfo['_id'] = $_SERVER['REQUEST_TIME'] . "-" . mt_rand() .
+             mt_rand();
             
             try {
-                $client->storeDoc(array_to_obj($request_info));
+                $client->storeDoc(array_to_obj($requestInfo));
             } catch(Exception $e) {
-                error_log("Failed to store log with CouchDB for this authenticated access");
+                error_log("Failed to store authed access log");
             }
         }
         

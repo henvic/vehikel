@@ -2,5 +2,5 @@
 $this->headTitle("API | Apply for a new Key");
 ?>
 <h2>Apply for a new API key</h2>
-<?= $this->apiKeyForm ?>
-<p>Or see all the <a href="<?= $this->url(array(), "apikeys") ?>">API keys</a> you have.</p>
+<?php echo $this->apiKeyForm ?>
+<p>Or see all the <a href="<?php echo $this->url(array(), "apikeys") ?>">API keys</a> you have.</p>

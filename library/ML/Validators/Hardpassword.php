@@ -1,5 +1,5 @@
 <?php
-require_once 'Zend/Validate/Abstract.php';
+//require_once 'Zend/Validate/Abstract.php';
 
 class MLValidator_Hardpassword extends Zend_Validate_Abstract
 {
@@ -15,18 +15,18 @@ class MLValidator_Hardpassword extends Zend_Validate_Abstract
          
         $valueString = (string) $value;
         
-        if(isset($context['currentpassword'])) {
-            unset($context['currentpassword']);//this is handled by NewPassword.php
+        if (isset($context['currentpassword'])) {
+            //this is handled by NewPassword.php
+            unset($context['currentpassword']);
         }
         
-        if(isset($context['password_confirm'])) {
+        if (isset($context['password_confirm'])) {
             unset($context['password_confirm']);
         }
         
         unset($context['password']);
         
-        if(in_array($value, $context))
-        {
+        if (in_array($value, $context)) {
             $this->_error(self::MSG_PASSWORD_NOT_HARD);
             return false;
         }

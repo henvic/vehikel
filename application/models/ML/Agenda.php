@@ -23,7 +23,8 @@ class ML_Agenda extends ML_getModel
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -40,10 +41,11 @@ class ML_Agenda extends ML_getModel
     public static function form()
     {
         static $form = '';
+        
         $registry = Zend_Registry::getInstance();
-        if(!is_object($form))
-        {
-            require_once APPLICATION_PATH . '/forms/Agenda.php';
+        
+        if (! is_object($form)) {
+            require APPLICATION_PATH . '/forms/Agenda.php';
              
             $form = new Form_Agenda(array(
                 'method' => 'post',

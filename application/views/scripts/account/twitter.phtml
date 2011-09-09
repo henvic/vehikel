@@ -6,23 +6,23 @@ $this->headTitle("Tweet easy!");
 <h2>Use Twitter to share your files even faster!</h2>
 <p>Everybody is using <a href="http://twitter.com/" class="new-window">Twitter</a> to share links, ideas, and all kinds of interesting stuff. Connect to your Twitter account here and next time you want to share a file to your Twitter followers you can do it in less than one second.</p>
 <?php if($this->twitterApiError): ?>
-<p><strong>Sorry.</strong> There was an unexpected error. <a href="<?= $this->url(array(), "accounttwitter") ?>">Refresh this page</a>.</p>
+<p><strong>Sorry.</strong> There was an unexpected error. <a href="<?php echo $this->url(array(), "accounttwitter") ?>">Refresh this page</a>.</p>
 <?php endif; ?>
 <?php if(isset($this->invalidTwitterAccount)): ?>
-<p><strong>Sorry.</strong> We couldn't identify your Twitter. Maybe you want to remove the connection to your account</a> or <a href="<?= $this->url(array(), "accounttwitter") ?>">refresh this page</a>.</p>
+<p><strong>Sorry.</strong> We couldn't identify your Twitter. Maybe you want to remove the connection to your account</a> or <a href="<?php echo $this->url(array(), "accounttwitter") ?>">refresh this page</a>.</p>
 <?php endif;
 if(isset($this->twitterInfo)): ?>
-<p>You're connected as <strong><a href="http://twitter.com/<?= $this->escape($this->twitterInfo['screen_name']) ?>" class="new-window"><?= $this->escape($this->twitterInfo['name']) ?> (@<?= $this->escape($this->twitterInfo['screen_name']) ?>)</a></strong> on Twitter.</p>
+<p>You're connected as <strong><a href="http://twitter.com/<?php echo $this->escape($this->twitterInfo['screen_name']) ?>" class="new-window"><?php echo $this->escape($this->twitterInfo['name']) ?> (@<?php echo $this->escape($this->twitterInfo['screen_name']) ?>)</a></strong> on Twitter.</p>
 <?php endif;
 if(isset($this->twitterInfo) || isset($this->invalidTwitterAccount)):
 ?>
-<?= $this->removeTwitterForm ?>
+<?php echo $this->removeTwitterForm ?>
 <?php else: ?>
-<?= $this->addTwitterForm ?>
+<?php echo $this->addTwitterForm ?>
 <?php endif; ?>
 <p class="tip"><small>Check your <a href="http://twitter.com/account/connections" class="new-window">connections on Twitter</a>.</small></p>
 </div>
 <div class="yui-u accountside">
-<?= $this->render("/account/menu.phtml"); ?>
+<?php echo $this->render("/account/menu.phtml"); ?>
 </div>
 </div>

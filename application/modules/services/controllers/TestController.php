@@ -1,12 +1,12 @@
 <?php
 
-class TestController extends Zend_Controller_Action 
-{    
+class TestController extends Zend_Controller_Action
+{
     public function addapiserverAction()
     {
-        $user_id = $Service->getInput("User ID");
-        $consumer_key = $Service->getInput("Consumer key");
-        $consumer_secret = $Service->getInput("Consumer secret");
+        $userId = $service->getInput("User ID");
+        $consumerKey = $service->getInput("Consumer key");
+        $consumerSecret = $service->getInput("Consumer secret");
         
         $this->_helper->loadOauthstore->setinstance();
         
@@ -14,8 +14,8 @@ class TestController extends Zend_Controller_Action
         
         // The server description
         $server = array(
-            'consumer_key' => $consumer_key,
-            'consumer_secret' => $consumer_secret,
+            'consumer_key' => $consumerKey,
+            'consumer_secret' => $consumerSecret,
             'server_uri' => 'http://mercury/',
             'signature_methods' => array('HMAC-SHA1', 'PLAINTEXT'),
             'request_token_uri' => 'http://mercury/oauth/request_token',
@@ -24,74 +24,73 @@ class TestController extends Zend_Controller_Action
         );
         
         // Save the server in the the OAuthStore
-        $consumer_key = $store->updateServer($server, $user_id);
+        $consumerKey = $store->updateServer($server, $userId);
         
         echo "Api server added!\n";
     }
     
     public function delapiserverAction()
     {
-        $Service = new ML_Service();
+        $service = new ML_Service();
         
-        $user_id = $Service->getInput("User ID");
-        $consumer_key = $Service->getInput("Consumer key");
+        $userId = $service->getInput("User ID");
+        $consumerKey = $service->getInput("Consumer key");
         
         $this->_helper->loadOauthstore->setinstance();
         
         $store = OAuthStore::instance();
         
-        $store->deleteServer($consumer_key, $user_id);
+        $store->deleteServer($consumerKey, $userId);
     }
     
     public function listapiserversAction()
     {
-        $Service = new ML_Service();
+        $service = new ML_Service();
         
-        $user_id = $Service->getInput("User ID");
+        $userId = $service->getInput("User ID");
         
         $this->_helper->loadOauthstore->setinstance();
         
         $store = OAuthStore::instance();
         
-        $servers = $store->listServers(null, $user_id);
+        $servers = $store->listServers(null, $userId);
         
         print_r($servers);
     }
     
     public function requestapiauthAction()
     {
-        $Service = new ML_Service();
+        $service = new ML_Service();
         
-        $user_id = $Service->getInput("User ID");
+        $userId = $service->getInput("User ID");
         
-        $consumer_key = $Service->getInput("Consumer key");
+        $consumerKey = $service->getInput("Consumer key");
         
         $this->_helper->loadOauthstore->setinstance();
         
         require EXTERNAL_LIBRARY_PATH . '/oauth-php/library/OAuthRequester.php';
-        $token = OAuthRequester::requestRequestToken($consumer_key, $user_id);
+        $token = OAuthRequester::requestRequestToken($consumerKey, $userId);
         
-        // Callback to our (consumer) site, will be called when the user finished the authorization at the server
-        $callback_uri = 'http://example.com/callback?consumer_key='.rawurlencode($consumer_key).'&usr_id='.intval($user_id);
+        // Callback to our (consumer) site
+        //it's called when the user finished the authorization at the server
+        $callbackUri = 'http://example.com/callback?consumer_key=' .
+         rawurlencode($consumerKey) . '&usr_id=' . intval($userId);
         
         // Now redirect to the autorization uri and get us authorized
-        if (!empty($token['authorize_uri']))
-        {
+        if (!empty($token['authorize_uri'])) {
             // Redirect to the server, add a callback to our server
-            if (strpos($token['authorize_uri'], '?'))
-            {
+            if (strpos($token['authorize_uri'], '?')) {
                 $uri = $token['authorize_uri'] . '&';
-            }
-            else
-            {
+            } else {
                 $uri = $token['authorize_uri'] . '?';
             }
-            $uri .= 'oauth_token='.rawurlencode($token['token']).'&oauth_callback='.rawurlencode($callback_uri);
-        }
-        else
-        {
-            // No authorization uri, assume we are authorized, exchange request token for access token
-           $uri = $callback_uri . '&oauth_token='.rawurlencode($token['token']);
+            $uri .= 'oauth_token=' . rawurlencode($token['token']) .
+             '&oauth_callback=' . rawurlencode($callbackUri);
+        } else {
+            // No authorization uri
+            //assume we are authorized
+            //exchange request token for access token
+           $uri = $callbackUri . '&oauth_token='.rawurlencode($token['token']);
         }
         
         echo $uri;
@@ -100,21 +99,21 @@ class TestController extends Zend_Controller_Action
     
     public function exchangeapitokenAction()
     {
-        $Service = new ML_Service();
+        $service = new ML_Service();
         
         $this->_helper->loadOauthstore->setinstance();
         
-        $user_id = $Service->getInput("User ID");
+        $userId = $service->getInput("User ID");
         
-        $consumer_key = $Service->getInput("Consumer key");
+        $consumerKey = $service->getInput("Consumer key");
         
-        $oauth_token = $Service->getInput("Oauth token");
+        $oauthToken = $service->getInput("Oauth token");
         
         require EXTERNAL_LIBRARY_PATH . '/oauth-php/library/OAuthRequester.php';
         
         try
         {
-            OAuthRequester::requestAccessToken($consumer_key, $oauth_token, $user_id);
+            OAuthRequester::requestAccessToken($consumerKey, $oauthToken, $userId);
             echo "Request token exchanged for access token.\n";
         }
         catch (OAuthException $e)
@@ -129,38 +128,39 @@ class TestController extends Zend_Controller_Action
     
     public function apisignedrequestAction()
     {
-        $Service = new ML_Service();
+        $service = new ML_Service();
         
         $this->_helper->loadOauthstore->setinstance();
         
         require EXTERNAL_LIBRARY_PATH . '/oauth-php/library/OAuthRequester.php';
         
-        $user_id = $Service->getInput("User ID");
+        $userId = $service->getInput("User ID");
         
-        $request_uri = $Service->getInput("Request URI");
+        $requestUri = $service->getInput("Request URI");
         
-        $http_method = $Service->getInput("HTTP Method");
+        $httpMethod = $service->getInput("HTTP Method");
         
         // Parameters, appended to the request depending on the request method.
         // Will become the POST body or the GET query string.
-        $num_of_params = $Service->getInput("Number of params");
+        $numOfParams = $service->getInput("Number of params");
         $params = array();
-        for($n = 0; $n < $num_of_params; $n++)
-        {
-            $param = $Service->getInput("Param");
-            $value = $Service->getInput("Value");
+        for ($n = 0; $n < $numOfParams; $n ++) {
+            $param = $service->getInput("Param");
+            $value = $service->getInput("Value");
             
             $params[$param] = $value;
         }
         
         
         // Obtain a request object for the request we want to make
-        $req = new OAuthRequester($request_uri, $http_method, $params);
+        $req = new OAuthRequester($requestUri, $httpMethod, $params);
         
         try {
-            // Sign the request, perform a curl request and return the results, throws OAuthException exception on an error
-            $result = $req->doRequest($user_id);
-            // $result is an array of the form: array ('code'=>int, 'headers'=>array(), 'body'=>string)
+            // Sign the request, perform a curl request and return the results,
+            //throws OAuthException exception on an error
+            $result = $req->doRequest($userId);
+            //$result is an array with the content:
+            //array ('code'=>int, 'headers'=>array(), 'body'=>string)
             print_r($result);
         } catch(Exception $e)
         {
@@ -171,8 +171,8 @@ class TestController extends Zend_Controller_Action
     
     public function testingAction()
     {
-        $Favorites = ML_Favorites::getInstance();
+        $favorites = ML_Favorites::getInstance();
         
-        $Favorites->getUserPage(1, 1,1);
+        $favorites->getUserPage(1, 1, 1);
     }
 }

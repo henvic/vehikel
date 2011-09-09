@@ -16,7 +16,7 @@ try {
     exit(1);
 }
 
-if(isset($opts->h)) {
+if (isset($opts->h)) {
     echo $opts->getUsageMessage();
     exit;
 }
@@ -31,11 +31,10 @@ $this->bootstrap('FrontController');
 $frontController = $this->getResource('FrontController');
 $frontController->setParam('noViewRenderer', true);
 
-if(isset($opts->a)) {
-    $reqRoute = array_reverse(explode('.',$opts->a));
+if (isset($opts->a)) {
+    $reqRoute = array_reverse(explode('.', $opts->a));
     
-    if(isset($reqRoute[1]))
-    {
+    if (isset($reqRoute[1])) {
         $action = $reqRoute[0];
         $controller = $reqRoute[1];
     } else {
@@ -49,10 +48,12 @@ if(isset($opts->a)) {
     
     $frontController->setRequest($request);
     
-    require_once LIBRARY_PATH."/ML/RouteCLIModule.php";
+    require LIBRARY_PATH."/ML/RouteCLIModule.php";
     $frontController->setRouter(new Webf_Controller_Router_Cli());
     $frontController->setResponse(new Zend_Controller_Response_Cli());
 }
 
 $frontController->addModuleDirectory(APPLICATION_PATH.'/modules');
-$frontController->addControllerDirectory(APPLICATION_PATH.'/modules/'.HOST_MODULE.'/controllers');
+
+$frontController->addControllerDirectory(APPLICATION_PATH . '/modules/' .
+ HOST_MODULE . '/controllers');

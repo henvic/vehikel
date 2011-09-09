@@ -7,62 +7,60 @@ $config = $registry->get('config');
 
 $this->headScript()->setAllowArbitraryAttributes(true);
 
-if($registry->isRegistered("shareInfo") && $this->tagsList)
-{
-	$keywords = '';
-	foreach($this->tagsList as $tag)
-	{
-		if($keywords) $keywords .= ", ";
-		$keywords .= $this->escape($tag['raw']);
-	}
+if ($registry->isRegistered("shareInfo") && $this->tagsList) {
+    $keywords = '';
+    foreach ($this->tagsList as $tag) {
+        if($keywords) $keywords .= ", ";
+        $keywords .= $this->escape($tag['raw']);
+    }
 
-	if(!empty($keywords)) $keywords .= ", ";
-	$keywords .= $config['keywords'];
+    if (!empty($keywords)) $keywords .= ", ";
+    $keywords .= $config['keywords'];
 
-	$shareInfo = $registry->get("shareInfo");
-	$this->headMeta()->appendName('description', $this->escape($shareInfo['title']));
+    $shareInfo = $registry->get("shareInfo");
+    $this->headMeta()->appendName('description', $this->escape($shareInfo['title']));
 } else {
-	$keywords = $config['keywords'];
-	$this->headMeta()->appendName('description', $config['description']);
+    $keywords = $config['keywords'];
+    $this->headMeta()->appendName('description', $config['description']);
 }
 
 $this->headMeta()->appendName('keywords', $keywords);
 
 $this->webname = $config['applicationname'];
 
-if($registry->isRegistered("signedUserInfo"))
+if ($registry->isRegistered("signedUserInfo"))
 $signedUserInfo = $registry->get("signedUserInfo");
 
 $this->headTitle()->setSeparator(' – ');
 
 $this->doctype('XHTML5');
 
-$this->headLink(array('rel' => 'icon', 'href' => $this->staticversion("/favicon.ico"), 'type' => "image/x-icon"), 'PREPEND');
-$this->headLink(array('rel' => 'apple-touch-icon', 'href' => $this->staticversion("/images/apple-touch-icon.png")), 'PREPEND');
+$this->headLink(array('rel' => 'icon',
+'href' => $this->staticversion("/favicon.ico"), 
+'type' => "image/x-icon"), 'PREPEND');
+$this->headLink(array('rel' => 'apple-touch-icon', 
+'href' => $this->staticversion("/images/apple-touch-icon.png")), 'PREPEND');
 
 // START Loading some Javascript
 // using this configuration: http://developer.yahoo.com/yui/articles/hosting/?animation&connection&dom&element&event&yahoo&yuiloader&MIN
 
-if($registry->isRegistered("jsfiles"))
-{
-	$add_jsfiles = $registry->get("jsfiles");
-	foreach($add_jsfiles as $file => $method)
-	{
-		if($method == "append")
-		{
-			$this->headScript()->appendFile($file);
-		} elseif($method == "prepend") {
-			$this->headScript()->prependFile($file);
-		}
-	}
+if ($registry->isRegistered("jsfiles")) {
+    $addJsfiles = $registry->get("jsfiles");
+    foreach ($addJsfiles as $file => $method) {
+        if ($method == "append") {
+            $this->headScript()->appendFile($file);
+        } else if ($method == "prepend") {
+            $this->headScript()->prependFile($file);
+        }
+    }
 }
 
-if($auth->hasIdentity()) {
-	$this->addjsvar("uid", $auth->getIdentity());
+if ($auth->hasIdentity()) {
+    $this->addjsvar("uid", $auth->getIdentity());
 }
 
-if($registry->isRegistered("globalHash")) {
-	$this->addjsvar("global_auth_hash", $registry->get("globalHash"));
+if ($registry->isRegistered("globalHash")) {
+    $this->addjsvar("global_auth_hash", $registry->get("globalHash"));
 }
 
 $this->addjsvar("webroot", $config['webroot']);
@@ -75,65 +73,64 @@ $this->headLink()->appendStylesheet("http://yui.yahooapis.com/combo?2.8.1/build/
 //$this->headLink()->appendStylesheet($this->staticversion("/plifk.css"), "screen", false, array("id" => "yuibase"));
 $this->headLink()->appendStylesheet($this->staticUrl("/plifk.css"));
 ?>
-<?= $this->doctype() ?>
+<?php echo $this->doctype() ?>
 
-<html lang="en"<?php /* manifest="<?= $this->staticUrl("/cache.manifest"); ?>"*/?>>
+<html lang="en"
+    <?php /* manifest="<?php echo $this->staticUrl("/cache.manifest"); ?>"*/?>>
 <head>
-<?= $this->headTitle() ?>
+<?php echo $this->headTitle() ?>
 
-<?= $this->headLink() ?>
+<?php echo $this->headLink() ?>
 
-<?= $this->headMeta() ?>
+<?php echo $this->headMeta() ?>
 
 <meta charset="utf-8" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<?= $this->headScript() ?>
+<?php echo $this->headScript() ?>
 
-<?= $this->headStyle() ?>
+<?php echo $this->headStyle() ?>
 </head>
 <body>
 <div id="doc2" class="yui-t1">
-<div id="bd"<?php /* role="main"*/?>>
+<div id="bd" <?php /* role="main"*/?>>
 <div id="yui-main">
 <div class="yui-b">
-<nav class="yui-g"<?php /* role="navigation"*/?> id="nav-bar"><?php
-if(isset($signedUserInfo)):
+<nav class="yui-g" id="nav-bar"><?php
+if (isset($signedUserInfo)):
 ?>
 <ul>
-<li class="first">Signed in as <a href="<?= $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage") ?>"><?= $this->escape($signedUserInfo['alias']) ?></a></li>
-<?php /*<li><a href="<?= $this->url(array("username" => $signedUserInfo['alias']), "contacts_1stpage") ?>">Your contacts</a></li>*/?>
-<li><b><a href="<?= $this->url(array(), "upload") ?>">Upload</a></b></li>
-<li><a href="<?= $this->url(array(), "account") ?>">Account</a></li>
-<li><a href="<?= $this->staticUrl("/help") ?>">Help</a></li>
-<li class="logout last"><a href="<?= $this->url(array(), "logout") ?>" id="logout_link" rel="nofollow">Sign out</a></li>
+<li class="first">Signed in as <a href="<?php
+echo $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage")
+?>"><?php echo $this->escape($signedUserInfo['alias']) ?></a></li>
+<li><b><a href="<?php echo $this->url(array(), "upload") ?>">Upload</a></b></li>
+<li><a href="<?php echo $this->url(array(), "account") ?>">Account</a></li>
+<li><a href="<?php echo $this->staticUrl("/help") ?>">Help</a></li>
+<li class="logout last"><a href="<?php echo $this->url(array(), "logout") ?>" id="logout_link" rel="nofollow">Sign out</a></li>
 </ul>
 <?php else: ?>
 <ul class="unsigned">
-<li><a href="<?= $this->url(array(), "join") ?>">Join&nbsp;us</a></li>
-<li>You're not signed in.</li>
-<li><a href="<?= $this->url(array(), "login") ?>" id="login-button">Sign&nbsp;in</a></li>
+    <li><a href="<?php echo $this->url(array(), "join") ?>">Join&nbsp;us</a></li>
+    <li>You're not signed in.</li>
+    <li><a href="<?php echo $this->url(array(), "login") ?>" id="login-button">Sign&nbsp;in</a></li>
 </ul>
-<?php endif; ?></nav>
+<?php endif; ?></nav></div>
 </div>
-</div>
-<header class="yui-b"<?php /*role="banner"*/?> id="logo">
-<h1><a href="<?= $this->url(array(), "index") ?>"><span></span><?= $this->escape($config['applicationname']) ?></a></h1>
-</header>
-</div>
-<div id="hd"<?php /*role="application"*/?>>
+<header class="yui-b" id="logo">
+<h1><a href="<?php echo $this->url(array(), "index") ?>"><span></span><?php echo $this->escape($config['applicationname']) ?></a></h1>
+</header></div>
+<div id="hd">
 <?php
 $controllerName = $request->getControllerName();
 
-if($registry->isRegistered("userInfo"))
-{
-	echo $this->render("usermenu.phtml");
+if ($registry->isRegistered("userInfo")) {
+    echo $this->render("usermenu.phtml");
 }
 ?>
-<?= $this->layout()->content ?>
+<?php echo $this->layout()->content ?>
 </div>
-<footer id="ft"<?php /*role="contentinfo"*/?>><?php include("footer.phtml"); ?></footer>
+<footer id="ft"><?php include("footer.phtml"); ?></footer>
 </div>
 <?php include("analytics.phtml"); ?>
 </body>

@@ -18,25 +18,38 @@ class ProxyController extends Zend_Controller_Action
         $config = $registry->get("config");
         
         $request = $this->getRequest();
+        
         //@todo improve security with whitelist approach
         $method = $request->getParam("method");
-        if(!$method || mb_strlen($method) > 250 || mb_strstr($method, ".") || mb_strstr($method, "@") || mb_substr($method, 0, 1) != "/") exit(1);
+        if (! $method || mb_strlen($method) > 250 || mb_strstr($method, ".") ||
+         mb_strstr($method, "@") || mb_substr($method, 0, 1) != "/") {
+            exit(1);
+        }
         
         $method = mb_substr($method, 1);
         
-        $response_format = $request->getParam("response_format", "xml");
+        $responseFormat = $request->getParam("response_format", "xml");
         
-        $content_type = ($response_format == 'json') ? 'application/json' : 'text/xml';
+        if ($responseFormat == 'json') {
+            $contentType = 'application/json';
+        } else {
+            $contentType = 'text/xml';
+        }
         
-        header("Content-Type: $content_type");
+        header("Content-Type: $contentType");
         
-        $url = "http://".$config['apihost'].$config['apiroot']."/".($method)."?".getenv("QUERY_STRING");//&method=bar is being passed, but whatever...
+        //&method=bar is being passed, but whatever...
+        $url = "http://" . $config['apihost'] . $config['apiroot'] . "/" .
+         $method . "?" . getenv("QUERY_STRING");
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url); 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-        $result = curl_exec($ch); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         
+        $result = curl_exec($ch);
+         
         curl_close($ch);
+        
         echo $result;
         
         exit(0);

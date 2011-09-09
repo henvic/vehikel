@@ -5,10 +5,10 @@ $userInfo = $registry->get('userInfo');
 ?>
 <div id="usermenu"> 
 <div class="avatar"> 
-<?= $this->avatar($userInfo, "thumbnail") ?>
+<?php echo $this->avatar($userInfo, "thumbnail") ?>
 </div>
 <div class="userinfo">
-<h2><a href="<?= $this->url(array("username" => $userInfo['alias']), "filestream_1stpage") ?>"><?= $this->escape($userInfo['name']) ?></a><?php if($auth->getIdentity() == $userInfo['id']): ?><small class="you">(you)</small><?php endif; ?></h2>
+<h2><a href="<?php echo $this->url(array("username" => $userInfo['alias']), "filestream_1stpage") ?>"><?php echo $this->escape($userInfo['name']) ?></a><?php if($auth->getIdentity() == $userInfo['id']): ?><small class="you">(you)</small><?php endif; ?></h2>
 
 <ul>
 <?php 
@@ -24,15 +24,15 @@ $requestUserParams = $registry->get('requestUserParams');
 
 if($requestUserParams['controller'] == "favorites" &&
 $requestUserParams['action'] == "user") $requestUserParams['action'] = "userfavorites";
-elseif($requestUserParams['controller'] == "contacts" &&
+else if($requestUserParams['controller'] == "contacts" &&
 $requestUserParams['action'] == "list") $requestUserParams['action'] = "contacts";
 
 foreach($userLinks as $open_action => $userlink_info):
 if($open_action != $requestUserParams['action']):
 ?>
-<li><a href="<?= $this->escape($userlink_info['uri'])?>"><?= $this->escape($userlink_info['name']) ?></a></li>
+<li><a href="<?php echo $this->escape($userlink_info['uri'])?>"><?php echo $this->escape($userlink_info['name']) ?></a></li>
 <?php else: ?>
-<li class="active"><a href="<?= $this->escape($userlink_info['uri'])?>"><?= $this->escape($userlink_info['name']) ?></a></li>
+<li class="active"><a href="<?php echo $this->escape($userlink_info['uri'])?>"><?php echo $this->escape($userlink_info['name']) ?></a></li>
 <?php endif; endforeach; unset($open_action); unset($userlink_info); ?>
 </ul>
 </div>

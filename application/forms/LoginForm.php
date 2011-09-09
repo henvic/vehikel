@@ -7,8 +7,10 @@ class LoginForm extends Zend_Form
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', Zend_Form_Element::FILTER);
+        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        Zend_Form_Element::VALIDATE);
+        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
+        Zend_Form_Element::FILTER);
         
         $this->addElement('text', 'username', array(
             'label'      => 'Username or e-mail:',
@@ -16,7 +18,7 @@ class LoginForm extends Zend_Form
             'autofocus' => 'autofocus',
             'filters'    => array('StringTrim', 'StringToLower'),
             'validators' => array(
-                array('validator' => 'username'), //there's stringlenght there
+                array('validator' => 'username'), //stringlenght there
                 )
         ));
         
@@ -37,7 +39,7 @@ class LoginForm extends Zend_Form
         $this->addElement('checkbox', 'remember_me', array(
             'label'    => 'Remember me'));
         
-        if(ML_AntiAttack::ensureHuman()) {
+        if (ML_AntiAttack::ensureHuman()) {
             $this->addElement(ML_AntiAttack::captchaElement());
         }
         
@@ -48,10 +50,10 @@ class LoginForm extends Zend_Form
         ));
         
         
-        if($config['ssl'])
-        {
+        if ($config['ssl']) {
             $this->getElement("login")->addValidator("Https");
-            //Note: by default the submit element doesn't display a error decorator
+            
+            //By default the submit element doesn't display a error decorator
             $this->getElement("login")->addDecorator("Errors");
         }
         

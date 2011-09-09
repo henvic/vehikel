@@ -1,20 +1,20 @@
 <?php
 class My_View_Helper_getjsvarstext extends Zend_View_Helper_Abstract
 {
-    public function getjsvarstext()
+    public function getjsvarstext ()
     {
         $registry = Zend_Registry::getInstance();
-        $script_lines = '';
-        if($registry->isRegistered("Layout_JSvars"))
-        {
-            $layout_vars = $registry->get("Layout_JSvars");
+        $scriptLines = '';
+        
+        if ($registry->isRegistered("Layout_JSvars")) {
+            $layoutVars = $registry->get("Layout_JSvars");
             
-            foreach($layout_vars as $key => $value)
-            {
-                $script_lines .= "var ".$key.' = "'.$value.'"'."\n";
+            foreach ($layoutVars as $key => $value) {
+                $scriptLines .= "var " . $key . ' = "' . $value . '"' . "\n";
             }
+            
         }
         
-        return $script_lines;
+        return $scriptLines;
     }
 }

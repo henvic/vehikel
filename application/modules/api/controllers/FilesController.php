@@ -15,57 +15,74 @@ class FilesController extends Zend_Controller_Action
         
         $params = $request->getParams();
         
-        $Share = ML_Share::getInstance();
+        $share = ML_Share::getInstance();
         
-        $per_page = $request->getParam("per_page", 20);
-        if($per_page > 100) $per_page = 100;
-        elseif($per_page < 1 || $per_page > 100) $per_page = 20;
+        $perPage = $request->getParam("per_page", 20);
+        if ($perPage > 100) {
+            $perPage = 100;
+        } else if ($perPage < 1 || $perPage > 100) {
+            $perPage = 20;
+        }
         
         $page = $request->getParam("page", 1);
-        if(!is_natural($page)) $page = 1;
         
-        $paginator = $Share->getPages($userInfo['id'], $per_page, $page);
+        if (! is_natural($page)) {
+            $page = 1;
+        }
         
-        if($paginator->count() < $page) $page = $paginator->count();
+        $paginator = $share->getPages($userInfo['id'], $perPage, $page);
+        
+        if ($paginator->count() < $page) {
+            $page = $paginator->count();
+        }
         
         $doc = new ML_Dom();
         $doc->formatOutput = true;
         
-        $root_element = $doc->createElement("files");
+        $rootElement = $doc->createElement("files");
         
-        $doc->appendChild($root_element);
+        $doc->appendChild($rootElement);
         
-        $share_data = array(
+        $shareData = array(
             "page" => $page,
             "pages" => $paginator->count(),
-            "per_page" => $per_page,
+            "per_page" => $perPage,
             "total" => $paginator->getTotalItemCount(),
         );
         
-        foreach($share_data as $field => $data)
-        {
-            $root_element->appendChild($doc->newTextAttribute($field, $data));
+        foreach ($shareData as $field => $data) {
+            $rootElement->appendChild($doc->newTextAttribute($field, $data));
         }
     
-        foreach($paginator->getCurrentItems()->toArray() as $share)
-        {
-            $share_element = $doc->createElement("file");
+        foreach ($paginator->getCurrentItems()->toArray() as $share) {
+            $shareElement = $doc->createElement("file");
             
-            $share_element->appendChild($doc->newTextAttribute("id", $share['id']));
-            $share_element->appendChild($doc->newTextAttribute("posted", $share['uploadedTime']));
+            $shareElement
+            ->appendChild($doc->newTextAttribute("id", $share['id']));
             
-            $share_data = array("title" => $share['title'], "filename" => $share['filename'], "filetype" => $share['type'], "short" => $share['short']);
-            foreach($share_data as $field => $data)
-            {
-                $share_element->appendChild($doc->newTextElement($field, $data));
+            $shareElement
+            ->appendChild($doc
+             ->newTextAttribute("posted", $share['uploadedTime']));
+            
+            $shareData = array("title" => $share['title'], 
+            "filename" => $share['filename'], "filetype" => $share['type'], 
+            "short" => $share['short']);
+            
+            foreach ($shareData as $field => $data) {
+                $shareElement->appendChild($doc->newTextElement($field, $data));
             }
             
-            $filesize_element = $doc->createElement("filesize");
-            $filesize_element->appendChild($doc->newTextAttribute("bits", $share['fileSize']));
-            $filesize_element->appendChild($doc->newTextAttribute("kbytes", ceil($share['fileSize']/(1024*8))));
-            $share_element->appendChild($filesize_element);
+            $filesizeElement = $doc->createElement("filesize");
+            $filesizeElement
+            ->appendChild($doc->newTextAttribute("bits", $share['fileSize']));
             
-            $root_element->appendChild($share_element);
+            $filesizeElement
+            ->appendChild($doc
+            ->newTextAttribute("kbytes", ceil($share['fileSize']/(1024*8))));
+            
+            $shareElement->appendChild($filesizeElement);
+            
+            $rootElement->appendChild($shareElement);
         }
     
         $this->_helper->printResponse($doc);
@@ -75,8 +92,11 @@ class FilesController extends Zend_Controller_Action
     {
         //@todo route: do it the right way!
         $router = new Zend_Controller_Router_Rewrite();
-        $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/defaultRoutes.ini');
-        $router->addConfig($config, 'routes');
+        
+        $routeConfig =
+        new Zend_Config_Ini(APPLICATION_PATH . '/configs/defaultRoutes.ini');
+        
+        $router->$routeConfig($config, 'routes');
         
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
@@ -85,110 +105,134 @@ class FilesController extends Zend_Controller_Action
         
         $params = $request->getParams();
         
-        $People = ML_People::getInstance();
-        $Favorites = ML_Favorites::getInstance();
-        $Comments = ML_Comments::getInstance();
-        $Tags = ML_Tags::getInstance();
+        $people = ML_People::getInstance();
+        $favorites = ML_Favorites::getInstance();
+        $comments = ML_Comments::getInstance();
+        $tags = ML_Tags::getInstance();
         
         $this->_helper->loadApiresource->share();
         $shareInfo = $registry->get("shareInfo");
         
-        $userInfo = $People->getById($shareInfo['byUid']);
+        $userInfo = $people->getById($shareInfo['byUid']);
         
-        $tagsList = $Tags->getShareTags($shareInfo['id']);
-        $count_favs = $Favorites->count($shareInfo['id']);
-        $count_comments = $Comments->count($shareInfo['id']);
+        $tagsList = $tags->getShareTags($shareInfo['id']);
+        $countFavs = $favorites->count($shareInfo['id']);
+        $countComments = $comments->count($shareInfo['id']);
         
         
         //begin of response
         $doc = new ML_Dom();
         $doc->formatOutput = true;
         
-        $root_element = $doc->createElement("file");
-        $doc->appendChild($root_element);
+        $rootElement = $doc->createElement("file");
+        $doc->appendChild($rootElement);
         
-        $root_element->appendChild($doc->newTextAttribute('id', $shareInfo['id']));
-        $root_element->appendChild($doc->newTextAttribute('secret', $shareInfo['secret']));
-        $root_element->appendChild($doc->newTextAttribute('download_secret', $shareInfo['download_secret']));
+        $rootElement
+        ->appendChild($doc->newTextAttribute('id', $shareInfo['id']));
         
-        $owner_element = $doc->createElement("owner");
+        $rootElement
+        ->appendChild($doc->newTextAttribute('secret', $shareInfo['secret']));
         
-        $owner_data = array(
+        $rootElement
+        ->appendChild($doc
+         ->newTextAttribute('download_secret', $shareInfo['download_secret']));
+        
+        $ownerElement = $doc->createElement("owner");
+        
+        $ownerData = array(
             "id" => $userInfo['id'],
             "username" => $userInfo['alias'],
             "realname" => $userInfo['name'],
         );
         
-        foreach($owner_data as $field => $data)
-        {
-            $owner_element->appendChild($doc->newTextAttribute($field, $data));
+        foreach ($ownerData as $field => $data) {
+            $ownerElement->appendChild($doc->newTextAttribute($field, $data));
         }
         
-        $root_element->appendChild($owner_element);
+        $rootElement->appendChild($ownerElement);
         
-        $share_data = array(
+        $shareData = array(
             "title" => $shareInfo['title'],
             "filename" => $shareInfo['filename'],
             "filetype" => $shareInfo['type'],
             "short" => $shareInfo['short'],
             "description" => $shareInfo['description_filtered'],
-            "url" => "http://".$config['webhost']. $router->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage"),
-            "dataurl" => $config['services']['S3']['sharesBucketAddress'].$userInfo['alias']."/".$shareInfo['id']."-".$shareInfo['download_secret']."/".$shareInfo['filename'],
-            "shorturl" => $config['URLshortening']['addr'].base58_encode($shareInfo['id']),
-            //"views" => $shareInfo['views'],
-            "comments" => $count_comments,
-            "favorites" => $count_favs
+            "url" => "http://".$config['webhost'] .
+             $router->assemble(array("username" => $userInfo['alias'],
+              "share_id" => $shareInfo['id']),
+              "sharepage_1stpage"),
+            "dataurl" => $config['services']['S3']['sharesBucketAddress'] .
+              $userInfo['alias'] . "/" . $shareInfo['id'] . "-" .
+              $shareInfo['download_secret'] . "/" . $shareInfo['filename'],
+            "shorturl" => $config['URLshortening']['addr'] .
+               base58_encode($shareInfo['id']),
+            "comments" => $countComments,
+            "favorites" => $countFavs
         );
         
-        foreach($share_data as $field => $data)
-        {
-            $root_element->appendChild($doc->newTextElement($field, $data));
+        foreach ($shareData as $field => $data) {
+            $rootElement->appendChild($doc->newTextElement($field, $data));
         }
         
-        $filesize_element = $doc->createElement("filesize");
-        $filesize_element->appendChild($doc->newTextAttribute("bits", $shareInfo['fileSize']));
-        $filesize_element->appendChild($doc->newTextAttribute("kbytes", ceil($shareInfo['fileSize']/(1024*8))));
-        $root_element->appendChild($filesize_element);
+        $filesizeElement = $doc->createElement("filesize");
         
-        $checksum_element = $doc->createElement("checksum");
+        $filesizeElement
+        ->appendChild($doc->newTextAttribute("bits", $shareInfo['fileSize']));
         
-        $checksum_element->appendChild($doc->newTextAttribute("hash", "md5"));
-        $checksum_element->appendChild($doc->newTextAttribute("value", $shareInfo['md5']));
+        $filesizeElement
+        ->appendChild($doc
+         ->newTextAttribute("kbytes", ceil($shareInfo['fileSize']/(1024*8))));
         
-        $root_element->appendChild($checksum_element);
+        $rootElement->appendChild($filesizeElement);
         
-        $visibility_element = $doc->createElement("visibility");
-        $visibility_element->appendChild($doc->newTextAttribute("ispublic", "1"));
-        $root_element->appendChild($visibility_element);
+        $checksumElement = $doc->createElement("checksum");
         
-        $dates_data = array(
-            "posted" => $shareInfo['uploadedTime'],
-            "lastupdate" => $shareInfo['lastChange'],
-        );
+        $checksumElement
+        ->appendChild($doc->newTextAttribute("hash", "md5"));
         
-        $dates_element = $doc->createElement("dates");
+        $checksumElement
+        ->appendChild($doc->newTextAttribute("value", $shareInfo['md5']));
         
-        foreach($dates_data as $field => $data)
-        {
-            $dates_element->appendChild($doc->newTextAttribute($field, $data));
+        $rootElement->appendChild($checksumElement);
+        
+        $visibilityElement = $doc->createElement("visibility");
+        
+        $visibilityElement
+        ->appendChild($doc->newTextAttribute("ispublic", "1"));
+        
+        $rootElement->appendChild($visibilityElement);
+        
+        $datesData = array("posted" => $shareInfo['uploadedTime'],
+            "lastupdate" => $shareInfo['lastChange']);
+        
+        $datesElement = $doc->createElement("dates");
+        
+        foreach ($datesData as $field => $data) {
+            $datesElement
+            ->appendChild($doc->newTextAttribute($field, $data));
         }
         
-        $root_element->appendChild($dates_element);
+        $rootElement->appendChild($datesElement);
         
         
-        $tags_element = $doc->createElement("tags");
-        foreach($tagsList as $tag)
-        {
-            $tag_element = $doc->createElement("tag");
-            $tag_element->appendChild($doc->newTextAttribute("id", $tag['id']));
-            $tag_element->appendChild($doc->newTextAttribute("raw", $tag['raw']));
+        $tagsElement = $doc->createElement("tags");
+        foreach ($tagsList as $tag) {
+            $tagElement = $doc->createElement("tag");
             
-            $tag_element->appendChild($doc->createTextNode($tag['clean']));
+            $tagElement
+            ->appendChild($doc->newTextAttribute("id", $tag['id']));
             
-            $tags_element->appendChild($tag_element);
+            $tagElement
+            ->appendChild($doc->newTextAttribute("raw", $tag['raw']));
+            
+            $tagElement
+            ->appendChild($doc->createTextNode($tag['clean']));
+            
+            $tagsElement
+            ->appendChild($tagElement);
         }
         
-        $root_element->appendChild($tags_element);
+        $rootElement->appendChild($tagsElement);
         
         $this->_helper->printResponse($doc);
     }
@@ -203,19 +247,25 @@ class FilesController extends Zend_Controller_Action
         
         $this->_helper->loadApiresource->share();
         
-        $Share = new ML_Upload();
+        $share = new ML_Upload();
         
-        $form = $Share->_apiSetMetaForm();
+        $form = $share->_apiSetMetaForm();
         
-        if($request->isPost())
-        {
-            if($form->isValid($request->getPost()))//should work with PUT also
-            {
+        if ($request->isPost()) {//@todo should work with PUT also
+            if ($form->isValid($request->getPost())) {
                 $shareInfo = $registry->get("shareInfo");
                 $authedUserInfo = $registry->get("authedUserInfo");
                 
-                $Share->setMeta($authedUserInfo, $shareInfo, $form->getValues(), $form->getErrors());
-            } else throw new Exception("Invalid post.");
-        } else throw new Exception("Not POST HTTP call.");
+                $share->setMeta($authedUserInfo,
+                 $shareInfo,
+                 $form->getValues(),
+                 $form->getErrors());
+                
+            } else {
+                throw new Exception("Invalid post.");
+            }
+        } else {
+            throw new Exception("Not POST HTTP call.");
+        }
     }
 }

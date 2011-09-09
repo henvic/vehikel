@@ -1,6 +1,6 @@
 <?php 
 
-class ErrorController extends Zend_Controller_Action 
+class ErrorController extends Zend_Controller_Action
 {
     public function errorAction() 
     {
@@ -17,7 +17,7 @@ class ErrorController extends Zend_Controller_Action
                 break; 
             default:
                 // application error 
-                if($registry->isRegistered("notfound")) {
+                if ($registry->isRegistered("notfound")) {
                     $this->getResponse()->setHttpResponseCode(404);
                     $code = 404;
                 } else {
@@ -31,34 +31,34 @@ class ErrorController extends Zend_Controller_Action
         
         $doc->formatOutput = true;
         
-        $root_element = $doc->createElement("error");
+        $rootElement = $doc->createElement("error");
         
-        if(isset($_SERVER['REQUEST_URI']))
-        {
-            $root_element->appendChild($doc->newTextElement("request", $_SERVER['REQUEST_URI']));
+        if (isset($_SERVER['REQUEST_URI'])) {
+            $rootElement->appendChild($doc
+            ->newTextElement("request", $_SERVER['REQUEST_URI']));
         }
         
-        if($code == 404)
-        {
-            $error_msg = "Not found";
+        if ($code == 404) {
+            $errorMsg = "Not found";
             
         } else {
-            $error_msg = "Bad Request";
+            $errorMsg = "Bad Request";
         }
         
-        $root_element->appendChild($doc->newTextElement("message", $error_msg));
+        $rootElement->appendChild($doc->newTextElement("message", $errorMsg));
         
-        if(APPLICATION_ENV == "development")
-        {
-            $exception_element = $doc->createElement("exception");
+        if (APPLICATION_ENV == "development") {
+            $exceptionElement = $doc->createElement("exception");
             
-            $exception_element->appendChild($doc->newTextElement("message", $errors->exception->getMessage()));
-            //$exception_element->appendChild($doc->newTextElement("request", print_r($errors->request, true)));
+            $exceptionElement->appendChild($doc->newTextElement("message",
+             $errors->exception->getMessage()));
+            //$exceptionElement->appendChild($doc->newTextElement("request",
+            // print_r($errors->request, true)));
             
-            $root_element->appendChild($exception_element);
+            $rootElement->appendChild($exceptionElement);
         }
         
-        $doc->appendChild($root_element);
+        $doc->appendChild($rootElement);
         
         $this->_helper->printResponse($doc);
     } 

@@ -25,7 +25,8 @@ class ML_Redis
      * @return void
      */
     protected function __clone()
-    {}
+    {
+    }
     
     
     public static function getInstance()
@@ -34,7 +35,9 @@ class ML_Redis
             $registry = Zend_Registry::getInstance();
             $config = $registry->get("config");
             
-            $redis = new Predis\Client($config['cache']['backend']['redis']['servers']['global']);
+            $redisConfig = $config['cache']['backend']['redis'];
+            
+            $redis = new Predis\Client($redisConfig['servers']['global']);
             self::$_instance = $redis;
         }
 
