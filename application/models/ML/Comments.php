@@ -1,5 +1,5 @@
 <?php
-class ML_Comments extends ML_Db
+class Ml_Comments extends Ml_Db
 {
     protected $_name = "comments";
     
@@ -56,7 +56,7 @@ class ML_Comments extends ML_Db
             }
         }
         
-        $purifier = ML_HtmlPurifier::getInstance();
+        $purifier = Ml_HtmlPurifier::getInstance();
         
         $msgFiltered = $purifier->purify($msg);
         

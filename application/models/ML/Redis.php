@@ -1,7 +1,7 @@
 <?php
 require EXTERNAL_LIBRARY_PATH . "/predis/lib/Predis.php";
 
-class ML_Redis
+class Ml_Redis
 {
 /**
      * Singleton instance

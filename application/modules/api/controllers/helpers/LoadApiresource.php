@@ -11,7 +11,7 @@ class Zend_Controller_Action_Helper_LoadApiresource extends
         
         $params = $request->getParams();
         
-        $people = ML_People::getInstance();
+        $people = Ml_People::getInstance();
         
         if (! isset($params['user_id'])) {
             throw new Exception("User param not given.");
@@ -35,7 +35,7 @@ class Zend_Controller_Action_Helper_LoadApiresource extends
         
         $params = $request->getParams();
         
-        $share = ML_Share::getInstance();
+        $share = Ml_Share::getInstance();
         
         if (! isset($params['file_id'])) {
             throw new Exception("File ID param not given.");

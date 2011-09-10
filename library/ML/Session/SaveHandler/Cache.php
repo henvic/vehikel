@@ -1,13 +1,13 @@
 <?php
 /**
- * ML_Session_SaveHandler_Cache
+ * Ml_Session_SaveHandler_Cache
  *
  * @license         public domain
  * @author          Henrique Vicente <henriquevicente@gmail.com>
  * @version         $Id$
  */
 
-class ML_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
+class Ml_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
 {
     
     /**

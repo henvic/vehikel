@@ -21,7 +21,7 @@ class Zend_Controller_Action_Helper_LoadResource extends Zend_Controller_Action_
             $registry['signedUserInfo']['alias'] == $request->getUserParam('username')) {
                 $userInfo = $registry['signedUserInfo'];
             } else {
-                $people = ML_People::getInstance();
+                $people = Ml_People::getInstance();
                 
                 $userInfo = $people
                  ->getByUsername($request->getUserParam('username'));
@@ -35,7 +35,7 @@ class Zend_Controller_Action_Helper_LoadResource extends Zend_Controller_Action_
             $this->getRequest()
                 ->getUserParams());
             if ($this->getRequest()->getUserParam("share_id")) {
-                $share = ML_Share::getInstance();
+                $share = Ml_Share::getInstance();
                 $shareInfo = $share->getById($this->getRequest()
                     ->getUserParam("share_id"));
                 if (!$shareInfo) {

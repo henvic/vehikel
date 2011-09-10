@@ -13,6 +13,6 @@ class Form_removeTwitter extends Zend_Form
             'required' => true
         ));
         
-        $this->addElement(ML_MagicCookies::formElement());
+        $this->addElement(Ml_MagicCookies::formElement());
     }
 }

@@ -13,7 +13,7 @@ class MLValidator_MatchPassword extends Zend_Validate_Abstract
     {
         $registry = Zend_Registry::getInstance();
         
-        $credential = ML_Credential::getInstance();
+        $credential = Ml_Credential::getInstance();
         
         $this->_setValue($value);
          

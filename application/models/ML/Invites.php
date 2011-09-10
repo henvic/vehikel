@@ -5,7 +5,7 @@
  * max_days should be max_invites by now:
  * one invite per day is being considered
  */
-class ML_Invites extends ML_Db
+class Ml_Invites extends Ml_Db
 {
     protected $_name = "invites";
     

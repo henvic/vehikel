@@ -20,7 +20,7 @@ class ApiController extends Zend_Controller_Action
         $request = $this->getRequest();
         
         if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
+            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
         
         $this->_helper->loadOauthstore->preloadServer();
@@ -58,7 +58,7 @@ class ApiController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         
         if (! Zend_Auth::getInstance()->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
+            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
         
         $listConsumers = $store->listConsumers($auth->getIdentity());
@@ -75,7 +75,7 @@ class ApiController extends Zend_Controller_Action
         $store = OAuthStore::instance();
         
         if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
+            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
         
         $request = $this->getRequest();
@@ -110,7 +110,7 @@ class ApiController extends Zend_Controller_Action
         $store = OAuthStore::instance();
         
         if (! Zend_Auth::getInstance()->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
+            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
         
         $request = $this->getRequest();
@@ -154,7 +154,7 @@ class ApiController extends Zend_Controller_Action
         $store = OAuthStore::instance();
         
         if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
+            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
         
         $request = $this->getRequest();

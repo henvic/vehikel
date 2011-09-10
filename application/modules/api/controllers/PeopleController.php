@@ -19,9 +19,9 @@ class PeopleController extends Zend_Controller_Action
         
         $params = $request->getParams();
         
-        $people = ML_People::getInstance();
-        $profile = new ML_Profile();
-        $share = ML_Share::getInstance();
+        $people = Ml_People::getInstance();
+        $profile = new Ml_Profile();
+        $share = Ml_Share::getInstance();
         
         if (isset($params['username'])) {
             $userInfo = $people->getByUsername($params['username']);
@@ -45,7 +45,7 @@ class PeopleController extends Zend_Controller_Action
         
         $profileInfo = $profile->getById($userInfo['id']);
         
-        $doc = new ML_Dom();
+        $doc = new Ml_Dom();
         $doc->formatOutput = true;
         
         $rootElement = $doc->createElement("person");

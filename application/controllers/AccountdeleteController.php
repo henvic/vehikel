@@ -7,7 +7,7 @@ class AccountdeleteController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         
         if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
+            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
     }
     
@@ -19,9 +19,9 @@ class AccountdeleteController extends Zend_Controller_Action
         $registry = Zend_Registry::getInstance();
         $auth = Zend_Auth::getInstance();
         
-        $credential = ML_Credential::getInstance();
+        $credential = Ml_Credential::getInstance();
         
-        $peopleDeleted = ML_PeopleDeleted::getInstance();
+        $peopleDeleted = Ml_PeopleDeleted::getInstance();
         
         $signedUserInfo = $registry->get("signedUserInfo");
         

@@ -1,7 +1,7 @@
 <?php
 require EXTERNAL_LIBRARY_PATH .  '/phpass-0.3/PasswordHash.php';
 
-class ML_Credential extends ML_Db
+class Ml_Credential extends Ml_Db
 {
     const PASSWORD_HASH_ITERATION_COUNT = "8";
     
@@ -61,7 +61,7 @@ class ML_Credential extends ML_Db
     
     public function getAuthAdapter($uid, $password)
     {
-        $authAdapter = new ML_Auth_Adapter(Zend_Registry::get('database'));
+        $authAdapter = new Ml_Auth_Adapter(Zend_Registry::get('database'));
         $authAdapter->setTableName($this->_name)
         ->setIdentityColumn($this->_primary)
         ->setIdentity($uid)

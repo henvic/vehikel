@@ -65,7 +65,7 @@ if (isset($singleActivity['remote_addr'])) {
 if (isset($singleActivity['request_time'])) {
     $accessTimeTmp->set($singleActivity['request_time'], Zend_Date::TIMESTAMP);
     echo $this->escape($accessTimeTmp . " GMT " . $accessTimeTmp->getGmtOffset()) .
-    "<br />" . $this->escape(ML_Time::ago($accessTimeTmp, Zend_Date::TIMESTAMP));
+    "<br />" . $this->escape(Ml_Time::ago($accessTimeTmp, Zend_Date::TIMESTAMP));
 } else {
 ?>-<?php
 }
@@ -73,7 +73,7 @@ if (isset($singleActivity['request_time'])) {
 <?php endif; ?>
 <td>
 <?php
-if ($singleActivity['status'] == ML_Session::OPEN_STATUS):
+if ($singleActivity['status'] == Ml_Session::OPEN_STATUS):
 ?>
 Active
 <?php

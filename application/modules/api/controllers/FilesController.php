@@ -15,7 +15,7 @@ class FilesController extends Zend_Controller_Action
         
         $params = $request->getParams();
         
-        $share = ML_Share::getInstance();
+        $share = Ml_Share::getInstance();
         
         $perPage = $request->getParam("per_page", 20);
         if ($perPage > 100) {
@@ -36,7 +36,7 @@ class FilesController extends Zend_Controller_Action
             $page = $paginator->count();
         }
         
-        $doc = new ML_Dom();
+        $doc = new Ml_Dom();
         $doc->formatOutput = true;
         
         $rootElement = $doc->createElement("files");
@@ -105,10 +105,10 @@ class FilesController extends Zend_Controller_Action
         
         $params = $request->getParams();
         
-        $people = ML_People::getInstance();
-        $favorites = ML_Favorites::getInstance();
-        $comments = ML_Comments::getInstance();
-        $tags = ML_Tags::getInstance();
+        $people = Ml_People::getInstance();
+        $favorites = Ml_Favorites::getInstance();
+        $comments = Ml_Comments::getInstance();
+        $tags = Ml_Tags::getInstance();
         
         $this->_helper->loadApiresource->share();
         $shareInfo = $registry->get("shareInfo");
@@ -121,7 +121,7 @@ class FilesController extends Zend_Controller_Action
         
         
         //begin of response
-        $doc = new ML_Dom();
+        $doc = new Ml_Dom();
         $doc->formatOutput = true;
         
         $rootElement = $doc->createElement("file");
@@ -247,7 +247,7 @@ class FilesController extends Zend_Controller_Action
         
         $this->_helper->loadApiresource->share();
         
-        $share = new ML_Upload();
+        $share = new Ml_Upload();
         
         $form = $share->_apiSetMetaForm();
         

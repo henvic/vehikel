@@ -34,7 +34,7 @@ class MLValidator_UsernameNewUser extends Zend_Validate_Abstract
         }
         
         if(mb_strlen($value) < 1 || mb_strlen($value) > 15) return false;
-        $people = ML_People::getInstance();
+        $people = Ml_People::getInstance();
         $getUserByUsername = $people->getByUsername($value);
         
         if (!empty($getUserByUsername)) {

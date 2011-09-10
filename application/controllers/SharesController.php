@@ -90,7 +90,7 @@ class SharesController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $share = new ML_Upload();
+        $share = new Ml_Upload();
         
         $shareInfo = $registry->get("shareInfo");
         
@@ -124,7 +124,7 @@ class SharesController extends Zend_Controller_Action
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
         $request = $this->getRequest();
-        $share = new ML_Upload();
+        $share = new Ml_Upload();
         
         $signedUserInfo = $registry->get("signedUserInfo");
         $shareInfo = $registry->get("shareInfo");

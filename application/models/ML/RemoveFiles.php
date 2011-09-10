@@ -1,5 +1,5 @@
 <?php
-class ML_RemoveFiles extends ML_Db
+class Ml_RemoveFiles extends Ml_Db
 {
     protected $_name = "remove_shares_files";
 }

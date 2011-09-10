@@ -6,13 +6,13 @@
  * @author henrique
  *
  */
-class My_View_Helper_avatar extends Zend_View_Helper_Abstract
+class Ml_View_Helper_avatar extends Zend_View_Helper_Abstract
 {
      public function avatar($person, $size = "small")
      {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
-        $picture = ML_Picture::getInstance();
+        $picture = Ml_Picture::getInstance();
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
         if (isset($person['people_deleted.id']) &&

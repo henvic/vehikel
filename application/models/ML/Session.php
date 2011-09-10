@@ -1,5 +1,5 @@
 <?php
-class ML_Session extends ML_Db
+class Ml_Session extends Ml_Db
 {
     const OPEN_STATUS = "open";
     const CLOSE_STATUS = "close";
@@ -135,7 +135,7 @@ class ML_Session extends ML_Db
     
     public function logout()
     {
-        $log = ML_Log::getInstance();
+        $log = Ml_Log::getInstance();
         $log->action("logout");
         $auth = Zend_Auth::getInstance();
         
@@ -166,7 +166,7 @@ class ML_Session extends ML_Db
     {
         $auth = Zend_Auth::getInstance();
         
-        $log = ML_Log::getInstance();
+        $log = Ml_Log::getInstance();
         $log->action("remote_logout");
         
         $sessionsList = $this->listRecentSessionsMeta($auth->getIdentity());

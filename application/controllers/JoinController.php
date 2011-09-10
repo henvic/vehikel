@@ -20,7 +20,7 @@ class JoinController extends Zend_Controller_Action
             $this->_redirect($router->assemble(array(), "logout") . "?please", array("exit"));
         }
         
-        $signUp = ML_Signup::getInstance();
+        $signUp = Ml_Signup::getInstance();
         
         $form = $signUp->_getSignUpForm();
         
@@ -35,7 +35,7 @@ class JoinController extends Zend_Controller_Action
                 if (isset($data['invitecode']) && ! empty($data['invitecode']) &&
                  ! $registry->isRegistered("inviteCompleteBefore") &&
                  ! $registry->isRegistered("inviteMultiple")) {
-                    $invites = new ML_Invites();
+                    $invites = new Ml_Invites();
                     $invites->update(array("used" => "1"),
                      $invites->getAdapter()
                      ->quoteInto("hash = ?", $data['invitecode']));
@@ -86,10 +86,10 @@ class JoinController extends Zend_Controller_Action
             return $this->_forward("index", "logout");
         }
         
-        $newUser = ML_Signup::getInstance();
-        $credential = ML_Credential::getInstance();
-        $people = ML_People::getInstance();
-        $profile = new ML_Profile();
+        $newUser = Ml_Signup::getInstance();
+        $credential = Ml_Credential::getInstance();
+        $people = Ml_People::getInstance();
+        $profile = new Ml_Profile();
         
         if ($config['ssl'] && (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")) {
             $this->_redirect("https://" . $config['webhostssl'] .
@@ -172,7 +172,7 @@ class JoinController extends Zend_Controller_Action
         
         if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()
-            ->registerPlugin(new ML_Plugins_LoginRedirect());
+            ->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
         
         $this->view->joined = true;

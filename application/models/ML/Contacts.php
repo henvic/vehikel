@@ -1,5 +1,5 @@
 <?php
-class ML_Contacts extends ML_Db
+class Ml_Contacts extends Ml_Db
 {
     protected $_name = "contacts";
 /**

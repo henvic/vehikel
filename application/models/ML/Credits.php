@@ -1,6 +1,6 @@
 <?php
 
-class ML_Credits extends ML_Db
+class Ml_Credits extends Ml_Db
 {
     const cents_USD = "cents_usd";
     
@@ -103,7 +103,7 @@ class ML_Credits extends ML_Db
         $num2 = base_encode($rand1, self::base);
         $num3 = base_encode($rand2, self::base);
         
-        $uuid = $num1.$num2.$num3.ML_Verhoeff::calcsum($ptime.$rand1.$rand2);
+        $uuid = $num1.$num2.$num3.Ml_Verhoeff::calcsum($ptime.$rand1.$rand2);
         
         return $uuid;
     }
@@ -129,7 +129,7 @@ class ML_Credits extends ML_Db
      */
     public function transaction($uid, $amount, $sack, $type, $id, $overrideCreditLimit = false)
     {
-        $log = ML_Log::getInstance();
+        $log = Ml_Log::getInstance();
         if (! is_int($amount)) {
             throw new Exception("Transaction's amount must be a integer");
         }
@@ -164,8 +164,8 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
      */
     public function couponTransaction($uid, $coupon)
     {
-        $coupons = ML_Coupons::getInstance();
-        $log = ML_Log::getInstance();
+        $coupons = Ml_Coupons::getInstance();
+        $log = Ml_Log::getInstance();
         
         $this->getAdapter()->beginTransaction();
         $select = $coupons->select();
@@ -186,7 +186,7 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
                 //using fetchRow 'cause 1 result is enough
                 $isItUsed = $this->fetchRow($this->select()
                 ->where("binary `uid` = ?", $uid)
-                ->where("reason_type = ?", ML_Credits::COUPON_REDEEM)
+                ->where("reason_type = ?", Ml_Credits::COUPON_REDEEM)
                 ->where("binary `reason_id` = ?", $couponData['id']));
                 
                 if (is_object($isItUsed)) {

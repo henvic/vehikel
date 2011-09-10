@@ -1,10 +1,10 @@
 <?php
-class ML_Recent
+class Ml_Recent
 {
     public function contactsUploads($uid)
     {
         //@todo cache contacts
-        $contacts = ML_Contacts::getInstance();
+        $contacts = Ml_Contacts::getInstance();
         $select = $contacts->select();
         
         $select
@@ -37,7 +37,7 @@ class ML_Recent
     
     public function commentsInSharesOf($uid)
     {
-        $comments = ML_Comments::getInstance();
+        $comments = Ml_Comments::getInstance();
         $select = $comments->select();
         
         $select
@@ -68,7 +68,7 @@ class ML_Recent
     /*
     public function commentsLeftBy($uid, $only_elsewhere = false)
     {
-        $comments = ML_Comments::getInstance();
+        $comments = Ml_Comments::getInstance();
         $select = $comments->select();
         
         $select

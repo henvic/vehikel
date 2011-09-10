@@ -1,6 +1,6 @@
 <?php
 
-class ML_Picture
+class Ml_Picture
 {
     /** Explantion for the $sizes array data:
      * 0: urihelper: for the links, i.e., /pictures/<id>/s is for the small pic
@@ -35,7 +35,7 @@ class ML_Picture
      */
     //protected function __construct()
     //{}
-    //changing new ML_<model> to the getInstance method
+    //changing new Ml_<model> to the getInstance method
 
     /**
      * Singleton pattern implementation makes "clone" unavailable

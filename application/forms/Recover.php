@@ -21,7 +21,7 @@ class Form_Recover extends Zend_Form
             'autocomplete' => 'off',
         ));
         
-        $this->addElement(ML_AntiAttack::captchaElement());
+        $this->addElement(Ml_AntiAttack::captchaElement());
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'E-mail me!',

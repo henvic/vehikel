@@ -3,7 +3,7 @@ $registry = Zend_Registry::getInstance();
 $userInfo = $registry->get('userInfo');
 $shareInfo = $registry->get('shareInfo');
 $auth = Zend_Auth::getInstance();
-$favorites = ML_Favorites::getInstance();
+$favorites = Ml_Favorites::getInstance();
 if (!$this->favoriteForm):
 if ($auth->hasIdentity() && $auth->getIdentity() != $shareInfo['byUid']) {
 ?>

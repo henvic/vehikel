@@ -51,7 +51,7 @@ class Form_NewPassword extends Zend_Form
         ));
         
         if ($registry->isRegistered("changeUserProperPassword")) {
-            $this->addElement(ML_AntiAttack::captchaElement());
+            $this->addElement(Ml_AntiAttack::captchaElement());
         }
         
         $this->addElement('submit', 'submit', array(
@@ -66,7 +66,7 @@ class Form_NewPassword extends Zend_Form
         }
         
         if ($auth->hasIdentity()) {
-            $this->addElement(ML_MagicCookies::formElement());
+            $this->addElement(Ml_MagicCookies::formElement());
             $this->getElement("currentpassword")
                 ->setAttrib('class', 'smallfield');
         }

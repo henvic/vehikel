@@ -16,6 +16,6 @@ class LogoutForm extends Zend_Form
             'label'    => 'Sign out all other sessions'
         ));
         
-        $this->addElement(ML_MagicCookies::formElement());
+        $this->addElement(Ml_MagicCookies::formElement());
     }
 }

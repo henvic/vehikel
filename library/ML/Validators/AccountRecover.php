@@ -25,7 +25,7 @@ class MLValidator_AccountRecover extends Zend_Validate_Abstract
         
         $method = (strpos($value, '@') === FALSE) ? "alias" : "email";
         
-        $people = ML_People::getInstance();
+        $people = Ml_People::getInstance();
         
         if ($method ==  "alias") {
             $getUser = $people->getByUsername($value);

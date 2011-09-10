@@ -1,5 +1,5 @@
 <?php
-class ML_Upload extends ML_Share
+class Ml_Upload extends Ml_Share
 {
     protected $_editableMetadata =
      array("title", "filename", "short", "description");
@@ -203,7 +203,7 @@ class ML_Upload extends ML_Share
         }
         
         if (isset($filenameChanged) && $filenameChanged) {
-            $removeFiles = new ML_RemoveFiles();
+            $removeFiles = new Ml_RemoveFiles();
             $removeFiles->insert(array(
                 "share" => $shareInfo['id'],
                 "byUid" => $shareInfo['byUid'],
@@ -222,7 +222,7 @@ class ML_Upload extends ML_Share
         }
         
         if (isset($changeData['description'])) {
-            $purifier = ML_HtmlPurifier::getInstance();
+            $purifier = Ml_HtmlPurifier::getInstance();
             $changeData['description_filtered'] = $purifier->purify($changeData['description']);
         }
         
@@ -236,7 +236,7 @@ class ML_Upload extends ML_Share
     
     public function deleteShare($shareInfo, $userInfo)
     {    
-        $removeFiles = new ML_RemoveFiles();
+        $removeFiles = new Ml_RemoveFiles();
         
         if (! isset($shareInfo['secret']) || ! isset($userInfo['alias'])) {
             throw new Exception("Not shareInfo or userInfo data.");

@@ -1,6 +1,6 @@
 <?php
 
-class ML_Coupons extends ML_Db
+class Ml_Coupons extends Ml_Db
 {
     /**
      * Singleton instance

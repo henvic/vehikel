@@ -31,7 +31,7 @@ class TestController extends Zend_Controller_Action
     
     public function delapiserverAction()
     {
-        $service = new ML_Service();
+        $service = new Ml_Service();
         
         $userId = $service->getInput("User ID");
         $consumerKey = $service->getInput("Consumer key");
@@ -45,7 +45,7 @@ class TestController extends Zend_Controller_Action
     
     public function listapiserversAction()
     {
-        $service = new ML_Service();
+        $service = new Ml_Service();
         
         $userId = $service->getInput("User ID");
         
@@ -60,7 +60,7 @@ class TestController extends Zend_Controller_Action
     
     public function requestapiauthAction()
     {
-        $service = new ML_Service();
+        $service = new Ml_Service();
         
         $userId = $service->getInput("User ID");
         
@@ -99,7 +99,7 @@ class TestController extends Zend_Controller_Action
     
     public function exchangeapitokenAction()
     {
-        $service = new ML_Service();
+        $service = new Ml_Service();
         
         $this->_helper->loadOauthstore->setinstance();
         
@@ -128,7 +128,7 @@ class TestController extends Zend_Controller_Action
     
     public function apisignedrequestAction()
     {
-        $service = new ML_Service();
+        $service = new Ml_Service();
         
         $this->_helper->loadOauthstore->setinstance();
         
@@ -171,7 +171,7 @@ class TestController extends Zend_Controller_Action
     
     public function testingAction()
     {
-        $favorites = ML_Favorites::getInstance();
+        $favorites = Ml_Favorites::getInstance();
         
         $favorites->getUserPage(1, 1, 1);
     }

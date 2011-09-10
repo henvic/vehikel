@@ -1,6 +1,6 @@
 <?php
 /**
- * This is required by the My_View_Helper_staticversion
+ * This is required by the Ml_View_Helper_staticversion
  */
 
 $cacheFiles = array(

@@ -52,7 +52,7 @@ $this->registerPluginResource("Myview");
 $loader = new Zend_Loader_PluginLoader();
 
 $loader->addPrefixPath('Zend_View_Helper', EXTERNAL_LIBRARY_PATH . '/Zend/View/Helper/')
-       ->addPrefixPath('My_View_Helper', APPLICATION_PATH . '/views/helpers');
+       ->addPrefixPath('Ml_View_Helper', APPLICATION_PATH . '/views/helpers');
 
 $classFileIncCache = CACHE_PATH . '/pluginDefaultLoaderCache.php';
 if (file_exists($classFileIncCache)) {

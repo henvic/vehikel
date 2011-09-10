@@ -1,13 +1,13 @@
 <?php
 /**
- * ML_Session_SaveHandler_PlusCache
+ * Ml_Session_SaveHandler_PlusCache
  *
  * @license         public domain
  * @author          Henrique Vicente <henriquevicente@gmail.com>
  * @version         $Id$
  */
 
-class ML_Session_SaveHandler_PlusCache extends ML_Session_SaveHandler_Cache
+class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
 {
     /**
      * Session prefix

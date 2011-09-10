@@ -1,5 +1,5 @@
 <?php
-class ML_PeopleDeleted extends ML_Db
+class Ml_PeopleDeleted extends Ml_Db
 {
     /**
      * Singleton instance
@@ -60,10 +60,10 @@ class ML_PeopleDeleted extends ML_Db
     {
         $registry = Zend_Registry::getInstance();
         
-        $people = ML_People::getInstance();
-        $share = ML_Share::getInstance();
-        $removeFiles = new ML_RemoveFiles();
-        $picture = new ML_PictureUpload();
+        $people = Ml_People::getInstance();
+        $share = Ml_Share::getInstance();
+        $removeFiles = new Ml_RemoveFiles();
+        $picture = new Ml_PictureUpload();
         
         if (! is_array($userInfo) || ! isset($userInfo['alias'])) {
             throw new Exception("Invalid userInfo data.");

@@ -1,5 +1,5 @@
 <?php
-class ML_Share extends ML_Db
+class Ml_Share extends Ml_Db
 {
     /**
      * Singleton instance

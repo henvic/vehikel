@@ -1,5 +1,5 @@
 <?php
-class ML_EmailChange extends ML_Db
+class Ml_EmailChange extends Ml_Db
 {
     protected $_name = "emailChange";
     protected $_primary = "uid";

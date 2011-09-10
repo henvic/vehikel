@@ -37,7 +37,7 @@ class MLValidator_Redeem extends Zend_Validate_Abstract
             return false;
         }
         
-        $coupons = new ML_Coupons();
+        $coupons = new Ml_Coupons();
         
         $select = $coupons->select()
         ->where("hash = ?", mb_strtolower($value))
@@ -60,10 +60,10 @@ class MLValidator_Redeem extends Zend_Validate_Abstract
         
         $couponData = $row->toArray();
         if (! $couponData['unique_use']) {
-            $credits = ML_Credits::getInstance();
+            $credits = Ml_Credits::getInstance();
             $isItUsed = $credits->fetchRow($credits->select()
                 ->where("uid = ?", $signedUserInfo['id'])
-                ->where("reason_type = ?", ML_Credits::COUPON_REDEEM)
+                ->where("reason_type = ?", Ml_Credits::COUPON_REDEEM)
                 ->where("reason_id = ?", $couponData['id']));
             
             if (is_object($isItUsed)) {

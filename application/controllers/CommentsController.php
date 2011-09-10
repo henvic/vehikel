@@ -54,8 +54,8 @@ class CommentsController extends Zend_Controller_Action
         
         $userInfo = $registry->getInstance();
         
-        $comments = ML_Comments::getInstance();
-        $ignore = ML_Ignore::getInstance();
+        $comments = Ml_Comments::getInstance();
+        $ignore = Ml_Ignore::getInstance();
         
         $commentId = $request->getUserParam("comment_id");
         
@@ -82,7 +82,7 @@ class CommentsController extends Zend_Controller_Action
             $isSubmit = $form->getValue("commentPost");
             
             if (! empty($isSubmit)) {
-                $purifier = ML_HtmlPurifier::getInstance();
+                $purifier = Ml_HtmlPurifier::getInstance();
                 
                 $commentsFiltered = $purifier->purify($commentMsg);
                 
@@ -113,7 +113,7 @@ class CommentsController extends Zend_Controller_Action
         $userInfo = $registry->get("userInfo");
         $shareInfo = $registry->get("shareInfo");
         
-        $comments = ML_Comments::getInstance();
+        $comments = Ml_Comments::getInstance();
         
         $commentId = $request->getUserParam("comment_id");
         
@@ -158,7 +158,7 @@ class CommentsController extends Zend_Controller_Action
         //because when we have new comments they are dispatched to here
         //and the setParam is used
         
-        $comments = ML_Comments::getInstance();
+        $comments = Ml_Comments::getInstance();
         
         $position = $comments->getCommentPosition($commentId, 
          $registry['shareInfo']['id'], $config['share']['commentsPerPage']);

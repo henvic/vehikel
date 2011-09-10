@@ -9,13 +9,13 @@ class AgendaController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         
         if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
+            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
     }
     
     public function indexAction()
     {
-        $agenda = ML_Agenda::getInstance();
+        $agenda = Ml_Agenda::getInstance();
         $form = $agenda->form();
         
         $this->view->agendaForm = $form;

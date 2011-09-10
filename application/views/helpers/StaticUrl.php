@@ -4,7 +4,7 @@
  * Helper for making easy links for static pages
  *
  */
-class My_View_Helper_StaticUrl extends Zend_View_Helper_Abstract
+class Ml_View_Helper_StaticUrl extends Zend_View_Helper_Abstract
 {
     /**
      * Appends the baseurl to a path

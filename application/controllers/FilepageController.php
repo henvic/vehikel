@@ -52,13 +52,13 @@ class FilepageController extends Zend_Controller_Action
         $registry->set("isFilepage", true);//for use by the pagination_control
         $page = $request->getUserParam("page");
         
-        $share = ML_Share::getInstance();
-        $tags = ML_Tags::getInstance();
+        $share = Ml_Share::getInstance();
+        $tags = Ml_Tags::getInstance();
         
-        $people = ML_People::getInstance();
-        $comments = ML_Comments::getInstance();
-        $twitter = ML_Twitter::getInstance();
-        $ignore = ML_Ignore::getInstance();
+        $people = Ml_People::getInstance();
+        $comments = Ml_Comments::getInstance();
+        $twitter = Ml_Twitter::getInstance();
+        $ignore = Ml_Ignore::getInstance();
         
         
         $paginator = $comments->getCommentsPages($shareInfo['id'], $config['share']['commentsPerPage'], $page);
@@ -69,7 +69,7 @@ class FilepageController extends Zend_Controller_Action
         $tagsList = $tags->getShareTags($shareInfo['id']);
         
         if ($auth->hasIdentity()) {
-            $ignore = ML_Ignore::getInstance();
+            $ignore = Ml_Ignore::getInstance();
             
             if ($auth->getIdentity() == $userInfo['id'] ||
             !$ignore->status($userInfo['id'], $auth->getIdentity())) {

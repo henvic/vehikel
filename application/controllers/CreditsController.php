@@ -7,7 +7,7 @@ class CreditsController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         
         if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
+            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
     }
     
@@ -19,9 +19,9 @@ class CreditsController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $credits = ML_Credits::getInstance();
+        $credits = Ml_Credits::getInstance();
         
-        $coupons = ML_Coupons::getInstance();
+        $coupons = Ml_Coupons::getInstance();
         
         $redeemForm = $coupons->_RedeemForm();
         
@@ -58,7 +58,7 @@ class CreditsController extends Zend_Controller_Action
         
         $page = $request->getUserParam("page");
         
-        $credits = ML_Credits::getInstance();
+        $credits = Ml_Credits::getInstance();
         $paginator = $credits->history($signedUserInfo['id'], $config['orders']['perPage'], $page);
         
         //Test if there is enough pages or not
@@ -82,7 +82,7 @@ class CreditsController extends Zend_Controller_Action
         
         $orderPid = $request->getUserParam("order_pid");
         
-        $credits = ML_Credits::getInstance();
+        $credits = Ml_Credits::getInstance();
         
         $order = $credits->getByPId($orderPid);
         
@@ -92,7 +92,7 @@ class CreditsController extends Zend_Controller_Action
         }
         
         if ($order['reason_type'] == 'redeem') {
-            $coupons = ML_Coupons::getInstance();
+            $coupons = Ml_Coupons::getInstance();
             $this->view->orderCoupon = $coupons->getById($order['reason_id']);
         }
         

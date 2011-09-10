@@ -17,7 +17,7 @@ class MLValidator_Username extends Zend_Validate_Abstract
          
         $valueString = (string) $value;
         
-        $people = new ML_People();
+        $people = new Ml_People();
         
         if (mb_strstr($value, "@")) {
             $getUserByEmail = $people->getByEmail($value);

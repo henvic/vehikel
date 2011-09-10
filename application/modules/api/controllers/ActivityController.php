@@ -17,7 +17,7 @@ class ActivityController extends Zend_Controller_Action
         $config = $registry->get("config");
         
         $this->_helper->verifyIdentity();
-        $recent = new ML_Recent();
+        $recent = new Ml_Recent();
         
         if (! $registry->isRegistered("authedUserInfo")) {
             throw new Exception("Not authenticated.");
@@ -28,7 +28,7 @@ class ActivityController extends Zend_Controller_Action
         $uploads = $recent->contactsUploads($userInfo['id']);
         
         //send response
-        $doc = new ML_Dom();
+        $doc = new Ml_Dom();
         $doc->formatOutput = true;
         
         $rootElement = $doc->createElement("items");

@@ -19,7 +19,7 @@ $router = $frontController->getRouter();
 $router->removeDefaultRoutes();
 
 require LIBRARY_PATH . '/ML/RouteModule.php';
-$compat = new ML_Controller_Router_Route_Module(array(), $dispatcher, $request);
+$compat = new Ml_Controller_Router_Route_Module(array(), $dispatcher, $request);
 $router->addRoute(HOST_MODULE, $compat);
 
 

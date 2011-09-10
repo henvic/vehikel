@@ -1,5 +1,5 @@
 <?php
-class ML_Signup extends ML_Db
+class Ml_Signup extends Ml_Db
 {
     /**
      * Singleton instance

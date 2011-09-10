@@ -14,7 +14,7 @@ class MLValidator_Password extends Zend_Validate_Abstract
     {    
         $registry = Zend_Registry::getInstance();
         
-        $credential = ML_Credential::getInstance();
+        $credential = Ml_Credential::getInstance();
         
         $this->_setValue($value);
          
@@ -37,7 +37,7 @@ class MLValidator_Password extends Zend_Validate_Abstract
             }
             
             $this->_error(self::MSG_WRONG_PASSWORD);
-            ML_AntiAttack::log(ML_AntiAttack::WRONG_CREDENTIAL);
+            Ml_AntiAttack::log(Ml_AntiAttack::WRONG_CREDENTIAL);
         }
         
         return false;

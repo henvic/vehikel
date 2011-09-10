@@ -1,6 +1,6 @@
 <?php
 
-class ML_Account
+class Ml_Account
 {
     public function _getSettingsForm()
     {

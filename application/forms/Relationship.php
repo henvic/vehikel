@@ -20,6 +20,6 @@ class Form_Relationship extends Zend_Form
             'required' => false
         ));
         
-        $this->addElement(ML_MagicCookies::formElement());
+        $this->addElement(Ml_MagicCookies::formElement());
     }
 }

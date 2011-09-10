@@ -1,5 +1,5 @@
 <?php
-class ML_Dom extends DOMDocument
+class Ml_Dom extends DOMDocument
 {
     public function newTextAttribute($name, $text) {
         $rootAttr = $this->createAttribute($name);

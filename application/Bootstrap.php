@@ -51,7 +51,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $memCache->setBackend(new Zend_Cache_Backend_Memcached($config_array['cache']['backend']['memcache']['servers']['global']));
         $registry->set("memCache", $memCache);
         
-        Zend_Loader_Autoloader::getInstance()->registerNamespace('ML_');
+        Zend_Loader_Autoloader::getInstance()->registerNamespace('Ml_');
     }
     
     protected function _initDatabase()

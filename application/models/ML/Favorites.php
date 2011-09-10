@@ -1,5 +1,5 @@
 <?php
-class ML_Favorites extends ML_Db
+class Ml_Favorites extends Ml_Db
 {
 /**
      * Singleton instance
@@ -61,7 +61,7 @@ class ML_Favorites extends ML_Db
     
     public function getUserPage($uid, $perPage, $page)
     {
-        $share = ML_Share::getInstance();
+        $share = Ml_Share::getInstance();
         
         $select = $this->select();
         

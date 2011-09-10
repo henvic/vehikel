@@ -1,6 +1,6 @@
 <?php
 /**
- * ML_Auth_Adapter
+ * Ml_Auth_Adapter
  *
  * LICENSE
  *
@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   ML
- * @package    ML_Auth
+ * @package    Ml_Auth
  * @subpackage Adapter
  * @version    0.1 henrique vicente
  */
@@ -42,7 +42,7 @@
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ML_Auth_Adapter implements Zend_Auth_Adapter_Interface
+class Ml_Auth_Adapter implements Zend_Auth_Adapter_Interface
 {
     const PASSWORD_HASH_ITERATION_COUNT = "8";
     

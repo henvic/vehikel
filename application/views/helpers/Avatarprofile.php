@@ -5,14 +5,14 @@
  * @author henrique
  *
  */
-class My_View_Helper_avatarprofile extends Zend_View_Helper_Abstract
+class Ml_View_Helper_avatarprofile extends Zend_View_Helper_Abstract
 {
     public function avatarprofile ($person)
     {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
-        $picture = ML_Picture::getInstance();
+        $picture = Ml_Picture::getInstance();
         
         $uid = $person['id'];
         $alias = $person['alias'];

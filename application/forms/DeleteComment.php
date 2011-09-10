@@ -10,7 +10,7 @@ class Form_DeleteComment extends Zend_Form
         $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
         Zend_Form_Element::FILTER);
         
-        $this->addElement(ML_MagicCookies::formElement());
+        $this->addElement(Ml_MagicCookies::formElement());
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'Delete it!',

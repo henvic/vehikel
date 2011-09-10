@@ -21,7 +21,7 @@ class MLValidator_Invite extends Zend_Validate_Abstract
         
         if (isset($context['email']) && $context['email'] &&
          mb_strlen($context['email']) <= 60) {
-            $signUp = ML_Signup::getInstance();
+            $signUp = Ml_Signup::getInstance();
             
             $select = $signUp->select()
             ->where("binary email = ?", mb_strtolower($context['email']));
@@ -46,7 +46,7 @@ class MLValidator_Invite extends Zend_Validate_Abstract
             return false;
         }
         
-        $invites = new ML_Invites();
+        $invites = new Ml_Invites();
         
         $select = $invites->select()
         ->where("hash = ?", mb_strtolower($value));

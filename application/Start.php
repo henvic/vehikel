@@ -43,7 +43,7 @@ require EXTERNAL_LIBRARY_PATH . '/Zend/Cache/Core.php';
 //@todo redo the library/ML/RouteModule.php the proper way
 require APPLICATION_PATH . '/models/callFilter.php';
 
-/** ML_Application */
+/** Ml_Application */
 require EXTERNAL_LIBRARY_PATH . '/Zend/Application.php';
 require LIBRARY_PATH . '/ML/Application.php';
 
@@ -59,7 +59,7 @@ Zend_Registry::getInstance()->set("sysCache", $sysCache);
 
 // Create application, bootstrap, and run
 try {
-$application = new ML_Application(
+$application = new Ml_Application(
     APPLICATION_ENV,
     getenv("PLIFK_CONF_FILE"),
     $sysCache,

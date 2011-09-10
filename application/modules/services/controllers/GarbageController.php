@@ -11,7 +11,7 @@ class GarbageController extends Zend_Controller_Action
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
-        $RemoveUser = new ML_RemoveLeftOvers();
+        $RemoveUser = new Ml_RemoveLeftOvers();
         
         
         $select = $RemoveUser->select();
@@ -33,7 +33,7 @@ class GarbageController extends Zend_Controller_Action
         
         $s3 = new Zend_Service_Amazon_S3($s3config['key'], $s3config['secret']);
         
-        $removeFiles = new ML_RemoveFiles();
+        $removeFiles = new Ml_RemoveFiles();
         
         $select = $removeFiles->select();
         $select->order("timestamp ASC")->limit(50);
@@ -95,7 +95,7 @@ class GarbageController extends Zend_Controller_Action
     
     public function cleantableolddata($tableName, $age)
     {//todo similar to this other things
-        $getModel = new ML_Db();
+        $getModel = new Ml_Db();
         if (empty($tableName) || ! ctype_alnum($tableName)) {
             throw new Exception("Table not given or not accepted.\n");
         }

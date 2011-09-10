@@ -26,7 +26,7 @@ class Form_Redeem extends Zend_Form
             'label'    => 'Redeem!',
         ));
         
-        $this->addElement(ML_MagicCookies::formElement());
+        $this->addElement(Ml_MagicCookies::formElement());
         
     }
 }

@@ -55,8 +55,8 @@ class PasswordController extends Zend_Controller_Action
             return $this->_forward("index", "logout");
         }
         
-        $people = ML_People::getInstance();
-        $recover = ML_Recover::getInstance();
+        $people = Ml_People::getInstance();
+        $recover = Ml_Recover::getInstance();
         
         $form = $recover->_getRecoverForm();
         
@@ -100,9 +100,9 @@ class PasswordController extends Zend_Controller_Action
         
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
-        $people = ML_People::getInstance();
-        $credential = ML_Credential::getInstance();
-        $recover = ML_Recover::getInstance();
+        $people = Ml_People::getInstance();
+        $credential = Ml_Credential::getInstance();
+        $recover = Ml_Recover::getInstance();
         
         $params = $request->getParams();
         

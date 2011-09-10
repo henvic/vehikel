@@ -25,7 +25,7 @@ class TagsController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $tags = new ML_TagsChange();
+        $tags = new Ml_TagsChange();
         
         $params = $request->getParams();
         
@@ -76,7 +76,7 @@ class TagsController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $tags = new ML_TagsChange();
+        $tags = new Ml_TagsChange();
         
         $params = $request->getParams();
         
@@ -125,7 +125,7 @@ class TagsController extends Zend_Controller_Action
         $registry = Zend_Registry::getInstance();
         $shareInfo = $registry->get("shareInfo");
         
-        $tags = ML_Tags::getInstance();
+        $tags = Ml_Tags::getInstance();
         
         $tagsList = $tags->getShareTags($shareInfo['id']);
         

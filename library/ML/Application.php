@@ -1,6 +1,6 @@
 <?php
 // adapted from http://devzone.zend.com/article/14893-Caching-of-Zend-Framework-application-configuration-file
-class ML_Application extends Zend_Application
+class Ml_Application extends Zend_Application
 {
     /**
      *

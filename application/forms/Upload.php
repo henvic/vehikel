@@ -36,7 +36,7 @@ class Form_Upload extends Zend_Form
         
         $this->addElement($file, 'file');
         
-        $this->addElement(ML_MagicCookies::formElement());
+        $this->addElement(Ml_MagicCookies::formElement());
         
         $this->addElement('submit', 'submitupload', array(
             'label'    => 'Upload!',

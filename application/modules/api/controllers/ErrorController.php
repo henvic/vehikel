@@ -27,7 +27,7 @@ class ErrorController extends Zend_Controller_Action
                 break; 
         }
         
-        $doc = new ML_Dom();
+        $doc = new Ml_Dom();
         
         $doc->formatOutput = true;
         

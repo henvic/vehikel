@@ -23,7 +23,7 @@ class HTMLPurifier_AttrTransform_AValidator extends HTMLPurifier_AttrTransform
     }
 }
 
-class ML_HtmlPurifier
+class Ml_HtmlPurifier
 {
     /**
      * Singleton instance

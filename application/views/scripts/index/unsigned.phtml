@@ -6,7 +6,7 @@ $config = $registry->get("config");
 
 $this->headTitle($config['applicationname'], "SET");
 
-$credential = ML_Credential::getInstance();
+$credential = Ml_Credential::getInstance();
 $this->loginform = $credential->_getLoginForm();
 ?>
 

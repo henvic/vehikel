@@ -10,11 +10,11 @@ class TagsController extends Zend_Controller_Action
         
         $userInfo = $registry->get("userInfo");
         
-        $tags = ML_Tags::getInstance();
+        $tags = Ml_Tags::getInstance();
         
         $taglist = $tags->getUserTags($userInfo['id']);
         
-        $doc = new ML_Dom();
+        $doc = new Ml_Dom();
         $doc->formatOutput = true;
         
         $rootElement = $doc->createElement("who");

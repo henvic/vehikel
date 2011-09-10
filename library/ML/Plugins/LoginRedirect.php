@@ -1,6 +1,6 @@
 <?php
 
-class ML_Plugins_LoginRedirect extends Zend_Controller_Plugin_Abstract
+class Ml_Plugins_LoginRedirect extends Zend_Controller_Plugin_Abstract
 {
     public function preDispatch($request)
     {

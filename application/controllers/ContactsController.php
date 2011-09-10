@@ -19,7 +19,7 @@ class ContactsController extends Zend_Controller_Action
         
         $userInfo = $registry->get("userInfo");
         
-        $contacts = ML_Contacts::getInstance();
+        $contacts = Ml_Contacts::getInstance();
         
         $paginator = $contacts->getReverseContactsPage($userInfo['id'], 30, $page);
         
@@ -47,7 +47,7 @@ class ContactsController extends Zend_Controller_Action
         
         $userInfo = $registry->get("userInfo");
         
-        $contacts = ML_Contacts::getInstance();
+        $contacts = Ml_Contacts::getInstance();
         
         $paginator = $contacts->getContactsPage($userInfo['id'], 30, $page);
              //Test if there is enough pages or not
@@ -74,7 +74,7 @@ class ContactsController extends Zend_Controller_Action
         
         if($userInfo['id'] != $auth->getIdentity()) throw new Exception("403 Forbidden: you can see your own ignored list only.");
         
-        $ignore = ML_Ignore::getInstance();
+        $ignore = Ml_Ignore::getInstance();
         
         $paginator = $ignore->getIgnorePage($userInfo['id'], 30, $page);
         
@@ -116,11 +116,11 @@ class ContactsController extends Zend_Controller_Action
         
         $userInfo = $registry->get("userInfo");
         
-        $contacts = ML_Contacts::getInstance();
-        $ignore = ML_Ignore::getInstance();
+        $contacts = Ml_Contacts::getInstance();
+        $ignore = Ml_Ignore::getInstance();
         
         if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
+            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
         
         //avoids self-relationship

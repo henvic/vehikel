@@ -11,7 +11,7 @@
  * by inputing wrong data because of lack of attention
  */
  
-class ML_Timecheck
+class Ml_Timecheck
 {
     public function reset()
     {

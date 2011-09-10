@@ -12,8 +12,8 @@ class LogoutController extends Zend_Controller_Action
         
         $params = $request->getParams();
         
-        $credential = ML_Credential::getInstance();
-        $session = ML_Session::getInstance();
+        $credential = Ml_Credential::getInstance();
+        $session = Ml_Session::getInstance();
         
         if (! $auth->hasIdentity()) {
             $this->_redirect($router->assemble(array(), "index"), array("exit"));

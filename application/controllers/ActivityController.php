@@ -7,7 +7,7 @@ class ActivityController extends Zend_Controller_Action
         $auth = $auth;
         
         if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
+            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
         
         $this->view->headTitle("Recent activity");

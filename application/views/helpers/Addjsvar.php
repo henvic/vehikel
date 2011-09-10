@@ -1,5 +1,5 @@
 <?php
-class My_View_Helper_addjsvar extends Zend_View_Helper_Abstract
+class Ml_View_Helper_addjsvar extends Zend_View_Helper_Abstract
 {
     public function addjsvar ($key, $value)
     {

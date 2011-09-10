@@ -9,7 +9,7 @@ class Form_Favorite extends Zend_Form
         $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
         Zend_Form_Element::FILTER);
         
-        $this->addElement(ML_MagicCookies::formElement());
+        $this->addElement(Ml_MagicCookies::formElement());
         
         $this->addElement('submit', 'deleteTag', array(
             'label'    => 'Yes'

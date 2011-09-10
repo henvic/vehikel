@@ -10,7 +10,7 @@ $signedUserInfo = $registry->get("signedUserInfo");
 ?>
 <div class="yui-ge">
 <div class="yui-u first">
-<h2>Your order #<?php echo $this->escape(ML_Credits::printFormatedUUId($this->order['pid'])); ?></h2>
+<h2>Your order #<?php echo $this->escape(Ml_Credits::printFormatedUUId($this->order['pid'])); ?></h2>
 <?php echo $this->render("/credits/transactions-table.phtml"); ?>
 <?php if(isset($this->orderCoupon['hash'])): ?>
 <p>Coupon redeemed for this transaction: <em><?php echo $this->escape($this->orderCoupon['hash']); ?></em>.</p>

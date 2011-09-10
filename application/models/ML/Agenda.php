@@ -1,6 +1,6 @@
 <?php
 
-class ML_Agenda extends ML_Db
+class Ml_Agenda extends Ml_Db
 {
     /**
      * Singleton instance

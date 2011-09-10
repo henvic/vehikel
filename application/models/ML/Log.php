@@ -1,6 +1,6 @@
 <?php
 
-class ML_Log extends ML_Db
+class Ml_Log extends Ml_Db
 {
     /**
      * Singleton instance

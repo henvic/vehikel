@@ -6,7 +6,7 @@ class AccountController extends Zend_Controller_Action
     {
         $auth = Zend_Auth::getInstance();
         if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new ML_Plugins_LoginRedirect());
+            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
     }
     
@@ -20,11 +20,11 @@ class AccountController extends Zend_Controller_Action
         
         $config = $registry->get("config");
         
-        $people = ML_People::getInstance();
+        $people = Ml_People::getInstance();
         
-        $profile = new ML_Profile();
+        $profile = new Ml_Profile();
         
-        $account = new ML_Account();
+        $account = new Ml_Account();
         
         $form = $account->_getSettingsForm();
         
@@ -91,7 +91,7 @@ class AccountController extends Zend_Controller_Action
                     
                     if (! empty($changeProfileData)) {
                         if (isset($changeProfileData['about'])) {
-                            $purifier = ML_HtmlPurifier::getInstance();
+                            $purifier = Ml_HtmlPurifier::getInstance();
                             
                             $changeProfileData['about_filtered'] =
                             $purifier->purify($changeProfileData['about']);
@@ -113,7 +113,7 @@ class AccountController extends Zend_Controller_Action
             
             if (isset($changeData['email'])) {
                 //changeEmail table
-                $emailChange = new ML_EmailChange();
+                $emailChange = new Ml_EmailChange();
                 
                 $securitycode =
                 $emailChange->askNew($signedUserInfo['id'], $changeData['email'], $signedUserInfo['name']);
@@ -160,7 +160,7 @@ class AccountController extends Zend_Controller_Action
         
         $params = $request->getParams();
         
-        $twitter = ML_Twitter::getInstance();
+        $twitter = Ml_Twitter::getInstance();
         
         $twitterObj = new EpiTwitter($twitterConf['key'], $twitterConf['secret']);
         
@@ -223,8 +223,8 @@ class AccountController extends Zend_Controller_Action
         
         $signedUserInfo = $registry->get("signedUserInfo");
         
-        $picture = new ML_PictureUpload();
-        $people = ML_People::getInstance();
+        $picture = new Ml_PictureUpload();
+        $people = Ml_People::getInstance();
         
         $form = $picture->_getPictureForm();
         

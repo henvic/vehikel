@@ -18,7 +18,7 @@ echo $this->url(array("username" => $userInfo['alias'],
 "commentpermalink");
 ?>">Comment on <?php echo $this->escape($shareInfo['title']) ?></a></h2>
 <?php if (isset($this->commentPreview)):
-$purifier = ML_HtmlPurifier::getInstance();
+$purifier = Ml_HtmlPurifier::getInstance();
 ?>
 <h3>Preview your comment</h3>
 <div id="commentPreview">

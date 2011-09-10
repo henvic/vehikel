@@ -10,7 +10,7 @@ class EmailController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $emailChange = new ML_EmailChange();
+        $emailChange = new Ml_EmailChange();
         
         $confirmUid = $request->getParam("confirm_uid");
         $securityCode = $request->getParam("security_code");
@@ -30,7 +30,7 @@ class EmailController extends Zend_Controller_Action
             $this->_redirect($router->assemble(array(), "logout") . "?please", array("exit"));
         }
         
-        $people = ML_People::getInstance();
+        $people = Ml_People::getInstance();
         try {
             $people
             ->update(array("email" => $changeInfoData['email']),

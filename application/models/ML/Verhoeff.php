@@ -13,7 +13,7 @@
  * @copyright Public domain
  *
  */
-class ML_Verhoeff
+class Ml_Verhoeff
 {
     protected static function d($j, $k)
     {

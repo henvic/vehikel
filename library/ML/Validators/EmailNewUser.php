@@ -13,7 +13,7 @@ class MLValidator_EmailNewUser extends Zend_Validate_Abstract
  
     public function isValid($value)
     {
-        $people = ML_People::getInstance();
+        $people = Ml_People::getInstance();
         
         $this->_setValue($value);
  
