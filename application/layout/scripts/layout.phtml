@@ -73,24 +73,23 @@ $this->headLink()->appendStylesheet("http://yui.yahooapis.com/combo?2.8.1/build/
 //$this->headLink()->appendStylesheet($this->staticversion("/plifk.css"), "screen", false, array("id" => "yuibase"));
 $this->headLink()->appendStylesheet($this->staticUrl("/plifk.css"));
 ?>
-<?php echo $this->doctype() ?>
+<?php echo $this->doctype(); ?>
 
-<html lang="en"
-    <?php /* manifest="<?php echo $this->staticUrl("/cache.manifest"); ?>"*/?>>
+<html lang="en"<?php /* manifest="<?php echo $this->staticUrl("/cache.manifest"); ?>"*/?>>
 <head>
-<?php echo $this->headTitle() ?>
+<?php echo $this->headTitle(); ?>
 
-<?php echo $this->headLink() ?>
+<?php echo $this->headLink(); ?>
 
-<?php echo $this->headMeta() ?>
+<?php echo $this->headMeta(); ?>
 
 <meta charset="utf-8" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<?php echo $this->headScript() ?>
+<?php echo $this->headScript(); ?>
 
-<?php echo $this->headStyle() ?>
+<?php echo $this->headStyle(); ?>
 </head>
 <body>
 <div id="doc2" class="yui-t1">
