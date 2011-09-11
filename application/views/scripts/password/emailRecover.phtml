@@ -33,5 +33,6 @@ echo $this->url(array("confirm_uid" => $this->recoverUser['id'],
 ?>
 
 -
-<?php echo $this->escape($config['applicationname']); ?>
-<?php echo $this->escape($config['webhost']);
+<?php
+echo $this->escape($config['applicationname']) . "\n"
+. $this->escape($config['webhost']);
