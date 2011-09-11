@@ -5,7 +5,7 @@ class Form_Upload extends Zend_Form
     {
         $registry = Zend_Registry::getInstance();
         
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        $this->addElementPrefixPath('Ml_Validator', 'ML/Validators/', 
         Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('Ml_Filter', 'ML/Filters/', 
         Zend_Form_Element::FILTER);

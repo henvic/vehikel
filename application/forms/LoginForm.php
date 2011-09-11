@@ -7,7 +7,7 @@ class LoginForm extends Zend_Form
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        $this->addElementPrefixPath('Ml_Validator', 'ML/Validators/', 
         Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('Ml_Filter', 'ML/Filters/', 
         Zend_Form_Element::FILTER);

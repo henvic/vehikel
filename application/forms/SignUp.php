@@ -8,7 +8,7 @@ class Form_SignUp extends Zend_Form
         $config = $registry->get("config");
         
         $this->setMethod('post');
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        $this->addElementPrefixPath('Ml_Validator', 'ML/Validators/', 
         Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('Ml_Filter', 'ML/Filters/', 
         Zend_Form_Element::FILTER);

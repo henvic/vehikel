@@ -1,5 +1,27 @@
 <?php
 
+  function array_to_obj($array, &$obj = false)
+  {
+      if(!$obj)
+      {
+          $obj = new stdClass();
+      }
+      
+    foreach ($array as $key => $value)
+    {
+      if (is_array($value))
+      {
+      $obj->$key = new stdClass();
+      array_to_obj($value, $obj->$key);
+      }
+      else
+      {
+        $obj->$key = $value;
+      }
+    }
+  return $obj;
+  }
+
 function base58_encode($num) {
     return base_encode($num, "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");
 }

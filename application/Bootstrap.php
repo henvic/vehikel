@@ -1,27 +1,4 @@
 <?php
-
-  function array_to_obj($array, &$obj = false)
-  {
-      if(!$obj)
-      {
-          $obj = new stdClass();
-      }
-      
-    foreach ($array as $key => $value)
-    {
-      if (is_array($value))
-      {
-      $obj->$key = new stdClass();
-      array_to_obj($value, $obj->$key);
-      }
-      else
-      {
-        $obj->$key = $value;
-      }
-    }
-  return $obj;
-  }
-
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
     protected function _initRun()
@@ -34,7 +11,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         Zend_Locale::setCache($sysCache);
         Zend_Translate::setCache($sysCache);
         
-        if(HOST_MODULE == 'default' || HOST_MODULE == 'api') $this->registerPluginResource("Uri");
+        if (HOST_MODULE == 'default' || HOST_MODULE == 'api') {
+            $this->registerPluginResource("Uri");
+        }
         
         $config_array = $this->getOptions();
         

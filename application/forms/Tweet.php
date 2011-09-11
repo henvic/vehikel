@@ -3,7 +3,7 @@ class Form_Tweet extends Zend_Form
 {
     public function init()
     {
-        $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
+        $this->addElementPrefixPath('Ml_Validator', 'ML/Validators/', 
         Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('Ml_Filter', 'ML/Filters/', 
         Zend_Form_Element::FILTER);
