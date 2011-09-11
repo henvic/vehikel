@@ -48,7 +48,7 @@ if (isset($opts->a)) {
     
     $frontController->setRequest($request);
     
-    require LIBRARY_PATH."/ML/RouteCLIModule.php";
+    require LIBRARY_PATH."/Ml/RouteCLIModule.php";
     $frontController->setRouter(new Webf_Controller_Router_Cli());
     $frontController->setResponse(new Zend_Controller_Response_Cli());
 }

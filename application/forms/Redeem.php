@@ -8,9 +8,9 @@ class Form_Redeem extends Zend_Form
         $config = $registry->get("config");
         
         $this->setMethod('post');
-        $this->addElementPrefixPath('Ml_Validator', 'ML/Validators/', 
+        $this->addElementPrefixPath('Ml_Validator', 'Ml/Validators/', 
         Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('Ml_Filter', 'ML/Filters/', 
+        $this->addElementPrefixPath('Ml_Filter', 'Ml/Filters/', 
         Zend_Form_Element::FILTER);
         
         $this->addElement('text', 'redeem', array(

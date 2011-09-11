@@ -46,8 +46,8 @@ class Ml_Upload extends Ml_Share
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
-        //require_once(LIBRARY_PATH."/ML/Filters/FilenameRobot.php");
-        //require_once(LIBRARY_PATH."/ML/Validators/Filename.php");
+        //require_once(LIBRARY_PATH."/Ml/Filters/FilenameRobot.php");
+        //require_once(LIBRARY_PATH."/Ml/Validators/Filename.php");
         
         $s3 = new Zend_Service_Amazon_S3($config['services']['S3']['key'], $config['services']['S3']['secret']);
         

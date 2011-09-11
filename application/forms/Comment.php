@@ -8,9 +8,9 @@ class Form_Comment extends Zend_Form
         }
         
         $this->setMethod('post');
-        $this->addElementPrefixPath('Ml_Validator', 'ML/Validators/', 
+        $this->addElementPrefixPath('Ml_Validator', 'Ml/Validators/', 
         Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('Ml_Filter', 'ML/Filters/', 
+        $this->addElementPrefixPath('Ml_Filter', 'Ml/Filters/', 
         Zend_Form_Element::FILTER);
         
         if (isset($altLabel)) {
