@@ -63,7 +63,6 @@ Zend_Loader_PluginLoader::setIncludeFileCache($classFileIncCache);
 
 $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
 $viewRenderer->initView();
-$viewRenderer->view->doctype('XHTML1_STRICT');
 
 /*
 //don't change to (X)HTML because of the ReCaptcha

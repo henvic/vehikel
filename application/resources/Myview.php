@@ -10,7 +10,6 @@ class Myview extends Zend_Application_Resource_ResourceAbstract
         
         // Initialize view
         $view = new Zend_View;
-        $view->doctype('XHTML1_STRICT');
         
         $view->setEncoding('UTF-8');
         
