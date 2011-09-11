@@ -270,7 +270,7 @@ class Ml_Upload extends Ml_Share
         return true;
     }
     
-    protected function form()
+    public function form()
     {
         static $form = '';
         $registry = Zend_Registry::getInstance();
