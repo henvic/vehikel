@@ -96,7 +96,7 @@ class FilesController extends Zend_Controller_Action
         $routeConfig =
         new Zend_Config_Ini(APPLICATION_PATH . '/configs/defaultRoutes.ini');
         
-        $router->$routeConfig($config, 'routes');
+        $router->addConfig($routeConfig, 'routes');
         
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
