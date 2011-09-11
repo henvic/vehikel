@@ -59,7 +59,7 @@ class Ml_Upload extends Ml_Share
         } else {
             $title = mb_substr(trim($fileInfo['name']), 0, 100);
             
-            /* begin of gambiarra */
+            /* try to use a good initial title for the file */
             $titleNameposition = mb_strrpos($title, ".");
             $titleSize = mb_strlen($title);
             if ($titleSize > 5 && $titleSize - $titleNameposition <= 5) {
@@ -68,7 +68,7 @@ class Ml_Upload extends Ml_Share
                  strrpos($tryTitle, ".") < mb_strlen($tryTitle) - 4) {
                     $title = $tryTitle;
                 }
-            }/* end of gambiarra */
+            }
         }
         $maxRand = (mt_getrandmax() < 4294967295) ? mt_getrandmax() : 4294967295;
         $secret = mt_rand(0, $maxRand);
