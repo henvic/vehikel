@@ -40,13 +40,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         
         $registry->set('config', $config_array);
         
-        if(isset($config_array['email']['type']) && $config_array['email']['type'] == 'sendmail')
-        {
-            Zend_Mail::setDefaultTransport(new Zend_Mail_Transport_Sendmail());
-        } else {
-            Zend_Mail::setDefaultTransport(new Zend_Mail_Transport_Smtp($config_array['email']['smtp'], $config_array['email']));
-        }
-        
         $memCache = new Zend_Cache_Core(array('automatic_serialization' => true));
         $memCache->setBackend(new Zend_Cache_Backend_Memcached($config_array['cache']['backend']['memcache']['servers']['global']));
         $registry->set("memCache", $memCache);
