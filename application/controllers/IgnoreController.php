@@ -7,28 +7,6 @@ class IgnoreController extends Zend_Controller_Action
         $this->_helper->loadResource->pseudoshareSetUp();
     }
     
-    protected function _ignoreForm()
-    {
-        static $form = '';
-        
-        if (! is_object($form)) {
-            $registry = Zend_Registry::getInstance();
-            
-            $router = Zend_Controller_Front::getInstance()->getRouter();
-            
-            require APPLICATION_PATH . '/forms/Ignore.php';
-            
-            $userInfo = $registry->get("userInfo");
-            
-            $form = new Form_Ignore(array(
-                'action' => $router->assemble(array("username" =>
-                 $userInfo['alias']), "contactRelationshipIgnore"),
-                'method' => 'post',
-            ));
-        }
-        return $form;
-    }
-    
     public function switchAction()
     {
         $auth = Zend_Auth::getInstance();
@@ -57,7 +35,8 @@ class IgnoreController extends Zend_Controller_Action
             $registry->set("is_ignored", true);
         }
         
-        $form = $this->_ignoreForm();//has to be loaded after the line above
+        //the form has to be loaded after the line above
+        $form = $ignore->form();
         
         if ($request->isPost() && $form->isValid($request->getPost())) {
             $formInfo = $form->getValues();
