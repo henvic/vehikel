@@ -12,7 +12,7 @@
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
  *
- * @category   ML
+ * @category   Ml
  * @package    Ml_Auth
  * @subpackage Adapter
  * @version    0.1 henrique vicente
