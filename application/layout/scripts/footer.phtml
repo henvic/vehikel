@@ -1,4 +1,7 @@
-<ul>
+<?php
+$registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+?><ul>
 <li class="first"><?php echo $this->escape($config['applicationname']) ?></li>
 <li><a href="<?php echo $this->url(array(), "index"); ?>">Home</a></li>
 <li><a href="<?php echo $this->staticUrl("/tos") ?>">Terms of Service</a></li>

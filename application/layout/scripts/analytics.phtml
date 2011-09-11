@@ -1,4 +1,7 @@
 <?php
+$registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+
 //should not use <?php echo var ?\> here or it will print it (wrong)
 //don't know why...
 if(APPLICATION_ENV == "production"):
