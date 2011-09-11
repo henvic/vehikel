@@ -125,7 +125,7 @@ WHERE `E`.`uid` = '33' ORDER BY `E`.`timestamp` DESC
         return $paginator;
     }
     
-    public static function _form()
+    public static function form()
     {
         static $form = '';
         $registry = Zend_Registry::getInstance();

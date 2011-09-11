@@ -78,7 +78,12 @@ class Ml_Upload extends Ml_Share
         
         if (! $filenameValidator->isValid($filename)) {
             $extension = $filenameFilter->filter(strchr($filename, '.'));
-            $filename = ($filenameValidator->isValid($extension)) ? $fileId.$extension : $fileId;
+            
+            if ($filenameValidator->isValid($extension)) {
+                $filename = $fileId . $extension;
+            } else {
+                $filename = $fileId;
+            }
         }
         
         $this->getAdapter()->beginTransaction();
@@ -265,9 +270,86 @@ class Ml_Upload extends Ml_Share
         return true;
     }
     
+    protected function form()
+    {
+        static $form = '';
+        $registry = Zend_Registry::getInstance();
+
+        if (! is_object($form)) {
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
+            require APPLICATION_PATH . '/forms/Upload.php';
+             
+            $form = new Form_Upload(array(
+                'action' => $router->assemble(array(), "upload"),
+                'method' => 'post',
+            ));
+        }
+        
+        return $form;
+    }
     
+    public function apiForm()
+    {
+        static $form = '';
+        
+        if (! is_object($form)) {
+            require APPLICATION_PATH . '/forms/api/uploadForm.php';
+            
+            $form = new Form_Upload(array('method' => 'post',));
+        }
+        
+        return $form;
+    }
     
-    public function _apiSetMetaForm()
+    public function deleteForm()
+    {
+        static $form = '';
+
+        if (! is_object($form)) {
+            $registry = Zend_Registry::getInstance();
+            
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
+            $shareInfo = $registry->get('shareInfo');
+            $userInfo = $registry->get('userInfo');
+            
+            require APPLICATION_PATH . '/forms/DeleteShare.php';
+             
+            $form = new Form_DeleteShare(array('action' =>
+            $router->assemble(array("username" => $userInfo['alias'],
+                "share_id" => $shareInfo['id']), "deleteshare"),
+                'method' => 'post'));
+        }
+        return $form;
+    }
+    
+    public function editForm()
+    {
+        static $form = '';
+
+        if (! is_object($form)) {
+            $registry = Zend_Registry::getInstance();
+            
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
+            $shareInfo = $registry->get('shareInfo');
+            $userInfo = $registry->get('userInfo');
+             
+            require APPLICATION_PATH . '/forms/Filepage.php';
+             
+            $form = new Form_Filepage(array('action'
+            => $router->assemble(array("username" => $userInfo['alias'],
+                "share_id" => $shareInfo['id']), "editsharepage"),
+                'method' => 'post'));
+        }
+        
+        $form->setDefault("hash", $registry->get('globalHash'));
+        
+        return $form;
+    }
+    
+    public function apiSetMetaForm()
     {
         static $form = '';
 

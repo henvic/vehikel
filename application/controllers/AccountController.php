@@ -26,7 +26,7 @@ class AccountController extends Zend_Controller_Action
         
         $account = new Ml_Account();
         
-        $form = $account->_getSettingsForm();
+        $form = $account->settingsForm();
         
         $signedUserInfo = $registry->get("signedUserInfo");
         
@@ -226,7 +226,7 @@ class AccountController extends Zend_Controller_Action
         $picture = new Ml_PictureUpload();
         $people = Ml_People::getInstance();
         
-        $form = $picture->_getPictureForm();
+        $form = $picture->pictureForm();
         
         if ($request->isPost() && $form->isValid($request->getPost())) {
             if ($form->getValue("delete")) {

@@ -2,25 +2,6 @@
 
 class UploadController extends Zend_Controller_Action
 {
-    protected function _uploadForm()
-    {
-        static $form = '';
-        $registry = Zend_Registry::getInstance();
-
-        if (! is_object($form)) {
-            $router = Zend_Controller_Front::getInstance()->getRouter();
-            
-            require APPLICATION_PATH . '/forms/Upload.php';
-             
-            $form = new Form_Upload(array(
-                'action' => $router->assemble(array(), "upload"),
-                'method' => 'post',
-            ));
-        }
-        
-        return $form;
-    }
-    
     public function indexAction()
     {
         
@@ -49,7 +30,7 @@ class UploadController extends Zend_Controller_Action
         
         $registry->set("uploadStatus", $uploadStatus);
         
-        $form = $this->_uploadForm();
+        $form = $share->form();
         
         if ($request->isPost()) {
             ignore_user_abort(true);

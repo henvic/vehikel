@@ -38,7 +38,7 @@ class Ml_Recover extends Ml_Db
     
     protected $_name = "recover";
     
-    public function _getRecoverForm()
+    public function recoverForm()
     {
         static $form = '';
         

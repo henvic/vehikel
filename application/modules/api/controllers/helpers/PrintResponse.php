@@ -8,7 +8,7 @@ class Zend_Controller_Action_Helper_PrintResponse extends
         
         $response = new Zend_Controller_Response_Http;
         
-        $responseFormat = $request->getParam("response_format", "xml");
+        $responseFormat = $request->getParam("responseformat", "xml");
         
         $xmlDoc->encoding = "utf-8";
         

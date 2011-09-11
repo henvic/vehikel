@@ -22,7 +22,7 @@ class JoinController extends Zend_Controller_Action
         
         $signUp = Ml_Signup::getInstance();
         
-        $form = $signUp->_getSignUpForm();
+        $form = $signUp->signUpForm();
         
         if ($request->isPost() && $form->isValid($request->getPost())) {
             $data = $form->getValues();
@@ -113,7 +113,7 @@ class JoinController extends Zend_Controller_Action
         
         $confirmationInfo = $confirmationInfo->toArray();
         
-           $form = $newUser->_getIdentityForm($securityCode);
+           $form = $newUser->newIdentityForm($securityCode);
            
         if ($request->isPost() && $form->isValid($request->getPost())) {
             $newUser->getAdapter()->beginTransaction();

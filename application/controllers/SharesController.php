@@ -13,53 +13,6 @@
 
 class SharesController extends Zend_Controller_Action
 {
-    public function _deleteForm()
-    {
-        static $form = '';
-
-        if (! is_object($form)) {
-            $registry = Zend_Registry::getInstance();
-            
-            $router = Zend_Controller_Front::getInstance()->getRouter();
-            
-            $shareInfo = $registry->get('shareInfo');
-            $userInfo = $registry->get('userInfo');
-            
-            require APPLICATION_PATH . '/forms/DeleteShare.php';
-             
-            $form = new Form_DeleteShare(array('action' =>
-            $router->assemble(array("username" => $userInfo['alias'],
-                "share_id" => $shareInfo['id']), "deleteshare"),
-                'method' => 'post'));
-        }
-        return $form;
-    }
-    
-    public function _editForm()
-    {
-        static $form = '';
-
-        if (! is_object($form)) {
-            $registry = Zend_Registry::getInstance();
-            
-            $router = Zend_Controller_Front::getInstance()->getRouter();
-            
-            $shareInfo = $registry->get('shareInfo');
-            $userInfo = $registry->get('userInfo');
-             
-            require APPLICATION_PATH . '/forms/Filepage.php';
-             
-            $form = new Form_Filepage(array('action'
-            => $router->assemble(array("username" => $userInfo['alias'],
-                "share_id" => $shareInfo['id']), "editsharepage"),
-                'method' => 'post'));
-        }
-        
-        $form->setDefault("hash", $registry->get('globalHash'));
-        
-        return $form;
-    }
-    
     public function init()
     {
         $auth = Zend_Auth::getInstance();
@@ -94,7 +47,7 @@ class SharesController extends Zend_Controller_Action
         
         $shareInfo = $registry->get("shareInfo");
         
-        $form = $this->_editForm();
+        $form = $share->editForm();
         
         $form->setDefaults($shareInfo);
         
@@ -129,7 +82,7 @@ class SharesController extends Zend_Controller_Action
         $signedUserInfo = $registry->get("signedUserInfo");
         $shareInfo = $registry->get("shareInfo");
         
-        $form = $this->_deleteForm();
+        $form = $share->deleteForm();
         if ($request->isPost() && 
             $form->isValid($request->getPost())) {
             $forget = $form->getValue("forget");

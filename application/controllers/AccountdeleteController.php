@@ -25,7 +25,7 @@ class AccountdeleteController extends Zend_Controller_Action
         
         $signedUserInfo = $registry->get("signedUserInfo");
         
-        $form = $peopleDeleted->_getDeleteAccountForm();
+        $form = $peopleDeleted->deleteAccountForm();
         
         if ($request->isPost()) {
             $select = $credential->select()->where("uid = ?", $auth->getIdentity());

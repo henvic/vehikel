@@ -37,7 +37,7 @@ class FavoritesController extends Zend_Controller_Action
         
         $favorites = Ml_Favorites::getInstance();
         if ($auth->hasIdentity() && $auth->getIdentity() != $userInfo['id']) {
-            $favoriteForm = $favorites->_form();
+            $favoriteForm = $favorites->form();
             if ($request->isPost() && $favoriteForm->isValid($request->getPost())) {
                 if (array_key_exists("unfavorite", $params)) {
                     $favorites->delete($favorites->getAdapter()

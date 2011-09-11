@@ -82,7 +82,7 @@ class Ml_Credential extends Ml_Db
         return $stmt->rowCount();
     }
     
-    public function _getLoginForm()
+    public function loginForm()
     {
         $registry = Zend_Registry::getInstance();
         
@@ -107,7 +107,7 @@ class Ml_Credential extends Ml_Db
         return $form;
     }
     
-    public function _getLogoutForm()
+    public function logoutForm()
     {
         $registry = Zend_Registry::getInstance();
         
@@ -130,6 +130,42 @@ class Ml_Credential extends Ml_Db
         }
         return $form;
     }
+    
+    public function newPasswordForm($uid = false, $securityCode = false)
+    {
+        $registry = Zend_Registry::getInstance();
+        
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        
+        $config = $registry->get("config");
+        
+        static $form = '';
+        
+        if (! is_object($form)) {
+            require APPLICATION_PATH . '/forms/NewPassword.php';
+            
+            if (! $uid) {
+                $path = $router->assemble(array(), "password");
+            } else {
+                $path = $router->assemble(array("confirm_uid" => $uid,
+                "security_code" => $securityCode),
+                "password_unsigned");
+            }
+            
+            if ($config['ssl']) {
+                $action = 'https://' . $config['webhostssl'] . $config['webroot'] . $path;
+            } else {
+                $action = $config['webroot'] . $path;
+            }
+            
+            $form = new Form_NewPassword(array('action' => $action,
+                'method' => 'post',
+            ));
+            
+        }
+        return $form;
+    }
+    
     
     /**
      * 

@@ -23,7 +23,7 @@ class LogoutController extends Zend_Controller_Action
             $signedUserInfo = $registry->get("signedUserInfo");
         }
         
-        $form = $credential->_getLogoutForm();
+        $form = $credential->logoutForm();
         
         if ($request->isPost() && $form->isValid($request->getPost())) {
             

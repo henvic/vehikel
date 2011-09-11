@@ -31,7 +31,7 @@ class TagsController extends Zend_Controller_Action
         
         if ($auth->getIdentity() == $shareInfo['byUid']) {
             
-            $tagsForm = $tags->_form();
+            $tagsForm = $tags->form();
             
             if ($request->isPost() && $tagsForm->isValid($request->getPost())) {
                 $tagsArray = $tags->makeArrayOfTags($tagsForm->getValue('tags'));
@@ -89,7 +89,7 @@ class TagsController extends Zend_Controller_Action
             $row = $tags->fetchRow($select);
             
             if (is_object($row)) {
-                $form = $tags->_formDelete();
+                $form = $tags->deleteForm();
                 $this->view->tag = $row->toArray();
                 $this->view->deleteTagForm = $form;
                 

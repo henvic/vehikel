@@ -37,7 +37,7 @@ class Ml_Tags extends Ml_Db
     
     protected $_name = "tags";
 
-    public static function _form()
+    public static function form()
     {
         static $form = '';
         
@@ -64,7 +64,7 @@ class Ml_Tags extends Ml_Db
         return $form;
     }
     
-    public static function _formDelete()
+    public static function deleteForm()
     {
         static $form = '';
         

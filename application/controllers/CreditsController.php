@@ -23,7 +23,7 @@ class CreditsController extends Zend_Controller_Action
         
         $coupons = Ml_Coupons::getInstance();
         
-        $redeemForm = $coupons->_RedeemForm();
+        $redeemForm = $coupons->redeemForm();
         
         if ($request->isPost()) {
             if ($redeemForm->isValid($request->getPost())) {

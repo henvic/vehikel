@@ -77,7 +77,7 @@ class LoginController extends Zend_Controller_Action
         }
         
         $request = $this->getRequest();
-        $form = $credential->_getLoginForm();
+        $form = $credential->loginForm();
         
         if (Ml_AntiAttack::ensureHuman()) {
             $ensureHuman = true;

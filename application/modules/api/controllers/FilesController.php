@@ -249,7 +249,7 @@ class FilesController extends Zend_Controller_Action
         
         $share = new Ml_Upload();
         
-        $form = $share->_apiSetMetaForm();
+        $form = $share->apiSetMetaForm();
         
         if ($request->isPost()) {//@todo should work with PUT also
             if ($form->isValid($request->getPost())) {

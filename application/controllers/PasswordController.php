@@ -1,41 +1,6 @@
 <?php
 class PasswordController extends Zend_Controller_Action
 {
-    protected function _getNewPasswordForm($uid = false, $securityCode = false)
-    {
-        $registry = Zend_Registry::getInstance();
-        
-        $router = Zend_Controller_Front::getInstance()->getRouter();
-        
-        $config = $registry->get("config");
-        
-        static $form = '';
-        
-        if (! is_object($form)) {
-            require APPLICATION_PATH . '/forms/NewPassword.php';
-            
-            if (! $uid) {
-                $path = $router->assemble(array(), "password");
-            } else {
-                $path = $router->assemble(array("confirm_uid" => $uid,
-                "security_code" => $securityCode),
-                "password_unsigned");
-            }
-            
-            if ($config['ssl']) {
-                $action = 'https://' . $config['webhostssl'] . $config['webroot'] . $path;
-            } else {
-                $action = $config['webroot'] . $path;
-            }
-            
-            $form = new Form_NewPassword(array('action' => $action,
-                'method' => 'post',
-            ));
-            
-        }
-        return $form;
-    }
-    
     public function unavailableAction()
     {
         $this->getResponse()->setHttpResponseCode(404);
@@ -58,7 +23,7 @@ class PasswordController extends Zend_Controller_Action
         $people = Ml_People::getInstance();
         $recover = Ml_Recover::getInstance();
         
-        $form = $recover->_getRecoverForm();
+        $form = $recover->recoverForm();
         
         if ($request->isPost() && $form->isValid($request->getPost())) {
             $find = $form->getValues();
@@ -113,7 +78,7 @@ class PasswordController extends Zend_Controller_Action
                 $this->_redirect($router->assemble(array(), "logout") . "?please", array("exit"));
             }
             
-            $form = $this->_getNewPasswordForm();
+            $form = $credential->newPasswordForm();
             $uid = $auth->getIdentity();
             $registry->set("changeUserProperPassword", true);
             
@@ -132,7 +97,7 @@ class PasswordController extends Zend_Controller_Action
                 
                 $recoverInfoData = $recoverInfo->toArray();
                 
-                $form = $this->_getNewPasswordForm($request->getParam("confirm_uid"), 
+                $form = $credential->newPasswordForm($request->getParam("confirm_uid"), 
                 $request->getParam("security_code"));
                 
                 $uid = $recoverInfoData['uid'];

@@ -7,7 +7,7 @@ $config = $registry->get("config");
 $this->headTitle($config['applicationname'], "SET");
 
 $credential = Ml_Credential::getInstance();
-$this->loginform = $credential->_getLoginForm();
+$this->loginform = $credential->loginForm();
 ?>
 
 <div class="yui-ge">

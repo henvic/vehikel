@@ -38,7 +38,7 @@ class Ml_Coupons extends Ml_Db
     
     protected $_name = "coupons";
     
-    public function _RedeemForm()
+    public function redeemForm()
     {
         static $form = '';
         

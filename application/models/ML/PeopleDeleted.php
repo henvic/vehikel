@@ -38,7 +38,7 @@ class Ml_PeopleDeleted extends Ml_Db
     
     protected $_name = "people_deleted";
     
-    public function _getDeleteAccountForm()
+    public function deleteAccountForm()
     {
         static $form = '';
         

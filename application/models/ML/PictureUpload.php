@@ -8,7 +8,7 @@ require_once LIBRARY_PATH . '/phMagick/MODIFIEDphMagick.php';
 
 class Ml_PictureUpload extends Ml_Picture
 {
-    public function _getPictureForm()
+    public function pictureForm()
     {
         static $form = '';
         

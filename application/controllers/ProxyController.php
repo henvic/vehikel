@@ -28,7 +28,7 @@ class ProxyController extends Zend_Controller_Action
         
         $method = mb_substr($method, 1);
         
-        $responseFormat = $request->getParam("response_format", "xml");
+        $responseFormat = $request->getParam("responseformat", "xml");
         
         if ($responseFormat == 'json') {
             $contentType = 'application/json';

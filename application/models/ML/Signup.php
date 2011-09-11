@@ -38,7 +38,7 @@ class Ml_Signup extends Ml_Db
     
     protected $_name = "newusers";
     
-    public function _getSignUpForm()
+    public function signUpForm()
     {
         static $form = '';
         
@@ -55,7 +55,7 @@ class Ml_Signup extends Ml_Db
         return $form;
     }
     
-    public function _getIdentityForm($securityCode)
+    public function newIdentityForm($securityCode)
     {
         static $form = '';
         

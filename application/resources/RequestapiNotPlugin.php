@@ -24,7 +24,7 @@ $frontController->addControllerDirectory(APPLICATION_PATH.'/modules/'.HOST_MODUL
 
 $response = new Zend_Controller_Response_Http;
 
-if (filter_input(INPUT_GET, "response_format", FILTER_UNSAFE_RAW) == 'json') {
+if (filter_input(INPUT_GET, "responseformat", FILTER_UNSAFE_RAW) == 'json') {
     $contentType = 'application/json';
 } else {
     $contentType = 'text/xml';
