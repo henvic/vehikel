@@ -19,9 +19,6 @@ class Myview extends Zend_Application_Resource_ResourceAbstract
         
         $viewRenderer->setView($view);
         
-        // http://framework.zend.com/manual/en/zend.view.html#zend.view.introduction.shortTags
-        $view->setUseStreamWrapper(true);
-        
         $view->addHelperPath(APPLICATION_PATH.'/views/helpers', 'Ml_View_Helper');
         
         $view->headTitle()->append($config['applicationname']);
