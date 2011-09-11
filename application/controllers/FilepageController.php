@@ -73,7 +73,7 @@ class FilepageController extends Zend_Controller_Action
             
             if ($auth->getIdentity() == $userInfo['id'] ||
             !$ignore->status($userInfo['id'], $auth->getIdentity())) {
-                $commentForm = $comments->_addForm();
+                $commentForm = $comments->addForm();
                 
                 //should The comment form processing should be in the CommentsController?
                 if ($request->isPost() && $commentForm->isValid($request->getPost())) {

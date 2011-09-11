@@ -114,7 +114,7 @@ class Ml_Comments extends Ml_Db
         return false;
     }
     
-    public function _addForm()
+    public function addForm()
     {
         static $form = '';
 
@@ -146,6 +146,34 @@ class Ml_Comments extends Ml_Db
                 'method' => 'post',
             ));
         }
+        return $form;
+    }
+    
+    public function deleteForm($commentId)
+    {
+        static $form = '';
+        if (! is_object($form)) {
+            $registry = Zend_Registry::getInstance();
+            
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
+            $userInfo = $registry->get("userInfo");
+            $shareInfo = $registry->get("shareInfo");
+            
+            require APPLICATION_PATH . '/forms/DeleteComment.php';
+            
+            $form = new Form_DeleteComment(array(
+                'action' => $router->assemble(array("username" =>
+                 $userInfo['alias'],
+                 "share_id" => $shareInfo['id'],
+                 "comment_id" => $commentId),
+                 "deletecomment"),
+                'method' => 'post',
+            ));
+        }
+
+        $form->setDefault("hash", $registry->get('globalHash'));
+
         return $form;
     }
     

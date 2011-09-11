@@ -12,34 +12,6 @@
 
 class CommentsController extends Zend_Controller_Action
 {
-    public function _deleteCommentForm($commentId)
-    {
-        static $form = '';
-        if (! is_object($form)) {
-            $registry = Zend_Registry::getInstance();
-            
-            $router = Zend_Controller_Front::getInstance()->getRouter();
-            
-            $userInfo = $registry->get("userInfo");
-            $shareInfo = $registry->get("shareInfo");
-            
-            require APPLICATION_PATH . '/forms/DeleteComment.php';
-            
-            $form = new Form_DeleteComment(array(
-                'action' => $router->assemble(array("username" =>
-                 $userInfo['alias'],
-                 "share_id" => $shareInfo['id'],
-                 "comment_id" => $commentId),
-                 "deletecomment"),
-                'method' => 'post',
-            ));
-        }
-
-        $form->setDefault("hash", $registry->get('globalHash'));
-
-        return $form;
-    }
-    
     public function init()
     {
         $this->_helper->loadResource->pseudoshareSetUp();
@@ -73,7 +45,7 @@ class CommentsController extends Zend_Controller_Action
         
         $registry->set("commentInfo", $comment);
         
-        $form = $comments->_addForm();
+        $form = $comments->addForm();
         
         $form->setDefault("commentMsg", $comment['comments']);
         
@@ -125,7 +97,7 @@ class CommentsController extends Zend_Controller_Action
         
         $registry->set("commentInfo", $comment);
         
-        $form = $this->_deleteCommentForm($comment['id']);
+        $form = $comments->deleteForm($comment['id']);
         if ($request->isPost() && $form->isValid($request->getPost())) {
             $comments
             ->delete($comments->getAdapter()
