@@ -4,6 +4,8 @@ class TestController extends Zend_Controller_Action
 {
     public function addapiserverAction()
     {
+        $service = new Ml_Service();
+        
         $userId = $service->getInput("User ID");
         $consumerKey = $service->getInput("Consumer key");
         $consumerSecret = $service->getInput("Consumer secret");
