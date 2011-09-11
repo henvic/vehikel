@@ -162,7 +162,9 @@ class Ml_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
      */
     public function read($id)
     {
-        if ($data = $this->_cache->load($this->_sessionPrefix . $id)) {
+        $data = $this->_cache->load($this->_sessionPrefix . $id);
+        
+        if ($data) {
             return $data;
         }
         
