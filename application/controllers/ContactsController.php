@@ -88,23 +88,6 @@ class ContactsController extends Zend_Controller_Action
         
         $this->view->paginator = $paginator;
     }
-        
-    protected function _relationshipForm()
-    {
-        static $form = '';
-        if (! is_object($form)) {
-            $registry = Zend_Registry::getInstance();
-            $userInfo = $registry->get("userInfo");
-            require APPLICATION_PATH . '/forms/Relationship.php';
-            
-            $form = new Form_Relationship(array(
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "contact_relationship"),
-                'method' => 'post',
-            ));
-            
-        }
-        return $form;
-    }
     
     public function relationshipAction()
     {
@@ -141,7 +124,7 @@ class ContactsController extends Zend_Controller_Action
         if (is_array($ignoreStatus)) {
             $this->view->cannotAddIgnored = $ignoreStatus;
         } else {
-            $form = $this->_relationshipForm();
+            $form = $contacts->relationshipForm();
             
             if (isset($relationship['id'])) {
                 $form->getElement("contact_relation")->setOptions(array("checked" => true));

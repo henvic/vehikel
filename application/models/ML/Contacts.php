@@ -2,7 +2,8 @@
 class Ml_Contacts extends Ml_Db
 {
     protected $_name = "contacts";
-/**
+    
+	/**
      * Singleton instance
      *
      * @var Zend_Auth
@@ -81,5 +82,22 @@ class Ml_Contacts extends Ml_Db
         $relationship['reverse'] = $reverseRelationship;
         
         return $relationship;
+    }
+    
+    public function relationshipForm()
+    {
+        static $form = '';
+        if (! is_object($form)) {
+            $registry = Zend_Registry::getInstance();
+            $userInfo = $registry->get("userInfo");
+            require APPLICATION_PATH . '/forms/Relationship.php';
+            
+            $form = new Form_Relationship(array(
+                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "contact_relationship"),
+                'method' => 'post',
+            ));
+            
+        }
+        return $form;
     }
 }
