@@ -2,7 +2,7 @@
 //require_once 'Zend/Validate/Abstract.php';
 
 
-class MLValidator_EmailNewUser extends Zend_Validate_Abstract
+class Ml_Validator_EmailNewUser extends Zend_Validate_Abstract
 {
     const MSG_EMAIL_EXISTS = 'emailAlreadyExists';
  

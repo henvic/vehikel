@@ -1,7 +1,7 @@
 <?php
 //require_once 'Zend/Validate/Abstract.php';
 
-class MLValidator_Username extends Zend_Validate_Abstract
+class Ml_Validator_Username extends Zend_Validate_Abstract
 {
     const MSG_USERNAME_NOT_FOUND = 'usernameNotFound';
     const MSG_EMAIL_NOT_FOUND = 'emailNotFound';

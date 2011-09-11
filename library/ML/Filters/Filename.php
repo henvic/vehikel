@@ -13,7 +13,7 @@
  */
 
 
-class MLFilter_Filename implements Zend_Filter_Interface
+class Ml_Filter_Filename implements Zend_Filter_Interface
 {
     public function filter($value)
     {

@@ -8,7 +8,7 @@ class Form_Abuse extends Zend_Form
         $this->setMethod('post');
         $this->addElementPrefixPath('MLValidator', 'ML/Validators/', 
         Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('MLFilter', 'ML/Filters/', 
+        $this->addElementPrefixPath('Ml_Filter', 'ML/Filters/', 
         Zend_Form_Element::FILTER);
         
         $this->addElement('text', 'abuse_reference', array(

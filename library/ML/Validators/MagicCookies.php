@@ -6,7 +6,7 @@
  */
 //require_once 'Zend/Validate/Abstract.php';
 
-class MLValidator_MagicCookies extends Zend_Validate_Abstract
+class Ml_Validator_MagicCookies extends Zend_Validate_Abstract
 {
     const MSG_MAGIC_COOKIE_INVALID = 'invalidMagicCookie';
     const MSG_MAGIC_COOKIE_INVALID_FORMAT = "invalidFormatMagicCookie";
@@ -33,7 +33,7 @@ class MLValidator_MagicCookies extends Zend_Validate_Abstract
     {
         //Warning:
         //$ignoreValue is not used because it's valid always
-        //due to unusual behavior of the MLFilter_MagicCookies filter
+        //due to unusual behavior of the Ml_Filter_MagicCookies filter
         //this had to be done this way in this specific case
         $value =
         filter_input(INPUT_POST,

@@ -2,7 +2,7 @@
 //require_once 'Zend/Validate/Abstract.php';
 
 
-class MLValidator_NewPasswordRepeat extends Zend_Validate_Abstract
+class Ml_Validator_NewPasswordRepeat extends Zend_Validate_Abstract
 {
     const NOT_MATCH = 'notMatch';
 

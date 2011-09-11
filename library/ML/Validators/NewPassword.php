@@ -2,7 +2,7 @@
 //require_once 'Zend/Validate/Abstract.php';
 
 
-class MLValidator_NewPassword extends Zend_Validate_Abstract
+class Ml_Validator_NewPassword extends Zend_Validate_Abstract
 {
     const MSG_SAME_PASSWORD = 'samePassword';
     

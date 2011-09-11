@@ -1,7 +1,7 @@
 <?php
 //require_once 'Zend/Validate/Abstract.php';
 
-class MLValidator_Invite extends Zend_Validate_Abstract
+class Ml_Validator_Invite extends Zend_Validate_Abstract
 {
     const INVALID_INVITE = 'invalidInvite';
     const USED_INVITE = 'usedInvite';

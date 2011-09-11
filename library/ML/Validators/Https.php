@@ -19,7 +19,7 @@
 //require_once 'Zend/Validate/Abstract.php';
 
 
-class MLValidator_Https extends Zend_Validate_Abstract
+class Ml_Validator_Https extends Zend_Validate_Abstract
 {
     const MSG_NOT_HTTPS = 'notHttps';
  

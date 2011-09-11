@@ -51,8 +51,8 @@ class Ml_Upload extends Ml_Share
         
         $s3 = new Zend_Service_Amazon_S3($config['services']['S3']['key'], $config['services']['S3']['secret']);
         
-        $filenameFilter = new MLFilter_FilenameRobot();
-        $filenameValidator = new MLValidator_Filename();
+        $filenameFilter = new Ml_Filter_FilenameRobot();
+        $filenameValidator = new Ml_Validator_Filename();
         
         if (isset($details['title']) && ! empty($details['title'])) {
             $title = $details['title'];

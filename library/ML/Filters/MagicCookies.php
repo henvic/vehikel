@@ -11,7 +11,7 @@
  * @author henvic
  *
  */
-class MLFilter_MagicCookies implements Zend_Filter_Interface
+class Ml_Filter_MagicCookies implements Zend_Filter_Interface
 {
     public function filter ($value)
     {

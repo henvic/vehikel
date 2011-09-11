@@ -1,7 +1,7 @@
 <?php
 //require_once 'Zend/Validate/Abstract.php';
 
-class MLValidator_UsernameNewUser extends Zend_Validate_Abstract
+class Ml_Validator_UsernameNewUser extends Zend_Validate_Abstract
 {
     const MSG_USERNAME_RESERVED = 'usernameReserved';
     const MSG_USERNAME_INVALID = 'usernameInvalid';

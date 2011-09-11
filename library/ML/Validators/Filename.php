@@ -1,7 +1,7 @@
 <?php
 //require_once 'Zend/Validate/Abstract.php';
 
-class MLValidator_Filename extends Zend_Validate_Abstract
+class Ml_Validator_Filename extends Zend_Validate_Abstract
 {
     const MSG_FILENAME_INVALID = 'filenameInvalid';
  

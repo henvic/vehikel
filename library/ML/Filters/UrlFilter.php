@@ -1,5 +1,5 @@
 <?php
-class MLFilter_UrlFilter implements Zend_Filter_Interface
+class Ml_Filter_UrlFilter implements Zend_Filter_Interface
 {
     public function filter($value)
     {
