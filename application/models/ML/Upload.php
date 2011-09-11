@@ -80,9 +80,9 @@ class Ml_Upload extends Ml_Share
             $extension = $filenameFilter->filter(strchr($filename, '.'));
             
             if ($filenameValidator->isValid($extension)) {
-                $filename = $fileId . $extension;
+                $filename = mt_rand() . $extension;
             } else {
-                $filename = $fileId;
+                $filename = mt_rand();
             }
         }
         
