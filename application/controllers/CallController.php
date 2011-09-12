@@ -21,7 +21,7 @@ class CallController extends Zend_Controller_Action
         $calls = Ml_Model_Calls::getInstance();
         $form = $calls->form();
         
-        $credits = Ml_Credits::getInstance();
+        $credits = Ml_Model_Credits::getInstance();
         
         $this->view->callForm = $form;
     }

@@ -19,7 +19,7 @@ class CreditsController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $credits = Ml_Credits::getInstance();
+        $credits = Ml_Model_Credits::getInstance();
         
         $coupons = Ml_Model_Coupons::getInstance();
         
@@ -58,7 +58,7 @@ class CreditsController extends Zend_Controller_Action
         
         $page = $request->getUserParam("page");
         
-        $credits = Ml_Credits::getInstance();
+        $credits = Ml_Model_Credits::getInstance();
         $paginator = $credits->history($signedUserInfo['id'], $config['orders']['perPage'], $page);
         
         //Test if there is enough pages or not
@@ -82,7 +82,7 @@ class CreditsController extends Zend_Controller_Action
         
         $orderPid = $request->getUserParam("order_pid");
         
-        $credits = Ml_Credits::getInstance();
+        $credits = Ml_Model_Credits::getInstance();
         
         $order = $credits->getByPId($orderPid);
         

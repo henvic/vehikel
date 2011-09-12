@@ -1,6 +1,6 @@
 <?php
 
-class Ml_Credits extends Ml_Model_Db
+class Ml_Model_Credits extends Ml_Model_Db
 {
     const cents_USD = "cents_usd";
     
@@ -186,7 +186,7 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
                 //using fetchRow 'cause 1 result is enough
                 $isItUsed = $this->fetchRow($this->select()
                 ->where("binary `uid` = ?", $uid)
-                ->where("reason_type = ?", Ml_Credits::COUPON_REDEEM)
+                ->where("reason_type = ?", Ml_Model_Credits::COUPON_REDEEM)
                 ->where("binary `reason_id` = ?", $couponData['id']));
                 
                 if (is_object($isItUsed)) {

@@ -32,7 +32,7 @@ $orderCurrency = new Zend_Currency(
 <td><?php if (!isset($this->order)): ?>
 <a href="<?php echo $this->url(array("order_pid" => $order['pid']), "order"); ?>">
 <?php endif; ?>
-<?php echo $this->escape(Ml_Credits::printFormatedUUId($order['pid'])); ?>
+<?php echo $this->escape(Ml_Model_Credits::printFormatedUUId($order['pid'])); ?>
 <?php
 if (isset($this->order)):
 ?></a>

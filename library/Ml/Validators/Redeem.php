@@ -60,10 +60,10 @@ class Ml_Validator_Redeem extends Zend_Validate_Abstract
         
         $couponData = $row->toArray();
         if (! $couponData['unique_use']) {
-            $credits = Ml_Credits::getInstance();
+            $credits = Ml_Model_Credits::getInstance();
             $isItUsed = $credits->fetchRow($credits->select()
                 ->where("uid = ?", $signedUserInfo['id'])
-                ->where("reason_type = ?", Ml_Credits::COUPON_REDEEM)
+                ->where("reason_type = ?", Ml_Model_Credits::COUPON_REDEEM)
                 ->where("reason_id = ?", $couponData['id']));
             
             if (is_object($isItUsed)) {
