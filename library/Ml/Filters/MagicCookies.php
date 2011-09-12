@@ -15,6 +15,6 @@ class Ml_Filter_MagicCookies implements Zend_Filter_Interface
 {
     public function filter ($value)
     {
-        return Ml_MagicCookies::getLast();
+        return Ml_Model_MagicCookies::getLast();
     }
 }

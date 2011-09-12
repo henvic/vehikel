@@ -65,7 +65,7 @@ class Ml_Form_Api_Key extends Zend_Form
                 )
         ));
         
-        $this->addElement(Ml_MagicCookies::formElement());
+        $this->addElement(Ml_Model_MagicCookies::formElement());
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'Submit!',

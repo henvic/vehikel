@@ -10,7 +10,7 @@ class Ml_Form_Api_Authorize extends Zend_Form
         
         $this->setMethod('post');
         
-        $this->addElement(Ml_MagicCookies::formElement());
+        $this->addElement(Ml_Model_MagicCookies::formElement());
         
         $this->addElement('submit', 'allow', array(
             'label'    => 'Yes!',

@@ -21,7 +21,7 @@ class TwitterController extends Zend_Controller_Action
         $request = $this->getRequest();
         $params = $request->getParams();
         
-        $twitter = Ml_Twitter::getInstance();
+        $twitter = Ml_Model_Twitter::getInstance();
         
         $twitterForm = $twitter->form();
         

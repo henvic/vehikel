@@ -20,11 +20,11 @@ class AccountController extends Zend_Controller_Action
         
         $config = $registry->get("config");
         
-        $people = Ml_People::getInstance();
+        $people = Ml_Model_People::getInstance();
         
-        $profile = new Ml_Profile();
+        $profile = new Ml_Model_Profile();
         
-        $account = new Ml_Account();
+        $account = new Ml_Model_Account();
         
         $form = $account->settingsForm();
         
@@ -91,7 +91,7 @@ class AccountController extends Zend_Controller_Action
                     
                     if (! empty($changeProfileData)) {
                         if (isset($changeProfileData['about'])) {
-                            $purifier = Ml_HtmlPurifier::getInstance();
+                            $purifier = Ml_Model_HtmlPurifier::getInstance();
                             
                             $changeProfileData['about_filtered'] =
                             $purifier->purify($changeProfileData['about']);
@@ -113,7 +113,7 @@ class AccountController extends Zend_Controller_Action
             
             if (isset($changeData['email'])) {
                 //changeEmail table
-                $emailChange = new Ml_EmailChange();
+                $emailChange = new Ml_Model_EmailChange();
                 
                 $securitycode =
                 $emailChange->askNew($signedUserInfo['id'], $changeData['email'], $signedUserInfo['name']);
@@ -160,7 +160,7 @@ class AccountController extends Zend_Controller_Action
         
         $params = $request->getParams();
         
-        $twitter = Ml_Twitter::getInstance();
+        $twitter = Ml_Model_Twitter::getInstance();
         
         $twitterObj = new EpiTwitter($twitterConf['key'], $twitterConf['secret']);
         
@@ -223,8 +223,8 @@ class AccountController extends Zend_Controller_Action
         
         $signedUserInfo = $registry->get("signedUserInfo");
         
-        $picture = new Ml_PictureUpload();
-        $people = Ml_People::getInstance();
+        $picture = new Ml_Model_PictureUpload();
+        $people = Ml_Model_People::getInstance();
         
         $form = $picture->pictureForm();
         

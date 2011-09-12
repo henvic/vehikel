@@ -1,5 +1,5 @@
 <?php
-class Ml_Tags extends Ml_Db
+class Ml_Model_Tags extends Ml_Model_Db
 {
     /**
      * Singleton instance

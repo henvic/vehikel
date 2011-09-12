@@ -19,7 +19,7 @@ class UserfeedController extends Zend_Controller_Action
         
         $userInfo = $registry->get("userInfo");
         
-        $share = Ml_Share::getInstance();
+        $share = Ml_Model_Share::getInstance();
         
         $paginator = $share->getPages($userInfo['id'], 20, 1);
         
@@ -28,7 +28,7 @@ class UserfeedController extends Zend_Controller_Action
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
         
-        $doc = new Ml_Dom();
+        $doc = new Ml_Model_Dom();
         $doc->formatOutput = true;
         $doc->encoding = "utf-8";
         

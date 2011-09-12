@@ -20,7 +20,7 @@ class LoginController extends Zend_Controller_Action
         
         $config = $registry->get("config");
         
-        $credential = Ml_Credential::getInstance();
+        $credential = Ml_Model_Credential::getInstance();
         
         $redirLink = $credential->checkLinkToRedirect();
         
@@ -68,9 +68,9 @@ class LoginController extends Zend_Controller_Action
         $config = $registry->get("config");
         $sessionConfig = $config['resources']['session'];
         
-        Ml_AntiAttack::loadRules();
-        $credential = Ml_Credential::getInstance();
-        $log = Ml_Log::getInstance();
+        Ml_Model_AntiAttack::loadRules();
+        $credential = Ml_Model_Credential::getInstance();
+        $log = Ml_Model_Log::getInstance();
         
         if ($auth->hasIdentity()) {
             return $this->_forward("goback");
@@ -79,7 +79,7 @@ class LoginController extends Zend_Controller_Action
         $request = $this->getRequest();
         $form = $credential->loginForm();
         
-        if (Ml_AntiAttack::ensureHuman()) {
+        if (Ml_Model_AntiAttack::ensureHuman()) {
             $ensureHuman = true;
         } else {
             $ensureHuman = false;
@@ -100,7 +100,7 @@ class LoginController extends Zend_Controller_Action
         //validation worked. Notice that it is only useful when
         //the captcha is required.
         if ($form->isValid($request->getPost())) {//@see below
-            $session = Ml_Session::getInstance();
+            $session = Ml_Model_Session::getInstance();
             
             //rememberMe and ForgetMe already regenerates the ID
             if ($form->getElement("remember_me")->isChecked()) {

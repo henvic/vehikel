@@ -66,7 +66,7 @@ class IndexControllerTest extends ControllerTestCase
 //    
 //    public function testCredential()
 //    {
-//        Ml_Credential::getInstance();
+//        Ml_Model_Credential::getInstance();
 //        return true;
 //    }
 //}

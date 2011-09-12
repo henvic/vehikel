@@ -37,7 +37,7 @@ class Ml_Validator_Redeem extends Zend_Validate_Abstract
             return false;
         }
         
-        $coupons = new Ml_Coupons();
+        $coupons = new Ml_Model_Coupons();
         
         $select = $coupons->select()
         ->where("hash = ?", mb_strtolower($value))

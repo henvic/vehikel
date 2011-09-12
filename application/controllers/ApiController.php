@@ -15,7 +15,7 @@ class ApiController extends Zend_Controller_Action
         
         $registry = Zend_Registry::getInstance();
         
-        $api = Ml_Api::getInstance();
+        $api = Ml_Model_Api::getInstance();
         
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
@@ -76,7 +76,7 @@ class ApiController extends Zend_Controller_Action
         
         $store = OAuthStore::instance();
         
-        $api = Ml_Api::getInstance();
+        $api = Ml_Model_Api::getInstance();
         
         if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
@@ -114,7 +114,7 @@ class ApiController extends Zend_Controller_Action
         
         $store = OAuthStore::instance();
         
-        $api = Ml_Api::getInstance();
+        $api = Ml_Model_Api::getInstance();
         
         if (! Zend_Auth::getInstance()->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
@@ -160,7 +160,7 @@ class ApiController extends Zend_Controller_Action
         
         $store = OAuthStore::instance();
         
-        $api = Ml_Api::getInstance();
+        $api = Ml_Model_Api::getInstance();
         
         if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());

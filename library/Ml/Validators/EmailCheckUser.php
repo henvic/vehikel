@@ -17,7 +17,7 @@ class Ml_Validator_EmailCheckUser extends Zend_Validate_Abstract
     {
         $auth = Zend_Auth::getInstance();
         
-        $people = Ml_People::getInstance();
+        $people = Ml_Model_People::getInstance();
         
         $this->_setValue($value);
  

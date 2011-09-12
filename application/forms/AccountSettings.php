@@ -74,7 +74,7 @@ class Ml_Form_AccountSettings extends Zend_Form
             'label'    => 'Save!',
         ));
         
-        $this->addElement(Ml_MagicCookies::formElement());
+        $this->addElement(Ml_Model_MagicCookies::formElement());
         
     }
 }

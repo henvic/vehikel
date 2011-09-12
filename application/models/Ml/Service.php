@@ -1,5 +1,5 @@
 <?php
-class Ml_Service
+class Ml_Model_Service
 {
     public function putString($string)
     {

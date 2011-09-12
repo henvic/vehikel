@@ -49,7 +49,7 @@ class Ml_Form_SignUp extends Zend_Form
             $this->getElement("invitecode")->setAttrib('class', 'smallfield');
         }
         
-        $this->addElement(Ml_AntiAttack::captchaElement());
+        $this->addElement(Ml_Model_AntiAttack::captchaElement());
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'Sign up!',

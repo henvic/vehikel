@@ -5,7 +5,7 @@ $registry = Zend_Registry::getInstance();
 $userInfo = $registry->get('userInfo');
 $shareInfo = $registry->get('shareInfo');
 
-$time = new Ml_Time();
+$time = new Ml_Model_Time();
 ?>
 <div id="comments">
 <?php if ($this->paginator->getTotalItemCount()): ?>
@@ -76,7 +76,7 @@ if ($this->paginator->count() > 1) {
 endif;
 if ($auth->hasIdentity()):
 if (isset($this->commentPreview)):
-$purifier = Ml_HtmlPurifier::getInstance();
+$purifier = Ml_Model_HtmlPurifier::getInstance();
 ?>
 <h3>Preview your comment</h3>
 <div id="commentPreview">

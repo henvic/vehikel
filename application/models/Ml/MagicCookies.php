@@ -8,7 +8,7 @@
  * @author henrique
  *
  */
-class Ml_MagicCookies
+class Ml_Model_MagicCookies
 {
     //number of times the magic cookie was used
     protected static $_hashQuantity = 0;
@@ -64,7 +64,7 @@ class Ml_MagicCookies
         
         //sanitizing the key for memcache
         $hexValue = preg_replace('/[^a-f0-9]/', '', $hash);
-        $memcacheSafeValue = Ml_MagicCookies::memcache_prefix . $hexValue;
+        $memcacheSafeValue = Ml_Model_MagicCookies::memcache_prefix . $hexValue;
         
         $hashInfo = $memCache->load($memcacheSafeValue);
         

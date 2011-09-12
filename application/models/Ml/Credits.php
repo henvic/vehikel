@@ -1,6 +1,6 @@
 <?php
 
-class Ml_Credits extends Ml_Db
+class Ml_Credits extends Ml_Model_Db
 {
     const cents_USD = "cents_usd";
     
@@ -103,7 +103,7 @@ class Ml_Credits extends Ml_Db
         $num2 = base_encode($rand1, self::base);
         $num3 = base_encode($rand2, self::base);
         
-        $uuid = $num1.$num2.$num3.Ml_Verhoeff::calcsum($ptime.$rand1.$rand2);
+        $uuid = $num1.$num2.$num3.Ml_Model_Verhoeff::calcsum($ptime.$rand1.$rand2);
         
         return $uuid;
     }
@@ -129,7 +129,7 @@ class Ml_Credits extends Ml_Db
      */
     public function transaction($uid, $amount, $sack, $type, $id, $overrideCreditLimit = false)
     {
-        $log = Ml_Log::getInstance();
+        $log = Ml_Model_Log::getInstance();
         if (! is_int($amount)) {
             throw new Exception("Transaction's amount must be a integer");
         }
@@ -164,8 +164,8 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
      */
     public function couponTransaction($uid, $coupon)
     {
-        $coupons = Ml_Coupons::getInstance();
-        $log = Ml_Log::getInstance();
+        $coupons = Ml_Model_Coupons::getInstance();
+        $log = Ml_Model_Log::getInstance();
         
         $this->getAdapter()->beginTransaction();
         $select = $coupons->select();

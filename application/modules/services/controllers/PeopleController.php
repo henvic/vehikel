@@ -5,13 +5,13 @@ class PeopleController extends Zend_Controller_Action
     {
         $registry = Zend_Registry::getInstance();
         
-        $service = new Ml_Service();
+        $service = new Ml_Model_Service();
         
-        $timecheck = new Ml_Timecheck();
+        $timecheck = new Ml_Model_Timecheck();
         
-        $people = new Ml_People();
+        $people = new Ml_Model_People();
         
-        $peopleDeleted = new Ml_PeopleDeleted();
+        $peopleDeleted = new Ml_Model_PeopleDeleted();
         
         $service->putString("WARNING!\n========\n");
         

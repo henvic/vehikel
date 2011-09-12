@@ -45,8 +45,8 @@ $id =  base58_decode($uri);
 
 if ($id) {
     //is it an ID?
-    $share = new Ml_Share();
-    $people = new Ml_People();
+    $share = new Ml_Model_Share();
+    $people = new Ml_Model_People();
     
     $shareInfo = $share->getById($id);
     

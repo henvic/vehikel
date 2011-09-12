@@ -13,7 +13,7 @@ class Zend_Controller_Action_Helper_VerifyIdentity extends
                 if ($authUid) {
                     $registry = Zend_Registry::getInstance();
                     
-                    $people = Ml_People::getInstance();
+                    $people = Ml_Model_People::getInstance();
                     $authedUserInfo = $people->getById($authUid);
                     
                     $registry->set("authedUserInfo", $authedUserInfo);

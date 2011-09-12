@@ -1,6 +1,6 @@
 <?php
 
-class Ml_Api
+class Ml_Model_Api
 {
 /**
      * Singleton instance

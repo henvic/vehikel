@@ -44,6 +44,6 @@ class Ml_Form_Comment extends Zend_Form
             'required' => false
         ));
         
-        $this->addElement(Ml_MagicCookies::formElement());
+        $this->addElement(Ml_Model_MagicCookies::formElement());
     }
 }

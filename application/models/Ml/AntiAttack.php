@@ -18,7 +18,7 @@
  *
  */
 
-class Ml_AntiAttack extends Ml_Db
+class Ml_Model_AntiAttack extends Ml_Model_Db
 {
     /**
      * Access forbidden.
@@ -43,7 +43,7 @@ class Ml_AntiAttack extends Ml_Db
     public static function loadRules()
     {
         $antiAttack = new self();
-        if ($antiAttack->getCode() == Ml_AntiAttack::ACCESS_FORBIDDEN) {
+        if ($antiAttack->getCode() == Ml_Model_AntiAttack::ACCESS_FORBIDDEN) {
             throw new
             Exception("You're being denying access to this resource.", 403);
         }
@@ -112,17 +112,17 @@ class Ml_AntiAttack extends Ml_Db
         //And if something happens with the connection with
         //the database, it may be handy also.
         if (! is_object($loggedMetaInfo)) {
-            $behavior = Ml_AntiAttack::ACCESS_FORBIDDEN;
+            $behavior = Ml_Model_AntiAttack::ACCESS_FORBIDDEN;
         } else {
             $loggedMetaInfoData = $loggedMetaInfo->toArray();
             $size = sizeof($loggedMetaInfoData);
             if ($size > 250) {
-                $behavior = Ml_AntiAttack::ACCESS_FORBIDDEN;
+                $behavior = Ml_Model_AntiAttack::ACCESS_FORBIDDEN;
             } else if ($size > 8) {
-                $behavior = Ml_AntiAttack::ACCESS_ENSURE_HUMAN;
+                $behavior = Ml_Model_AntiAttack::ACCESS_ENSURE_HUMAN;
             } else {
                 //It defaults to ACCESS_FREE
-                $behavior = Ml_AntiAttack::ACCESS_FREE;
+                $behavior = Ml_Model_AntiAttack::ACCESS_FREE;
             } 
         }
         

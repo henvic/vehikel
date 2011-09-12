@@ -37,7 +37,7 @@ class Ml_Validator_MagicCookies extends Zend_Validate_Abstract
         //this had to be done this way in this specific case
         $value =
         filter_input(INPUT_POST,
-         Ml_MagicCookies::hash_name, 
+         Ml_Model_MagicCookies::hash_name, 
          FILTER_UNSAFE_RAW);
         
         if (isset($_SERVER['HTTP_REFERER']) &&
@@ -51,7 +51,7 @@ class Ml_Validator_MagicCookies extends Zend_Validate_Abstract
             }
         }
         
-        $last = Ml_MagicCookies::getLast();
+        $last = Ml_Model_MagicCookies::getLast();
         
         $magicCookiesNamespace = new Zend_Session_Namespace('MagicCookies');
         
@@ -71,14 +71,14 @@ class Ml_Validator_MagicCookies extends Zend_Validate_Abstract
             return false;
         }
         
-        if (mb_strlen($hexValue) != Ml_MagicCookies::lenght) {
+        if (mb_strlen($hexValue) != Ml_Model_MagicCookies::lenght) {
             $this->_error(self::MSG_MAGIC_COOKIE_INVALID_SIZE);
             return false;
         }
         
         $auth = Zend_Auth::getInstance();
         
-        $hashInfo = Ml_MagicCookies::getHashInfo($hexValue);
+        $hashInfo = Ml_Model_MagicCookies::getHashInfo($hexValue);
         
         if (! $hashInfo) {
             $this->_error(self::MSG_MAGIC_COOKIE_INVALID);

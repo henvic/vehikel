@@ -1,6 +1,6 @@
 <?php
 
-class Ml_Time
+class Ml_Model_Time
 {
     public static function ago($date, $format = null)
     {

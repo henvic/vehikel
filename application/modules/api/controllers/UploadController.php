@@ -18,7 +18,7 @@ class UploadController extends Zend_Controller_Action
         
         $userInfo = $registry->get("authedUserInfo");
         
-        $share = new Ml_Upload();
+        $share = new Ml_Model_Upload();
         
         $uploadStatus = $share->getUploadStatus($userInfo['id']);
         
@@ -57,7 +57,7 @@ class UploadController extends Zend_Controller_Action
             if ($newFileId) {
                 $shareInfo = $share->getById($newFileId);
                 
-                $doc = new Ml_Dom();
+                $doc = new Ml_Model_Dom();
                 $doc->formatOutput = true;
                 $fileElement = $doc->createElement("file");
                 $idElement = $doc->createElement("id");
@@ -87,11 +87,11 @@ class UploadController extends Zend_Controller_Action
         
         $userInfo = $registry->get("authedUserInfo");
         
-        $share = new Ml_Upload();
+        $share = new Ml_Model_Upload();
         
         $uploadStatus = $share->getUploadStatus($userInfo['id']);
         
-        $doc = new Ml_Dom();
+        $doc = new Ml_Model_Dom();
         $doc->formatOutput = true;
         
         $rootElement = $doc->createElement("user");

@@ -7,7 +7,7 @@ class AbuseController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         $request = $this->getRequest();
         
-        $abuse = new Ml_Abuse();
+        $abuse = new Ml_Model_Abuse();
         $form = $abuse->form();
         
         if ($request->isPost() && $form->isValid($request->getPost())) {

@@ -1,5 +1,5 @@
 <?php
-class Ml_Profile extends Ml_Db
+class Ml_Model_Profile extends Ml_Model_Db
 {
     protected $_name = "profile";
 }

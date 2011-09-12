@@ -15,7 +15,7 @@ class AgendaController extends Zend_Controller_Action
     
     public function indexAction()
     {
-        $agenda = Ml_Agenda::getInstance();
+        $agenda = Ml_Model_Agenda::getInstance();
         $form = $agenda->form();
         
         $this->view->agendaForm = $form;

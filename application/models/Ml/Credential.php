@@ -1,7 +1,7 @@
 <?php
 require EXTERNAL_LIBRARY_PATH .  '/phpass-0.3/PasswordHash.php';
 
-class Ml_Credential extends Ml_Db
+class Ml_Model_Credential extends Ml_Model_Db
 {
     const PASSWORD_HASH_ITERATION_COUNT = "8";
     

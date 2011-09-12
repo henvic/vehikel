@@ -14,7 +14,7 @@ class IgnoreController extends Zend_Controller_Action
         
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
-        $ignore = Ml_Ignore::getInstance();
+        $ignore = Ml_Model_Ignore::getInstance();
         
         $request = $this->getRequest();
         

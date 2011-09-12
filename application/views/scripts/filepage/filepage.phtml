@@ -13,7 +13,7 @@ $downloadLink =
  $userInfo['alias'] . "/" . $shareInfo['id'] . "-" .
  $shareInfo['download_secret'] . "/" . $shareInfo['filename']);
 
-$favorites = Ml_Favorites::getInstance();
+$favorites = Ml_Model_Favorites::getInstance();
 $countFavorites = $favorites->count($shareInfo['id']);
 ?>
 <div class="yui-gc">
@@ -169,7 +169,7 @@ $this->twitterForm->getElement("tweet")->getDecorator("description")->setEscape(
 </ul>
 <?php
 if ($auth->getIdentity() == $userInfo['id']) {
-    echo Ml_Tags::form()->setAttrib("id", "tags-form"); 
+    echo Ml_Model_Tags::form()->setAttrib("id", "tags-form"); 
 }
 ?>
 <?php endif; ?>

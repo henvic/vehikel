@@ -27,7 +27,7 @@ class FilestreamController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $share = Ml_Share::getInstance();
+        $share = Ml_Model_Share::getInstance();
         
         $userInfo = $registry->get('userInfo');
         

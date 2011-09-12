@@ -5,7 +5,7 @@ $config = $registry->get("config");
 $this->headTitle("Invites for the Plifk experience", "SET");
 ?>
 <?php
-$invites = new Ml_Invites();
+$invites = new Ml_Model_Invites();
         
 $this->invites = $invites->get();
 

@@ -22,7 +22,7 @@ class Ml_Form_Tweet extends Zend_Form
                 )
         ));
         
-        $this->addElement(Ml_MagicCookies::formElement());
+        $this->addElement(Ml_Model_MagicCookies::formElement());
         
         $this->addElement('submit', 'tweetSubmit', array(
             'label'    => 'Tweet!',

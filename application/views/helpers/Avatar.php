@@ -12,7 +12,7 @@ class Ml_View_Helper_avatar extends Zend_View_Helper_Abstract
      {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
-        $picture = Ml_Picture::getInstance();
+        $picture = Ml_Model_Picture::getInstance();
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
         if (isset($person['people_deleted.id']) &&

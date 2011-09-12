@@ -19,9 +19,9 @@ class AccountdeleteController extends Zend_Controller_Action
         $registry = Zend_Registry::getInstance();
         $auth = Zend_Auth::getInstance();
         
-        $credential = Ml_Credential::getInstance();
+        $credential = Ml_Model_Credential::getInstance();
         
-        $peopleDeleted = Ml_PeopleDeleted::getInstance();
+        $peopleDeleted = Ml_Model_PeopleDeleted::getInstance();
         
         $signedUserInfo = $registry->get("signedUserInfo");
         

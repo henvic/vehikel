@@ -39,8 +39,8 @@ class Ml_Form_Login extends Zend_Form
         $this->addElement('checkbox', 'remember_me', array(
             'label'    => 'Remember me'));
         
-        if (Ml_AntiAttack::ensureHuman()) {
-            $this->addElement(Ml_AntiAttack::captchaElement());
+        if (Ml_Model_AntiAttack::ensureHuman()) {
+            $this->addElement(Ml_Model_AntiAttack::captchaElement());
         }
         
         $login = $this->addElement('submit', 'login', array(

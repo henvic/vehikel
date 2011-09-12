@@ -1,6 +1,6 @@
 <?php
 
-class Ml_Account
+class Ml_Model_Account
 {
     public function settingsForm()
     {

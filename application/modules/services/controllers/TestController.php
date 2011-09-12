@@ -4,7 +4,7 @@ class TestController extends Zend_Controller_Action
 {
     public function addapiserverAction()
     {
-        $service = new Ml_Service();
+        $service = new Ml_Model_Service();
         
         $userId = $service->getInput("User ID");
         $consumerKey = $service->getInput("Consumer key");
@@ -33,7 +33,7 @@ class TestController extends Zend_Controller_Action
     
     public function delapiserverAction()
     {
-        $service = new Ml_Service();
+        $service = new Ml_Model_Service();
         
         $userId = $service->getInput("User ID");
         $consumerKey = $service->getInput("Consumer key");
@@ -47,7 +47,7 @@ class TestController extends Zend_Controller_Action
     
     public function listapiserversAction()
     {
-        $service = new Ml_Service();
+        $service = new Ml_Model_Service();
         
         $userId = $service->getInput("User ID");
         
@@ -62,7 +62,7 @@ class TestController extends Zend_Controller_Action
     
     public function requestapiauthAction()
     {
-        $service = new Ml_Service();
+        $service = new Ml_Model_Service();
         
         $userId = $service->getInput("User ID");
         
@@ -101,7 +101,7 @@ class TestController extends Zend_Controller_Action
     
     public function exchangeapitokenAction()
     {
-        $service = new Ml_Service();
+        $service = new Ml_Model_Service();
         
         $this->_helper->loadOauthstore->setinstance();
         
@@ -130,7 +130,7 @@ class TestController extends Zend_Controller_Action
     
     public function apisignedrequestAction()
     {
-        $service = new Ml_Service();
+        $service = new Ml_Model_Service();
         
         $this->_helper->loadOauthstore->setinstance();
         
@@ -173,7 +173,7 @@ class TestController extends Zend_Controller_Action
     
     public function testingAction()
     {
-        $favorites = Ml_Favorites::getInstance();
+        $favorites = Ml_Model_Favorites::getInstance();
         
         $favorites->getUserPage(1, 1, 1);
     }

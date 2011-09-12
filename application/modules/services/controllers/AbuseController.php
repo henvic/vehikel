@@ -3,8 +3,8 @@ class AbuseController extends Zend_Controller_Action
 {
     public function getAction()
     {
-        $service = new Ml_Service();
-        $abuse = new Ml_Abuse();
+        $service = new Ml_Model_Service();
+        $abuse = new Ml_Model_Abuse();
         
         $select = $abuse->select();
         

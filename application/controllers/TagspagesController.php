@@ -12,7 +12,7 @@ class TagspagesController extends Zend_Controller_Action
         
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
-        $tags = Ml_Tags::getInstance();
+        $tags = Ml_Model_Tags::getInstance();
         
         $request = $this->getRequest();
         
@@ -48,7 +48,7 @@ class TagspagesController extends Zend_Controller_Action
         
         $userInfo = $registry->get("userInfo");
         
-        $tags = Ml_Tags::getInstance();
+        $tags = Ml_Model_Tags::getInstance();
         
         $this->view->taglist = $tags->getUserTags($userInfo['id']);
     }

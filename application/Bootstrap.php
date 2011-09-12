@@ -24,14 +24,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $memCache = new Zend_Cache_Core(array('automatic_serialization' => true));
         $memCache->setBackend(new Zend_Cache_Backend_Memcached($memcacheConfig));
         $registry->set("memCache", $memCache);
-        
-        Zend_Loader_Autoloader::getInstance()->registerNamespace('Ml_');
-        
-        $resourceLoader =
-        new Zend_Loader_Autoloader_Resource(array('basePath' => APPLICATION_PATH,
-        'namespace' => 'Ml'));
-        
-        $resourceLoader->addResourceType('form', 'forms/', 'Form');
     }
     
     protected function _initDatabase()

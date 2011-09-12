@@ -5,13 +5,13 @@ class SharesController extends Zend_Controller_Action
     {
         $registry = Zend_Registry::getInstance();
         
-        $service = new Ml_Service();
+        $service = new Ml_Model_Service();
         
-        $timecheck = new Ml_Timecheck();
+        $timecheck = new Ml_Model_Timecheck();
         
-        $share = new Ml_Upload();
+        $share = new Ml_Model_Upload();
         
-        $people = new Ml_People();
+        $people = new Ml_Model_People();
         
         $service->putString("WARNING!\n========\n");
         

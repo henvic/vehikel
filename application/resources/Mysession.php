@@ -22,12 +22,12 @@ class Mysession extends Zend_Application_Resource_ResourceAbstract
         }
         
         if ($auth->hasIdentity()) {
-            $people = Ml_People::getInstance();
+            $people = Ml_Model_People::getInstance();
             $signedUserInfo = $people->getById($auth->getIdentity());
             $registry->set('signedUserInfo', $signedUserInfo);
         }
         
-        $globalHash = Ml_MagicCookies::getInstance()->getLast(true);
+        $globalHash = Ml_Model_MagicCookies::getInstance()->getLast(true);
         $registry->set("globalHash", $globalHash);
     }
 }

@@ -6,7 +6,7 @@
 
 require_once LIBRARY_PATH . '/phMagick/MODIFIEDphMagick.php';
 
-class Ml_PictureUpload extends Ml_Picture
+class Ml_Model_PictureUpload extends Ml_Model_Picture
 {
     public function pictureForm()
     {
@@ -46,7 +46,7 @@ class Ml_PictureUpload extends Ml_Picture
     {
         $this->deleteFiles($userInfo);
         
-        $people = Ml_People::getInstance();
+        $people = Ml_Model_People::getInstance();
         
         $people->update(array("avatarInfo" => serialize(array())), $people->getAdapter()->quoteInto("id = ?", $userInfo['id']));
         
@@ -58,7 +58,7 @@ class Ml_PictureUpload extends Ml_Picture
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
-        $people = Ml_People::getInstance();
+        $people = Ml_Model_People::getInstance();
         
         $image = new phMagick($originalfile);
         

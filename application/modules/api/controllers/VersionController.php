@@ -8,7 +8,7 @@ class VersionController extends Zend_Controller_Action
         
         $apiConfig = $config['api'];
         
-        $doc = new Ml_Dom();
+        $doc = new Ml_Model_Dom();
         $doc->formatOutput = true;
         
         $apiVersion = $doc->createElement("version");

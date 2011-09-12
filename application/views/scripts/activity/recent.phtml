@@ -6,7 +6,7 @@ $registry = Zend_Registry::getInstance();
 $signedUserInfo = $registry->get("signedUserInfo");
 
 
-$recent = new Ml_Recent();
+$recent = new Ml_Model_Recent();
 $comments = $recent->commentsInSharesOf($auth->getIdentity());
 $uploads = $recent->contactsUploads($auth->getIdentity());
 ?>

@@ -12,7 +12,7 @@ class Ml_View_Helper_avatarprofile extends Zend_View_Helper_Abstract
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
-        $picture = Ml_Picture::getInstance();
+        $picture = Ml_Model_Picture::getInstance();
         
         $uid = $person['id'];
         $alias = $person['alias'];

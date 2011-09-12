@@ -32,6 +32,6 @@ class Ml_Form_Picture extends Zend_Form
         
         $this->getElement("delete")->setAttrib("class", "likelink");
         
-        $this->addElement(Ml_MagicCookies::formElement());
+        $this->addElement(Ml_Model_MagicCookies::formElement());
     }
 }

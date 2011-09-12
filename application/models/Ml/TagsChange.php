@@ -2,7 +2,7 @@
 
 require_once EXTERNAL_LIBRARY_PATH . '/normal/UtfNormal.php';
 
-class Ml_TagsChange extends Ml_Tags
+class Ml_Model_TagsChange extends Ml_Model_Tags
 {
     /**
      * RawFilter takes a string and process it

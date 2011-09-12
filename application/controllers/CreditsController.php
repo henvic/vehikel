@@ -21,7 +21,7 @@ class CreditsController extends Zend_Controller_Action
         
         $credits = Ml_Credits::getInstance();
         
-        $coupons = Ml_Coupons::getInstance();
+        $coupons = Ml_Model_Coupons::getInstance();
         
         $redeemForm = $coupons->redeemForm();
         
@@ -92,7 +92,7 @@ class CreditsController extends Zend_Controller_Action
         }
         
         if ($order['reason_type'] == 'redeem') {
-            $coupons = Ml_Coupons::getInstance();
+            $coupons = Ml_Model_Coupons::getInstance();
             $this->view->orderCoupon = $coupons->getById($order['reason_id']);
         }
         

@@ -1,5 +1,5 @@
 <?php
-class Ml_Ignore extends Ml_Db
+class Ml_Model_Ignore extends Ml_Model_Db
 {
 /**
      * Singleton instance
@@ -51,8 +51,8 @@ class Ml_Ignore extends Ml_Db
     
     public function set($uid, $ignoreUid)
     {
-        $contacts = Ml_Contacts::getInstance();
-        $favorites = Ml_Favorites::getInstance();
+        $contacts = Ml_Model_Contacts::getInstance();
+        $favorites = Ml_Model_Favorites::getInstance();
         
         $this->getAdapter()->beginTransaction();
         

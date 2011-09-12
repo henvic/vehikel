@@ -21,7 +21,7 @@ class Ml_Form_DeleteAccount extends Zend_Form
         $this->addElement('hash', 'no_csrf_foo', 
         array('salt' => 'K*#%JQk74#$*%Ĉ#%R*b', 'timeout' => 600));
         
-        $this->addElement(Ml_AntiAttack::captchaElement());
+        $this->addElement(Ml_Model_AntiAttack::captchaElement());
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'Delete Account',

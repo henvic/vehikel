@@ -35,7 +35,7 @@ class FavoritesController extends Zend_Controller_Action
         $request = $this->getRequest();
         $params = $request->getParams();
         
-        $favorites = Ml_Favorites::getInstance();
+        $favorites = Ml_Model_Favorites::getInstance();
         if ($auth->hasIdentity() && $auth->getIdentity() != $userInfo['id']) {
             $favoriteForm = $favorites->form();
             if ($request->isPost() && $favoriteForm->isValid($request->getPost())) {
@@ -74,8 +74,8 @@ class FavoritesController extends Zend_Controller_Action
         
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
-        $favorites = Ml_Favorites::getInstance();
-        $people = Ml_People::getInstance();
+        $favorites = Ml_Model_Favorites::getInstance();
+        $people = Ml_Model_People::getInstance();
         
         $request = $this->getRequest();
         
@@ -102,9 +102,9 @@ class FavoritesController extends Zend_Controller_Action
         
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
-        $favorites = new Ml_Favorites();
-        $share = Ml_Share::getInstance();
-        $people = Ml_People::getInstance();
+        $favorites = new Ml_Model_Favorites();
+        $share = Ml_Model_Share::getInstance();
+        $people = Ml_Model_People::getInstance();
         
         $request = $this->getRequest();
         

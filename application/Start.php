@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set(getEnv("DEFAULT_TIMEZONE"));
+
 defined('EXTERNAL_LIBRARY_PATH')
     or define('EXTERNAL_LIBRARY_PATH',
     realpath(getenv('EXTERNAL_LIBRARY_PATH')));
@@ -24,19 +26,21 @@ defined('PUBLIC_PATH')
 defined('LIBRARY_PATH')
     or define('LIBRARY_PATH', realpath(APPLICATION_PATH.'/../library'));
 
-
 // don't use get_include_path() here to include the default include path of the
 // server so you always know exactly what's loaded or not
 set_include_path(implode(PATH_SEPARATOR,
-    array(EXTERNAL_LIBRARY_PATH, LIBRARY_PATH,
-    APPLICATION_PATH . '/models',
-    APPLICATION_PATH . '/forms')));
-
-
-date_default_timezone_set(getEnv("DEFAULT_TIMEZONE"));
+array(EXTERNAL_LIBRARY_PATH, LIBRARY_PATH)));
 
 require EXTERNAL_LIBRARY_PATH . '/Zend/Loader/Autoloader.php';
-Zend_Loader_Autoloader::getInstance();
+
+Zend_Loader_Autoloader::getInstance()->registerNamespace('Ml_');
+
+$resourceLoader =
+new Zend_Loader_Autoloader_Resource(array('basePath' => APPLICATION_PATH,
+'namespace' => 'Ml'));
+
+$resourceLoader->addResourceType('form', 'forms/', 'Form')
+->addResourceType('models', 'models/ML/', 'Model');
 
 require EXTERNAL_LIBRARY_PATH . '/Zend/Registry.php';
 require EXTERNAL_LIBRARY_PATH . '/Zend/Cache/Core.php';

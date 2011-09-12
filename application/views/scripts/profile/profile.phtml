@@ -4,8 +4,8 @@ $auth = Zend_Auth::getInstance();
 $registry = Zend_Registry::getInstance();
 $config = $registry->get("config");
 
-$profile = new Ml_Profile();
-$contacts = Ml_Contacts::getInstance();
+$profile = new Ml_Model_Profile();
+$contacts = Ml_Model_Contacts::getInstance();
 
 $userInfo = $registry->get("userInfo");
 
@@ -26,7 +26,7 @@ if ($auth->hasIdentity() && $auth->getIdentity() != $userInfo['id']) {
         '</b> as a contact (<a href="' . $this->url(array("username" => $userInfo['alias']),
         "contact_relationship").'" rel="nofollow">change?</a>).</li>' . "\n";
     } else {
-        $ignore = Ml_Ignore::getInstance();
+        $ignore = Ml_Model_Ignore::getInstance();
         $ignoreStatus = $ignore->status($auth->getIdentity(), $userInfo['id']);
         
         if (isset($ignoreStatus['ignore'])) {

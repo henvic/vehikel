@@ -33,7 +33,7 @@ class Ml_Form_Abuse extends Zend_Form
         ));
         
         if (! $auth->hasIdentity()) {
-            $this->addElement(Ml_AntiAttack::captchaElement());
+            $this->addElement(Ml_Model_AntiAttack::captchaElement());
         }
         
         $this->addElement('submit', 'report_abuse', array(

@@ -1,6 +1,6 @@
 <?php
 
-class Ml_Picture
+class Ml_Model_Picture
 {
     /** Explantion for the $sizes array data:
      * 0: urihelper: for the links, i.e., /pictures/<id>/s is for the small pic
