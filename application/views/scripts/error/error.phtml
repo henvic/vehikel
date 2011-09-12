@@ -35,9 +35,9 @@ if ($this->statusCode == 404 && isset($_SERVER['REQUEST_URI'])) {
 <div class="yui-u">
 <h3>Request Parameters:</h3>
 <pre><?php echo var_export($this->request->getParams(), true); ?></pre>
-<h3>Stack trace:</h3>
-<pre><?php echo $this->escape($this->exception->getTraceAsString()); ?></pre>
 </div>
+<h3>Stack trace:</h3>
+<pre><?php echo str_replace(array(": ", "#"), array(":<br />   ", "<br />#"), $this->escape($this->exception->getTraceAsString())); ?>
 </div>
 <?php endif; ?>
 <h2><?php echo $headtitle; ?></h2>
