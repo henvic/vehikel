@@ -15,12 +15,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             $this->registerPluginResource("Uri");
         }
         
-        $config_array = $this->getOptions();
+        $configArray = $this->getOptions();
         
-        $registry->set('config', $config_array);
+        $registry->set('config', $configArray);
+        
+        $memcacheConfig = $configArray['cache']['backend']['memcache']['servers']['global'];
         
         $memCache = new Zend_Cache_Core(array('automatic_serialization' => true));
-        $memCache->setBackend(new Zend_Cache_Backend_Memcached($config_array['cache']['backend']['memcache']['servers']['global']));
+        $memCache->setBackend(new Zend_Cache_Backend_Memcached($memcacheConfig));
         $registry->set("memCache", $memCache);
         
         Zend_Loader_Autoloader::getInstance()->registerNamespace('Ml_');
@@ -45,6 +47,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     
     protected function _initRequest()
     {
-        require APPLICATION_PATH . '/resources/Request'.HOST_MODULE.'NotPlugin.php';
+        require APPLICATION_PATH . '/resources/Request' . HOST_MODULE . 'NotPlugin.php';
     }
 }
