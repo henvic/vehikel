@@ -15,9 +15,7 @@ class Ml_PictureUpload extends Ml_Picture
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/Picture.php';
-            
-            $form = new Form_Picture(array(
+            $form = new Ml_Form_Picture(array(
                 'action' => $router->assemble(array(), "accountpicture"),
                 'method' => 'post',
             ));

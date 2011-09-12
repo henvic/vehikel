@@ -45,9 +45,7 @@ class Ml_Recover extends Ml_Db
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/Recover.php';
-            
-            $form = new Form_Recover(array(
+            $form = new Ml_Form_Recover(array(
                 'action' => $router->assemble(array(), "recover"),
                 'method' => 'post',
             ));

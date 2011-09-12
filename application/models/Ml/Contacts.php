@@ -89,11 +89,13 @@ class Ml_Contacts extends Ml_Db
         static $form = '';
         if (! is_object($form)) {
             $registry = Zend_Registry::getInstance();
-            $userInfo = $registry->get("userInfo");
-            require APPLICATION_PATH . '/forms/Relationship.php';
             
-            $form = new Form_Relationship(array(
-                'action' => Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "contact_relationship"),
+            $router = Zend_Controller_Front::getInstance()->getRouter();
+            
+            $userInfo = $registry->get("userInfo");
+            
+            $form = new Ml_Form_Relationship(array(
+                'action' => $router->assemble(array("username" => $userInfo['alias']), "contact_relationship"),
                 'method' => 'post',
             ));
             

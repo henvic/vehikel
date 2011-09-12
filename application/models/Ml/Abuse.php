@@ -10,9 +10,7 @@ class Ml_Abuse extends Ml_Db
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/Abuse.php';
-             
-            $form = new Form_Abuse(array(
+            $form = new Ml_Form_Abuse(array(
                 'action' => $router->assemble(array(), "report_abuse"),
                 'method' => 'post',
             ));

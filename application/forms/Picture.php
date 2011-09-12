@@ -1,5 +1,6 @@
 <?php
-class Form_Picture extends Zend_Form
+
+class Ml_Form_Picture extends Zend_Form
 {
     public function init()
     {

@@ -1,5 +1,5 @@
 <?php
-class LogoutForm extends Zend_Form
+class Ml_Form_RemoveTwitter extends Zend_Form
 {
     public function init()
     {
@@ -8,12 +8,9 @@ class LogoutForm extends Zend_Form
         $this->addElementPrefixPath('Ml_Filter', 'Ml/Filters/', 
         Zend_Form_Element::FILTER);
         
-        $this->addElement('submit', 'signout', array(
-            'label'    => 'Sign out!',
-        ));
-        
-        $this->addElement('submit', 'remote_signout', array(
-            'label'    => 'Sign out all other sessions'
+        $this->addElement('submit', 'remove', array(
+            'label'    => 'Remove Twitter!',
+            'required' => true
         ));
         
         $this->addElement(Ml_MagicCookies::formElement());

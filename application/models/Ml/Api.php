@@ -45,15 +45,13 @@ class Ml_Api
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/api/apiKey.php';
-            
             if (! $consumer) {
                 $action = $router->assemble(array(), "apply_api_key");
             } else {
                 $action = $router->assemble(array("api_key" => $consumer['consumer_key']), "api_key");
             }
             
-            $form = new Form_APIkey(array(
+            $form = new Ml_Form_Api_Key(array(
                 'action' => $action,
                 'method' => 'post',
             ));
@@ -72,10 +70,9 @@ class Ml_Api
             
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/api/apiKeyDelete.php';
-            
-            $form = new Form_DeleteApiKey(array(
-                'action' => $router->assemble(array("api_key" => $consumer['consumer_key']), "api_key_delete"),
+            $form = new Ml_Form_Api_DeleteKey(array(
+                'action' => $router->assemble(array("api_key" => $consumer['consumer_key']),
+                "api_key_delete"),
                 'method' => 'post',
             ));
         }
@@ -90,9 +87,7 @@ class Ml_Api
         $registry = Zend_Registry::getInstance();
         
         if (! is_object($form)) {
-            require APPLICATION_PATH . '/forms/api/authorize.php';
-            
-            $form = new Form_authorize(array(
+            $form = new Ml_Form_Api_Authorize(array(
                 'action' => '',
                 'method' => 'post',
             ));

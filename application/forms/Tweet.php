@@ -1,5 +1,6 @@
 <?php
-class Form_Tweet extends Zend_Form
+
+class Ml_Form_Tweet extends Zend_Form
 {
     public function init()
     {

@@ -1,5 +1,5 @@
 <?php
-class Form_DeleteApiKey extends Zend_Form
+class Ml_Form_Api_DeleteKey extends Zend_Form
 {
     public function init()
     {

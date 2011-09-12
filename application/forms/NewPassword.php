@@ -1,6 +1,6 @@
 <?php
 
-class Form_NewPassword extends Zend_Form
+class Ml_Form_NewPassword extends Zend_Form
 {
     public function init()
     {

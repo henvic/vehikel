@@ -44,10 +44,9 @@ class Ml_Coupons extends Ml_Db
         
         if (! is_object($form)) {
             
-            $router = Zend_Controller_Front::getInstance()->getRouter();    
-            require APPLICATION_PATH . '/forms/Redeem.php';
+            $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            $form = new Form_Redeem(array(
+            $form = new Ml_Form_Redeem(array(
                 'action' => $router->assemble(array(), "do_order"),
                 'method' => 'post',
             ));

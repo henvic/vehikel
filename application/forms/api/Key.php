@@ -1,5 +1,5 @@
 <?php
-class Form_APIkey extends Zend_Form
+class Ml_Form_Api_Key extends Zend_Form
 {
     public function init()
     {

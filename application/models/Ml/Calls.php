@@ -46,9 +46,7 @@ class Ml_Calls extends Ml_Db
             
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/Call.php';
-             
-            $form = new Form_Call(array(
+            $form = new Ml_Form_Call(array(
                 'method' => 'post',
                 'action' => $router->assemble(array(), "call")
             

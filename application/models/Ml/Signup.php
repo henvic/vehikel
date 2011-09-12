@@ -45,9 +45,7 @@ class Ml_Signup extends Ml_Db
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/SignUp.php';
-            
-            $form = new Form_SignUp(array(
+            $form = new Ml_Form_SignUp(array(
                 'action' => $router->assemble(array(), "join"),
                 'method' => 'post',
             ));
@@ -62,9 +60,7 @@ class Ml_Signup extends Ml_Db
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/NewIdentity.php';
-            
-            $form = new Form_NewIdentity(array(
+            $form = new Ml_Form_NewIdentity(array(
                 'action' =>
                  $router->assemble(array("security_code" => $securityCode),
                  "join_emailconfirm"),

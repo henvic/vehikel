@@ -1,5 +1,5 @@
 <?php
-class Form_removeTwitter extends Zend_Form
+class Ml_Form_AddTwitter extends Zend_Form
 {
     public function init()
     {
@@ -8,8 +8,8 @@ class Form_removeTwitter extends Zend_Form
         $this->addElementPrefixPath('Ml_Filter', 'Ml/Filters/', 
         Zend_Form_Element::FILTER);
         
-        $this->addElement('submit', 'remove', array(
-            'label'    => 'Remove Twitter!',
+        $this->addElement('submit', 'connectToTwitter', array(
+            'label'    => 'Connect to Twitter!',
             'required' => true
         ));
         

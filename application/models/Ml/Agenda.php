@@ -45,9 +45,7 @@ class Ml_Agenda extends Ml_Db
         $registry = Zend_Registry::getInstance();
         
         if (! is_object($form)) {
-            require APPLICATION_PATH . '/forms/Agenda.php';
-             
-            $form = new Form_Agenda(array(
+            $form = new Ml_Form_Agenda(array(
                 'method' => 'post',
             ));
         }

@@ -50,10 +50,8 @@ class Ml_Twitter extends Ml_Db
             
             $shareInfo = $registry->get('shareInfo');
             $userInfo = $registry->get('userInfo');
-             
-            require APPLICATION_PATH . '/forms/Tweet.php';
-             
-            $form = new Form_Tweet(array('action' =>
+            
+            $form = new Ml_Form_Tweet(array('action' =>
              $router->assemble(array("username"
               => $userInfo['alias'], 
                          "share_id" => $shareInfo['id']), "sharepage_1stpage") .
@@ -238,9 +236,7 @@ class Ml_Twitter extends Ml_Db
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/removeTwitter.php';
-             
-            $form = new Form_removeTwitter(array(
+            $form = new Ml_Form_RemoveTwitter(array(
                 'action' => $router->assemble(array(), "accounttwitter"),
                 'method' => 'post',
             ));
@@ -260,9 +256,7 @@ class Ml_Twitter extends Ml_Db
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/addTwitter.php';
-             
-            $form = new Form_addTwitter(array(
+            $form = new Ml_Form_AddTwitter(array(
                 'action' => $router->assemble(array(), "accounttwitter"),
                 'method' => 'post',
             ));

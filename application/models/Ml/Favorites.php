@@ -130,9 +130,7 @@ WHERE `E`.`uid` = '33' ORDER BY `E`.`timestamp` DESC
         static $form = '';
         $registry = Zend_Registry::getInstance();
         if (! is_object($form)) {
-            require APPLICATION_PATH . '/forms/Favorite.php';
-             
-            $form = new Form_Favorite(array(
+            $form = new Ml_Form_Favorite(array(
                 'method' => 'post',
             ));
         }

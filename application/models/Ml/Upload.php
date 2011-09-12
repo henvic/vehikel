@@ -277,10 +277,8 @@ class Ml_Upload extends Ml_Share
 
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
-            
-            require APPLICATION_PATH . '/forms/Upload.php';
              
-            $form = new Form_Upload(array(
+            $form = new Ml_Form_Upload(array(
                 'action' => $router->assemble(array(), "upload"),
                 'method' => 'post',
             ));
@@ -294,9 +292,7 @@ class Ml_Upload extends Ml_Share
         static $form = '';
         
         if (! is_object($form)) {
-            require APPLICATION_PATH . '/forms/api/uploadForm.php';
-            
-            $form = new Form_Upload(array('method' => 'post',));
+            $form = new Ml_Form_Api_Upload(array('method' => 'post',));
         }
         
         return $form;
@@ -314,9 +310,7 @@ class Ml_Upload extends Ml_Share
             $shareInfo = $registry->get('shareInfo');
             $userInfo = $registry->get('userInfo');
             
-            require APPLICATION_PATH . '/forms/DeleteShare.php';
-             
-            $form = new Form_DeleteShare(array('action' =>
+            $form = new Ml_Form_DeleteShare(array('action' =>
             $router->assemble(array("username" => $userInfo['alias'],
                 "share_id" => $shareInfo['id']), "deleteshare"),
                 'method' => 'post'));
@@ -335,10 +329,8 @@ class Ml_Upload extends Ml_Share
             
             $shareInfo = $registry->get('shareInfo');
             $userInfo = $registry->get('userInfo');
-             
-            require APPLICATION_PATH . '/forms/Filepage.php';
-             
-            $form = new Form_Filepage(array('action'
+            
+            $form = new Ml_Form_Filepage(array('action'
             => $router->assemble(array("username" => $userInfo['alias'],
                 "share_id" => $shareInfo['id']), "editsharepage"),
                 'method' => 'post'));
@@ -354,11 +346,7 @@ class Ml_Upload extends Ml_Share
         static $form = '';
 
         if (! is_object($form)) {
-            require APPLICATION_PATH . '/forms/api/Setmeta.php';
-             
-            $form = new Form_Setmeta(array(
-                'method' => 'post',
-            ));
+            $form = new Ml_Form_Api_Setmeta(array('method' => 'post'));
         }
         
         return $form;

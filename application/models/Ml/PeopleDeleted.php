@@ -45,9 +45,7 @@ class Ml_PeopleDeleted extends Ml_Db
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/DeleteAccount.php';
-            
-            $form = new Form_DeleteAccount(array(
+            $form = new Ml_Form_DeleteAccount(array(
                 'action' => $router->assemble(array(), "accountdelete"),
                 'method' => 'post',
             ));

@@ -1,6 +1,6 @@
 <?php
 
-class Form_SignUp extends Zend_Form
+class Ml_Form_SignUp extends Zend_Form
 {
     public function init()
     {

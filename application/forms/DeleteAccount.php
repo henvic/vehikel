@@ -1,5 +1,5 @@
 <?php
-class Form_DeleteAccount extends Zend_Form
+class Ml_Form_DeleteAccount extends Zend_Form
 {
     public function init()
     {

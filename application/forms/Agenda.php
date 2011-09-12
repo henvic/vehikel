@@ -1,5 +1,5 @@
 <?php
-class Form_Agenda extends Zend_Form
+class Ml_Form_Agenda extends Zend_Form
 {
     public function init()
     {

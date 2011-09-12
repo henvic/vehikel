@@ -1,5 +1,5 @@
 <?php
-class Form_Tags extends Zend_Form
+class Ml_Form_Tags extends Zend_Form
 {
     public function init()
     {

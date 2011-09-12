@@ -135,13 +135,11 @@ class Ml_Comments extends Ml_Db
             } else {
                 $action = $router->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage");
             }
-             
-            require APPLICATION_PATH . '/forms/Comment.php';
             
             //we use #previewComment here because if it is not for publishment, we
             //want to preview what is there and if it is, the user will be redirected 
             //to the permalink anyway, so...
-            $form = new Form_Comment(array(
+            $form = new Ml_Form_Comment(array(
                 'action' => $action.'#commentPreview',
                 'method' => 'post',
             ));
@@ -160,9 +158,7 @@ class Ml_Comments extends Ml_Db
             $userInfo = $registry->get("userInfo");
             $shareInfo = $registry->get("shareInfo");
             
-            require APPLICATION_PATH . '/forms/DeleteComment.php';
-            
-            $form = new Form_DeleteComment(array(
+            $form = new Ml_Form_DeleteComment(array(
                 'action' => $router->assemble(array("username" =>
                  $userInfo['alias'],
                  "share_id" => $shareInfo['id'],

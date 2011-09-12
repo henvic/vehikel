@@ -48,10 +48,8 @@ class Ml_Tags extends Ml_Db
             $userInfo = $registry->get('userInfo');
             
             $router = Zend_Controller_Front::getInstance()->getRouter();
-             
-            require APPLICATION_PATH . '/forms/Tags.php';
-             
-            $form = new Form_Tags(array('action' =>
+            
+            $form = new Ml_Form_Tags(array('action' =>
             $router->assemble(array("username" => $userInfo['alias'], 
                         "share_id" => $shareInfo['id']), "sharepage_1stpage") .
                         '?addtags',
@@ -71,9 +69,7 @@ class Ml_Tags extends Ml_Db
         $registry = Zend_Registry::getInstance();
         
         if (! is_object($form)) {
-            require_once APPLICATION_PATH . '/forms/DeleteTag.php';
-             
-            $form = new Form_DeleteTag(array(
+            $form = new Ml_Form_DeleteTag(array(
                 'method' => 'post',
             ));
         }

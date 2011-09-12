@@ -1,5 +1,5 @@
 <?php
-class Form_Favorite extends Zend_Form
+class Ml_Form_Favorite extends Zend_Form
 {
     public function init()
     {

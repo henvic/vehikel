@@ -1,6 +1,6 @@
 <?php
 
-class Form_Redeem extends Zend_Form
+class Ml_Form_Redeem extends Zend_Form
 {
     public function init()
     {

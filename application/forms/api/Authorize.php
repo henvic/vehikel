@@ -1,5 +1,5 @@
 <?php
-class Form_authorize extends Zend_Form
+class Ml_Form_Api_Authorize extends Zend_Form
 {
     public function init()
     {

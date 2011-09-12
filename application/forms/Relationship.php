@@ -1,5 +1,6 @@
 <?php
-class Form_Relationship extends Zend_Form
+
+class Ml_Form_Relationship extends Zend_Form
 {
     public function init()
     {

@@ -9,9 +9,7 @@ class Ml_Account
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/AccountSettings.php';
-            
-            $form = new Form_AccountSettings(array(
+            $form = new Ml_Form_AccountSettings(array(
                 'action' => $router->assemble(array(), "account"),
                 'method' => 'post',
             ));

@@ -124,11 +124,9 @@ class Ml_Ignore extends Ml_Db
             
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/Ignore.php';
-            
             $userInfo = $registry->get("userInfo");
             
-            $form = new Form_Ignore(array(
+            $form = new Ml_Form_Ignore(array(
                 'action' => $router->assemble(array("username" =>
                  $userInfo['alias']), "contactRelationshipIgnore"),
                 'method' => 'post',

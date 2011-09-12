@@ -93,13 +93,11 @@ class Ml_Credential extends Ml_Db
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/LoginForm.php';
-            
             $action = ($config['ssl']) ? 'https://'.$config['webhostssl'] : '';
             
             $action .= $router->assemble(array(), "login");
             
-            $form = new LoginForm(array(
+            $form = new Ml_Form_Login(array(
                 'action' => $action,
                 'method' => 'post',
             ));
@@ -119,9 +117,7 @@ class Ml_Credential extends Ml_Db
             
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            require APPLICATION_PATH . '/forms/LogoutForm.php';
-            
-            $form = new LogoutForm(array(
+            $form = new Ml_Form_Logout(array(
                 'action' =>
                  'http://'.$config['webhost'] .
                   $router->assemble(array(), "logout"),
@@ -142,8 +138,6 @@ class Ml_Credential extends Ml_Db
         static $form = '';
         
         if (! is_object($form)) {
-            require APPLICATION_PATH . '/forms/NewPassword.php';
-            
             if (! $uid) {
                 $path = $router->assemble(array(), "password");
             } else {
@@ -158,7 +152,7 @@ class Ml_Credential extends Ml_Db
                 $action = $config['webroot'] . $path;
             }
             
-            $form = new Form_NewPassword(array('action' => $action,
+            $form = new Ml_Form_NewPassword(array('action' => $action,
                 'method' => 'post',
             ));
             
