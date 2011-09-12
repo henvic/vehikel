@@ -23,8 +23,6 @@ class CallController extends Zend_Controller_Action
         
         $credits = Ml_Credits::getInstance();
         
-        $credits->transaction($signedUserInfo['id'], -111, Ml_Credits::cents_USD, "transfer", "0");
-        
         $this->view->callForm = $form;
     }
 }
