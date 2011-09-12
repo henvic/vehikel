@@ -7,11 +7,11 @@
  * 
  */
 
-require 'RequestNotPlugin.php';
+require 'request.php';
 
 $router->addConfig($routerConfig, "apiroutes");
 
-$this->registerPluginResource("Api");
+$this->registerPluginResource("api");
 $this->unregisterPluginResource("session");
 $this->unregisterPluginResource("view");
 $this->unregisterPluginResource("layout");

@@ -12,7 +12,7 @@ try {
     
     $opts->parse();
 } catch (Zend_Console_Getopt_Exception $e) {
-    echo($e->getMessage() ."\n\n". $e->getUsageMessage());
+    echo($e->getMessage() . "\n\n" . $e->getUsageMessage());
     exit(1);
 }
 
@@ -25,7 +25,7 @@ $this->unregisterPluginResource("view");
 $this->unregisterPluginResource("layout");
 $this->unregisterPluginResource("session");
 
-Zend_Controller_Action_HelperBroker::addPath(APPLICATION_PATH .'/controllers/helpers');
+Zend_Controller_Action_HelperBroker::addPath(APPLICATION_PATH . '/controllers/helpers');
 
 $this->bootstrap('FrontController');
 $frontController = $this->getResource('FrontController');
@@ -48,7 +48,7 @@ if (isset($opts->a)) {
     
     $frontController->setRequest($request);
     
-    require LIBRARY_PATH."/Ml/RouteCLIModule.php";
+    require LIBRARY_PATH . "/Ml/RouteCLIModule.php";
     $frontController->setRouter(new Webf_Controller_Router_Cli());
     $frontController->setResponse(new Zend_Controller_Response_Cli());
 }

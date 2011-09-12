@@ -7,7 +7,7 @@
  * 
  */
 
-Zend_Controller_Action_HelperBroker::addPath(APPLICATION_PATH .'/controllers/helpers');
+Zend_Controller_Action_HelperBroker::addPath(APPLICATION_PATH . '/controllers/helpers');
 
 $this->bootstrap('FrontController');
 $frontController = $this->getResource('FrontController');
@@ -21,7 +21,6 @@ $router->removeDefaultRoutes();
 require LIBRARY_PATH . '/Ml/RouteModule.php';
 $compat = new Ml_Controller_Router_Route_Module(array(), $dispatcher, $request);
 $router->addRoute(HOST_MODULE, $compat);
-
 
 function getCachedIni($file)//don't use this for the Zend_Application
 {
@@ -46,4 +45,4 @@ function getCachedIni($file)//don't use this for the Zend_Application
     
 }
 
-$routerConfig = getCachedIni(APPLICATION_PATH . '/configs/'.HOST_MODULE.'Routes.ini');
+$routerConfig = getCachedIni(APPLICATION_PATH . '/configs/' . HOST_MODULE . 'Routes.ini');

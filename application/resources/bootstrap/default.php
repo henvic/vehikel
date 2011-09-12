@@ -7,7 +7,7 @@
  * 
  */
 
-require 'RequestNotPlugin.php';
+require APPLICATION_PATH . '/resources/bootstrap/request.php';
 $router->addConfig($routerConfig, "routes");
 
 $frontController->registerPlugin(new Ml_Plugins_ReservedUsernames());
@@ -25,7 +25,7 @@ $loader = new Zend_Loader_PluginLoader();
 $loader->addPrefixPath('Zend_View_Helper', EXTERNAL_LIBRARY_PATH . '/Zend/View/Helper/')
        ->addPrefixPath('Ml_View_Helper', APPLICATION_PATH . '/views/helpers');
 
-$classFileIncCache = CACHE_PATH . '/pluginDefaultLoaderCache.php';
+$classFileIncCache = CACHE_PATH . '/PluginDefaultLoaderCache.php';
 if (file_exists($classFileIncCache)) {
     require $classFileIncCache;
 }
