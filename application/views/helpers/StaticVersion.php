@@ -9,8 +9,7 @@ class Ml_View_Helper_StaticVersion extends Zend_View_Helper_Abstract
     {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
-        $designBucketAddress = $config['services']['S3']['designBucketAddress'];
-        self::$_prePath = mb_substr($designBucketAddress, 0, -1);
+        self::$_prePath = mb_substr($config['cdn'], 0, -1);
         
         require APPLICATION_PATH . "/configs/static-versions.php";
         

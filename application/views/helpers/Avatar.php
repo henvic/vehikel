@@ -38,11 +38,11 @@ class Ml_View_Helper_avatar extends Zend_View_Helper_Abstract
         $sizeInfo = $picture->getSizeInfo($size);
         
         if (! isset($alias)) {
-            //$html = '<img src="'.
-            //$config['services']['S3']['designBucketAddress'].
-            //'images/noavatar'.
-            //$sizeInfo['typeextension'].'.gif" width="'.$sizeInfo['dimension'].
-            //'" height="'.$sizeInfo['dimension'].'" class="uid-'.
+            //$html = '<img src="' .
+            //$config['cdn'] .
+            //'images/noavatar' .
+            //$sizeInfo['typeextension'].'.gif" width="'.$sizeInfo['dimension'] .
+            //'" height="'.$sizeInfo['dimension'].'" class="uid-' .
             //$uid.'" alt="" />';
             $html = '';
         } else if (! $picInfo || empty($picInfo)) {
@@ -55,7 +55,7 @@ class Ml_View_Helper_avatar extends Zend_View_Helper_Abstract
             $html = '<a href="' .
                  $router->assemble(array("username" => $alias), 
                 "filestream_1stpage") . '/"><img src="' .
-                 $config['services']['S3']['designBucketAddress'] .
+                 $config['cdn'] .
                  'images/happy-face' . $sizeInfo['typeextension'] .
                  '.png" width="' . $sizeInfo['dimension'] . '" height="' .
                  $height . '" alt="(' . $this->view->escape($alias) .
