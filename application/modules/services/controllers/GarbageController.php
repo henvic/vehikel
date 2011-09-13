@@ -95,13 +95,13 @@ class GarbageController extends Zend_Controller_Action
     
     public function cleantableolddata($tableName, $age)
     {//todo similar to this other things
-        $getModel = new Ml_Model_Db_Table();
+        $dbTable = new Ml_Model_Db_Table();
         if (empty($tableName) || ! ctype_alnum($tableName)) {
             throw new Exception("Table not given or not accepted.\n");
         }
         
-        $numDelete = $getModel->getAdapter()
-         ->delete($tableName, $getModel->getAdapter()
+        $numDelete = $dbTable->getAdapter()
+         ->delete($tableName, $dbTable->getAdapter()
          ->quoteInto("timestamp < ?", date("Y-m-d H:i:s", time()-($age))));
         
         echo "Number of rows with age > $age (seconds) deleted in $tableName: ".$numDelete."\n";
