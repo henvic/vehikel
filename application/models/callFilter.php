@@ -58,21 +58,6 @@ function base_decode($num, $alphabet) {
     return $decoded;
 }
 
-
-
-function file_size($size, $typeBytes = false)
-{
-    if (! $typeBytes) {
-        $size/=8;
-    }
-    
-    //http://snipplr.com/view/4633/convert-size-in-kb-mb-gb-/
-    $filesizename = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
-    
-    return $size ? round($size/pow(1024, ($i = floor(log($size, 1024)))), 2) . $filesizename[$i] : '0 Bytes';   
-}
-
-
 function is_natural_dbId($val)
 {
     if ((! is_natural($val)) || (strval((int) ($val)) != (string) ($val))) {

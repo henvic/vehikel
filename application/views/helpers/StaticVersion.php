@@ -18,7 +18,7 @@ class Ml_View_Helper_StaticVersion extends Zend_View_Helper_Abstract
     
     /**
      * For caching:
-     * store data with an eternal live
+     * store data with an eternal lifetime
      * so when there is a need to change it
      * save it with a new name
      * 
@@ -29,7 +29,7 @@ class Ml_View_Helper_StaticVersion extends Zend_View_Helper_Abstract
      * @param $path
      * @return path to the last version of the element
      */
-    public function staticversion($path)
+    public function staticVersion($path)
     {
         //if(APPLICATION_ENV != "production") return $path;
         return

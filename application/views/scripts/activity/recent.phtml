@@ -68,7 +68,7 @@ echo $this->escape($recent['people.alias'] . '/' . $recent['share.id']);
 ?>/"><?php
 echo $this->escape($recent['share.title']);
 ?></a> <?php
-echo file_size($recent['share.fileSize'])
+echo $this->fileSize($recent['share.fileSize'])
 ?></strong></em><br />
 by <?php echo $this->avatar($recent, "square") ?></p>
 <?php endforeach; ?>

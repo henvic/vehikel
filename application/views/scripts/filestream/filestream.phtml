@@ -81,7 +81,7 @@ if ($share['description_filtered'] && $share['description_filtered'] != $share['
 <ul>
 <li><a href="<?php echo $downloadLink; ?>" title="Get <?php
 echo $this->escape($share['filename']); ?>" rel="nofollow" class="download-link">Download</a></li>
-<li><span class="file-info"><?php echo file_size($share['fileSize'], true); ?></span></li>
+<li><span class="file-info"><?php echo $this->fileSize($share['fileSize'], true); ?></span></li>
 <li><span class="file-info <?php if (isset($warningFileType)): ?>warning<?php endif; ?>"><?php
 echo $fileTypeEscaped; ?></span></li>
 </ul>

@@ -24,13 +24,13 @@ $print_available = round(($this->uploadStatus['bandwidth']['remainingbytes']/$th
 <div class="used" style="width: <?php echo round((1-$this->uploadStatus['bandwidth']['remainingbytes']/$this->uploadStatus['bandwidth']['maxbytes'])*100) ?>%;"><?php if($print_available <= 85) echo 100-$print_available."%"; ?></div>
 <div class="available" style="padding-left: <?php echo round((1-$this->uploadStatus['bandwidth']['remainingbytes']/$this->uploadStatus['bandwidth']['maxbytes'])*100) ?>%; width: <?php echo round(($this->uploadStatus['bandwidth']['remainingbytes']/$this->uploadStatus['bandwidth']['maxbytes'])*100) ?>%;"><?php if($print_available >= 15) echo $print_available."%"; ?></div>
 </div>
-<small id="bandwidthinfo"><?php echo file_size($this->uploadStatus['bandwidth']['remainingbytes'], true) ?> of <?php echo file_size($this->uploadStatus['bandwidth']['maxbytes'], true) ?> still available for use this month.</small>
+<small id="bandwidthinfo"><?php echo $this->fileSize($this->uploadStatus['bandwidth']['remainingbytes'], true) ?> of <?php echo $this->fileSize($this->uploadStatus['bandwidth']['maxbytes'], true) ?> still available for use this month.</small>
 </div>
 <div class="yui-u">
 <h3>How it works</h3>
 <p>Each month you have some bandwidth to use for uploading your files.</p>
 <h3>Your uploads</h3>
-<p>You can upload files up to <?php echo file_size($this->uploadStatus['filesize']['maxbytes'], true) ?> each one, four at a time.</p>
+<p>You can upload files up to <?php echo $this->fileSize($this->uploadStatus['filesize']['maxbytes'], true) ?> each one, four at a time.</p>
 </div>
 </div>
 <?php else: ?>

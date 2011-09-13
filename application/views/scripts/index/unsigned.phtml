@@ -20,7 +20,7 @@ Get your www.plifk.com/username</p>
 <li class="join"><p><a href="<?php echo $this->url(array(), "join")?>">Join&nbsp;us</a> in just three steps.</p></li>
 <li class="tour"><p><a href="/tour">Take the tour</a>, check it out.</p></li>
 <li class="about"><p>Upload up to <?php
-echo file_size($config['share']['monthlyLimit'] * 1024 * 1024 * 8);
+echo $this->fileSize($config['share']['monthlyLimit'] * 1024 * 1024 * 8);
 ?> <em>every month.</em></p></li>
 </ul>
 </div>

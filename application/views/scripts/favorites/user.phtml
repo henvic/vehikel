@@ -28,7 +28,7 @@ echo $this->url(array("username" => $fav['people.alias'],
 if ($fav['share.filename'] != $fav['share.title']): ?> <em><?php
 echo $this->escape($fav['share.filename']);
 ?></em><?php endif; ?> <?php
-echo file_size($fav['share.fileSize']);
+echo $this->fileSize($fav['share.fileSize']);
 ?> by <a href="<?php
 echo $this->url(array("username" => $fav['people.alias']),
 "filestream_1stpage");
