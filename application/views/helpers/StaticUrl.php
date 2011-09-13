@@ -13,7 +13,7 @@ class Ml_View_Helper_StaticUrl extends Zend_View_Helper_Abstract
      * @param  string $path the path
      * @return string baseurl/$path
      */
-    public function StaticUrl($path)
+    public function staticUrl($path)
     {
         $frontController = Zend_Controller_Front::getInstance();
         

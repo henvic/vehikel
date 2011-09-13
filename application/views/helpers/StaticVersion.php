@@ -31,7 +31,6 @@ class Ml_View_Helper_StaticVersion extends Zend_View_Helper_Abstract
      */
     public function staticVersion($path)
     {
-        //if(APPLICATION_ENV != "production") return $path;
         return
         self::$_prePath.((!array_key_exists($path, self::$_cacheFiles))
         ? 

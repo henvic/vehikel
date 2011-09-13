@@ -1,5 +1,5 @@
 <?php
-class Ml_View_Helper_randomimages extends Zend_View_Helper_Abstract
+class Ml_View_Helper_RandomImages extends Zend_View_Helper_Abstract
 {
     /**
      * 
@@ -14,7 +14,7 @@ class Ml_View_Helper_randomimages extends Zend_View_Helper_Abstract
      * @todo weight
      * 
      */
-    public function randomimages($images, $defaultSize = false)
+    public function randomImages($images, $defaultSize = false)
     {
         $image = $images[mt_rand(0, sizeof($images)-1)];
         

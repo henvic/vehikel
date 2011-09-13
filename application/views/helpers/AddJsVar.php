@@ -1,7 +1,7 @@
 <?php
-class Ml_View_Helper_addjsvar extends Zend_View_Helper_Abstract
+class Ml_View_Helper_AddJsVar extends Zend_View_Helper_Abstract
 {
-    public function addjsvar ($key, $value)
+    public function addJsVar ($key, $value)
     {
         $registry = Zend_Registry::getInstance();
         

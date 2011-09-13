@@ -5,7 +5,7 @@
  * @author henrique
  *
  */
-class Ml_View_Helper_linksList extends Zend_View_Helper_Abstract
+class Ml_View_Helper_LinksList extends Zend_View_Helper_Abstract
 {
     /**
      * Generate a URL List

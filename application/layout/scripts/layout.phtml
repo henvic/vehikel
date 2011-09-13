@@ -54,14 +54,14 @@ if ($registry->isRegistered("jsfiles")) {
 }
 
 if ($auth->hasIdentity()) {
-    $this->addjsvar("uid", $auth->getIdentity());
+    $this->addJsVar("uid", $auth->getIdentity());
 }
 
 if ($registry->isRegistered("globalHash")) {
-    $this->addjsvar("global_auth_hash", $registry->get("globalHash"));
+    $this->addJsVar("global_auth_hash", $registry->get("globalHash"));
 }
 
-$this->addjsvar("webroot", $config['webroot']);
+$this->addJsVar("webroot", $config['webroot']);
 
 //$this->headScript()->prependFile($this->staticversion("/javascript/plifk.js"));
 $this->headScript()->prependFile($this->staticUrl("/plifk.js"));

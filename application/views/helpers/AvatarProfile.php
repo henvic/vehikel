@@ -5,9 +5,9 @@
  * @author henrique
  *
  */
-class Ml_View_Helper_avatarprofile extends Zend_View_Helper_Abstract
+class Ml_View_Helper_AvatarProfile extends Zend_View_Helper_Abstract
 {
-    public function avatarprofile ($person)
+    public function avatarProfile ($person)
     {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");

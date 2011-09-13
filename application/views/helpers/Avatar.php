@@ -6,7 +6,7 @@
  * @author henrique
  *
  */
-class Ml_View_Helper_avatar extends Zend_View_Helper_Abstract
+class Ml_View_Helper_Avatar extends Zend_View_Helper_Abstract
 {
      public function avatar($person, $size = "small")
      {

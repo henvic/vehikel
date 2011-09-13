@@ -1,5 +1,5 @@
 <?php
-class Ml_View_Helper_favorite extends Zend_View_Helper_Abstract
+class Ml_View_Helper_Favorite extends Zend_View_Helper_Abstract
 {
     public function favorite ()
     {

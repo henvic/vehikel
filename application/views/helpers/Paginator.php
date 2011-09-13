@@ -4,7 +4,7 @@
  * @author henrique
  *
  */
-class Ml_View_Helper_paginator extends Zend_View_Helper_Abstract
+class Ml_View_Helper_Paginator extends Zend_View_Helper_Abstract
 {
     public function paginator ($activePage, $total)
     {
