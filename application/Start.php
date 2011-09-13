@@ -46,10 +46,7 @@ $resourceLoader->addResourceType('form', 'forms/', 'Form')
 require EXTERNAL_LIBRARY_PATH . '/Zend/Registry.php';
 require EXTERNAL_LIBRARY_PATH . '/Zend/Cache/Core.php';
 
-//@todo refactory callFilter.php
 //@todo redo the library/Ml/RouteModule.php the proper way
-require APPLICATION_PATH . '/models/callFilter.php';
-
 /** Ml_Application */
 require EXTERNAL_LIBRARY_PATH . '/Zend/Application.php';
 require LIBRARY_PATH . '/Ml/Application.php';
