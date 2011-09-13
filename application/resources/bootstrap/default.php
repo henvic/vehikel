@@ -17,8 +17,8 @@ $config = $registry->get("config");
 $frontController->setBaseUrl($config['webroot']);
 
 
-$this->registerPluginResource("Mysession");
-$this->registerPluginResource("Myview");
+$this->registerPluginResource("Ml_Resource_Mysession");
+$this->registerPluginResource("Ml_Resource_Myview");
 
 $loader = new Zend_Loader_PluginLoader();
 

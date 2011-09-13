@@ -1,5 +1,5 @@
 <?php
-class Myview extends Zend_Application_Resource_ResourceAbstract
+class Ml_Resource_Myview extends Zend_Application_Resource_ResourceAbstract
 {
     public function init()
     {

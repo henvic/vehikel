@@ -1,6 +1,6 @@
 <?php
 
-class Mysession extends Zend_Application_Resource_ResourceAbstract
+class Ml_Resource_Mysession extends Zend_Application_Resource_ResourceAbstract
 {
     public function init()
     {

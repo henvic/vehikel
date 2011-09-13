@@ -12,7 +12,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         Zend_Translate::setCache($sysCache);
         
         if (HOST_MODULE == 'default' || HOST_MODULE == 'api') {
-            $this->registerPluginResource("Uri");
+            $this->registerPluginResource("Ml_Resource_Uri");
         }
         
         $configArray = $this->getOptions();

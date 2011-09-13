@@ -1,6 +1,6 @@
 <?php
 
-class Uri extends Zend_Application_Resource_ResourceAbstract
+class Ml_Resource_Uri extends Zend_Application_Resource_ResourceAbstract
 {
     public function init()
     {

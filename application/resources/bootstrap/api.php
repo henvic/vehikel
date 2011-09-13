@@ -11,7 +11,7 @@ require 'request.php';
 
 $router->addConfig($routerConfig, "apiroutes");
 
-$this->registerPluginResource("api");
+$this->registerPluginResource("Ml_Resource_Api");
 $this->unregisterPluginResource("session");
 $this->unregisterPluginResource("view");
 $this->unregisterPluginResource("layout");

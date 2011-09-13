@@ -40,7 +40,8 @@ new Zend_Loader_Autoloader_Resource(array('basePath' => APPLICATION_PATH,
 'namespace' => 'Ml'));
 
 $resourceLoader->addResourceType('form', 'forms/', 'Form')
-->addResourceType('models', 'models/ML/', 'Model');
+->addResourceType('models', 'models/ML/', 'Model')
+->addResourceType('resources', 'resources/', 'Resource');
 
 require EXTERNAL_LIBRARY_PATH . '/Zend/Registry.php';
 require EXTERNAL_LIBRARY_PATH . '/Zend/Cache/Core.php';

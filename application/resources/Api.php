@@ -1,5 +1,5 @@
 <?php
-class Api extends Zend_Application_Resource_ResourceAbstract
+class Ml_Resource_Api extends Zend_Application_Resource_ResourceAbstract
 {
     public function init ()
     {
