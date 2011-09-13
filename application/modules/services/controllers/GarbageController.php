@@ -95,7 +95,7 @@ class GarbageController extends Zend_Controller_Action
     
     public function cleantableolddata($tableName, $age)
     {//todo similar to this other things
-        $getModel = new Ml_Model_Db();
+        $getModel = new Ml_Model_Db_Table();
         if (empty($tableName) || ! ctype_alnum($tableName)) {
             throw new Exception("Table not given or not accepted.\n");
         }

@@ -1,5 +1,5 @@
 <?php
-class Ml_Model_Session extends Ml_Model_Db
+class Ml_Model_Session extends Ml_Model_Db_Table
 {
     const OPEN_STATUS = "open";
     const CLOSE_STATUS = "close";

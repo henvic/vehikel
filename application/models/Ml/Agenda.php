@@ -1,6 +1,6 @@
 <?php
 
-class Ml_Model_Agenda extends Ml_Model_Db
+class Ml_Model_Agenda extends Ml_Model_Db_Table
 {
     /**
      * Singleton instance

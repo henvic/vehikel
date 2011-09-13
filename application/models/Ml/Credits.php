@@ -1,6 +1,6 @@
 <?php
 
-class Ml_Model_Credits extends Ml_Model_Db
+class Ml_Model_Credits extends Ml_Model_Db_Table
 {
     const cents_USD = "cents_usd";
     

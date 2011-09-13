@@ -1,5 +1,5 @@
 <?php
-class Ml_Model_Comments extends Ml_Model_Db
+class Ml_Model_Comments extends Ml_Model_Db_Table
 {
     protected $_name = "comments";
     

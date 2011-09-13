@@ -3,7 +3,7 @@
  * @author henrique
  *
  */
-abstract class Ml_Model_Db extends Zend_Db_Table_Abstract
+abstract class Ml_Model_Db_Table extends Zend_Db_Table_Abstract
 {
     protected $_name;
     
