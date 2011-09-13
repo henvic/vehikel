@@ -20,7 +20,7 @@ class JoinController extends Zend_Controller_Action
             $this->_redirect($router->assemble(array(), "logout") . "?please", array("exit"));
         }
         
-        $signUp = Ml_Model_Signup::getInstance();
+        $signUp = Ml_Model_SignUp::getInstance();
         
         $form = $signUp->signUpForm();
         
@@ -86,7 +86,7 @@ class JoinController extends Zend_Controller_Action
             return $this->_forward("index", "logout");
         }
         
-        $newUser = Ml_Model_Signup::getInstance();
+        $newUser = Ml_Model_SignUp::getInstance();
         $credential = Ml_Model_Credential::getInstance();
         $people = Ml_Model_People::getInstance();
         $profile = new Ml_Model_Profile();

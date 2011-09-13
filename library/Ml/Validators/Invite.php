@@ -21,7 +21,7 @@ class Ml_Validator_Invite extends Zend_Validate_Abstract
         
         if (isset($context['email']) && $context['email'] &&
          mb_strlen($context['email']) <= 60) {
-            $signUp = Ml_Model_Signup::getInstance();
+            $signUp = Ml_Model_SignUp::getInstance();
             
             $select = $signUp->select()
             ->where("binary email = ?", mb_strtolower($context['email']));
