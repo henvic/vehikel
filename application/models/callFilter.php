@@ -1,85 +1,16 @@
 <?php
-
-  function array_to_obj($array, &$obj = false)
-  {
-      if(!$obj)
-      {
-          $obj = new stdClass();
-      }
-      
-    foreach ($array as $key => $value)
-    {
-      if (is_array($value))
-      {
-      $obj->$key = new stdClass();
-      array_to_obj($value, $obj->$key);
-      }
-      else
-      {
-        $obj->$key = $value;
-      }
-    }
-  return $obj;
-  }
-
-function base58_encode($num) {
-    return base_encode($num, "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");
-}
-
-function base58_decode($num) {
-    return base_decode($num, "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");
-}
-
-function base_encode($num, $alphabet) {
-    $baseCount = strlen($alphabet);
-    $encoded = '';
-    while ($num >= $baseCount) {
-    $div = $num/$baseCount;
-    $mod = ($num-($baseCount*intval($div)));
-    $encoded = $alphabet[$mod] . $encoded;
-    $num = intval($div);
-    }
-
-    if ($num) $encoded = $alphabet[$num] . $encoded;
-
-    return $encoded;
-}
-
-function base_decode($num, $alphabet) {
-    $decoded = 0;
-    $multi = 1;
-    while (strlen($num) > 0) {
-    $digit = $num[strlen($num)-1];
-    $decoded += $multi * strpos($alphabet, $digit);
-    $multi = $multi * strlen($alphabet);
-    $num = substr($num, 0, -1);
-    }
-
-    return $decoded;
-}
-
-function is_natural_dbId($val)
+function array_to_obj ($array, &$obj = false)
 {
-    if ((! is_natural($val)) || (strval((int) ($val)) != (string) ($val))) {
-        return false;
+    if (! $obj) {
+        $obj = new stdClass();
     }
-    
-    return true;
-}
-
-function is_natural ($val, $acceptzero = false)
-{
-    $return = ((string) $val === (string) (int) $val);
-    
-    if ($acceptzero) {
-        $base = 0;
-    } else {
-        $base = 1;
+    foreach ($array as $key => $value) {
+        if (is_array($value)) {
+            $obj->$key = new stdClass();
+            array_to_obj($value, $obj->$key);
+        } else {
+            $obj->$key = $value;
+        }
     }
-    
-    if ($return && intval($val) < $base) {
-        $return = false;
-    }
-    
-    return $return;
+    return $obj;
 }

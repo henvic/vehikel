@@ -31,7 +31,7 @@ if (mb_substr($uri, -1) == '/') {
     $uri = mb_substr($uri, 1);
 }
 
-$id =  base58_decode($uri);
+$id =  Ml_Numbers::base58Decode($uri);
 
 if ($id) {
     //Is it a valid share ID?

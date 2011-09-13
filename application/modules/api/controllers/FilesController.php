@@ -26,7 +26,7 @@ class FilesController extends Zend_Controller_Action
         
         $page = $request->getParam("page", 1);
         
-        if (! is_natural($page)) {
+        if (! Ml_Numbers::isNatural($page)) {
             $page = 1;
         }
         
@@ -165,7 +165,7 @@ class FilesController extends Zend_Controller_Action
               $userInfo['alias'] . "/" . $shareInfo['id'] . "-" .
               $shareInfo['download_secret'] . "/" . $shareInfo['filename'],
             "shorturl" => $config['URLshortening']['addr'] .
-               base58_encode($shareInfo['id']),
+               Ml_Numbers::base58Encode($shareInfo['id']),
             "comments" => $countComments,
             "favorites" => $countFavs
         );

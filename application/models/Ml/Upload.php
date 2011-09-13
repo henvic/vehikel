@@ -9,7 +9,7 @@ class Ml_Model_Upload extends Ml_Model_Share
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
-        if (! is_natural_dbId($uid)) {
+        if (! Ml_Numbers::isNaturalDbId($uid)) {
             return false;
         }
         

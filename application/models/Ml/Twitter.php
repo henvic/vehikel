@@ -63,7 +63,7 @@ class Ml_Model_Twitter extends Ml_Model_Db
         
         $form->setDefault("tweet", $shareInfo['title'] . ' ' .
          $config['URLshortening']['twitterlink'] .
-         base58_encode($shareInfo['id']));
+         Ml_Numbers::base58Encode($shareInfo['id']));
         
         return $form;
     }
