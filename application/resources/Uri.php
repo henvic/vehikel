@@ -2,63 +2,120 @@
 
 class Ml_Resource_Uri extends Zend_Application_Resource_ResourceAbstract
 {
+    protected $_https = false;
+    
+    protected $_webhost = '';
+    
+    protected $_webhostssl = '';
+    
+    protected $_originalUri = '';
+    
+    protected function _validHost() {
+        if (! isset($_SERVER['HTTP_HOST'])) {
+            return true;
+        }
+        
+        if (! $this->_https) {
+            if ($_SERVER['HTTP_HOST'] == $this->_webhost) {
+                return true;
+            }
+        } else if ($_SERVER['HTTP_HOST'] == $this->_webhostssl) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    protected function _redirect($newRequestUri, $https)
+    {
+        if ($https) {
+            $newHost = "https://" . $this->_webhostssl;
+        } else {
+            $newHost = "http://" . $this->_webhost;
+        }
+        
+        header("HTTP/1.1 301 Moved Permanently");
+        header("Location: " . $newHost . $newRequestUri);
+        header("Cache-Control: max-age=86400, must-revalidate");
+        
+        //cache-control shall be set: see
+        //http://developer.yahoo.net/blog/archives/2007/07/high_performanc_9.html
+        
+        exit;
+    }
+    
     public function init()
     {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
-        if ($config['web_addr']['force_lower_case'] &&
-         $_SERVER['REQUEST_URI'] != $config['webroot'] . "/") {
-            $lowerRequestUri = mb_strtolower($_SERVER['REQUEST_URI']);
-            $qmarkPos = mb_strpos($lowerRequestUri, "?");
-            if ($_SERVER['REQUEST_URI'] != $lowerRequestUri) {
-                if ($qmarkPos) {
-                    $befQm = mb_substr($_SERVER['REQUEST_URI'], 0, $qmarkPos);
-                    $afterQm = mb_substr($_SERVER['REQUEST_URI'], $qmarkPos);
-                    
-                    $befQmTolower = mb_strtolower($befQm);
-                    
-                    if ($befQm != $befQmTolower) {
-                        $sendAddr = $befQmTolower.$afterQm;
-                    }
-                    
-                } else {
-                    $sendAddr = $lowerRequestUri;
-                }
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") {
+            $this->_https = true;
+        }
+        
+        $this->_webhost = $config['webhost'];
+        $this->_webhostssl = $config['webhostssl'];
+        $this->_webroot = $config['webroot'];
+        $this->_forceLowerCase = $config['web_addr']['force_lower_case'];
+        $this->_originalUri = $_SERVER['REQUEST_URI'];
+        
+        $requestUri = $this->_originalUri;
+        
+        $isValidHost = $this->_validHost();
+        
+        if ($requestUri == $this->_webroot . "/") {
+            if (! $isValidHost) {
+                $this->_redirect($this->_webroot . "/", $this->_https);
+            }
+            return true;
+        }
+        
+        if (isset($_SERVER['QUERY_STRING'])) {
+            $queryStringLenght = mb_strlen($_SERVER['QUERY_STRING']);
+            $requestUriLenght = mb_strlen($requestUri);
+            
+            if (empty($_SERVER['QUERY_STRING'])) {
+                $offset = $requestUriLenght - $queryStringLenght;
+            } else {
+                $offset = $requestUriLenght - $queryStringLenght - 1;
             }
             
-            if (! isset($sendAddr)) {
-                $sendAddr = $_SERVER['REQUEST_URI'];
-            }
+            $resource = mb_substr($requestUri, 0, $offset);
             
-            if ($qmarkPos) {
-                $befQm = mb_substr($sendAddr, 0, $qmarkPos);
-                $afterQm = mb_substr($sendAddr, $qmarkPos);
-                
-                if ($befQm != '/' && mb_substr($befQm, - 1) == '/') {
-                    $befQm = mb_substr($befQm, 0, -1);
-                    $sendAddr = $befQm . $afterQm;
-                }
-            } else if (mb_substr($sendAddr, -1) == '/') {
-                $sendAddr = mb_substr($sendAddr, 0, -1);
-            }
+            $queryString = $_SERVER['QUERY_STRING'];
+        } else {
+            $resource = $requestUri;
+            $queryString = '';
+        }
+        
+        // is the case right?
+        if ($this->_forceLowerCase) {
+            $resourceToLower = mb_strtolower($resource);
             
-            //backwards compatibility
-            if (isset($sendAddr[2]) && $sendAddr[1] == "~" &&
-             $sendAddr[2] != "~") {
-                $sendAddr = $sendAddr[0] . mb_substr($sendAddr, 2);
-            }
-            
-            if ($sendAddr != $_SERVER['REQUEST_URI']) {
-                header("HTTP/1.1 301 Moved Permanently");
-                header("Location: ".$sendAddr);
-                header("Cache-Control: max-age=86400, must-revalidate");
-                
-                //cache-control shall be set: see
-                //http://developer.yahoo.net/blog/archives/2007/07/high_performanc_9.html
-                
-                exit;
+            if ($resource != $resourceToLower) {
+                $resource = $resourceToLower;
             }
         }
+        
+        // is it the last character in the resource part of the URI a slash?
+        if (mb_substr($resource, - 1) == '/') {
+            $resource = mb_substr($resource, 0, -1);
+        }
+        
+        if (empty($queryString)) {
+            if ($this->_originalUri != $resource) {
+                $this->_redirect($resource, $this->_https);
+            }
+        } else {
+            if ($this->_originalUri != $resource . "?" . $queryString) {
+                $this->_redirect($resource . $queryString, $this->_https);
+            }
+        }
+        
+        if (! $isValidHost) {
+            $this->_redirect($this->_originalUri, $this->_https);
+        }
+        
+        return true;
     }
 }
