@@ -7,7 +7,7 @@
  * 
  */
 
-require 'request.php';
+require APPLICATION_PATH . '/resources/bootstrap/request.php';
 
 $router->addConfig($routerConfig, "apiroutes");
 
