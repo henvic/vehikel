@@ -90,12 +90,13 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
             $client = new couchClient($couchDbConfig, "web_access_log");
             
             $requestInfo['_id'] =
-             $_SERVER['REQUEST_TIME'] . "-" . mt_rand() . mt_rand();
+             $_SERVER['REQUEST_TIME'] . "-" . $auth->getIdentity() . "-" . mt_rand();
             
             try {
                 $client->storeDoc((object) ($requestInfo));
-            } catch(Exception $e) {
-                error_log("Failed to store authed access log");
+            } catch (Exception $e) {
+                trigger_error('Failure to store authenticated access log of user id ' .
+                $auth->getIdentity(), E_USER_NOTICE);
             }
         }
         
