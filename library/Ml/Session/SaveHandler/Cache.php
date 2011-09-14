@@ -180,7 +180,7 @@ class Ml_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
      */
     public function write($id, $data)
     {
-        $this->_cache->save($data, $this->_sessionPrefix . $id, array(), 
+        $this->_cache->save($data, $this->_sessionPrefix . $id, array(),
          $this->_getLifetime($id));
         
         return true;
@@ -226,7 +226,7 @@ class Ml_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
         if (!$this->_overrideLifetime) {
             $lifetime = (int) $this->_cache->test($this->_sessionPrefix . $id);
         }
-
+        
         return $lifetime;
     }
 }
