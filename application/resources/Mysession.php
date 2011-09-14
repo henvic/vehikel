@@ -9,9 +9,19 @@ class Ml_Resource_Mysession extends Zend_Application_Resource_ResourceAbstract
         
         $config = $registry->get("config");
         
-        Zend_Session::setSaveHandler(new Ml_Session_SaveHandler_PlusCache($registry->get("memCache")));
+        $cookieLifetime = $config['resources']['session']['cookie_lifetime'];
         
-        Zend_Session::getSaveHandler()->setLifetime($config['resources']['session']['cookie_lifetime'], true);
+        /* @todo fix issue of system with incoherent behavior when the session
+        system has a issue, such as when the savehandler doesn't work as
+        expected when it's off-line which results in differents
+        catched / uncatched exception when the resource (page) loads
+        */
+        Zend_Session::
+        setSaveHandler(new Ml_Session_SaveHandler_PlusCache($registry->get("memCache")));
+        
+        Zend_Session::
+        getSaveHandler()->setLifetime($cookieLifetime, true);
+        
         Zend_Session::start();
         
         $defaultNamespace = new Zend_Session_Namespace();
