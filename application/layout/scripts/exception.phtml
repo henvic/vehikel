@@ -4,6 +4,8 @@
  * unrecoverable fatal error happens (i.e., database failure)
  */
 
+$htmlEscape = new Zend_Filter_HtmlEntities();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,5 +17,63 @@
 <h1>Application error</h1>
 <p>An Internal Server Error has occurred.</p>
 <p>The error has been reported to our log system so we can fix it.</p>
+<?php
+if (APPLICATION_ENV == "development") {
+?>
+<section>
+<h1>Exceptions (<?php
+echo $htmlEscape->filter(APPLICATION_ENV);
+?>)</h1>
+<h2>List of exceptions from the last to the first</h2>
+<?php
+    function showException(Exception $e, $position, &$htmlEscape) {
+?>
+<h3>#<?php echo $htmlEscape->filter($position . ' ' . $e->getMessage()); ?></h3>
+<dl>
+	<dt>Code</dt>
+	<dd><?php echo $htmlEscape->filter($e->getCode()); ?></dd>
+	<dt>File (line)</dt>
+	<dd><?php echo $htmlEscape->filter($e->getFile() . " (" . $e->getLine()); ?>)</dd>
+</dl>
+<?php
+    }
+    
+    $e = $this;
+    
+    for ($position = 1; ; $position++) {
+        if (is_object($e)) {
+            showException($e, $position, $htmlEscape);
+            
+            if (is_object($e->getPrevious())) {
+                $e = $e->getPrevious();
+            } else {
+                
+                $commomPaths = array('application:' => APPLICATION_PATH,
+                'external:' => EXTERNAL_LIBRARY_PATH,
+                'library:' => LIBRARY_PATH,
+                'cache:' => CACHE_PATH);
+                ?>
+<h1>Trace</h1>
+<?php
+                echo "<pre>" . $htmlEscape->filter(str_replace(array_values($commomPaths),
+                array_keys($commomPaths),
+                $e->getTraceAsString())) . "</pre>";
+                break;
+            }
+        }
+    }
+}
+?>
+</section>
 </body>
 </html>
+<?php
+
+// triggers error and set display-errors to false if in development
+// environment as the fatal error message is already passed on the
+// exception information above; another way to achieve this end could
+// be using register_shutdown_function and error_log together to get
+// and treat the fatal error
+if (APPLICATION_ENV == "development") {
+    ini_set('display_errors', false);
+}

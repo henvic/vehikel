@@ -8,6 +8,9 @@ class Ml_Model_Exception extends Zend_Exception
         if (php_sapi_name() == "cli") {
             return parent::__construct($msg, (int) $code, $previous);
         } else {
+            
+            parent::__construct($msg, (int) $code, $previous);
+            
             $response = new Zend_Controller_Response_Http();
             
             $response->setHttpResponseCode(500);
