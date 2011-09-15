@@ -63,21 +63,10 @@ Zend_Registry::getInstance()->set("sysCache", $sysCache);
 
 // Create application, bootstrap, and run
 try {
-$application = new Ml_Application(
-    APPLICATION_ENV,
-    getenv("PLIFK_CONF_FILE"),
-    $sysCache,
-    true
-);
-
-$application->bootstrap()->run();
-} catch(Exception $e)
-{
-        header('HTTP/1.1 500 Internal Server Error');
-        if (APPLICATION_ENV == "production") {
-                header('HTTP/1.1 500 Internal Server Error');
-                echo("Error loading application.\n");
-                exit(1);
-        }
-        throw $e;
+    $application = new Ml_Application(APPLICATION_ENV, getenv("PLIFK_CONF_FILE"), 
+    $sysCache, true);
+    
+    $application->bootstrap()->run();
+} catch (Exception $e) {
+    throw new Ml_Model_Exception("Exception: " . $e->getMessage(), $e->getCode(), $e);
 }

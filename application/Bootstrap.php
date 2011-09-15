@@ -40,10 +40,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             Zend_Db_Table_Abstract::setDefaultMetadataCache("sysCache");
             
             Zend_Registry::getInstance()->set("database", $db);
-        } catch(Exception $e)
-        {
-            echo "Error connecting to database.\n";
-            throw $e;
+        } catch (Exception $e) {
+            throw new Ml_Model_Exception("Can't connect to SQL database", $e->getCode(), $e);
         }
     }
     
