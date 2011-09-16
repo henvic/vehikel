@@ -17,7 +17,6 @@ class Ml_Model_Session extends Ml_Model_Db_Table
     /**
      * Singleton instance
      *
-     * @var Zend_Auth
      */
     protected static $_instance = null;
     

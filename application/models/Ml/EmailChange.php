@@ -4,6 +4,24 @@ class Ml_Model_EmailChange extends Ml_Model_Db_Table
     protected $_name = "emailChange";
     protected $_primary = "uid";
     
+    /**
+     * Singleton pattern implementation makes "new" unavailable
+     *
+     * @return void
+     */
+    //protected function __construct()
+    //{
+    //}
+
+    /**
+     * Singleton pattern implementation makes "clone" unavailable
+     *
+     * @return void
+     */
+    protected function __clone()
+    {
+    }
+    
     public function askNew($uid, $email, $name)
     {
         $registry = Zend_Registry::getInstance();

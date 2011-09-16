@@ -8,7 +8,6 @@ class Ml_Model_Credential extends Ml_Model_Db_Table
     /**
      * Singleton instance
      *
-     * @var Zend_Auth
      */
     protected static $_instance = null;
     
@@ -105,7 +104,7 @@ class Ml_Model_Credential extends Ml_Model_Db_Table
         return $form;
     }
     
-    public function logoutForm()
+    public static function logoutForm()
     {
         $registry = Zend_Registry::getInstance();
         

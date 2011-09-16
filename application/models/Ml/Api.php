@@ -2,7 +2,7 @@
 
 class Ml_Model_Api
 {
-/**
+	/**
      * Singleton instance
      *
      */
@@ -15,7 +15,8 @@ class Ml_Model_Api
      * @return void
      */
     //protected function __construct()
-    //{}
+    //{
+    //}
 
     /**
      * Singleton pattern implementation makes "clone" unavailable

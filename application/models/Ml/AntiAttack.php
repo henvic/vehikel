@@ -40,6 +40,24 @@ class Ml_Model_AntiAttack extends Ml_Model_Db_Table
     
     protected $_name = "antiattack";
     
+	/**
+     * Singleton pattern implementation makes "new" unavailable
+     *
+     * @return void
+     */
+    //protected function __construct()
+    //{
+    //}
+
+    /**
+     * Singleton pattern implementation makes "clone" unavailable
+     *
+     * @return void
+     */
+    //protected function __clone()
+    //{
+    //}
+    
     public static function loadRules()
     {
         $antiAttack = new self();

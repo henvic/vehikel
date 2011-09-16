@@ -3,10 +3,9 @@ require EXTERNAL_LIBRARY_PATH . "/predis/lib/Predis.php";
 
 class Ml_Model_Redis
 {
-/**
+    /**
      * Singleton instance
      *
-     * @var Zend_Auth
      */
     protected static $_instance = null;
     
@@ -17,8 +16,9 @@ class Ml_Model_Redis
      * @return void
      */
     //protected function __construct()
-    //{}
-
+    //{
+    //}
+    
     /**
      * Singleton pattern implementation makes "clone" unavailable
      *

@@ -16,7 +16,8 @@ class Ml_Model_Invites extends Ml_Model_Db_Table
     //number of days a user is considered new: don't get invites
     const new_user = 5;
     
-    /*
+    /**
+     * 
      * Checks if invites exists or can be created
      */
     public function numfree()

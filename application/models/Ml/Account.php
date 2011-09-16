@@ -3,6 +3,24 @@
 class Ml_Model_Account
 {
     public function settingsForm()
+	/**
+     * Singleton pattern implementation makes "new" unavailable
+     *
+     * @return void
+     */
+    //protected function __construct()
+    //{
+    //}
+
+    /**
+     * Singleton pattern implementation makes "clone" unavailable
+     *
+     * @return void
+     */
+    protected function __clone()
+    {
+    }
+    
     {
         static $form = '';
         

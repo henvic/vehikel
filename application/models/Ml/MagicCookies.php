@@ -16,7 +16,6 @@ class Ml_Model_MagicCookies
     /**
      * Singleton instance
      *
-     * @var Zend_Auth
      */
     protected static $_instance = null;
     
@@ -35,7 +34,8 @@ class Ml_Model_MagicCookies
      * @return void
      */
     //protected function __construct()
-    //{}
+    //{
+    //}
 
     /**
      * Singleton pattern implementation makes "clone" unavailable

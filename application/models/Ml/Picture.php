@@ -23,7 +23,6 @@ class Ml_Model_Picture
     /**
      * Singleton instance
      *
-     * @var Zend_Auth
      */
     protected static $_instance = null;
     
@@ -34,9 +33,9 @@ class Ml_Model_Picture
      * @return void
      */
     //protected function __construct()
-    //{}
-    //changing new Ml_<model> to the getInstance method
-
+    //{
+    //}
+    
     /**
      * Singleton pattern implementation makes "clone" unavailable
      *

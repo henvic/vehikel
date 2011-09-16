@@ -3,10 +3,9 @@ class Ml_Model_Comments extends Ml_Model_Db_Table
 {
     protected $_name = "comments";
     
-/**
+    /**
      * Singleton instance
      *
-     * @var Zend_Auth
      */
     protected static $_instance = null;
     
@@ -17,7 +16,8 @@ class Ml_Model_Comments extends Ml_Model_Db_Table
      * @return void
      */
     //protected function __construct()
-    //{}
+    //{
+    //}
 
     /**
      * Singleton pattern implementation makes "clone" unavailable

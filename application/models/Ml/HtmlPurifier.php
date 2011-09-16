@@ -31,6 +31,15 @@ class Ml_Model_HtmlPurifier
     protected static $_instance = null;
     
     /**
+     * Singleton pattern implementation makes "new" unavailable
+     *
+     * @return void
+     */
+    //protected function __construct()
+    //{
+    //}
+
+    /**
      * Singleton pattern implementation makes "clone" unavailable
      *
      * @return void
@@ -94,8 +103,8 @@ class Ml_Model_HtmlPurifier
         $img = $def->addBlankElement('img');
 
         $img->attr['alt'] = 'Text';
-        $img->attr['height'] = 'Pixels#'.$purifierConfig->get("HTML.MaxImgLength");
-        $img->attr['width'] = 'Pixels#'.$purifierConfig->get("HTML.MaxImgLength");
+        $img->attr['height'] = 'Pixels#' . $purifierConfig->get("HTML.MaxImgLength");
+        $img->attr['width'] = 'Pixels#' . $purifierConfig->get("HTML.MaxImgLength");
 
         HTMLPurifier::instance($purifierConfig);
         

@@ -22,7 +22,8 @@ class Ml_Model_Credits extends Ml_Model_Db_Table
      * @return void
      */
     //protected function __construct()
-    //{}
+    //{
+    //}
 
     /**
      * Singleton pattern implementation makes "clone" unavailable

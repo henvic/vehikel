@@ -8,15 +8,15 @@ class Ml_Model_Coupons extends Ml_Model_Db_Table
      */
     protected static $_instance = null;
     
-    
     /**
      * Singleton pattern implementation makes "new" unavailable
      *
      * @return void
      */
     //protected function __construct()
-    //{}
-
+    //{
+    //}
+    
     /**
      * Singleton pattern implementation makes "clone" unavailable
      *

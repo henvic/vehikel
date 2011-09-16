@@ -1,10 +1,10 @@
 <?php
 class Ml_Model_Favorites extends Ml_Model_Db_Table
 {
-/**
+    /**
      * Singleton instance
      *
-     * @var Zend_Auth
+     * @var Ml_Model_Favorites
      */
     protected static $_instance = null;
     
@@ -15,7 +15,8 @@ class Ml_Model_Favorites extends Ml_Model_Db_Table
      * @return void
      */
     //protected function __construct()
-    //{}
+    //{
+    //}
 
     /**
      * Singleton pattern implementation makes "clone" unavailable
