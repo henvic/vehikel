@@ -4,10 +4,9 @@
  * @author Henrique Vicente <henriquevicente@gmail.com>
  * @license public domain
  * @since 2009
+ * @todo make the HTMLPurifier support utf-8 links and latin domains
  */
 
-// @todo make HTMLPurifier support utf-8 addresses, currently it doesn't
-// support 'latin domains', etc
 require EXTERNAL_LIBRARY_PATH .
  "/htmlpurifier-standalone/HTMLPurifier.standalone.php";
 
@@ -35,29 +34,7 @@ class Ml_Model_HtmlPurifier
      *
      * @return void
      */
-    //protected function __construct()
-    //{
-    //}
-
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
-    }
-    
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::init();
-        }
-
-        return self::$_instance;
-    }
-    
-    protected static function init()
+    protected function __construct()
     {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
@@ -107,11 +84,26 @@ class Ml_Model_HtmlPurifier
         $img->attr['width'] = 'Pixels#' . $purifierConfig->get("HTML.MaxImgLength");
 
         HTMLPurifier::instance($purifierConfig);
-        
-        
-        self::$_instance = new self();
     }
 
+    /**
+     * Singleton pattern implementation makes "clone" unavailable
+     *
+     * @return void
+     */
+    protected function __clone()
+    {
+    }
+    
+    public static function getInstance()
+    {
+        if (null === self::$_instance) {
+            self::$_instance = new self();
+        }
+
+        return self::$_instance;
+    }
+    
     public function purify($html)
     {
         $purifier = HTMLPurifier::instance();
