@@ -56,7 +56,7 @@ link and metadata</a>, </span><a href="#comments">comments</a>.
 	<tbody>
 <?php 
 $date = new Zend_Date(); $date->set($shareInfo['uploadedTime'], Zend_Date::ISO_8601);
-$shortlink = $this->escape(Ml_Numbers::base58Encode($config['URLshortening']['addr'] . $shareInfo['id']));
+$shortlink = $this->escape(Ml_Model_Numbers::base58Encode($config['URLshortening']['addr'] . $shareInfo['id']));
 $metadata = array(
 "Filename" => $this->escape($shareInfo['filename']),
 "Size" => $this->fileSize($shareInfo['fileSize'], true),

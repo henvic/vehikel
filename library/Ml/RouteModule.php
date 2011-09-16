@@ -172,7 +172,7 @@ class Ml_Controller_Router_Route_Module extends Zend_Controller_Router_Route_Abs
                 } else {
                     if (mb_substr($path[4], 0, 4) == "page") {
                         $tryPage = mb_substr($path[4], 4);
-                        if (Ml_Numbers::isNaturalDbId($tryPage)) {
+                        if (Ml_Model_Numbers::isNaturalDbId($tryPage)) {
                             $page = $tryPage;
                         }
                     }

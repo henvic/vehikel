@@ -15,7 +15,8 @@ class Ml_Model_Twitter extends Ml_Model_Db_Table
      * @return void
      */
     //protected function __construct()
-    //{}
+    //{
+    //}
 
     /**
      * Singleton pattern implementation makes "clone" unavailable
@@ -63,7 +64,7 @@ class Ml_Model_Twitter extends Ml_Model_Db_Table
         
         $form->setDefault("tweet", $shareInfo['title'] . ' ' .
          $config['URLshortening']['twitterlink'] .
-         Ml_Numbers::base58Encode($shareInfo['id']));
+         Ml_Model_Numbers::base58Encode($shareInfo['id']));
         
         return $form;
     }

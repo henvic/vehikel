@@ -99,9 +99,9 @@ class Ml_Model_Credits extends Ml_Model_Db_Table
         $rand1 = mt_rand($lowerLimit, $upperLimit);
         $rand2 = mt_rand($lowerLimit, $upperLimit);
         
-        $num1 = Ml_Numbers::baseEncode($ptime, self::base);
-        $num2 = Ml_Numbers::baseEncode($rand1, self::base);
-        $num3 = Ml_Numbers::baseEncode($rand2, self::base);
+        $num1 = Ml_Model_Numbers::baseEncode($ptime, self::base);
+        $num2 = Ml_Model_Numbers::baseEncode($rand1, self::base);
+        $num3 = Ml_Model_Numbers::baseEncode($rand2, self::base);
         
         $uuid = $num1.$num2.$num3.Ml_Model_Verhoeff::calcsum($ptime.$rand1.$rand2);
         

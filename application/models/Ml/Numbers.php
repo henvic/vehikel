@@ -1,5 +1,5 @@
 <?php
-class Ml_Numbers
+class Ml_Model_Numbers
 {
     static public function base58Encode($num)
     {
@@ -44,7 +44,7 @@ class Ml_Numbers
     
     static public function isNaturalDbId($val)
     {
-        if ((! Ml_Numbers::isNatural($val)) || (strval((int) ($val)) != (string) ($val))) {
+        if ((! Ml_Model_Numbers::isNatural($val)) || (strval((int) ($val)) != (string) ($val))) {
             return false;
         }
         return true;
