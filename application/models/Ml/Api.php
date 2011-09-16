@@ -14,9 +14,9 @@ class Ml_Model_Api
      *
      * @return void
      */
-    //protected function __construct()
-    //{
-    //}
+    protected function __construct()
+    {
+    }
 
     /**
      * Singleton pattern implementation makes "clone" unavailable
@@ -27,13 +27,12 @@ class Ml_Model_Api
     {
     }
     
-    
     public static function getInstance()
     {
         if (null === self::$_instance) {
             self::$_instance = new self();
         }
-
+        
         return self::$_instance;
     }
     

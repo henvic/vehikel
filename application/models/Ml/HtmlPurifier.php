@@ -100,19 +100,19 @@ class Ml_Model_HtmlPurifier
         if (null === self::$_instance) {
             self::$_instance = new self();
         }
-
+        
         return self::$_instance;
     }
     
     public function purify($html)
     {
         $purifier = HTMLPurifier::instance();
-
+        
         $purifying = $purifier->purify($html);
-
+        
         //AutoFormat.AutoParagraph doesn't provide <br />
         $purified = nl2br($purifying);
-
+        
         return $purified;
     }
 }

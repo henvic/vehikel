@@ -64,7 +64,11 @@ class FilepageController extends Zend_Controller_Action
         $paginator = $comments->getCommentsPages($shareInfo['id'], $config['share']['commentsPerPage'], $page);
         
         //Test if there is enough pages or not
-        if ((!$paginator->count() && $page != 1) || $paginator->getCurrentPageNumber() != $page) $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage"), array("exit"));
+        if ((! $paginator->count() && $page != 1) ||
+         $paginator->getCurrentPageNumber() != $page)
+            $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()
+                ->assemble(array("username" => $userInfo['alias'],
+            "share_id" => $shareInfo['id']), "sharepage_1stpage"), array("exit"));
         
         $tagsList = $tags->getShareTags($shareInfo['id']);
         
