@@ -5,12 +5,12 @@ require_once EXTERNAL_LIBRARY_PATH . '/normal/UtfNormal.php';
 class Ml_Model_TagsChange extends Ml_Model_Tags
 {
     /**
-     * RawFilter takes a string and process it
+     * rawFilter takes a string and process it
      *
      * @param $tag string
      * @return filtered raw tag
      */
-    public function RawFilter($tagstring)
+    public function rawFilter($tagstring)
     {
         $tagstring = mb_ereg_replace(' +', ' ', trim($tagstring));
         $tagstring = mb_ereg_replace("[\r\t\n]", "", $tagstring);
@@ -67,7 +67,7 @@ class Ml_Model_TagsChange extends Ml_Model_Tags
         //or two things with the same cleantag
         $cleantags = array();
         foreach ($tempArray as $key => $string) {
-            $rawString = $this->RawFilter($string);
+            $rawString = $this->rawFilter($string);
             $cleanString = $this->normalize($rawString);
             
             if (!empty($rawString) && !empty($cleanString) &&
