@@ -24,7 +24,8 @@ class Ml_Filter_Filename implements Zend_Filter_Interface
         $value = trim($value, "\x22\x27\x26\x2C");
         
         // svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/includes/normal/
-        require_once EXTERNAL_LIBRARY_PATH . '/normal/UtfNormal.php';
+        Zend_Loader::loadClass('UtfNormal', EXTERNAL_LIBRARY_PATH . '/normal/');
+        
         $value = UtfNormal::cleanUp($value);
         $value = mb_strtolower($value, "UTF-8");
         
