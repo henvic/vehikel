@@ -38,7 +38,7 @@ class Ml_Model_SignUp extends Ml_Model_Db_Table
     
     protected $_name = "newusers";
     
-    public function signUpForm()
+    public static function signUpForm()
     {
         static $form = '';
         
@@ -53,7 +53,7 @@ class Ml_Model_SignUp extends Ml_Model_Db_Table
         return $form;
     }
     
-    public function newIdentityForm($securityCode)
+    public static function newIdentityForm($securityCode)
     {
         static $form = '';
         

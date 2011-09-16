@@ -270,7 +270,7 @@ class Ml_Model_Upload extends Ml_Model_Share
         return true;
     }
     
-    public function form()
+    public static function form()
     {
         static $form = '';
         $registry = Zend_Registry::getInstance();
@@ -287,7 +287,7 @@ class Ml_Model_Upload extends Ml_Model_Share
         return $form;
     }
     
-    public function apiForm()
+    public static function apiForm()
     {
         static $form = '';
         
@@ -298,7 +298,7 @@ class Ml_Model_Upload extends Ml_Model_Share
         return $form;
     }
     
-    public function deleteForm()
+    public static function deleteForm()
     {
         static $form = '';
 
@@ -318,7 +318,7 @@ class Ml_Model_Upload extends Ml_Model_Share
         return $form;
     }
     
-    public function editForm()
+    public static function editForm()
     {
         static $form = '';
 
@@ -341,7 +341,7 @@ class Ml_Model_Upload extends Ml_Model_Share
         return $form;
     }
     
-    public function apiSetMetaForm()
+    public static function apiSetMetaForm()
     {
         static $form = '';
 

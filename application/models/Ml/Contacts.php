@@ -84,7 +84,7 @@ class Ml_Model_Contacts extends Ml_Model_Db_Table
         return $relationship;
     }
     
-    public function relationshipForm()
+    public static function relationshipForm()
     {
         static $form = '';
         if (! is_object($form)) {

@@ -37,7 +37,7 @@ class Ml_Model_Api
         return self::$_instance;
     }
     
-    public function keyForm($consumer = false)
+    public static function keyForm($consumer = false)
     {
         static $form = '';
         
@@ -61,7 +61,7 @@ class Ml_Model_Api
         return $form;
     }
     
-    public function deleteForm($consumer)
+    public static function deleteForm($consumer)
     {
         static $form = '';
         
@@ -81,7 +81,7 @@ class Ml_Model_Api
         return $form;
     }
     
-    public function authorizeForm()
+    public static function authorizeForm()
     {
         static $form = '';
         

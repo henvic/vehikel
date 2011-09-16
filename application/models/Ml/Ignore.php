@@ -115,7 +115,7 @@ class Ml_Model_Ignore extends Ml_Model_Db_Table
         return $paginator;
     }
     
-    public function form()
+    public static function form()
     {
         static $form = '';
         

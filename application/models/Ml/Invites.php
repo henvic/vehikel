@@ -20,7 +20,7 @@ class Ml_Model_Invites extends Ml_Model_Db_Table
      * 
      * Checks if invites exists or can be created
      */
-    public function numfree()
+    public function getNumFree()
     {
         $auth = Zend_Auth::getInstance();
         $registry = Zend_Registry::getInstance();
@@ -54,9 +54,9 @@ class Ml_Model_Invites extends Ml_Model_Db_Table
         
         for ($counter = 0; $counter < $quantity; $counter ++) {
             //not beautiful
-            $partialFirst = Ml_Numbers::baseEncode(mt_rand(((36 * 36) + 1), ((36 * 36 * 36))), 
+            $partialFirst = Ml_Model_Numbers::baseEncode(mt_rand(((36 * 36) + 1), ((36 * 36 * 36))), 
              "qwertyuiopasdfghjklzxcvbnm0123456789");
-            $partialSecond = Ml_Numbers::baseEncode(mt_rand(((31 * 31) + 1), ((31 * 31 * 31))), 
+            $partialSecond = Ml_Model_Numbers::baseEncode(mt_rand(((31 * 31) + 1), ((31 * 31 * 31))), 
              "qwrtyuopasdghjklzcvnm123456789");
             
             $tokens[] = $partialFirst . '-' . $partialSecond;
@@ -92,10 +92,10 @@ class Ml_Model_Invites extends Ml_Model_Db_Table
         
         $membershipdate = new Zend_Date($signedUserInfo['membershipdate'], Zend_Date::ISO_8601);
         
-        $numfree = $this->numfree();
-        if ($numfree == - 1) {
+        $numFree = $this->numFree();
+        if ($numFree == - 1) {
             return false;
-        } else if ($numfree == 0) {
+        } else if ($numFree == 0) {
             return array();
         }
         
@@ -108,7 +108,7 @@ class Ml_Model_Invites extends Ml_Model_Db_Table
         
         $tokens = array();
         
-        $left = $numfree - sizeof($invites);
+        $left = $numFree - sizeof($invites);
         
         if ($left) {
             $tokens = $this->create($left, $signedUserInfo['id']);

@@ -18,7 +18,8 @@ class Ml_Model_Credential extends Ml_Model_Db_Table
      * @return void
      */
     //protected function __construct()
-    //{}
+    //{
+    //}
 
     /**
      * Singleton pattern implementation makes "clone" unavailable
@@ -28,7 +29,6 @@ class Ml_Model_Credential extends Ml_Model_Db_Table
     protected function __clone()
     {
     }
-    
     
     public static function getInstance()
     {
@@ -81,7 +81,7 @@ class Ml_Model_Credential extends Ml_Model_Db_Table
         return $stmt->rowCount();
     }
     
-    public function loginForm()
+    public static function loginForm()
     {
         $registry = Zend_Registry::getInstance();
         
@@ -126,7 +126,7 @@ class Ml_Model_Credential extends Ml_Model_Db_Table
         return $form;
     }
     
-    public function newPasswordForm($uid = false, $securityCode = false)
+    public static function newPasswordForm($uid = false, $securityCode = false)
     {
         $registry = Zend_Registry::getInstance();
         

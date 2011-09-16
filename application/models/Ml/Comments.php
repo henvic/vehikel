@@ -114,7 +114,7 @@ class Ml_Model_Comments extends Ml_Model_Db_Table
         return false;
     }
     
-    public function addForm()
+    public static function addForm()
     {
         static $form = '';
 
@@ -147,7 +147,7 @@ class Ml_Model_Comments extends Ml_Model_Db_Table
         return $form;
     }
     
-    public function deleteForm($commentId)
+    public static function deleteForm($commentId)
     {
         static $form = '';
         if (! is_object($form)) {

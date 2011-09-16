@@ -12,7 +12,6 @@ class Ml_Model_Abuse extends Ml_Model_Db_Table
     //{
     //}
 
-    public function form()
     /**
      * Singleton pattern implementation makes "clone" unavailable
      *
@@ -22,6 +21,7 @@ class Ml_Model_Abuse extends Ml_Model_Db_Table
     {
     }
     
+    public static function form()
     {
         static $form = '';
         

@@ -39,7 +39,7 @@ class Ml_Model_Twitter extends Ml_Model_Db_Table
     protected $_name = "twitter";
     protected $_primary = "uid";
     
-    public function form()
+    public static function form()
     {
         static $form = '';
         $registry = Zend_Registry::getInstance();
@@ -227,7 +227,7 @@ class Ml_Model_Twitter extends Ml_Model_Db_Table
         return true;
     }
     
-    public function removeForm()
+    public static function removeForm()
     {
         static $form = '';
         $registry = Zend_Registry::getInstance();
@@ -246,7 +246,7 @@ class Ml_Model_Twitter extends Ml_Model_Db_Table
         return $form;
     }
     
-    public function addForm()
+    public static function addForm()
     {
         static $form = '';
         

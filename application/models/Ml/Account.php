@@ -2,7 +2,6 @@
 
 class Ml_Model_Account
 {
-    public function settingsForm()
 	/**
      * Singleton pattern implementation makes "new" unavailable
      *
@@ -21,6 +20,7 @@ class Ml_Model_Account
     {
     }
     
+    public static function settingsForm()
     {
         static $form = '';
         
