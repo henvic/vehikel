@@ -70,6 +70,15 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
             $frontController = Zend_Controller_Front::getInstance();
             $couchDbConfig = $config['resources']['db']['couchdb']['dsn'];
             
+            //if for some reason (which might be or not right) the script
+            //was earlier terminated before the creation of the response object
+            //don't try to retrieve the response object
+            if (is_object($frontController->getResponse())) {
+                $responseCode = $frontController->getResponse()->getHttpResponseCode();
+            } else {
+                $responseCode = '';
+            }
+            
             $requestInfo = array(
                 "http_user_agent" => $_SERVER['HTTP_USER_AGENT'],
                 "request_method" => $_SERVER['REQUEST_METHOD'],
@@ -77,8 +86,7 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
                 "request_time" => (int)$_SERVER['REQUEST_TIME'],
                 "request_method" => $_SERVER['REQUEST_METHOD'],
                 "request_uri" => $_SERVER['REQUEST_URI'],
-                "http_response_code" =>
-                 $frontController->getResponse()->getHttpResponseCode(),
+                "http_response_code" => $responseCode,
                 "session" => $id,
                 "uid" => $auth->getIdentity()
             );
