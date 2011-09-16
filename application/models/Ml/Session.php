@@ -41,7 +41,7 @@ class Ml_Model_Session extends Ml_Model_Db_Table
         
         $this->_lastActivityPrefix = $sessionHandler->getlastActivityPrefix();
         
-        parent::__construct($config);
+        parent::__construct('', $config);
     }
     
     /**

@@ -3,9 +3,22 @@
  * @author henrique
  *
  */
-abstract class Ml_Model_Db_Table extends Zend_Db_Table_Abstract
+class Ml_Model_Db_Table extends Zend_Db_Table_Abstract
 {
     protected $_name;
+    
+    public function __construct($name = '', $config = array())
+    {
+        if ($name != '') {
+            $this->setTableName($name);
+        }
+        return parent::__construct($config);
+    }
+    
+    public function setTableName($name)
+    {
+        $this->_name = $name;
+    }
     
     public function getTableName()
     {

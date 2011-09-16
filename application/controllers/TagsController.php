@@ -25,7 +25,7 @@ class TagsController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $tags = new Ml_Model_TagsChange();
+        $tags = Ml_Model_Tags::getInstance();
         
         $params = $request->getParams();
         
@@ -76,34 +76,29 @@ class TagsController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $tags = new Ml_Model_TagsChange();
+        $tags = Ml_Model_Tags::getInstance();
         
         $params = $request->getParams();
         
         if ($auth->getIdentity() == $shareInfo['byUid']) {
-            $select = $tags->select()
-            ->where("id = ?", $params['deletetag'])
-            ->where("share = ?", $shareInfo['id'])
-            ->where("people = ?", $shareInfo['byUid']);
             
-            $row = $tags->fetchRow($select);
+            $form = $tags->deleteForm();
             
-            if (is_object($row)) {
-                $form = $tags->deleteForm();
-                $this->view->tag = $row->toArray();
-                $this->view->deleteTagForm = $form;
+            if ($request->isPost() && $form->isValid($request->getPost())) {
+                $tags->delete($params['deletetag']);
                 
-                if ($request->isPost() && $form->isValid($request->getPost())) {
-                    $row->delete();
-                    $isDeleted = true;
+                if ($this->_request->isXmlHttpRequest()) {
+                    $this->_forward("tags");
+                } else {
+                    $this->_redirect($router->assemble($params, "sharepage_1stpage"),
+                    array("exit"));
                 }
             }
+            
+            $this->view->tag = $tags->getById($params['deletetag']);
+            $this->view->deleteTagForm = $form;
         }
-        if ($this->_request->isXmlHttpRequest()) {
-            $this->_forward("tags");
-        } else if (! is_object($row) || isset($isDeleted)) {
-            $this->_redirect($router->assemble($params, "sharepage_1stpage"), array("exit"));
-        }
+        
     }
     
     /** this method only displays the tags for a called share or redirects

@@ -1,6 +1,12 @@
 <?php
-class Ml_Model_Tags extends Ml_Model_Db_Table
+class Ml_Model_Tags
 {
+    protected static $_dbTableName = "tags";
+    
+    protected $_dbTable;
+    
+    protected $_dbAdapter;
+    
     /**
      * Singleton instance
      *
@@ -12,9 +18,11 @@ class Ml_Model_Tags extends Ml_Model_Db_Table
      *
      * @return void
      */
-    //protected function __construct()
-    //{
-    //}
+    protected function __construct()
+    {
+        $this->_dbTable = new Ml_Model_Db_Table(self::$_dbTableName);
+        $this->_dbAdapter = $this->_dbTable->getAdapter();
+    }
 
     /**
      * Singleton pattern implementation makes "clone" unavailable
@@ -24,7 +32,6 @@ class Ml_Model_Tags extends Ml_Model_Db_Table
     protected function __clone()
     {
     }
-    
     
     public static function getInstance()
     {
@@ -36,7 +43,7 @@ class Ml_Model_Tags extends Ml_Model_Db_Table
     }
     
     protected $_name = "tags";
-
+    
     public static function form()
     {
         static $form = '';
@@ -80,21 +87,23 @@ class Ml_Model_Tags extends Ml_Model_Db_Table
     }
     
     public function getShareTags ($shareId) {
-        $select = $this->select()
+        $select = $this->_dbTable->select()
         ->where("share = ?", $shareId)
         ->order("timestamp ASC");
         
-        return $this->getAdapter()->fetchAll($select);
+        return $this->_dbTable->getAdapter()->fetchAll($select);
     }
     
     public function getTagPage($uid, $cleantag, $perPage, $page)
     {
-        $select = $this->select();
+        $dbTable = $this->_dbTable;
+        
+        $select = $dbTable->select();
         $select->where($this->_name.".people = ?", $uid)
         ->where($this->_name.".clean = ?", $cleantag)
         ->order("timestamp ASC");
         
-        $this->joinShareInfo($select, $this->_name, "share");
+        $dbTable->joinShareInfo($select, $this->_name, "share");
         
         $paginator = Zend_Paginator::factory($select);
         $paginator->setCurrentPageNumber($page);
@@ -105,12 +114,14 @@ class Ml_Model_Tags extends Ml_Model_Db_Table
     
     public function getUserTags($uid)
     {
-        $select = $this->select()->where("people = ?", $uid)
+        $dbTable = $this->_dbTable;
+        
+        $select = $dbTable->select()->where("people = ?", $uid)
         ->order("timestamp ASC")
         //no ->group("clean"): it would kill the counter below
         ;
         
-        $data = $this->fetchAll($select);
+        $data = $dbTable->fetchAll($select);
         
         $taglist = array();
         
@@ -123,5 +134,194 @@ class Ml_Model_Tags extends Ml_Model_Db_Table
         }
         
         return $taglist;
+    }
+    
+    /**
+     * rawFilter takes a string and process it
+     *
+     * @param $tag string
+     * @return filtered raw tag
+     */
+    public function rawFilter($tagstring)
+    {
+        $tagstring = mb_ereg_replace(' +', ' ', trim($tagstring));
+        $tagstring = mb_ereg_replace("[\r\t\n]", "", $tagstring);
+
+        // http://www.asciitable.com/
+        $tagstring = trim($tagstring, "\x22\x27\x26\x2C");
+
+        if (ctype_punct($tagstring)) {
+            $tagstring = '';
+        }
+        
+        return $tagstring;
+    }
+
+    /**
+     * Make the array of tags ready for storage
+     *
+     * @param $tags string
+     * @return array of arrays of cleaned/raw tags
+     */
+    public function makeArrayOfTags($tags)
+    {
+        $tagsArray = array();
+        $expTags = explode(" ", $tags);
+        $tempArray = array();
+        $openTag = 0;
+        $counter = 0;
+
+        if (is_string($tags)) {
+            $tags = array($tags);
+        }
+
+        // making "words together"
+        foreach ($expTags as $string) {
+            if ($openTag == 0) {
+                if (mb_substr($string, 0, 1) == '"') {
+                    $openTag = 1;
+                    $string = mb_substr($string, 1);
+                }
+                $tempArray[$counter] = $string;
+                $counter++;
+            } else {
+                if (mb_substr($string, -1) == '"') {
+                    $openTag = 0;
+                    $string = mb_substr($string, 0, -1);
+                }
+                $tempArray[$counter-1] = $tempArray[$counter-1] . ' ' . $string;
+            }
+        }
+
+        //now we get see if there's anything empty
+        //that maybe as a result of the openTags (and maybe something else),
+        //so we only use the first found
+        //or two things with the same cleantag
+        $cleantags = array();
+        foreach ($tempArray as $key => $string) {
+            $rawString = $this->rawFilter($string);
+            $cleanString = $this->normalize($rawString);
+            
+            if (!empty($rawString) && !empty($cleanString) &&
+            !in_array($cleanString, $cleantags)) {
+                if ($cleanString > 60) {
+                    $cleanString = mb_substr($cleanString, 0, 59);
+                }
+                if ($rawString > 60) {
+                    $rawString = mb_substr($rawString, 0, 59);
+                }
+                $tag = Array("raw" => $rawString, "clean" => $cleanString);
+                $tagsArray[] = $tag;
+                $cleantags[] = $cleanString;
+            }
+        }
+
+        return $tagsArray;
+    }
+
+    /**
+     * Normalize tags for search, etc (clean tag).
+     *
+     * @param $rawtag is a tag already filtered by the passToRawArray filter
+     * @return normalized tag
+     */
+    public function normalize($rawtag)
+    {
+        Zend_Loader::loadClass('UtfNormal', EXTERNAL_LIBRARY_PATH . '/normal/');
+        // using http://svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/includes/normal/
+
+        /*Like Flickr:
+         * http://weblog.terrellrussell.com/2007/06/clean-and-store-your-raw-tags-like-flickr/
+         * $cleantag = mb_substr(mb_strtolower(preg_replace("/[\\s\"!@#\\$\\%^&*():\\-_+=\\'\\/.;`<>\\[\\]?\\\\]/", '', $rawtag)), 0, 60);
+         * * doesn't work with non-ascii
+         */
+        $cleaning = $rawtag;
+        
+        $cleaning = UtfNormal::cleanUp($cleaning);
+        $cleaning = mb_strtolower($cleaning, "UTF-8");
+
+        $bye = Array(
+        ' ', '\"', '\'', '!', '@', '$', '%', '&', '*', '(', ')',
+        ':', '-', '_', '+', '=', '\'', '/', '.', ';', '`', '<', '>', '[', ']',
+        '?', '\\', ',', '#', 
+        );
+
+        $cleaning = str_replace($bye, '', $cleaning);
+
+        $cleantag = mb_substr($cleaning, 0, 50);
+
+        if (empty($cleantag)) {
+            return false;
+        }
+
+        return $cleantag;
+    }
+    
+    /**
+     *
+     * @param $tagsString the tag string received by the means of a form
+     * @param $shareInfo
+     * @param $userInfo
+     * @return unknown_type
+     */
+    public function add($tagsString, $shareInfo)
+    {
+        $registry = Zend_Registry::getInstance();
+        $config = $registry->get("config");
+        
+        if (! $tagsString) {
+            return false;
+        }
+
+        $shareId = $shareInfo['id'];
+        $uid = $shareInfo['byUid'];
+        //check the limit and avoids trying to put tags that are already there
+        $oldTags = $this->get($shareId);
+        $tagsCounter = sizeof($oldTags);
+        $oldTagsCounter = $tagsCounter;
+        $tagsLimit = $config['tags']['limit'];
+        $tagsArray = $this->makeArrayOfTags($tagsString);
+
+        $cleanOldTags = array();
+        
+        foreach ($oldTags as $tag) {
+            $cleanOldTags[] = $tag['clean'];
+        }
+
+        foreach ($tagsArray as $n => $tag) {
+            if ($tagsLimit <= $tagsCounter) {
+                break;
+            }
+                
+            if (! in_array($tag['clean'], $cleanOldTags)) {
+                if ($tag['clean'] > 40) {
+                    $tag['clean'] = mb_substr($tag['clean'], 0, 39);
+                }
+                if ($tag['raw'] > 40) {
+                    $tag['raw'] = mb_substr($tag['raw'], 0, 39);
+                }
+                
+                $tag['share'] = $shareId;
+                $tag['people'] = $uid;
+                
+                try {
+                    $this->insert($tag);
+                    $tagsCounter++;
+                } catch(Exception $e) {
+                }
+            }
+        }
+        
+        return $tagsCounter - $oldTagsCounter;
+    }
+    
+    public function delete($id) {
+        $where = $this->_dbAdapter->quoteInto('id = ?', $id);
+        
+        return $this->_dbTable->delete($where);
+    }
+    
+    public function getById($id) {
+        return $this->_dbTable->getById($id);
     }
 }
