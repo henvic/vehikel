@@ -8,7 +8,7 @@ require_once LIBRARY_PATH . '/phMagick/MODIFIEDphMagick.php';
 
 class Ml_Model_PictureUpload extends Ml_Model_Picture
 {
-    public function pictureForm()
+    public static function pictureForm()
     {
         static $form = '';
         
@@ -136,7 +136,8 @@ class Ml_Model_PictureUpload extends Ml_Model_Picture
         
         @unlink($originalfile);
         
-        $this->deleteFiles($userInfo);//delete the old data
+        //delete the old files
+        $this->deleteFiles($userInfo);
         
         return true;
     }
