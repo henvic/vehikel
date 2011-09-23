@@ -1,5 +1,5 @@
 <?php
-class Ml_Model_Session extends Ml_Model_Db_Table
+class Ml_Model_Session extends Ml_Model_AccessSingleton
 {
     const OPEN_STATUS = "open";
     const CLOSE_STATUS = "close";
@@ -14,13 +14,13 @@ class Ml_Model_Session extends Ml_Model_Db_Table
     
     protected $_lastActivityPrefix;
     
+    protected static $_dbTableName = "user_sessions_lookup";
+    
     /**
      * Singleton instance
      *
      */
     protected static $_instance = null;
-    
-    protected $_name = "user_sessions_lookup";
     
     /**
      * Singleton pattern implementation makes "new" unavailable
@@ -41,25 +41,7 @@ class Ml_Model_Session extends Ml_Model_Db_Table
         
         $this->_lastActivityPrefix = $sessionHandler->getlastActivityPrefix();
         
-        parent::__construct('', $config);
-    }
-    
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
-    }
-    
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
+        parent::__construct($config);
     }
     
     /**
@@ -103,10 +85,10 @@ class Ml_Model_Session extends Ml_Model_Db_Table
             $testSession = $this->_cache->test($this->getSessionPrefix() . $oneSession['session']);
             
             if (! $testSession) {
-                $stmt = 'UPDATE ' . $this->getAdapter()->quoteTableAs($this->_name) .
+                $stmt = 'UPDATE ' . $this->_dbAdapter->quoteTableAs($this->_dbTable->getTableName()) .
                 ' SET `status` = ?, `end` = CURRENT_TIMESTAMP WHERE `uid` = ? AND `session` = ?';
                 
-                $this->getAdapter()->query($stmt,
+                $this->_dbAdapter->query($stmt,
                  array(self::CLOSE_GC_STATUS, $uid, $oneSession['session']));
                 
                 $close[] = $oneSession['session'];
@@ -148,7 +130,7 @@ class Ml_Model_Session extends Ml_Model_Db_Table
         Zend_Session::destroy(true);
         
         Zend_Session::expireSessionCookie();
-        $stmt = 'UPDATE ' . $this->getAdapter()->quoteTableAs($this->_name) .
+        $stmt = 'UPDATE ' . $this->_dbAdapter->quoteTableAs($this->_dbTable->getTableName()) .
          ' SET `status` = ?, `end` = CURRENT_TIMESTAMP, `end_remote_addr` = ? WHERE `session` = ?';
         
         if (isset($_SERVER['REMOTE_ADDR'])) {
@@ -157,7 +139,7 @@ class Ml_Model_Session extends Ml_Model_Db_Table
             $remoteAddr = null;
         }
         
-        $this->getAdapter()->query($stmt,
+        $this->_dbAdapter->query($stmt,
          array(self::CLOSE_STATUS, $remoteAddr, $oldSid));
     }
     
@@ -175,12 +157,12 @@ class Ml_Model_Session extends Ml_Model_Db_Table
         $this->removeSessions($sessionsList, $currentSid);
         
         $stmt = 'UPDATE '.
-            $this->getAdapter()->quoteTableAs($this->_name).' '.
+            $this->_dbAdapter->quoteTableAs($this->_dbTable->getTableName()).' '.
             'SET `status` = ?, `end` = CURRENT_TIMESTAMP, `end_remote_addr` = ? '.
             'WHERE `status` = ? AND `uid` = ? AND `session` != ?'
             ;
         
-        $this->getAdapter()->query($stmt, array(
+        $this->_dbAdapter->query($stmt, array(
                 self::CLOSE_REMOTE_STATUS,
                 ($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null,
                 self::OPEN_STATUS,
@@ -191,18 +173,18 @@ class Ml_Model_Session extends Ml_Model_Db_Table
     
     protected function listRecentSessionsMeta($uid, $onlyOpen = false)
     {
-        $sql = "SELECT * FROM " . $this->getAdapter()
-        ->quoteTableAs($this->_name) . " WHERE uid = ? AND (status = ?";
+        $sql = "SELECT * FROM " . $this->_dbAdapter
+        ->quoteTableAs($this->_dbTable->getTableName()) . " WHERE uid = ? AND (status = ?";
 
         if (! $onlyOpen) {
-            $sql.=" OR end > DATE_SUB(NOW(), INTERVAL ".self::RECENT_ACCESS_INTERVAL.")";
+            $sql .= " OR end > DATE_SUB(NOW(), INTERVAL ".self::RECENT_ACCESS_INTERVAL.")";
         }
         
-        $sql.=") ORDER BY creation desc, end desc";
+        $sql .= ") ORDER BY creation desc, end desc";
         
         $bind = array($uid, self::OPEN_STATUS);
         
-        $query = $this->getAdapter()->query($sql, $bind);
+        $query = $this->_dbAdapter->query($sql, $bind);
         
         $result = $query->fetchAll();
         
@@ -270,7 +252,7 @@ class Ml_Model_Session extends Ml_Model_Db_Table
             "status" => self::OPEN_STATUS,
             "creation_remote_addr" => $remoteAddr);
         
-        $this->insert($data);
+        $this->_dbTable->insert($data);
     }
 }
 

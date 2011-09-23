@@ -3,24 +3,25 @@
 $auth = Zend_Auth::getInstance();
 $registry = Zend_Registry::getInstance();
 
+$comments = Ml_Model_Comments::getInstance();
+$contacts = Ml_Model_Contacts::getInstance();
+
 $signedUserInfo = $registry->get("signedUserInfo");
 
-
-$recent = new Ml_Model_Recent();
-$comments = $recent->commentsInSharesOf($auth->getIdentity());
-$uploads = $recent->contactsUploads($auth->getIdentity());
+$recentComments = $comments->getRecentCommentsInAccountOf($auth->getIdentity());
+$recentUploads = $contacts->getRecentUploads($auth->getIdentity());
 ?>
 <h2>Recent activity</h2>
-<?php 
-if(empty($uploads) && empty($comments)):
+<?php
+if (empty($recentUploads) && empty($recentComments)):
 ?>
 <p><em>No recent activity for you.</em></p>
 <?php endif; ?>
-<?php if(!empty($uploads)): ?>
+<?php if(!empty($recentUploads)): ?>
 <h3>Some uploads by your contacts</h3>
 <ul>
 <?php
-foreach ($uploads as $recent):
+foreach ($recentUploads as $recent):
 ?>
 <li>
 <b><a href="<?php
@@ -37,12 +38,12 @@ echo $this->url(array("username" => $recent['people.alias']),
 <?php endforeach; ?>
 </ul>
 <?php endif; ?>
-<?php if(!empty($comments)): ?>
+<?php if(!empty($recentComments)): ?>
 <h3>Your files recently commented</h3>
 <ul>
 <?php
 //@todo get from people_deleted also
-foreach ($comments as $recent):
+foreach ($recentComments as $recent):
 ?>
 <li><b><a href="<?php
 echo $this->url(array("username" => $signedUserInfo['alias'],
@@ -55,11 +56,11 @@ echo $this->escape($recent['share.title']); ?></a></b></li>
 <?php endif; ?>
 <?php
 /*
- * $commentsLeftElsewhere = $recent->commentsLeftBy($auth->getIdentity(), true);
- * if(!empty($commentsLeftElsewhere)): ?>
+ * $recentCommentsLeftElsewhere = $recent->commentsLeftBy($auth->getIdentity(), true);
+ * if(!empty($recentCommentsLeftElsewhere)): ?>
 <h4>Comments you've left elsewhere</h4>
 <?php
-foreach($commentsLeftElsewhere as $recent):
+foreach($recentCommentsLeftElsewhere as $recent):
 ?>
 <h4>Your comments</h4>
 <p><?php echo $this->escape($recent['comments']) ?><br />

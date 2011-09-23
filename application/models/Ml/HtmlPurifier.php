@@ -83,7 +83,7 @@ class Ml_Model_HtmlPurifier
         $img->attr['height'] = 'Pixels#' . $purifierConfig->get("HTML.MaxImgLength");
         $img->attr['width'] = 'Pixels#' . $purifierConfig->get("HTML.MaxImgLength");
 
-        HTMLPurifier::instance($purifierConfig);
+        return HTMLPurifier::instance($purifierConfig);
     }
 
     /**

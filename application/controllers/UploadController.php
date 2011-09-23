@@ -14,7 +14,7 @@ class UploadController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $share = new Ml_Model_Upload();
+        $share = Ml_Model_Share::getInstance();
         
         if (! $auth->hasIdentity()) {
             $this->_redirect($router->assemble(array(), "login"), array("exit"));

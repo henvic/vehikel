@@ -18,7 +18,7 @@ class UploadController extends Zend_Controller_Action
         
         $userInfo = $registry->get("authedUserInfo");
         
-        $share = new Ml_Model_Upload();
+        $share = Ml_Model_Share::getInstance();
         
         $uploadStatus = $share->getUploadStatus($userInfo['id']);
         
@@ -87,7 +87,7 @@ class UploadController extends Zend_Controller_Action
         
         $userInfo = $registry->get("authedUserInfo");
         
-        $share = new Ml_Model_Upload();
+        $share = Ml_Model_Share::getInstance();
         
         $uploadStatus = $share->getUploadStatus($userInfo['id']);
         

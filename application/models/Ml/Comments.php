@@ -1,7 +1,7 @@
 <?php
-class Ml_Model_Comments extends Ml_Model_Db_Table
+class Ml_Model_Comments extends Ml_Model_AccessSingleton
 {
-    protected $_name = "comments";
+    protected static $_dbTableName = "comments";
     
     /**
      * Singleton instance
@@ -9,44 +9,20 @@ class Ml_Model_Comments extends Ml_Model_Db_Table
      */
     protected static $_instance = null;
     
-    
-    /**
-     * Singleton pattern implementation makes "new" unavailable
-     *
-     * @return void
-     */
-    //protected function __construct()
-    //{
-    //}
-
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
-    }
-    
-    
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
+    public function getById($id) {
+        return $this->_dbTable->getById($id);
     }
     
     public function add($msg, $uid, $share)
     {
         //avoid the unintentional add of the same msg twice by the same user
-        $query = $this->select()->where("share = ?", $share['id'])
+        $query = $this->_dbTable->select()
+        ->where("share = ?", $share['id'])
         ->where("uid = ?", $uid)
         ->where("NOW() < TIMESTAMP(lastModified, '00:00:05')")
         ->where("comments = ?", $msg);
         
-        $resp = $this->getAdapter()->fetchAll($query);
+        $resp = $this->_dbAdapter->fetchAll($query);
         
         if (is_array($resp)) {
             foreach ($resp as $item) {
@@ -60,31 +36,48 @@ class Ml_Model_Comments extends Ml_Model_Db_Table
         
         $msgFiltered = $purifier->purify($msg);
         
-        $this->getAdapter()
-         ->query("INSERT INTO `" . $this->_name .
+        $this->_dbAdapter
+         ->query("INSERT INTO `" . $this->_dbTable->getTableName() .
           "` (`uid`, `share`, `byUid`, `comments`, `comments_filtered`, `timestamp`) SELECT ?, ?, ?, ?, ?, CURRENT_TIMESTAMP FROM DUAL",
           array($uid, $share['id'], $share['byUid'], $msg, $msgFiltered));
         
-        return $this->getAdapter()->lastInsertId();
+        return $this->_dbAdapter->lastInsertId();
+    }
+    
+    public function delete($id) {
+        return $this->_dbTable->
+        delete($this->_dbAdapter->quoteInto("id = ?", $id));
+    }
+    
+    public function update($id, $comments) {
+        $purifier = Ml_Model_HtmlPurifier::getInstance();
+        
+        $commentsFiltered = $purifier->purify($comments);
+        
+        return $this->_dbTable->update(array("comments" => $comments, 
+        "comments_filtered" => $commentsFiltered), 
+        $this->_dbAdapter->quoteInto("id = ?", $id));
     }
     
     public function count($shareId)
     {
-        $query = $this->select()
-            ->from($this->_name, 'count(*)')
+        $query = $this->_dbAdapter->select()
+            ->from($this->_dbTable->getTableName(), 'count(*)')
             ->where("share = ?", $shareId);
         
-        return $this->getAdapter()->fetchOne($query);
+        return $this->_dbAdapter->fetchOne($query);
     }
     
     public function getCommentsPages($shareId, $perPage, $page)
     {
-        $select = $this->select();
+        $people = Ml_Model_People::getInstance();
+        
+        $select = $this->_dbTable->select();
         $select
-        ->where($this->_name.".share = ?", $shareId)
+        ->where($this->_dbTable->getTableName() . ".share = ?", $shareId)
         ->order("timestamp ASC");
         
-        $this->joinPeopleInfo($select, $this->_name, "uid");
+        $people->joinDbTableInfo($select, $this->_dbTable->getTableName(), "uid");
         
         $paginator = Zend_Paginator::factory($select);
         $paginator->setCurrentPageNumber($page);
@@ -95,32 +88,63 @@ class Ml_Model_Comments extends Ml_Model_Db_Table
     
     public function getCommentPosition($commentId, $shareId, $perPage)
     {
-        $this->getAdapter()->query("set @aaaaa:=0");
+        $this->_dbAdapter->query("set @aaaaa:=0");
         
-        $query = $this->getAdapter()
+        $query = $this->_dbAdapter
         ->fetchOne("select position from (select * from(select @aaaaa:=@aaaaa+1 as position, id from comments where share = ? order by timestamp ASC) as positions where id = ?) as position;", 
         array($shareId, $commentId));
         
-        $this->getAdapter()->query("set @aaaaa:=0");
+        $this->_dbAdapter->query("set @aaaaa:=0");
         
-        $page = ceil($query/$perPage);
+        $page = ceil($query / $perPage);
         
-        $relPos = $query - ($perPage*($page - 1));
+        $relPos = $query - ($perPage * ($page - 1));
         
         if ($query) {
-            return array("page" => $page, "page_position" => $relPos,
-                "absolute_position" => $query);
+            return array("page" => $page,
+            "page_position" => $relPos,
+            "absolute_position" => $query);
         }
         return false;
     }
     
+    public function getRecentCommentsInAccountOf($uid)
+    {
+        $select = $this->_dbTable->select();
+        
+        $select
+        ->where($this->_dbTable->getTableName().".byUid = ?", $uid);
+        
+        $select->from($this->_dbTable->getTableName());
+        $select->setIntegrityCheck(false);
+        
+        $select->joinRight("share", "share.id = " . $this->_dbTable->getTableName() .
+         ".share AND DATE_ADD(comments.lastModified, INTERVAL 3 DAY) > CURRENT_TIMESTAMP AND share.id = (SELECT MAX(s2.id) FROM share s2 WHERE s2.byUid = share.byUid)",
+         array("share.id as share.id", "share.title as share.title", "share.fileSize as share.fileSize", "share.short as share.short", "share.views as share.views"));
+         
+        /* (?) I need to care about people_deleted also: $select->joinRight("people", "people.id = ".$comments->getTableName().".uid", array("people.id as people.id", "people.alias as people.alias", "people.name as people.name", "people.avatarInfo as people.avatarInfo"));*/
+         
+        $select->order("comments.lastModified DESC");
+        
+        $select->group("share.id");
+        
+        $select->limitPage(1, 10);
+        
+        $recentComments = $this->_dbTable->fetchAll($select);
+        
+        if (is_object($recentComments)) {
+            return $recentComments->toArray();
+        }
+        return array();
+    }
+    
     public static function addForm()
     {
+        $registry = Zend_Registry::getInstance();
+        
         static $form = '';
 
         if (! is_object($form)) {
-            $registry = Zend_Registry::getInstance();
-            
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
             $userInfo = $registry->get("userInfo");
@@ -149,14 +173,14 @@ class Ml_Model_Comments extends Ml_Model_Db_Table
     
     public static function deleteForm($commentId)
     {
+        $registry = Zend_Registry::getInstance();
+        
         static $form = '';
         if (! is_object($form)) {
-            $registry = Zend_Registry::getInstance();
-            
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            $userInfo = $registry->get("userInfo");
-            $shareInfo = $registry->get("shareInfo");
+            $userInfo = self::$_registry->get("userInfo");
+            $shareInfo = self::$_registry->get("shareInfo");
             
             $form = new Ml_Form_DeleteComment(array(
                 'action' => $router->assemble(array("username" =>
@@ -172,5 +196,4 @@ class Ml_Model_Comments extends Ml_Model_Db_Table
 
         return $form;
     }
-    
 }

@@ -5,9 +5,9 @@ $config = $registry->get("config");
 $this->headTitle("Invites for the Plifk experience", "SET");
 ?>
 <?php
-$invites = new Ml_Model_Invites();
+$invites = Ml_Model_Invites::getInstance();
         
-$this->invites = $invites->get();
+$this->invites = $invites->getTokens();
 
 if (! is_array($this->invites)): ?>
 <h2>Zero invites for you :-(</h2>

@@ -1,20 +1,34 @@
 <?php
-/*
+/**
+ * This model creates invites that can be used for the sign up process
+ * 
  * The invites older than the days necessary for
- * creating the max_invites can be removed
- * max_days should be max_invites by now:
+ * creating the MAX_INVITES can be removed
+ * MAX_DAYS should be MAX_INVITES by now:
  * one invite per day is being considered
+ * @author henvic
+ *
  */
-class Ml_Model_Invites extends Ml_Model_Db_Table
+class Ml_Model_Invites extends Ml_Model_AccessSingleton
 {
-    protected $_name = "invites";
+    const NOT_USED = 0;
     
-    const max_invites = 7;
+    const USED = 1;
     
-    const max_days = 10;
+    const MAX_INVITES = 7;
+    
+    const MAX_DAYS = 10;
     
     //number of days a user is considered new: don't get invites
-    const new_user = 5;
+    const NEW_USER = 5;
+    
+    protected static $_dbTableName = "invites";
+    
+    /**
+     * Singleton instance
+     *
+     */
+    protected static $_instance = null;
     
     /**
      * 
@@ -23,29 +37,48 @@ class Ml_Model_Invites extends Ml_Model_Db_Table
     public function getNumFree()
     {
         $auth = Zend_Auth::getInstance();
-        $registry = Zend_Registry::getInstance();
         
-        $signedUserInfo = $registry->get("signedUserInfo");
+        $signedUserInfo = self::$_registry->get("signedUserInfo");
         
         $membershipdate =
-         new Zend_Date($signedUserInfo['membershipdate'], Zend_Date::ISO_8601);
+        new Zend_Date($signedUserInfo['membershipdate'], Zend_Date::ISO_8601);
         
-        if ($membershipdate->compareTimestamp(time() - (self::new_user * 86400)) == 1) {
+        if ($membershipdate->compareTimestamp(time() - (self::NEW_USER * 86400)) == 1) {
             return -1;
         }
         
         $date = new Zend_Date();
         
-        $select = $this->select()
+        $select = $this->_dbTable->select()
         ->where("uid = ?", $auth->getIdentity())
         ->where("used = ?", "1")
-        ->where("timestamp > DATE_ADD(?, INTERVAL -".self::max_days." DAY)", $date->get("yyyy-MM-dd HH:mm:ss"));
+        ->where("timestamp > DATE_ADD(?, INTERVAL -" . self::MAX_DAYS . " DAY)",
+        $date->get("yyyy-MM-dd HH:mm:ss"));
         
-        $used = $this->fetchAll($select)->toArray();
+        $used = $this->_dbAdapter->fetchAll($select);
         
         $usedNum = sizeof($used);
         
-        return self::max_invites - $usedNum;
+        return self::MAX_INVITES - $usedNum;
+    }
+    
+    /**
+     * 
+     * Get hash information
+     * @param string $hash
+     */
+    public function get($hash)
+    {
+        $select = $this->_dbTable->select()
+        ->where("hash = ?", mb_strtolower($hash));
+        
+        $row = $this->_dbTable->fetchRow($select);
+        
+        if (! is_object($row)) {
+            return false;
+        }
+        
+        return $row->toArray();
     }
     
     public function create($quantity, $uid)
@@ -62,33 +95,40 @@ class Ml_Model_Invites extends Ml_Model_Db_Table
             $tokens[] = $partialFirst . '-' . $partialSecond;
         }
         
-        $escapeUid = $this->getAdapter()->quoteInto("?", $uid);
+        $escapeUid = $this->_dbAdapter->quoteInto("?", $uid);
         
         if (! empty($tokens)) {
-            $querystring = "INSERT IGNORE INTO `" . $this->getTableName() . "` (`uid`, `hash`) VALUES ";
+            $querystring =
+            "INSERT IGNORE INTO `" . $this->_dbTable->getTableName() . "` (`uid`, `hash`) VALUES ";
             do {
                 $line = '(' . $escapeUid . ', ' .
-                 $this->getAdapter()->quoteInto("?", current($tokens)) . ')';
+                 $this->_dbAdapter->quoteInto("?", current($tokens)) . ')';
                 
                 $querystring .= $line;
                 
                 next($tokens);
                 
-                if(current($tokens)) $querystring.=", ";
+                if (current($tokens)) {
+                    $querystring .= ", ";
+                }
                 
             } while (current($tokens));
             
-            $this->getAdapter()->query($querystring);
+            $this->_dbAdapter->query($querystring);
         }
         
         return $tokens;
     }
     
-    public function get()
+    /**
+     * 
+     * Get available tokens for the signed in user
+     * 
+     * @return array of tokens
+     */
+    public function getTokens()
     {
-        $registry = Zend_Registry::getInstance();
-        
-        $signedUserInfo = $registry->get("signedUserInfo");
+        $signedUserInfo = self::$_registry->get("signedUserInfo");
         
         $membershipdate = new Zend_Date($signedUserInfo['membershipdate'], Zend_Date::ISO_8601);
         
@@ -99,12 +139,12 @@ class Ml_Model_Invites extends Ml_Model_Db_Table
             return array();
         }
         
-        $select = $this->select()
+        $select = $this->_dbTable->select()
         ->where("uid = ?", $signedUserInfo['id'])
         ->where("used = ?", "0")
         ->order("timestamp DESC");
         
-        $invites = $this->fetchAll($select)->toArray();
+        $invites = $this->_dbAdapter->fetchAll($select);
         
         $tokens = array();
         
@@ -119,5 +159,17 @@ class Ml_Model_Invites extends Ml_Model_Db_Table
         }
         
         return $tokens;
+    }
+    
+    public function updateStatus($code, $status)
+    {
+        $update = $this->_dbTable->update(array("solution"
+        => $status), $this->_dbAdapter->quoteInto("hash = ?", $code));
+        
+        if ($update) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

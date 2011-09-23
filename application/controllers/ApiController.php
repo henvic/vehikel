@@ -15,8 +15,6 @@ class ApiController extends Zend_Controller_Action
         
         $registry = Zend_Registry::getInstance();
         
-        $api = Ml_Model_Api::getInstance();
-        
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
         $request = $this->getRequest();
@@ -28,7 +26,7 @@ class ApiController extends Zend_Controller_Action
         $this->_helper->loadOauthstore->preloadServer();
         $server = new OAuthServer();
         
-        $form = $api->authorizeForm();
+        $form = Ml_Model_Api::authorizeForm();
         // Check if there is a valid request token in the current request
         // Returns an array with the
         //consumer key, consumer secret, token, token secret and token type.
@@ -76,15 +74,13 @@ class ApiController extends Zend_Controller_Action
         
         $store = OAuthStore::instance();
         
-        $api = Ml_Model_Api::getInstance();
-        
         if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
         
         $request = $this->getRequest();
         
-        $form = $api->keyForm();
+        $form = Ml_Model_Api::keyForm();
         
         if ($request->isPost() && $form->isValid($request->getPost())) {
             $data = $form->getValues();
@@ -114,8 +110,6 @@ class ApiController extends Zend_Controller_Action
         
         $store = OAuthStore::instance();
         
-        $api = Ml_Model_Api::getInstance();
-        
         if (! Zend_Auth::getInstance()->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
@@ -126,7 +120,7 @@ class ApiController extends Zend_Controller_Action
         
         $consumer = $store->getConsumer($params['api_key'], $auth->getIdentity());
         
-        $form = $api->keyForm($consumer);
+        $form = Ml_Model_Api::keyForm($consumer);
         
         $form->setDefaults($consumer);
         
@@ -160,8 +154,6 @@ class ApiController extends Zend_Controller_Action
         
         $store = OAuthStore::instance();
         
-        $api = Ml_Model_Api::getInstance();
-        
         if (! $auth->hasIdentity()) {
             Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
@@ -172,7 +164,7 @@ class ApiController extends Zend_Controller_Action
         
         $consumer = $store->getConsumer($params['api_key'], $auth->getIdentity());
         
-        $form = $api->deleteForm($consumer);
+        $form = Ml_Model_Api::deleteForm($consumer);
         if ($request->isPost() &&
          $form->isValid($request->getPost())) {
             $store->deleteConsumer($params['api_key'], $auth->getIdentity());

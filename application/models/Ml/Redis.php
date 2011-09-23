@@ -1,5 +1,4 @@
 <?php
-require EXTERNAL_LIBRARY_PATH . "/predis/lib/Predis.php";
 
 class Ml_Model_Redis
 {
@@ -15,9 +14,19 @@ class Ml_Model_Redis
      *
      * @return void
      */
-    //protected function __construct()
-    //{
-    //}
+    protected function __construct()
+    {
+        Zend_Loader::loadFile("Predis.php", EXTERNAL_LIBRARY_PATH . "/predis/lib");
+        
+        $registry = Zend_Registry::getInstance();
+        
+        $config = $registry->get("config");
+        
+        $redisConfig = $config['cache']['backend']['redis'];
+        $redis = new Predis\Client($redisConfig['servers']['global']);
+        
+        return $redis;
+    }
     
     /**
      * Singleton pattern implementation makes "clone" unavailable
@@ -32,13 +41,7 @@ class Ml_Model_Redis
     public static function getInstance()
     {
         if (null === self::$_instance) {
-            $registry = Zend_Registry::getInstance();
-            $config = $registry->get("config");
-            
-            $redisConfig = $config['cache']['backend']['redis'];
-            
-            $redis = new Predis\Client($redisConfig['servers']['global']);
-            self::$_instance = $redis;
+            self::$_instance = new self();
         }
 
         return self::$_instance;

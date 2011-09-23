@@ -18,8 +18,7 @@ class CallController extends Zend_Controller_Action
         $registry = Zend_Registry::getInstance();
         $signedUserInfo = $registry->get("signedUserInfo");
         
-        $calls = Ml_Model_Calls::getInstance();
-        $form = $calls->form();
+        $form = Ml_Model_Calls::form();
         
         $credits = Ml_Model_Credits::getInstance();
         

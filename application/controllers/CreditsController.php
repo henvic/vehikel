@@ -84,7 +84,7 @@ class CreditsController extends Zend_Controller_Action
         
         $credits = Ml_Model_Credits::getInstance();
         
-        $order = $credits->getByPId($orderPid);
+        $order = $credits->getByPid($orderPid);
         
         if (! $order || $order['uid'] != $signedUserInfo['id']) {
             $registry->set("notfound", true);

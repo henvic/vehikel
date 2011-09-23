@@ -2,12 +2,13 @@
 
 class Ml_Model_Api
 {
+    protected static $_registry;
+    
 	/**
      * Singleton instance
      *
      */
     protected static $_instance = null;
-    
     
     /**
      * Singleton pattern implementation makes "new" unavailable
@@ -16,6 +17,7 @@ class Ml_Model_Api
      */
     protected function __construct()
     {
+        self::$_registry = Zend_Registry::getInstance();
     }
 
     /**
@@ -40,8 +42,6 @@ class Ml_Model_Api
     {
         static $form = '';
         
-        $registry = Zend_Registry::getInstance();
-        
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
@@ -65,8 +65,6 @@ class Ml_Model_Api
         static $form = '';
         
         if (! is_object($form)) {
-            
-            $registry = Zend_Registry::getInstance();
             
             $router = Zend_Controller_Front::getInstance()->getRouter();
             

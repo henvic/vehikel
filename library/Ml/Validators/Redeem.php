@@ -37,36 +37,27 @@ class Ml_Validator_Redeem extends Zend_Validate_Abstract
             return false;
         }
         
-        $coupons = new Ml_Model_Coupons();
+        $coupons = Ml_Model_Coupons::getInstance();
         
-        $select = $coupons->select()
-        ->where("hash = ?", mb_strtolower($value))
-        ->order("active DESC")//to garantee showing the newest
-        ;
+        $token = $coupons->get($value);
         
-        $row = $coupons->fetchRow($select);
-        
-        if (!is_object($row)) {
+        if (! $token) {
             $this->_error(self::NOTFOUND_Redeem);
             return false;
         }
         
-        $token = $row->toArray();
         
-        if (!$token['active']) {
+        if (! $token['active']) {
             $this->_error(self::USED_Redeem);
             return false;
         }
         
-        $couponData = $row->toArray();
-        if (! $couponData['unique_use']) {
+        if (! $token['unique_use']) {
             $credits = Ml_Model_Credits::getInstance();
-            $isItUsed = $credits->fetchRow($credits->select()
-                ->where("uid = ?", $signedUserInfo['id'])
-                ->where("reason_type = ?", Ml_Model_Credits::COUPON_REDEEM)
-                ->where("reason_id = ?", $couponData['id']));
             
-            if (is_object($isItUsed)) {
+            $isItUsed = $credits->getCouponRedeemed($signedUserInfo['id'], $token['id']);
+            
+            if ($isItUsed) {
                 $this->_error(self::YUSED_Redeem);
                 return false;
             }

@@ -21,7 +21,9 @@ class Ml_Validator_AccountRecover extends Zend_Validate_Abstract
          
         $valueString = (string) $value;
         
-        if (mb_strlen($value) < 1 || mb_strlen($value) > 100) return false;
+        if (mb_strlen($value) < 1 || mb_strlen($value) > 100) {
+            return false;
+        }
         
         $method = (strpos($value, '@') === FALSE) ? "alias" : "email";
         

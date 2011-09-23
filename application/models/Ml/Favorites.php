@@ -1,70 +1,59 @@
 <?php
-class Ml_Model_Favorites extends Ml_Model_Db_Table
+
+class Ml_Model_Favorites extends Ml_Model_AccessSingleton
 {
+    protected static $_dbTableName = "favorites";
+    
     /**
      * Singleton instance
      *
      * @var Ml_Model_Favorites
      */
     protected static $_instance = null;
-    
-    
-    /**
-     * Singleton pattern implementation makes "new" unavailable
-     *
-     * @return void
-     */
-    //protected function __construct()
-    //{
-    //}
-
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
-    }
-    
-    
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
-    }
-    
-    protected $_name = "favorites";
 
     public function count($shareId)
     {
-        $query = $this->select()
-         ->from($this->_name, 'count(*)')
+        $query = $this->_dbTable->select()
+         ->from($this->_dbTable->getTableName(), 'count(*)')
          ->where("share = ?", $shareId);
         
-        return $this->getAdapter()->fetchOne($query);
+        return $this->_dbAdapter->fetchOne($query);
     }
     
+    /**
+     * 
+     * Tells if a user has favorited a item
+     * @param big int $uid
+     * @param big int $id
+     * @return false on failure, favorite info data on success
+     */
     public function isFavorite($uid, $id)
     {
-        $select = $this->select();
-        $select->where("uid = ?", $uid);
-        $select->where("share = ?", $id);
-        $result = $this->fetchAll($select);
-        if(!is_object($result)) return false;
+        $select = $this->_dbTable->select();
+        $select
+        ->where("uid = ?", $uid)
+        ->where("share = ?", $id);
+        
+        $result = $this->_dbTable->fetchAll($select);
+        
+        if (! is_object($result)) {
+            return false;
+        }
+        
         $data = $result->toArray();
-        if(empty($data)) return false;
-        else return $data[0];
+        
+        if (empty($data)) {
+            return false;
+        } else {
+            return $data[0];
+        }
     }
     
     public function getUserPage($uid, $perPage, $page)
     {
         $share = Ml_Model_Share::getInstance();
         
-        $select = $this->select();
+        $select = $this->_dbTable->select();
         
         $select->setIntegrityCheck(false);
         
@@ -112,18 +101,77 @@ WHERE `E`.`uid` = '33' ORDER BY `E`.`timestamp` DESC
     
     public function getSharePage($shareId, $perPage, $page)
     {
+        $people = Ml_Model_People::getInstance();
         
-        $select = $this->select();
-        $select->where($this->_name.".share = ?", $shareId)
-        ->order($this->_name.".timestamp DESC");
+        $tableName = $this->_dbTable->getTableName();
         
-        $this->joinPeopleInfo($select, $this->_name, "uid");
+        $select = $this->_dbTable->select();
+        $select->where($tableName . ".share = ?", $shareId)
+        ->order($tableName . ".timestamp DESC");
+        
+        $people->joinDbTableInfo($select, $tableName, "uid");
         
         $paginator = Zend_Paginator::factory($select);
         $paginator->setCurrentPageNumber($page);
         $paginator->setItemCountPerPage($perPage);
         
         return $paginator;
+    }
+    
+    /**
+     * 
+     * Removes favorites that a usar has from a single user
+     * @param big int $uid
+     * @param big int $ignoreUid
+     */
+    public function deleteFavoritesFrom($uid, $ignoreUid)
+    {
+        $this->_dbTable->delete($this->_dbAdapter
+            ->quoteInto('`uid` = ?', $ignoreUid) .
+            $this->_dbAdapter->quoteInto(' AND `byUid` = ?', $uid));
+        $this->_dbTable->delete($this->_dbAdapter
+            ->quoteInto('`byUid` = ?', $ignoreUid) .
+            $this->_dbAdapter->quoteInto(' AND `uid` = ?', $uid));
+    }
+    
+    /**
+     * 
+     * Favorite item
+     * @param big int $uid
+     * @param big int $shareId item id
+     * @param big int $byUid owner of the item
+     */
+    public function favorite($uid, $shareId, $byUid)
+    {
+        $insert = $this->_dbAdapter->query("INSERT IGNORE INTO `" . $this->_dbAdapter
+        ->quoteTableAs(($this->_dbTable->getTableName())) .
+        "` (uid, share, byUid) SELECT ?, ?, ? FROM DUAL WHERE not exists (select * from `ignore` where ignore.uid = ? AND ignore.ignore = ?)", 
+        array($uid, $shareId, $byUid, $byUid, $uid));
+        
+        if ($insert) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * 
+     * Unfavorite item
+     * @param big int $uid
+     * @param big int $shareId item id
+     */
+    public function unfavorite($uid, $shareId)
+    {
+        $delete = $this->_dbTable
+        ->delete($this->_dbAdapter->quoteInto("uid = ?", $uid) .
+        $this->_dbTable->quoteInto(" AND share = ?", $shareId));
+        
+        if ($delete) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public static function form()

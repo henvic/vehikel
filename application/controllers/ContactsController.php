@@ -112,7 +112,7 @@ class ContactsController extends Zend_Controller_Action
              => $userInfo['alias']), "contacts_1stpage"), array("exit"));
         }
         
-        $relationship = $contacts->getInfo($auth->getIdentity(), $userInfo['id']);
+        $relationship = $contacts->getRelationship($auth->getIdentity(), $userInfo['id']);
         
         if (isset($relationship['id'])) {
             $ignoreStatus = false;
@@ -134,25 +134,25 @@ class ContactsController extends Zend_Controller_Action
                 $wantContact = $form->getElement("contact_relation")->isChecked();
                 
                 if ($wantContact && ! isset($relationship['id'])) {
-                    $contacts->getAdapter()->query("INSERT IGNORE INTO `" .
-                     $contacts->getTableName() .
-                     "` (uid, has, friend) SELECT ?, ?, ? FROM DUAL WHERE not exists (select * from `ignore` where ignore.uid = ? AND ignore.ignore = ?)",
-                     array($auth->getIdentity(), $userInfo['id'], 0, 
-                    $userInfo['id'], $auth->getIdentity()));
+                    $contacts
+                    ->setRelationship($auth->getIdentity(), 
+                    $userInfo['id']);
+                    
                     $changeRel = "?new_contact";
+                    
                 } else if (! $wantContact && isset($relationship['id'])) {
-                    $contacts->delete($contacts->getAdapter()
-                    ->quoteInto("uid = ? AND ", $auth->getIdentity()).
-                    $contacts->getAdapter()
-                    ->quoteInto("has = ?", $userInfo['id'])
-                    );
+                    $contacts->setRelationship($auth->getIdentity(), 
+                        $userInfo['id'], 
+                        Ml_Model_Contacts::RELATIONSHIP_TYPE_NONE);
                     
                     $changeRel = "?removed_contact";
                 } else {
                     $changeRel = '';
                 }
                 
-                $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()->assemble(array("username" => $userInfo['alias']), "profile").$changeRel, array("exit"));
+                $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()
+                    ->assemble(array("username" => $userInfo['alias']), 
+                "profile") . $changeRel, array("exit"));
                 
                 /*if (isset($new_rel) && $new_rel) {
                     $form->getElement("contact_relation")->setOptions(

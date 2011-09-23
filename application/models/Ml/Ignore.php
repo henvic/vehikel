@@ -1,50 +1,21 @@
 <?php
-class Ml_Model_Ignore extends Ml_Model_Db_Table
+class Ml_Model_Ignore extends Ml_Model_AccessSingleton
 {
+    protected static $_dbTableName = "ignore";
+    
     /**
      * Singleton instance
      *
      */
     protected static $_instance = null;
     
-    
-    /**
-     * Singleton pattern implementation makes "new" unavailable
-     *
-     * @return void
-     */
-    //protected function __construct()
-    //{
-    //}
-
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
-    }
-    
-    
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-        
-        return self::$_instance;
-    }
-    
-    protected $_name = "ignore";
-    
     public function status($uid, $ignoreUid)
     {
-        $select = $this->select()
+        $select = $this->_dbTable->select()
         ->where("`uid` = ?", $uid)
         ->where("`ignore` = ?", $ignoreUid);
         
-        $status = $this->getAdapter()->fetchRow($select);
+        $status = $this->_dbAdapter->fetchRow($select);
         
         return $status;
     }
@@ -54,45 +25,36 @@ class Ml_Model_Ignore extends Ml_Model_Db_Table
         $contacts = Ml_Model_Contacts::getInstance();
         $favorites = Ml_Model_Favorites::getInstance();
         
-        $this->getAdapter()->beginTransaction();
+        $this->_dbAdapter->beginTransaction();
         
         try {
-            $contacts->delete($this->getAdapter()
-            ->quoteInto('`uid` = ?', $uid) . $this->getAdapter()
-            ->quoteInto(' AND `has` = ?', $ignoreUid));
+            $contacts->setRelationship($uid, $ignoreUid, Ml_Model_Contacts::RELATIONSHIP_TYPE_NONE);
+            $contacts->setRelationship($ignoreUid, $uid, Ml_Model_Contacts::RELATIONSHIP_TYPE_NONE);
             
-            $contacts->delete($this->getAdapter()
-            ->quoteInto('`uid` = ?', $ignoreUid) . $this->getAdapter()
-            ->quoteInto(' AND `has` = ?', $uid));
+            $favorites->deleteFavoritesFrom($uid, $ignoreUid);
             
-            $favorites->delete($this->getAdapter()
-            ->quoteInto('`uid` = ?', $ignoreUid) . $this->getAdapter()
-            ->quoteInto(' AND `byUid` = ?', $uid));
-            
-            $favorites->delete($this->getAdapter()
-            ->quoteInto('`byUid` = ?', $ignoreUid) . $this->getAdapter()
-            ->quoteInto(' AND `uid` = ?', $uid));
-            
-            $this->insert(array("uid" => $uid, "ignore" => $ignoreUid));
-            $this->getAdapter()->commit();
+            $this->_dbTable->insert(array("uid" => $uid, "ignore" => $ignoreUid));
+            $this->_dbAdapter->commit();
         } catch(Exception $e)
         {
-            $contacts->getAdapter()->rollBack();
+            $this->_dbAdapter->rollBack();
             throw $e;
         }
         
-        return $this->getAdapter()->lastInsertId();
+        return $this->_dbAdapter->lastInsertId();
     }
     
     public function remove($uid, $ignoreUid)
     {
-          return $this->delete($this->getAdapter()
-          ->quoteInto('`uid` = ?', $uid) . $this->getAdapter()
-          ->quoteInto(' AND `ignore` = ?', $ignoreUid));
+          return $this->_dbTable
+          ->delete($this->_dbAdapter->quoteInto('`uid` = ?', $uid) .
+          $this->_dbAdapter->quoteInto(' AND `ignore` = ?', $ignoreUid));
     }
     
     public function getIgnorePage($uid, $perPage, $page, $reverse = false)
     {
+        $people = Ml_Model_People::getInstance();
+        
         if ($reverse) {
             $uidF = 'ignore';
             $hasF = 'uid';
@@ -103,10 +65,10 @@ class Ml_Model_Ignore extends Ml_Model_Db_Table
         
         $select = $this->select();
         $select
-        ->where($this->_name.".".$uidF." = ?", $uid)
-        ->order($this->_name.".timestamp DESC");
+        ->where($this->_dbTable->getTableName() . "." . $uidF . " = ?", $uid)
+        ->order($this->_dbTable->getTableName() . ".timestamp DESC");
         
-        $this->joinPeopleInfo($select, $this->_name, $hasF);
+        $people->joinDbTableInfo($select, $this->_dbTable->getTableName(), $hasF);
         
         $paginator = Zend_Paginator::factory($select);
         $paginator->setCurrentPageNumber($page);

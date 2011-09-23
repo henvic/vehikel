@@ -8,6 +8,7 @@
  * @copyright  2009 Henrique Vicente
  * @version    $Id:$
  * @since      File available since Release 0.1
+ * @todo needs to be designed again
  */
 
 class CommentsController extends Zend_Controller_Action
@@ -24,7 +25,8 @@ class CommentsController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        $userInfo = $registry->getInstance();
+        $userInfo = $registry->get("userInfo");
+        $shareInfo = $registry->get("shareInfo");
         
         $comments = Ml_Model_Comments::getInstance();
         $ignore = Ml_Model_Ignore::getInstance();
@@ -34,13 +36,20 @@ class CommentsController extends Zend_Controller_Action
         $comment = $comments->getById($commentId);
         
         if (! $comment) {
-            throw new Exception("Comment $commentId does not exists associated with this share.");
+            $registry->set("notfound", true);
+            throw new Exception("Comment $commentId does not exists.");
         }
         
         if ($comment['uid'] != $auth->getIdentity() ||
-         ($auth->getIdentity() != $comment['byUid'] &&
-         $ignore->status($userInfo['id'], $auth->getIdentity()))) {
+        ($auth->getIdentity() != $comment['byUid'] &&
+        $ignore->status($userInfo['id'], $auth->getIdentity()))) {
+            $registry->set("notfound", true);
             throw new Exception("Can't edit the comment. Either ignored or not the author.");
+        }
+        
+        if ($comment['share'] != $shareInfo['id']) {
+            $registry->set("notfound", true);
+            throw new Exception("From another share.");
         }
         
         $registry->set("commentInfo", $comment);
@@ -54,14 +63,8 @@ class CommentsController extends Zend_Controller_Action
             $isSubmit = $form->getValue("commentPost");
             
             if (! empty($isSubmit)) {
-                $purifier = Ml_Model_HtmlPurifier::getInstance();
+                $comments->update($comment['id'], $commentMsg);
                 
-                $commentsFiltered = $purifier->purify($commentMsg);
-                
-                $comments->update(array("comments" => $commentMsg,
-                 "comments_filtered" => $commentsFiltered),
-                 $comments->getAdapter()->quoteInto("id = ?", $comment['id']));
-                 
                 $request->setParam("comment_id", $comment['id']);
                 
                 return $this->_forward("commentpermalink");
@@ -92,16 +95,21 @@ class CommentsController extends Zend_Controller_Action
         $comment = $comments->getById($commentId);
         
         if (! $comment) {
-            throw new Exception("Comment $commentId does not exists associated with this share.");
+            $registry->set("notfound", true);
+            throw new Exception("Comment $commentId does not exists.");
+        }
+        
+        if ($comment['share'] != $shareInfo['id']) {
+            $registry->set("notfound", true);
+            throw new Exception("From another share.");
         }
         
         $registry->set("commentInfo", $comment);
         
         $form = $comments->deleteForm($comment['id']);
+        
         if ($request->isPost() && $form->isValid($request->getPost())) {
-            $comments
-            ->delete($comments->getAdapter()
-            ->quoteInto("id = ?", $comment['id']));
+            $comments->delete($comment['id']);
             
             $this->_redirect($router->assemble(array("username"
             => $userInfo['alias'],
@@ -136,7 +144,8 @@ class CommentsController extends Zend_Controller_Action
          $registry['shareInfo']['id'], $config['share']['commentsPerPage']);
         
         if (! is_array($position)) {
-            throw new Exception("Comment $commentId does not exists associated with this share.");
+            $registry->set("notfound", true);
+            throw new Exception("Comment $commentId does not exists.");
         }
         
         if ($position['page'] == 1) {

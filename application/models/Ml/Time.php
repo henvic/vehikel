@@ -12,7 +12,7 @@ class Ml_Model_Time
         
         $zendDate->set($date, $format);
         
-        $ago = time()-$zendDate->getTimestamp();
+        $ago = time() - $zendDate->getTimestamp();
         
         if ($ago < 120) {
             return "less than $ago seconds ago";

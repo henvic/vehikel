@@ -26,7 +26,7 @@ class Zend_Controller_Action_Helper_LoadResource extends Zend_Controller_Action_
                 $userInfo = $people
                  ->getByUsername($request->getUserParam('username'));
             }
-            if (!$userInfo) {
+            if (! $userInfo) {
                 $registry->set("notfound", true);
                 throw new Exception("User does not exists.");
             }
@@ -38,7 +38,7 @@ class Zend_Controller_Action_Helper_LoadResource extends Zend_Controller_Action_
                 $share = Ml_Model_Share::getInstance();
                 $shareInfo = $share->getById($this->getRequest()
                     ->getUserParam("share_id"));
-                if (!$shareInfo) {
+                if (! $shareInfo) {
                     $registry->set("notfound", true);
                     throw new Exception("Share does not exists.");
                 } else if ($shareInfo['byUid'] != $userInfo['id']) {

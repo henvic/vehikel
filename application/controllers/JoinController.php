@@ -27,27 +27,13 @@ class JoinController extends Zend_Controller_Action
         if ($request->isPost() && $form->isValid($request->getPost())) {
             $data = $form->getValues();
             
-            $signUp->getAdapter()->beginTransaction();
-            
-            try {
-                $newUserInfo = $signUp->newUser($data['name'], $data['email']);
-                
-                if (isset($data['invitecode']) && ! empty($data['invitecode']) &&
-                 ! $registry->isRegistered("inviteCompleteBefore") &&
-                 ! $registry->isRegistered("inviteMultiple")) {
-                    $invites = new Ml_Model_Invites();
-                    $invites->update(array("used" => "1"),
-                     $invites->getAdapter()
-                     ->quoteInto("hash = ?", $data['invitecode']));
-                }
-                
-                $signUp->getAdapter()->commit();
-            } catch(Exception $e)
-            {
-                $signUp->getAdapter()->rollBack();
-                throw $e;
+            if (isset($data['invitecode'])) {
+                $inviteCode = $data['invitecode'];
+            } else {
+                $inviteCode = false;
             }
             
+            $newUserInfo = $signUp->newUser($data['name'], $data['email'], $inviteCode);
             
             $this->view->entry = $newUserInfo;
             
@@ -56,7 +42,7 @@ class JoinController extends Zend_Controller_Action
             $mail->setBodyText($this->view->render("join/email.phtml"))
                 ->setFrom($config['robotEmail']['addr'], $config['robotEmail']['name'])
                 ->addTo($data['email'], $data['name'])
-                ->setSubject('Your new '.$config['applicationname'].' account')
+                ->setSubject('Your new ' . $config['applicationname'] . ' account')
                 ->send();
             
             $this->view->success = true;
@@ -86,10 +72,10 @@ class JoinController extends Zend_Controller_Action
             return $this->_forward("index", "logout");
         }
         
-        $newUser = Ml_Model_SignUp::getInstance();
+        $signUp = Ml_Model_SignUp::getInstance();
         $credential = Ml_Model_Credential::getInstance();
         $people = Ml_Model_People::getInstance();
-        $profile = new Ml_Model_Profile();
+        $profile = Ml_Model_Profile::getInstance();
         
         if ($config['ssl'] && (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")) {
             $this->_redirect("https://" . $config['webhostssl'] .
@@ -97,58 +83,34 @@ class JoinController extends Zend_Controller_Action
               "join_emailconfirm"), array("exit"));
         }
         
-        $select = $newUser->select();
         $securityCode = $request->getParam("security_code");
         
-        $select
-        ->where('securitycode = ?', $securityCode)
-        ->where('timestamp >= ?', date("Y-m-d H:i:s", time()-(48*60*60)));
+        $confirmationInfo = $signUp->getByHash($securityCode);
         
-        $confirmationInfo = $newUser->fetchRow($select);
-        
-        if (! is_object($confirmationInfo)) {
+        if (! $confirmationInfo) {
             $this->getResponse()->setHttpResponseCode(404);
             return $this->_forward("unavailable");
         }
         
-        $confirmationInfo = $confirmationInfo->toArray();
-        
-           $form = $newUser->newIdentityForm($securityCode);
+        $form = $signUp->newIdentityForm($securityCode);
            
         if ($request->isPost() && $form->isValid($request->getPost())) {
-            $newUser->getAdapter()->beginTransaction();
+            $newUsername = $form->getValue("newusername");
+            $password = $form->getValue("password");
             
-            try {
-                $newUser->delete($newUser->getAdapter()->quoteInto('id = ?', $confirmationInfo['id']));
-                
-                  $preUserInfo = (array(
-                        "alias"          => $form->getValue("newusername"),
-                        "membershipdate" => $confirmationInfo['timestamp'],
-                        "name"           => $confirmationInfo['name'],
-                        "email"          => $confirmationInfo['email'],
-                  ));
-                   
-                   $people->insert($preUserInfo);
+            $preUserInfo = (array(
+            "alias" => $newUsername, 
+            "membershipdate" => $confirmationInfo['timestamp'], 
+            "name" => $confirmationInfo['name'], 
+            "email" => $confirmationInfo['email']));
             
-                   $uid = $people->getAdapter()->lastInsertId();
-                   if (! $uid) {
-                       throw new Exception("No ID.");
-                   }
-                   
-                   $credential->setCredential($uid, $form->getValue("password"));
-                   
-                   $profile->insert(array("id" => $uid));
-                   
-                   $newUser->getAdapter()->commit();
-            } catch(Exception $e)
-            {
-                $newUser->getAdapter()->rollBack();
-                throw $e;
-            }
+            $uid = $people
+            ->create($newUsername, $password, $preUserInfo, $confirmationInfo);
             
             $getUserByUsername = $people->getByUsername($preUserInfo['alias']);
             
-            $adapter = $credential->getAuthAdapter($getUserByUsername['id'], $form->getValue("password"));
+            $adapter = $credential
+            ->getAuthAdapter($getUserByUsername['id'], $password);
             
             if ($adapter) {
                 $result  = $auth->authenticate($adapter);

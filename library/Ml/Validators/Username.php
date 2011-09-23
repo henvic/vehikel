@@ -17,7 +17,7 @@ class Ml_Validator_Username extends Zend_Validate_Abstract
          
         $valueString = (string) $value;
         
-        $people = new Ml_Model_People();
+        $people = Ml_Model_People::getInstance();
         
         if (mb_strstr($value, "@")) {
             $getUserByEmail = $people->getByEmail($value);

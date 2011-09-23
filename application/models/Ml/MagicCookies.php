@@ -10,6 +10,8 @@
  */
 class Ml_Model_MagicCookies
 {
+    protected static $_registry;
+    
     //number of times the magic cookie was used
     protected static $_hashQuantity = 0;
     
@@ -33,9 +35,10 @@ class Ml_Model_MagicCookies
      *
      * @return void
      */
-    //protected function __construct()
-    //{
-    //}
+    protected function __construct()
+    {
+        self::$_registry = Zend_Registry::getInstance();
+    }
 
     /**
      * Singleton pattern implementation makes "clone" unavailable
@@ -58,9 +61,7 @@ class Ml_Model_MagicCookies
     
     public static function getHashInfo($hash)
     {
-        $registry = Zend_Registry::getInstance();
-        
-        $memCache = $registry->get("memCache");
+        $memCache = self::$_registry->get("memCache");
         
         //sanitizing the key for memcache
         $hexValue = preg_replace('/[^a-f0-9]/', '', $hash);
@@ -73,10 +74,9 @@ class Ml_Model_MagicCookies
     
     private static function setNewLast()
     {
-        $registry = Zend_Registry::getInstance();
         $auth = Zend_Auth::getInstance();
         
-        $memCache = $registry->get("memCache");
+        $memCache = self::$_registry->get("memCache");
         
         $magicCookiesNamespace = new Zend_Session_Namespace('MagicCookies');
         
@@ -90,7 +90,7 @@ class Ml_Model_MagicCookies
         
         $magicCookiesNamespace->setExpirationSeconds($expiration);
         
-        $newHash = md5(mt_rand().mt_rand().mt_rand());
+        $newHash = md5(mt_rand() . mt_rand() . mt_rand());
         
         $magicCookiesNamespace->cachedHash = $newHash;
         
@@ -135,9 +135,7 @@ class Ml_Model_MagicCookies
     {
         $request = Zend_Controller_Front::getInstance()->getRequest();
         
-        $registry = Zend_Registry::getInstance();
-        
-        $config = $registry->get("config");
+        $config = self::$_registry->get("config");
         
         $hidden = new Zend_Form_Element_Hidden(self::hash_name,
          array("required" => true,

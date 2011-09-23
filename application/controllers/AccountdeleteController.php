@@ -13,7 +13,7 @@ class AccountdeleteController extends Zend_Controller_Action
     
     public function indexAction()
     {
-        //shares/avatar files are deleted by an off-line routine in crontab
+        // shares/avatar files are deleted by an off-line routine in crontab
         $request = $this->getRequest();
         
         $registry = Zend_Registry::getInstance();
@@ -21,27 +21,25 @@ class AccountdeleteController extends Zend_Controller_Action
         
         $credential = Ml_Model_Credential::getInstance();
         
-        $peopleDeleted = Ml_Model_PeopleDeleted::getInstance();
+        $peopleDelete = Ml_Model_PeopleDelete::getInstance();
         
         $signedUserInfo = $registry->get("signedUserInfo");
         
-        $form = $peopleDeleted->deleteAccountForm();
+        $form = $peopleDelete->deleteAccountForm();
         
         if ($request->isPost()) {
-            $select = $credential->select()->where("uid = ?", $auth->getIdentity());
-            $credentialInfo = $credential->fetchRow($select);
+            $credentialInfo = $credential->getByUid($auth->getIdentity());
             
-            if (! is_object($credentialInfo)) {   
-                throw new Exception("Fatal error on checking credential in account controller.");
+            if (! $credentialInfo) {
+                throw new Exception("Fatal error on checking credential in account delete controller.");
             }
-                
-            $credentialInfoData = $credentialInfo->toArray();
-            $registry->set('credentialInfoDataForPasswordChange', $credentialInfoData);
+            
+            $registry->set('credentialInfoDataForPasswordChange', $credentialInfo);
             
             if ($form->isValid($request->getPost())) {
                 $registry->set("canDeleteAccount", true);
                 
-                $peopleDeleted->deleteAccount($signedUserInfo, sha1(serialize($signedUserInfo)));
+                $peopleDelete->deleteAccount($signedUserInfo, sha1(serialize($signedUserInfo)));
                 
                 $auth->clearIdentity();
                 

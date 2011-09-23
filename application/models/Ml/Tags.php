@@ -1,48 +1,13 @@
 <?php
-class Ml_Model_Tags
+class Ml_Model_Tags extends Ml_Model_AccessSingleton
 {
     protected static $_dbTableName = "tags";
-    
-    protected $_dbTable;
-    
-    protected $_dbAdapter;
     
     /**
      * Singleton instance
      *
      */
     protected static $_instance = null;
-    
-    /**
-     * Singleton pattern implementation makes "new" unavailable
-     *
-     * @return void
-     */
-    protected function __construct()
-    {
-        $this->_dbTable = new Ml_Model_Db_Table(self::$_dbTableName);
-        $this->_dbAdapter = $this->_dbTable->getAdapter();
-    }
-
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
-    }
-    
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
-    }
-    
-    protected $_name = "tags";
     
     public static function form()
     {
@@ -65,7 +30,7 @@ class Ml_Model_Tags
         }
         
         $form->setDefault("hash", $registry->get('globalHash'));
-
+        
         return $form;
     }
     
@@ -91,7 +56,7 @@ class Ml_Model_Tags
         ->where("share = ?", $shareId)
         ->order("timestamp ASC");
         
-        return $this->_dbTable->getAdapter()->fetchAll($select);
+        return $this->_dbAdapter->fetchAll($select);
     }
     
     public function getTagPage($uid, $cleantag, $perPage, $page)
@@ -99,11 +64,22 @@ class Ml_Model_Tags
         $dbTable = $this->_dbTable;
         
         $select = $dbTable->select();
-        $select->where($this->_name.".people = ?", $uid)
-        ->where($this->_name.".clean = ?", $cleantag)
+        $select->where($this->_dbName.".people = ?", $uid)
+        ->where($this->_dbName.".clean = ?", $cleantag)
         ->order("timestamp ASC");
         
-        $dbTable->joinShareInfo($select, $this->_name, "share");
+        $quoteTable = $this->_dbAdapter->quoteTableAs($this->_dbTable->getTableName());
+        
+        $select->from($quoteTable);
+        $select->setIntegrityCheck(false);
+        
+        $select->joinInner("share",
+        "share.id = " . $quoteTable . ".share",
+        array("share.title as share.title",
+        "share.byUid as share.byUid",
+        "share.fileSize as share.fileSize",
+        "share.short as share.short",
+        "share.filename as share.filename"));
         
         $paginator = Zend_Paginator::factory($select);
         $paginator->setCurrentPageNumber($page);
@@ -305,7 +281,7 @@ class Ml_Model_Tags
                 $tag['people'] = $uid;
                 
                 try {
-                    $this->insert($tag);
+                    $this->_dbTable->insert($tag);
                     $tagsCounter++;
                 } catch(Exception $e) {
                 }
@@ -313,6 +289,16 @@ class Ml_Model_Tags
         }
         
         return $tagsCounter - $oldTagsCounter;
+    }
+    
+    public function addTag($shareId, $uid, $cleanTag, $rawTag)
+    {
+        $add = $this->_dbAdapter->query("INSERT IGNORE INTO " .
+         $this->_dbAdapter->quoteTableAs($this->_dbTable->getTableName()) .
+         " (`share`, `people`, `clean`, `raw`, `timestamp`) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)", 
+        array($shareId, $uid, $cleanTag, $rawTag));
+        
+        return $add->rowCount();
     }
     
     public function delete($id) {

@@ -23,11 +23,9 @@ class Ml_Validator_Invite extends Zend_Validate_Abstract
          mb_strlen($context['email']) <= 60) {
             $signUp = Ml_Model_SignUp::getInstance();
             
-            $select = $signUp->select()
-            ->where("binary email = ?", mb_strtolower($context['email']));
+            $emailData = $signUp->getByEmail(mb_strtolower($context['email']));
             
-            $row = $signUp->fetchRow($select);
-            if (is_object($row)) {
+            if (! $emailData) {
                 $registry->set("inviteCompleteBefore", true);
                 return true;
             }
@@ -46,19 +44,14 @@ class Ml_Validator_Invite extends Zend_Validate_Abstract
             return false;
         }
         
-        $invites = new Ml_Model_Invites();
+        $invites = Ml_Model_Invites::getInstance();
         
-        $select = $invites->select()
-        ->where("hash = ?", mb_strtolower($value));
+        $token = $invites->get($value);
         
-        $row = $invites->fetchRow($select);
-        
-        if (! is_object($row)) {
+        if (! $token) {
             $this->_error(self::NOTFOUND_INVITE);
             return false;
         }
-        
-        $token = $row->toArray();
         
         if ($token['used'] && $token['used'] != - 1) {
             $this->_error(self::USED_INVITE);
