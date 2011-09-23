@@ -4,7 +4,7 @@ $auth = Zend_Auth::getInstance();
 $registry = Zend_Registry::getInstance();
 $config = $registry->get("config");
 
-$profile = new Ml_Model_Profile();
+$profile = Ml_Model_Profile::getInstance();
 $contacts = Ml_Model_Contacts::getInstance();
 
 $userInfo = $registry->get("userInfo");
@@ -19,7 +19,7 @@ $profileInfo = $profile->getById($userInfo['id']);
 <ul>
 <?php
 if ($auth->hasIdentity() && $auth->getIdentity() != $userInfo['id']) {
-    $contactInfo = $contacts->getInfo($auth->getIdentity(), $userInfo['id']);
+    $contactInfo = $contacts->getRelationship($auth->getIdentity(), $userInfo['id']);
     
     if (isset($contactInfo['id'])) {
         echo '<li><b>You count ' . $this->escape($userInfo['alias']) .

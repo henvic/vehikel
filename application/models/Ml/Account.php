@@ -3,16 +3,16 @@
 class Ml_Model_Account
 {
 	/**
-     * Singleton pattern implementation makes "new" unavailable
+     * Makes "new" unavailable
      *
      * @return void
      */
-    //protected function __construct()
-    //{
-    //}
+    protected function __construct()
+    {
+    }
 
     /**
-     * Singleton pattern implementation makes "clone" unavailable
+     * Makes "clone" unavailable
      *
      * @return void
      */

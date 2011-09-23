@@ -22,11 +22,9 @@ class AccountController extends Zend_Controller_Action
         
         $people = Ml_Model_People::getInstance();
         
-        $profile = new Ml_Model_Profile();
+        $profile = Ml_Model_Profile::getInstance();
         
-        $account = new Ml_Model_Account();
-        
-        $form = $account->settingsForm();
+        $form = Ml_Model_Account::settingsForm();
         
         $signedUserInfo = $registry->get("signedUserInfo");
         
@@ -84,9 +82,7 @@ class AccountController extends Zend_Controller_Action
                     }
                     
                     if (! empty($changeDataLessEmail)) {
-                        $people->update($changeDataLessEmail, 
-                        $people->getAdapter()
-                            ->quoteInto("id = ?", $signedUserInfo['id']));
+                        $people->update($signedUserInfo['id'], $changeDataLessEmail);
                     }
                     
                     if (! empty($changeProfileData)) {
@@ -97,8 +93,7 @@ class AccountController extends Zend_Controller_Action
                             $purifier->purify($changeProfileData['about']);
                         }
                         
-                        $profile->update($changeProfileData,
-                         $people->getAdapter()->quoteInto("id = ?", $signedUserInfo['id']));
+                        $profile->update($signedUserInfo['id'], $changeProfileData);
                     }
                     
                     $signedUserInfo = array_merge($signedUserInfo, $changeDataLessEmail);
@@ -112,11 +107,10 @@ class AccountController extends Zend_Controller_Action
             }
             
             if (isset($changeData['email'])) {
-                //changeEmail table
-                $emailChange = new Ml_Model_EmailChange();
+                $emailChange = Ml_Model_EmailChange::getInstance();
                 
                 $securitycode =
-                $emailChange->askNew($signedUserInfo['id'], $changeData['email'], $signedUserInfo['name']);
+                $emailChange->newChange($signedUserInfo['id'], $changeData['email'], $signedUserInfo['name']);
                 
                 $mail = new Zend_Mail();
                 
@@ -169,7 +163,7 @@ class AccountController extends Zend_Controller_Action
         
         if ($request->isPost()) {
             if ($removeTwitterForm->isValid($request->getPost())) {
-                $twitter->delete($twitter->getAdapter()->quoteInto('uid = ?', $auth->getIdentity()));
+                $twitter->disassociateAccount($auth->getIdentity());
             } else if ($addTwitterForm->isValid($request->getPost())) {
                 $twitterAuthenticateUrl = $twitterObj->getAuthenticateUrl();
                 if (Zend_Uri::check($twitterAuthenticateUrl)) {
@@ -188,7 +182,7 @@ class AccountController extends Zend_Controller_Action
                     $tokenArray = array('oauth_token' => $token->oauth_token,
                     'oauth_token_secret' => $token->oauth_token_secret);
                     
-                    $twitter->setTwitterAccount($tokenArray);
+                    $twitter->associateAccount($tokenArray);
                     
                     $this->_redirect($router->assemble(array(), "accounttwitter"), array("exit"));
             } catch (Exception $e) {
@@ -202,7 +196,7 @@ class AccountController extends Zend_Controller_Action
             $lastCheckDate  = new Zend_Date($twitterInfo['timestamp'], Zend_Date::ISO_8601);
             if ($lastCheckDate->getTimestamp() < time() - 86400) {
                 try {
-                    $twitter->setTwitterAccount(false, $twitterInfo);
+                    $twitter->associateAccount(false, $twitterInfo);
                     $twitterInfo = $twitter->getSignedUserTwitterAccount();
                 } catch(Exception $e)
                 {
@@ -223,7 +217,7 @@ class AccountController extends Zend_Controller_Action
         
         $signedUserInfo = $registry->get("signedUserInfo");
         
-        $picture = new Ml_Model_PictureUpload();
+        $picture = Ml_Model_Picture::getInstance();
         $people = Ml_Model_People::getInstance();
         
         $form = $picture->pictureForm();

@@ -77,8 +77,8 @@ class FilesController extends Zend_Controller_Action
             ->appendChild($doc->newTextAttribute("bits", $share['fileSize']));
             
             $filesizeElement
-            ->appendChild($doc
-            ->newTextAttribute("kbytes", ceil($share['fileSize']/(1024*8))));
+            ->appendChild($doc->newTextAttribute("kbytes",
+            ceil($share['fileSize'] / (1024 * 8))));
             
             $shareElement->appendChild($filesizeElement);
             
@@ -181,7 +181,8 @@ class FilesController extends Zend_Controller_Action
         
         $filesizeElement
         ->appendChild($doc
-         ->newTextAttribute("kbytes", ceil($shareInfo['fileSize']/(1024*8))));
+         ->newTextAttribute("kbytes",
+         ceil($shareInfo['fileSize'] / (1024 * 8))));
         
         $rootElement->appendChild($filesizeElement);
         
@@ -247,7 +248,7 @@ class FilesController extends Zend_Controller_Action
         
         $this->_helper->loadApiresource->share();
         
-        $share = new Ml_Model_Upload();
+        $share = Ml_Model_Share::getInstance();
         
         $form = $share->apiSetMetaForm();
         
@@ -256,11 +257,8 @@ class FilesController extends Zend_Controller_Action
                 $shareInfo = $registry->get("shareInfo");
                 $authedUserInfo = $registry->get("authedUserInfo");
                 
-                $share->setMeta($authedUserInfo,
-                 $shareInfo,
-                 $form->getValues(),
-                 $form->getErrors());
-                
+                $share->setMeta($authedUserInfo, $shareInfo,
+                $form->getValues(), $form->getErrors());
             } else {
                 throw new Exception("Invalid post.");
             }

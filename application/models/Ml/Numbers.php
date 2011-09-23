@@ -1,13 +1,40 @@
 <?php
 class Ml_Model_Numbers
 {
+    /**
+     * Singleton pattern implementation makes "new" unavailable
+     *
+     * @return void
+     */
+    protected function __construct()
+    {
+    }
+
+    /**
+     * Singleton pattern implementation makes "clone" unavailable
+     *
+     * @return void
+     */
+    protected function __clone()
+    {
+    }
+    
+    public static function getInstance()
+    {
+        if (null === self::$_instance) {
+            self::$_instance = new self();
+        }
+        
+        return self::$_instance;
+    }
+    
     static public function base58Encode($num)
     {
         return self::baseEncode($num, 
         "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");
     }
     
-    static public function base58Decode ($num)
+    static public function base58Decode($num)
     {
         return self::baseDecode($num, 
         "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");

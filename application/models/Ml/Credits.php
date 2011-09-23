@@ -1,6 +1,6 @@
 <?php
 
-class Ml_Model_Credits extends Ml_Model_Db_Table
+class Ml_Model_Credits extends Ml_Model_AccessSingleton
 {
     const cents_USD = "cents_usd";
     
@@ -9,42 +9,13 @@ class Ml_Model_Credits extends Ml_Model_Db_Table
     // base58 -uppercase -a-e-u (better base, avoid bad words)
     const base = "123456789bcdfghjklmnpqrstwxyz";
     
+    protected static $_dbTableName = "transactions";
+    
     /**
      * Singleton instance
      *
      */
     protected static $_instance = null;
-    
-    
-    /**
-     * Singleton pattern implementation makes "new" unavailable
-     *
-     * @return void
-     */
-    //protected function __construct()
-    //{
-    //}
-
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
-    }
-    
-    
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
-    }
-    
-    protected $_name = "transactions";
     
     /**
      * 
@@ -54,12 +25,12 @@ class Ml_Model_Credits extends Ml_Model_Db_Table
      */
     public function view($uid, $sack = self::cents_USD)
     {
-        $query = $this->select()
-        ->from($this->_name, "sack, SUM(amount) as amount")
+        $query = $this->_dbTable->select()
+        ->from(self::$_dbTableName, "sack, SUM(amount) as amount")
         ->where("binary `uid` = ?", $uid)
         ->where("sack = ?", $sack);
         
-        $resp = $this->getAdapter()->fetchRow($query);
+        $resp = $this->_dbAdapter->fetchRow($query);
         
         return $resp;
     }
@@ -128,6 +99,7 @@ class Ml_Model_Credits extends Ml_Model_Db_Table
      * @param $sack
      * @param $overrideCreditLimit when true the transaction is made regardless of any debit status
      */
+    /*
     public function transaction($uid, $amount, $sack, $type, $id, $overrideCreditLimit = false)
     {
         $log = Ml_Model_Log::getInstance();
@@ -135,11 +107,14 @@ class Ml_Model_Credits extends Ml_Model_Db_Table
             throw new Exception("Transaction's amount must be a integer");
         }
         
-        $this->getAdapter()->beginTransaction();
+        $this->_dbAdapter->beginTransaction();
         if ($overrideCreditLimit) {
-            $this->insert(array("pid" => $this->makeUUId(), "uid" => $uid, "amount" => $amount, "sack" => $sack, "reason_type" => $type, "reason_id" => $id));
+            $this->_dbTable->insert(
+            array("pid" => $this->makeUUId(), "uid" => $uid, 
+            "amount" => $amount, "sack" => $sack, "reason_type" => $type, 
+            "reason_id" => $id));
         } else {
-            $this->getAdapter()->query("
+            $this->_dbAdapter->query("
 INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_id`) 
     SELECT ?, ?, ?, ?, ?, ?
         FROM dual
@@ -152,11 +127,11 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
         
         
         
-        $transactionId = $this->getAdapter()->lastInsertId();
+        $transactionId = $this->_dbAdapter->lastInsertId();
         $log->action("transaction", $transactionId);
-        $this->getAdapter()->commit();
+        $this->_dbAdapter->commit();
         return $transactionId;
-    }
+    }*/
     
     /**
      * makes a coupon's based transaction
@@ -168,30 +143,29 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
         $coupons = Ml_Model_Coupons::getInstance();
         $log = Ml_Model_Log::getInstance();
         
-        $this->getAdapter()->beginTransaction();
-        $select = $coupons->select();
-        $select->where("hash = ?", $coupon)->where("active = ?", true);
+        $this->_dbAdapter->beginTransaction();
         
-        $row = $coupons->fetchRow($select);
-        if (is_object($row)) {
-            $couponData = $row->toArray();
+        $couponData = $coupons->get($coupon, true);
+        
+        if (is_array($couponData)) {
             
-            if ($couponData['unique_use'] &&
-             ! $coupons->update(array("active" => false), 
-            $this->getAdapter()
-                ->quoteInto("hash = ?", $couponData['hash']))) {
-                throw new Exception("Error changing the active status of the coupon to false.");
-            }
-            if (! $couponData['unique_use']) {
+            if ($couponData['unique_use']) {
+                $stateChange = $coupons->state($couponData['hash'], false);
+                
+                if (! $stateChange) {
+                    $this->_dbAdapter->rollBack();
+                    return false;
+                }
+            } else if (! $couponData['unique_use']) {
                 //then checks if it was already used by this user:
                 //using fetchRow 'cause 1 result is enough
-                $isItUsed = $this->fetchRow($this->select()
+                $isItUsed = $this->_dbTable->fetchRow($this->_dbTable->select()
                 ->where("binary `uid` = ?", $uid)
-                ->where("reason_type = ?", Ml_Model_Credits::COUPON_REDEEM)
+                ->where("reason_type = ?", self::COUPON_REDEEM)
                 ->where("binary `reason_id` = ?", $couponData['id']));
                 
                 if (is_object($isItUsed)) {
-                    $this->getAdapter()->rollBack();
+                    $this->_dbAdapter->rollBack();
                     return false;
                 }
             }
@@ -201,10 +175,11 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
             "reason_type" => self::COUPON_REDEEM, 
             "reason_id" => $couponData['id']));
             
-            $transactionId = $this->getAdapter()->lastInsertId();
+            $transactionId = $this->_dbAdapter->lastInsertId();
+            
             $log->action("transaction", $transactionId);
             
-            $this->getAdapter()->commit();
+            $this->_dbAdapter->commit();
             
             return $transactionId;
         }
@@ -212,7 +187,7 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
     
     public function history($uid, $perPage, $page)
     {
-        $select = $this->select()
+        $select = $this->_dbTable->select()
         ->where("binary `uid` = ?", $uid)
         ->order("timestamp DESC");
         
@@ -223,11 +198,23 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
         return $paginator;
     }
     
-    public function getByPId($id)
+    public function getByPid($id)
     {
-        $select = $this->select()
+        $select = $this->_dbTable->select()
         ->where("binary `pid` = ?", $id);
         
-        return $this->getAdapter()->fetchRow($select);
+        return $this->_dbAdapter->fetchRow($select);
+    }
+    
+    public function getCouponRedeemed($uid, $tokenId)
+    {
+        $select = $this->_dbTable->select()
+        ->where("uid = ?", $uid)
+        ->where("reason_type = ?", self::COUPON_REDEEM)
+        ->where("reason_id = ?", $tokenId);
+            
+        $isItUsed = $this->_dbAdapter->fetchRow($select);
+        
+        return $isItUsed;
     }
 }

@@ -14,8 +14,8 @@ $this->headTitle($config['applicationname'], "SET");
 <div class="yui-u">
 <?php
 if ($config['signup']['inviteonly']):
-$invites = new Ml_Model_Invites();
-$this->invites = $invites->get();
+$invites = Ml_Model_Invites::getInstance();
+$this->invites = $invites->getTokens();
 if (is_array($this->invites) && sizeof($this->invites) > 0):
 ?>
 <h2 class="mainpage">We have some invite codes for you…</h2>

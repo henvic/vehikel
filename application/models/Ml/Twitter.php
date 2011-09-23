@@ -1,43 +1,15 @@
 <?php
-class Ml_Model_Twitter extends Ml_Model_Db_Table
+class Ml_Model_Twitter extends Ml_Model_AccessSingleton
 {
+    protected static $_dbTableName = "twitter";
+    
+    protected static $_dbPrimaryRow = "uid";
+    
     /**
      * Singleton instance
      *
      */
     protected static $_instance = null;
-    
-    
-    /**
-     * Singleton pattern implementation makes "new" unavailable
-     *
-     * @return void
-     */
-    //protected function __construct()
-    //{
-    //}
-
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
-    }
-    
-    
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
-    }
-    
-    protected $_name = "twitter";
-    protected $_primary = "uid";
     
     public static function form()
     {
@@ -72,9 +44,8 @@ class Ml_Model_Twitter extends Ml_Model_Db_Table
     public function tweet($msg)
     {
         $auth = Zend_Auth::getInstance();
-        $registry = Zend_Registry::getInstance();
         
-        $config = $registry->get('config');
+        $config = self::$_registry->get('config');
         
         $twitterConf = $config['services']['twitter'];
         
@@ -151,10 +122,10 @@ class Ml_Model_Twitter extends Ml_Model_Db_Table
         $twitterInfo = new Zend_Session_Namespace('twitterInfo');
         
         if (! $twitterInfo->isLocked()) {
-            $select = $this->select()->where("uid = ?", $auth->getIdentity());
-            $row = $this->fetchRow($select);
+            $select = $this->_dbTable->select()->where("uid = ?", $auth->getIdentity());
+            $row = $this->_dbAdapter->fetchRow($select);
             
-            $twitterInfo->account = (is_object($row)) ? $row->toArray() : false;
+            $twitterInfo->account = $row;
             
             $twitterInfo->setExpirationSeconds(86400);//we like fresh data
             
@@ -164,12 +135,17 @@ class Ml_Model_Twitter extends Ml_Model_Db_Table
         return $twitterInfo->account;
     }
     
-    public function setTwitterAccount($token, $twitterInfo = false)
+    /**
+     * 
+     * Associates the twitter account
+     * @param string $token
+     * @param mixed $twitterInfo twitterInfo data, if it exists
+     */
+    public function associateAccount($token, $twitterInfo = false)
     {
-        $registry = Zend_Registry::getInstance();
         $auth = Zend_Auth::getInstance();
         
-        $config = $registry->get('config');
+        $config = self::$_registry->get('config');
         
         $twitterConf = $config['services']['twitter'];
         
@@ -198,7 +174,7 @@ class Ml_Model_Twitter extends Ml_Model_Db_Table
             return false;
         }
         
-        //put the max sizes of screen_name and name for twitter somewhere else
+        //@todo put the max sizes of screen_name and name for twitter somewhere else more appropriate
         if (! array_key_exists("id", $twitterResponse) ||
          ! array_key_exists("name", $twitterResponse) ||
          ! array_key_exists("screen_name", $twitterResponse) ||
@@ -213,8 +189,8 @@ class Ml_Model_Twitter extends Ml_Model_Db_Table
                 return $twitterInfo;
         }
         
-        $this->getAdapter()->query('INSERT INTO ' .
-         $this->getAdapter()->quoteTableAs($this->_name) .
+        $this->_dbAdapter->query('INSERT INTO ' .
+         $this->_dbAdapter->quoteTableAs(($this->_dbTable->getTableName())) .
          ' (`id`, `uid`, `oauth_token`, `oauth_token_secret`, `screen_name`, `name`, `timestamp`) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE id=VALUES(id), oauth_token=VALUES(oauth_token), oauth_token_secret=VALUES(oauth_token_secret), screen_name=VALUES(screen_name), name=VALUES(name), timestamp=VALUES(timestamp)',
                     array($twitterResponse['id'],
                      $auth->getIdentity(),
@@ -225,6 +201,16 @@ class Ml_Model_Twitter extends Ml_Model_Db_Table
         $twitterInfoNamespace->unlock();
         
         return true;
+    }
+    
+    /**
+     * 
+     * Dissaciate Twitter account of the given user
+     * @param big int $uid the user id of this system, not of Twitter's
+     */
+    public function disassociateAccount($uid)
+    {
+        $this->_dbTable->delete($this->_dbAdapter->quoteInto('uid = ?', $uid));
     }
     
     public static function removeForm()

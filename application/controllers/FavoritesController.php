@@ -40,17 +40,9 @@ class FavoritesController extends Zend_Controller_Action
             $favoriteForm = $favorites->form();
             if ($request->isPost() && $favoriteForm->isValid($request->getPost())) {
                 if (array_key_exists("unfavorite", $params)) {
-                    $favorites->delete($favorites->getAdapter()
-                        ->quoteInto("uid = ?", $auth->getIdentity()) .
-                     $favorites->getAdapter()
-                        ->quoteInto(" AND share = ?", $shareInfo['id']));
+                    $favorites->unfavorite($auth->getIdentity(), $shareInfo['id']);
                 } else if (array_key_exists("favorite", $params)) {
-                    $favorites->getAdapter()->query("INSERT IGNORE INTO `" .
-                        $favorites->getTableName() .
-                         "` (uid, share, byUid) SELECT ?, ?, ? FROM DUAL WHERE not exists (select * from `ignore` where ignore.uid = ? AND ignore.ignore = ?)", 
-                        array($auth->getIdentity(), $shareInfo['id'], 
-                        $shareInfo['byUid'], $shareInfo['byUid'], 
-                        $auth->getIdentity()));
+                    $favorites->favorite($auth->getIdentity(), $shareInfo['id'], $shareInfo['byUid']);
                 }
                 $done = true;
             }
@@ -102,7 +94,7 @@ class FavoritesController extends Zend_Controller_Action
         
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
-        $favorites = new Ml_Model_Favorites();
+        $favorites = Ml_Model_Favorites::getInstance();
         $share = Ml_Model_Share::getInstance();
         $people = Ml_Model_People::getInstance();
         

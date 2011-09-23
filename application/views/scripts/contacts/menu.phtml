@@ -24,7 +24,7 @@ if ($auth->hasIdentity()) {
     if ($userInfo['id'] == $auth->getIdentity()) {
         $contactLinks['ignorelist'] = array("People you ignore" => $this->url(array("username" => $userInfo['alias']), "ignore_1stpage"));
     } else {
-        $mutualContactInfo = $contacts->getInfo($auth->getIdentity(), $userInfo['id']);
+        $mutualContactInfo = $contacts->getRelationship($auth->getIdentity(), $userInfo['id']);
     }
 }
 ?>

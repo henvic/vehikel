@@ -1,44 +1,15 @@
 <?php
-class Ml_Model_Recover extends Ml_Model_Db_Table
+class Ml_Model_Recover extends Ml_Model_AccessSingleton
 {
+    protected static $_dbTableName = "recover";
+    
     /**
      * Singleton instance
      *
      */
     protected static $_instance = null;
     
-    
-    /**
-     * Singleton pattern implementation makes "new" unavailable
-     *
-     * @return void
-     */
-    //protected function __construct()
-    //{
-    //}
-    
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
-    }
-    
-    
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
-    }
-    
-    protected $_name = "recover";
-    
-    public static function recoverForm()
+    public static function form()
     {
         static $form = '';
         
@@ -51,5 +22,71 @@ class Ml_Model_Recover extends Ml_Model_Db_Table
             ));
         }
         return $form;
+    }
+    
+    /**
+     * 
+     * Creates a new case for password recovery
+     * @param big int $uid
+     * @return security code
+     */
+    public function newCase($uid)
+    {
+        $securityCode = sha1(md5(mt_rand(0, 1000) . time() . microtime()) .
+        deg2rad(mt_rand(0, 360)));
+        
+        $this->_dbAdapter
+        ->query('INSERT INTO `recover` (`uid`, `securitycode`) VALUES (?, ?) ON DUPLICATE KEY UPDATE uid=VALUES(uid), securitycode=VALUES(securitycode), timestamp=CURRENT_TIMESTAMP',
+        array($uid, $securityCode));
+        
+        return $securityCode;
+    }
+    
+    /**
+     * 
+     * Remove the existing case for password recovery for a given user
+     * @param big int $uid
+     */
+    public function closeCase($uid)
+    {
+        $delete = $this->_dbTable->delete($this->_dbTable->quoteInto('uid = ?', $uid));
+        
+        return ($delete) ? true : false;
+    }
+    
+    /**
+     * 
+     * Get authorization for password change / account recovery
+     * @param big int $uid
+     * @param string $securityCode
+     * @return authorization info array on success, false on failure
+     */
+    public function getAuthorization($uid, $securityCode)
+    {
+        $select = $this->_dbTable->select()
+        ->where("uid = ?", $uid)
+        ->where("securitycode = ?", $securityCode)
+        ->where("CURRENT_TIMESTAMP < TIMESTAMP(timestamp, '12:00:00')");
+        
+        $recoverInfo = $this->_dbTable->fetchRow($select);
+        if (! is_object($recoverInfo)) {
+            return false;
+        }
+        return $recoverInfo->toArray();
+    }
+    
+	/**
+     * 
+     * Garbage collector
+     * @param int $maxAge in seconds
+     * @return number of deleted items
+     */
+    public function gc($maxAge)
+    {
+        $deleted = $this->_dbAdapter
+         ->delete($this->_dbTable->getTableName(), $this->_dbAdapter
+         ->quoteInto("timestamp < ?", date("Y-m-d H:i:s", time() - ($maxAge))));
+         
+         return $deleted;
     }
 }

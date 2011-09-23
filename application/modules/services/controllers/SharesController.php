@@ -9,9 +9,9 @@ class SharesController extends Zend_Controller_Action
         
         $timecheck = new Ml_Model_Timecheck();
         
-        $share = new Ml_Model_Upload();
+        $share = Ml_Model_Share::getInstance();
         
-        $people = new Ml_Model_People();
+        $people = Ml_Model_People::getInstance();
         
         $service->putString("WARNING!\n========\n");
         

@@ -1,44 +1,14 @@
 <?php
 
-class Ml_Model_Log extends Ml_Model_Db_Table
+class Ml_Model_Log extends Ml_Model_AccessSingleton
 {
+    protected static $_dbTableName = "log";
+    
     /**
      * Singleton instance
      *
      */
     protected static $_instance = null;
-    
-    
-    /**
-     * Singleton pattern implementation makes "new" unavailable
-     *
-     * @return void
-     */
-    //protected function __construct()
-    //{
-    //}
-
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
-    }
-    
-    
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
-    }
-    
-    protected $_name = "log";
-    
     
     /**
      * 
@@ -53,11 +23,10 @@ class Ml_Model_Log extends Ml_Model_Db_Table
      * 
      * @param $reasonType
      * @param $reasonId
+     * @return void
      */
     public function action($reasonType, $reasonId = null, $notes = null)
     {
-        $registry = Zend_Registry::getInstance();
-        
         $data = array();
         
         if (isset($_SERVER['REMOTE_ADDR'])) {
@@ -67,8 +36,8 @@ class Ml_Model_Log extends Ml_Model_Db_Table
         if (isset($_SERVER['HTTP_COOKIE'])) {
             $data['cookies'] = $_SERVER['HTTP_COOKIE'];
         }
-        if ($registry->isRegistered("signedUserInfo")) {
-            $signedUserInfo = $registry->get("signedUserInfo");
+        if (self::$_registry->isRegistered("signedUserInfo")) {
+            $signedUserInfo = self::$_registry->get("signedUserInfo");
             $data['uid'] = $signedUserInfo['id'];
         }
         if ($notes) {
@@ -79,6 +48,6 @@ class Ml_Model_Log extends Ml_Model_Db_Table
         $data['reason_id'] = $reasonId;
         $data['dump'] = var_export($_SERVER, true);
         
-        $this->insert($data);
+        $this->_dbTable->insert($data);
     }
 }

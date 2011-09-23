@@ -1,9 +1,11 @@
 <?php
-require EXTERNAL_LIBRARY_PATH .  '/phpass-0.3/PasswordHash.php';
 
-class Ml_Model_Credential extends Ml_Model_Db_Table
+class Ml_Model_Credential extends Ml_Model_AccessSingleton
 {
     const PASSWORD_HASH_ITERATION_COUNT = "8";
+    
+    protected static $_dbTableName = "credentials";
+    protected static $_dbPrimaryRow = "uid";
     
     /**
      * Singleton instance
@@ -11,40 +13,16 @@ class Ml_Model_Credential extends Ml_Model_Db_Table
      */
     protected static $_instance = null;
     
-    
-    /**
-     * Singleton pattern implementation makes "new" unavailable
-     *
-     * @return void
-     */
-    //protected function __construct()
-    //{
-    //}
-
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
+    protected function __construct($config = array())
     {
+        Zend_Loader::loadClass('PasswordHash', EXTERNAL_LIBRARY_PATH .  '/phpass-0.3/');
+        
+        return parent::__construct($config);
     }
-    
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
-    }
-    
-    protected $_name = "credentials";
-    protected $_primary = "uid";
     
     static private function getPreHash($uid, $password)
     {
-        return hash("sha384", $uid."-".$password);
+        return hash("sha384", $uid . "-" . $password);
     }
     
     static public function setHash($uid, $password)
@@ -61,8 +39,9 @@ class Ml_Model_Credential extends Ml_Model_Db_Table
     public function getAuthAdapter($uid, $password)
     {
         $authAdapter = new Ml_Auth_Adapter(Zend_Registry::get('database'));
-        $authAdapter->setTableName($this->_name)
-        ->setIdentityColumn($this->_primary)
+        
+        $authAdapter->setTableName(self::$_dbTableName)
+        ->setIdentityColumn(self::$_dbPrimaryRow)
         ->setIdentity($uid)
         ->setCredentialColumn("credential")
         ->setCredential(self::getPreHash($uid, $password));
@@ -74,11 +53,24 @@ class Ml_Model_Credential extends Ml_Model_Db_Table
     {
         $hash = self::setHash($uid, $password);
         
-        $stmt = $this->getAdapter()
-         ->query('INSERT INTO `credentials` (`uid`, `credential`) VALUES (?, ?) ON DUPLICATE KEY UPDATE credential=VALUES(credential)',
+        $stmt = $this->_dbAdapter()
+         ->query('INSERT INTO `' . $this->_dbAdapter->quoteTableAs(self::$_dbTableName) . 
+         '` (`uid`, `credential`) VALUES (?, ?) ON DUPLICATE KEY UPDATE credential=VALUES(credential)',
          array($uid, $hash));
         
         return $stmt->rowCount();
+    }
+    
+    public function getByUid($uid)
+    {
+        $select = $this->_dbTable->select()->where("uid = ?", $uid);
+        $query = $this->_dbTable->fetchRow($select);
+        
+        if (! is_object($query)) {
+            return false;
+        }
+        
+        return $query->toArray();
     }
     
     public static function loginForm()
@@ -92,7 +84,7 @@ class Ml_Model_Credential extends Ml_Model_Db_Table
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
-            $action = ($config['ssl']) ? 'https://'.$config['webhostssl'] : '';
+            $action = ($config['ssl']) ? 'https://' . $config['webhostssl'] : '';
             
             $action .= $router->assemble(array(), "login");
             
@@ -118,7 +110,7 @@ class Ml_Model_Credential extends Ml_Model_Db_Table
             
             $form = new Ml_Form_Logout(array(
                 'action' =>
-                 'http://'.$config['webhost'] .
+                 'http://' . $config['webhost'] .
                   $router->assemble(array(), "logout"),
                 'method' => 'post',
             ));
@@ -168,9 +160,7 @@ class Ml_Model_Credential extends Ml_Model_Db_Table
      */
     public function checkLinkToRedirect()
     {
-        $registry = Zend_Registry::getInstance();
-        
-        $config = $registry->get("config");
+        $config = self::$_registry->get("config");
         
         $redirectAfterLogin = filter_input(INPUT_GET, "redirect_after_login", FILTER_UNSAFE_RAW);
         

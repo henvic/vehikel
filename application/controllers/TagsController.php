@@ -46,17 +46,10 @@ class TagsController extends Zend_Controller_Action
                         break;
                     }
                     
-                    try {
-                        $add = $tags->getAdapter()
-                        ->query("INSERT IGNORE INTO `" . $tags->getTableName() .
-                         "` (`share`, `people`, `clean`, `raw`, `timestamp`) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)",
-                        array($shareInfo['id'], $shareInfo['byUid'], 
-                        $tag['clean'], $tag['raw']));
-                        
-                        if ($add->rowCount()) {
-                            $tagsCounter ++;
-                        }
-                    } catch (Exception $e) {
+                    $add = $tags->addTag($shareInfo['id'], $shareInfo['byUid'], $tag['clean'], $tag['raw'], $tagsCounter);
+                    
+                    if ($add) {
+                        $tagsCounter ++;
                     }
                 }
             }

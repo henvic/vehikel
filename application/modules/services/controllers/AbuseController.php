@@ -4,14 +4,9 @@ class AbuseController extends Zend_Controller_Action
     public function getAction()
     {
         $service = new Ml_Model_Service();
-        $abuse = new Ml_Model_Abuse();
+        $abuse = Ml_Model_Abuse::getInstance();
         
-        $select = $abuse->select();
-        
-        $abusesNum =
-         $abuse->getAdapter()->fetchOne($abuse->select()
-          ->where("solution = ?", "unsolved")
-          ->from($abuse->getTableName(), 'count(*)'));
+        $abusesNum = $abuse->getTotal();
         
         $service->putString("Number of abuses waiting for solution: $abusesNum\n\n");
         
@@ -25,13 +20,10 @@ class AbuseController extends Zend_Controller_Action
             die;
         }
         if (empty($id)) {
-            $select->where("solution = ?", "unsolved");
-            $select->order("timestamp ASC")->limit(1);
+            $row = $abuse->getLastOpen();
         } else {
-            $select->where("id = ?", $id);
+            $row = $abuse->getById($id);
         }
-        
-        $row = $abuse->fetchRow($select);
         
         if (! is_object($row)) {
             die("Nothing to solve.\n");
@@ -53,7 +45,7 @@ class AbuseController extends Zend_Controller_Action
                 break;
         }
         
-        $abuse->update(array("solution" => $isSolved), $rowData['id']);
+        $abuse->updateStatus($rowData['id'], $isSolved);
         
         $service->putString("Status changed to $isSolved\n");
     }

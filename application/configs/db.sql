@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.1.41-3ubuntu12.10)
 # Database: medialab
-# Generation Time: 2011-09-08 04:04:51 +0000
+# Generation Time: 2011-09-26 18:40:23 +0000
 # ************************************************************
 
 
@@ -137,16 +137,16 @@ CREATE TABLE `credentials` (
 
 
 
-# Dump of table emailChange
+# Dump of table email_change
 # ------------------------------------------------------------
 
-CREATE TABLE `emailChange` (
+CREATE TABLE `email_change` (
   `uid` bigint(20) unsigned NOT NULL,
   `email` char(60) NOT NULL,
   `securitycode` char(40) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`uid`),
-  CONSTRAINT `emailChange_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `people` (`id`) ON DELETE CASCADE
+  CONSTRAINT `email_change_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `people` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -222,10 +222,10 @@ CREATE TABLE `log` (
 
 
 
-# Dump of table newusers
+# Dump of table new_users
 # ------------------------------------------------------------
 
-CREATE TABLE `newusers` (
+CREATE TABLE `new_users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `email` char(60) NOT NULL,
   `name` varchar(100) NOT NULL,
@@ -461,17 +461,6 @@ CREATE TABLE `recover` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`uid`),
   CONSTRAINT `recover_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `people` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table remove_deleted_user_leftovers
-# ------------------------------------------------------------
-
-CREATE TABLE `remove_deleted_user_leftovers` (
-  `id` bigint(20) unsigned NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

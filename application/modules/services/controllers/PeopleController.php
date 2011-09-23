@@ -9,9 +9,9 @@ class PeopleController extends Zend_Controller_Action
         
         $timecheck = new Ml_Model_Timecheck();
         
-        $people = new Ml_Model_People();
+        $people = Ml_Model_People::getInstance();
         
-        $peopleDeleted = new Ml_Model_PeopleDeleted();
+        $peopleDelete = Ml_Model_PeopleDelete::getInstance();
         
         $service->putString("WARNING!\n========\n");
         
@@ -61,7 +61,7 @@ class PeopleController extends Zend_Controller_Action
         
         $registry->set("canDeleteAccount", true);
         
-        $peopleDeleted->deleteAccount($userInfo, sha1(serialize($userInfo)));
+        $peopleDelete->deleteAccount($userInfo, sha1(serialize($userInfo)));
         
         echo "User account deleted.\n";
     }

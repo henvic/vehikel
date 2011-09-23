@@ -20,7 +20,7 @@ class PeopleController extends Zend_Controller_Action
         $params = $request->getParams();
         
         $people = Ml_Model_People::getInstance();
-        $profile = new Ml_Model_Profile();
+        $profile = Ml_Model_Profile::getInstance();
         $share = Ml_Model_Share::getInstance();
         
         if (isset($params['username'])) {
@@ -84,10 +84,7 @@ class PeopleController extends Zend_Controller_Action
             $rootElement->appendChild($doc->newTextElement($field, $data));
         }
         
-        $sharesCounter =
-        $share->getAdapter()->fetchOne($share->select()
-         ->from($share->getTableName(), 'count(*)')
-         ->where("byUid = ?", $userInfo['id']));
+        $sharesCounter = $share->countOfUser($userInfo['id']);
         
         $sharesElement = $doc->createElement("files");
         $sharesCounterElement = $doc->createElement("count");

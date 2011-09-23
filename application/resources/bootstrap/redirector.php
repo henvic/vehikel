@@ -35,8 +35,8 @@ $id =  Ml_Model_Numbers::base58Decode($uri);
 
 if ($id) {
     //Is it a valid share ID?
-    $share = new Ml_Model_Share();
-    $people = new Ml_Model_People();
+    $share = Ml_Model_Share::getInstance();
+    $people = Ml_Model_People::getInstance();
     
     $shareInfo = $share->getById($id);
     

@@ -37,7 +37,6 @@ class TwitterController extends Zend_Controller_Action
                     $this->view->tweetResponse = array("error" => "msg_too_long");
                 }
             }
-        } else {
         }
         
         if (! $this->_request->isXmlHttpRequest()) {
