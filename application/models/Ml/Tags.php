@@ -64,14 +64,14 @@ class Ml_Model_Tags extends Ml_Model_AccessSingleton
         $dbTable = $this->_dbTable;
         
         $select = $dbTable->select();
-        $select->where($this->_dbName.".people = ?", $uid)
-        ->where($this->_dbName.".clean = ?", $cleantag)
+        $select->where($this->_dbTable->getTableName() . ".people = ?", $uid)
+        ->where($this->_dbTable->getTableName() . ".clean = ?", $cleantag)
         ->order("timestamp ASC");
         
-        $quoteTable = $this->_dbAdapter->quoteTableAs($this->_dbTable->getTableName());
-        
-        $select->from($quoteTable);
+        $select->from($this->_dbTable->getTableName());
         $select->setIntegrityCheck(false);
+        
+        $quoteTable = $this->_dbAdapter->quoteTableAs($this->_dbTable->getTableName());
         
         $select->joinInner("share",
         "share.id = " . $quoteTable . ".share",
