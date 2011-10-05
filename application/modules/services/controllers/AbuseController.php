@@ -20,18 +20,16 @@ class AbuseController extends Zend_Controller_Action
             die;
         }
         if (empty($id)) {
-            $row = $abuse->getLastOpen();
+            $data = $abuse->getLastOpen();
         } else {
-            $row = $abuse->getById($id);
+            $data = $abuse->getById($id);
         }
         
-        if (! is_object($row)) {
+        if (empty($data)) {
             die("Nothing to solve.\n");
         }
         
-        $rowData = $row->toArray();
-        
-        $service->putString(print_r($rowData, true));
+        $service->putString(print_r($data, true));
         
         $isSolved = $service->getInput("Change solution status (unsolved/solved/notabuse)? ");
         
@@ -45,7 +43,7 @@ class AbuseController extends Zend_Controller_Action
                 break;
         }
         
-        $abuse->updateStatus($rowData['id'], $isSolved);
+        $abuse->updateStatus($data['id'], $isSolved);
         
         $service->putString("Status changed to $isSolved\n");
     }
