@@ -17,12 +17,28 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
     protected $_lastActivityPrefix = "la_";
     
     /**
+     * Constructor
+     * 
+     * @param Zend_Cache_Core $handler
+     * @param string $sessionPrefix session prefix
+     * @param string $activityPrefix last activity prefix
+     */
+    public function __construct($handler, $sessionPrefix = null, $lastActivityPrefix)
+    {
+        if ($lastActivityPrefix) {
+            $this->setLastActivityPrefix($lastActivityPrefix);
+        }
+        
+        return parent::__construct($handler, $sessionPrefix);
+    }
+    
+    /**
      * Set the session prefix
      *
      * @param string $sessionPrefix
      * @return Zend_Session_SaveHandler_Cache
      */
-    public function setlastActivityPrefix($lastActivityPrefix)
+    public function setLastActivityPrefix($lastActivityPrefix)
     {
         $this->_lastActivityPrefix = $lastActivityPrefix;
 
@@ -34,7 +50,7 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
      *
      * @return string
      */
-    public function getlastActivityPrefix()
+    public function getLastActivityPrefix()
     {
         return $this->_lastActivityPrefix;
     }
@@ -92,7 +108,7 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
             );
             
             $this->_cache->save($requestInfo, 
-             $this->_sessionPrefix . $this->_lastActivityPrefix . $id, array(), 
+             $this->_lastActivityPrefix . $id, array(), 
              $this->_getLifetime($id));
             
             $client = new couchClient($couchDbConfig, "web_access_log");

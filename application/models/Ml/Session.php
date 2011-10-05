@@ -39,7 +39,7 @@ class Ml_Model_Session extends Ml_Model_AccessSingleton
         
         $this->_sessionPrefix = $sessionHandler->getSessionPrefix();
         
-        $this->_lastActivityPrefix = $sessionHandler->getlastActivityPrefix();
+        $this->_lastActivityPrefix = $sessionHandler->getLastActivityPrefix();
         
         parent::__construct($config);
     }
@@ -59,7 +59,7 @@ class Ml_Model_Session extends Ml_Model_AccessSingleton
      *
      * @return string
      */
-    public function getlastActivityPrefix()
+    public function getLastActivityPrefix()
     {
         return $this->_lastActivityPrefix;
     }
@@ -212,7 +212,7 @@ class Ml_Model_Session extends Ml_Model_AccessSingleton
         $activity = array();
         
         foreach ($sessionsList as $oneSession) {
-            $lastActivityInfo = $this->_cache->load($this->getSessionPrefix() . $this->_lastActivityPrefix . $oneSession['session']);
+            $lastActivityInfo = $this->_cache->load($this->_lastActivityPrefix . $oneSession['session']);
             
             if (is_array($lastActivityInfo)) {
                 $lastActivityInfo['session'] = $oneSession['session'];

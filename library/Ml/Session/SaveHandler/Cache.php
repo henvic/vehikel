@@ -37,10 +37,15 @@ class Ml_Session_SaveHandler_Cache implements Zend_Session_SaveHandler_Interface
      * Constructor
      * 
      * @param Zend_Cache_Core $handler
+     * @param string $prefix session prefix
      */
-    public function __construct($handler)
+    public function __construct($handler, $prefix = null)
     {
         $this->_cache = $handler;
+        
+        if ($prefix) {
+            $this->setSessionPrefix($prefix);
+        }
     }
     
     /**
