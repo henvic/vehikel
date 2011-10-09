@@ -84,7 +84,6 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
         //if user is identified, save additional information
         if ($auth->hasIdentity()) {
             $frontController = Zend_Controller_Front::getInstance();
-            $couchDbConfig = $config['resources']['db']['couchdb']['dsn'];
             
             //if for some reason (which might be or not right) the script
             //was earlier terminated before the creation of the response object
@@ -111,13 +110,13 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
              $this->_lastActivityPrefix . $id, array(), 
              $this->_getLifetime($id));
             
-            $client = new couchClient($couchDbConfig, "web_access_log");
+            $couchDb = Ml_Model_CouchDb::getInstance();
             
             $requestInfo['_id'] =
              $_SERVER['REQUEST_TIME'] . "-" . $auth->getIdentity() . "-" . mt_rand();
             
             try {
-                $client->storeDoc((object) ($requestInfo));
+                $couchDb->storeDoc((object) ($requestInfo));
             } catch (Exception $e) {
                 trigger_error('Failure to store authenticated access log of user id ' .
                 $auth->getIdentity(), E_USER_NOTICE);

@@ -51,11 +51,6 @@ require EXTERNAL_LIBRARY_PATH . '/Zend/Cache/Core.php';
 require EXTERNAL_LIBRARY_PATH . '/Zend/Application.php';
 require LIBRARY_PATH . '/Ml/Application.php';
 
-require EXTERNAL_LIBRARY_PATH."/php-on-couch/lib/couch.php";
-require EXTERNAL_LIBRARY_PATH."/php-on-couch/lib/couchClient.php";
-require EXTERNAL_LIBRARY_PATH."/php-on-couch/lib/couchDocument.php";
-
-
 $sysCache = new Zend_Cache_Core(array('automatic_serialization' => true));
 $sysCache->setBackend(new Zend_Cache_Backend_File(array("cache_dir" => CACHE_PATH)));
 
