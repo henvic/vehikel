@@ -41,7 +41,10 @@ class Ml_Model_CouchDb
             
             $dsn = $config['resources']['db']['couchdb']['dsn'];
             
-            $client = new couchClient($dsn, "web_access_log");
+            //start with a invalid database, always remember to set it before
+            //retrieving / saving a object as the library being used doesn't
+            //offer a better way to do right now
+            $client = new couchClient($dsn, "invalid");
             
             self::$_instance = $client;
         }
