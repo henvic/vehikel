@@ -1,5 +1,5 @@
 <?php
-class Ml_Types
+class Ml_Model_Types
 {
     public static function arrayToObject ($array, &$obj = false)
     {
