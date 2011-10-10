@@ -116,9 +116,11 @@ class Ml_Model_Session extends Ml_Model_AccessSingleton
     
     public function logout()
     {
-        $log = Ml_Model_Log::getInstance();
-        $log->action("logout");
+        $logger = Ml_Model_Logger::getInstance();
+        
         $auth = Zend_Auth::getInstance();
+        
+        $logger->log(array("action" => "logout_request"));
         
         $oldUid = $auth->getIdentity();
         
@@ -145,10 +147,11 @@ class Ml_Model_Session extends Ml_Model_AccessSingleton
     
     public function remoteLogout()
     {
+        $logger = Ml_Model_Logger::getInstance();
+        
         $auth = Zend_Auth::getInstance();
         
-        $log = Ml_Model_Log::getInstance();
-        $log->action("remote_logout");
+        $logger->log(array("action" => "remote_logout_request"));
         
         $sessionsList = $this->listRecentSessionsMeta($auth->getIdentity());
         
@@ -159,16 +162,14 @@ class Ml_Model_Session extends Ml_Model_AccessSingleton
         $stmt = 'UPDATE '.
             $this->_dbAdapter->quoteTableAs($this->_dbTable->getTableName()).' '.
             'SET `status` = ?, `end` = CURRENT_TIMESTAMP, `end_remote_addr` = ? '.
-            'WHERE `status` = ? AND `uid` = ? AND `session` != ?'
-            ;
+            'WHERE `status` = ? AND `uid` = ? AND `session` != ?';
         
         $this->_dbAdapter->query($stmt, array(
                 self::CLOSE_REMOTE_STATUS,
                 ($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null,
                 self::OPEN_STATUS,
                 $auth->getIdentity(),
-                $currentSid
-                ));
+                $currentSid));
     }
     
     protected function listRecentSessionsMeta($uid, $onlyOpen = false)
@@ -177,7 +178,7 @@ class Ml_Model_Session extends Ml_Model_AccessSingleton
         ->quoteTableAs($this->_dbTable->getTableName()) . " WHERE uid = ? AND (status = ?";
 
         if (! $onlyOpen) {
-            $sql .= " OR end > DATE_SUB(NOW(), INTERVAL ".self::RECENT_ACCESS_INTERVAL.")";
+            $sql .= " OR end > DATE_SUB(NOW(), INTERVAL " . self::RECENT_ACCESS_INTERVAL . ")";
         }
         
         $sql .= ") ORDER BY creation desc, end desc";

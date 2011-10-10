@@ -94,32 +94,32 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
                 $responseCode = '';
             }
             
-            $requestInfo = array(
-                "http_user_agent" => $_SERVER['HTTP_USER_AGENT'],
+            $requestInfo = array("http_user_agent" => $_SERVER['HTTP_USER_AGENT'],
                 "request_method" => $_SERVER['REQUEST_METHOD'],
                 "remote_addr" => $_SERVER['REMOTE_ADDR'],
-                "request_time" => (int)$_SERVER['REQUEST_TIME'],
+                "request_time" => (int) $_SERVER['REQUEST_TIME'],
                 "request_method" => $_SERVER['REQUEST_METHOD'],
                 "request_uri" => $_SERVER['REQUEST_URI'],
                 "http_response_code" => $responseCode,
                 "session" => $id,
-                "uid" => $auth->getIdentity()
-            );
+                "uid" => $auth->getIdentity());
             
             $this->_cache->save($requestInfo, 
-             $this->_lastActivityPrefix . $id, array(), 
-             $this->_getLifetime($id));
+            $this->_lastActivityPrefix . $id, array(), 
+            $this->_getLifetime($id));
             
-            $couchDb = Ml_Model_CouchDb::getInstance();
-            
-            $requestInfo['_id'] =
-             $_SERVER['REQUEST_TIME'] . "-" . $auth->getIdentity() . "-" . mt_rand();
-            
-            try {
-                $couchDb->storeDoc((object) ($requestInfo));
-            } catch (Exception $e) {
-                trigger_error('Failure to store authenticated access log of user id ' .
-                $auth->getIdentity(), E_USER_NOTICE);
+            if ($config['log']['requests']) {
+                $couchDb = Ml_Model_CouchDb::getInstance();
+                
+                $requestInfo['_id'] = Ml_Model_Request::getId();
+                
+                try {
+                    $couchDb->useDatabase("web_access_log");
+                    $couchDb->storeDoc((object) ($requestInfo));
+                } catch (Exception $e) {
+                    trigger_error('Failure to store authenticated access log of user id ' .
+                    $auth->getIdentity(), E_USER_NOTICE);
+                }
             }
         }
         

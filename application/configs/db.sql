@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # http://code.google.com/p/sequel-pro/
 #
-# Host: 127.0.0.1 (MySQL 5.1.41-3ubuntu12.10)
+# Host: plifk.web.dev.localhost (MySQL 5.1.54-1ubuntu4)
 # Database: medialab
-# Generation Time: 2011-09-26 18:40:23 +0000
+# Generation Time: 2011-10-10 21:02:14 +0000
 # ************************************************************
 
 
@@ -200,24 +200,6 @@ CREATE TABLE `invites` (
   `used` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `hash` (`hash`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table log
-# ------------------------------------------------------------
-
-CREATE TABLE `log` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `remote_addr` varchar(40) NOT NULL,
-  `cookies` varchar(256) NOT NULL,
-  `dump` text NOT NULL,
-  `uid` bigint(20) unsigned NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `reason_type` enum('transaction','login','logout','remote_logout') NOT NULL,
-  `reason_id` bigint(20) unsigned DEFAULT NULL,
-  `notes` varchar(255) DEFAULT NULL,
-  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

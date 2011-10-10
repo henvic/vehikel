@@ -141,7 +141,7 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
     public function couponTransaction($uid, $coupon)
     {
         $coupons = Ml_Model_Coupons::getInstance();
-        $log = Ml_Model_Log::getInstance();
+        $logger = Ml_Model_Logger::getInstance();
         
         $this->_dbAdapter->beginTransaction();
         
@@ -177,7 +177,7 @@ INSERT INTO transactions(`pid`, `uid`, `amount`, `sack`, `reason_type`, `reason_
             
             $transactionId = $this->_dbAdapter->lastInsertId();
             
-            $log->action("transaction", $transactionId);
+            $logger->log(array("action" => "transaction", "transaction" => $transactionId));
             
             $this->_dbAdapter->commit();
             

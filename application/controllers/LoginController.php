@@ -70,7 +70,7 @@ class LoginController extends Zend_Controller_Action
         
         Ml_Model_AntiAttack::loadRules();
         $credential = Ml_Model_Credential::getInstance();
-        $log = Ml_Model_Log::getInstance();
+        $logger = Ml_Model_Logger::getInstance();
         
         if ($auth->hasIdentity()) {
             return $this->_forward("goback");
@@ -111,7 +111,8 @@ class LoginController extends Zend_Controller_Action
             
             $session->associate($auth->getIdentity(), Zend_Session::getId());
             
-            $log->action("login", null, $form->getValue("username"));
+            $logger->log(array("action" => "login",
+            "username" => $form->getValue("username")));
             
             $this->_forward("goback");
         } else {
@@ -120,7 +121,9 @@ class LoginController extends Zend_Controller_Action
                 $auth->clearIdentity();
             }
             
-            $log->action("failed_login", null, $form->getValue("username"));
+            $logger->log(array("action" => "login_denied",
+            "username" => $form->getValue("username")));
+            
             $this->view->errorlogin = true;
         }//@end of workaround
         }
