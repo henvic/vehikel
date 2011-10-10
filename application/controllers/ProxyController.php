@@ -19,7 +19,7 @@ class ProxyController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         
-        //@todo improve security with whitelist approach
+        //@todo improve security with whitelist approach or even better: redo the way this works
         $method = $request->getParam("method");
         if (! $method || mb_strlen($method) > 250 || mb_strstr($method, ".") ||
          mb_strstr($method, "@") || mb_substr($method, 0, 1) != "/") {
@@ -45,7 +45,7 @@ class ProxyController extends Zend_Controller_Action
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url); 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-         
+        
         $result = curl_exec($ch);
          
         curl_close($ch);
