@@ -47,7 +47,7 @@ class Ml_Model_Tags extends Ml_Model_AccessSingleton
         }
         
         $form->setDefault("hash", $registry->get('globalHash'));
-
+        
         return $form;
     }
     
