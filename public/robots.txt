@@ -1,3 +1,2 @@
 User-agent: *
-Disallow: /login
-Disallow: /report_abuse
+Disallow: /account
