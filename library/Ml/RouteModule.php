@@ -1,4 +1,7 @@
 <?php
+// @todo stop using this hack
+// this is almost a copy of Zend_Controller_Router_Route_Module
+// but with some hacks
 /**
  * Zend Framework
  *
