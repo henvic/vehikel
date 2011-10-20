@@ -10,18 +10,18 @@ class Ml_Model_Db_Table extends Zend_Db_Table_Abstract
     
     public function __construct($name = '', $primaryRow = 'id', $config = array())
     {
-        if ($name != '') {
-            $this->setTableName($name);
-        }
-        
         $this->_primary = $primaryRow;
+        
+        $this->setTableName($name);
         
         return parent::__construct($config);
     }
     
     public function setTableName($name)
     {
-        $this->_name = $name;
+        if ($name != '') {
+            $this->_name = $name;
+        }
     }
     
     public function getTableName()
