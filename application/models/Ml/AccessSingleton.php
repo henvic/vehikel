@@ -13,7 +13,7 @@ abstract class Ml_Model_AccessSingleton
     protected $_dbAdapter;
     
     protected $_dbTable;
-        
+    
     /**
      * Singleton pattern implementation makes "new" unavailable
      *
