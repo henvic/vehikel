@@ -132,7 +132,7 @@ class Ml_Model_Invites extends Ml_Model_AccessSingleton
         
         $membershipdate = new Zend_Date($signedUserInfo['membershipdate'], Zend_Date::ISO_8601);
         
-        $numFree = $this->numFree();
+        $numFree = $this->getNumFree();
         if ($numFree == - 1) {
             return false;
         } else if ($numFree == 0) {
