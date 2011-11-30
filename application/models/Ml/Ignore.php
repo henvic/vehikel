@@ -63,7 +63,7 @@ class Ml_Model_Ignore extends Ml_Model_AccessSingleton
             $hasF = 'ignore';
         }
         
-        $select = $this->select();
+        $select = $this->_dbTable->select();
         $select
         ->where($this->_dbTable->getTableName() . "." . $uidF . " = ?", $uid)
         ->order($this->_dbTable->getTableName() . ".timestamp DESC");
