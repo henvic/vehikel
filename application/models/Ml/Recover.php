@@ -3,6 +3,8 @@ class Ml_Model_Recover extends Ml_Model_AccessSingleton
 {
     protected static $_dbTableName = "recover";
     
+    protected static $_dbPrimaryRow = "uid";
+    
     /**
      * Singleton instance
      *
