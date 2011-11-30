@@ -72,7 +72,10 @@ class ContactsController extends Zend_Controller_Action
         
         $userInfo = $registry->get("userInfo");
         
-        if($userInfo['id'] != $auth->getIdentity()) throw new Exception("403 Forbidden: you can see your own ignored list only.");
+        if($userInfo['id'] != $auth->getIdentity()) {
+            $registry->set("notfound", true);
+            throw new Exception("403 Forbidden: you can see your own ignored list only.");
+        }
         
         $ignore = Ml_Model_Ignore::getInstance();
         
