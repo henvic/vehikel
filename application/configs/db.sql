@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # http://code.google.com/p/sequel-pro/
 #
-# Host: plifk.web.dev.localhost (MySQL 5.1.54-1ubuntu4)
+# Host: 127.0.0.1 (MySQL 5.1.58-1ubuntu1)
 # Database: medialab
-# Generation Time: 2011-10-10 21:02:14 +0000
+# Generation Time: 2011-12-12 03:18:20 +0000
 # ************************************************************
 
 
@@ -130,7 +130,7 @@ CREATE TABLE `coupons` (
 
 CREATE TABLE `credentials` (
   `uid` bigint(20) unsigned NOT NULL,
-  `credential` char(60) NOT NULL DEFAULT '' COMMENT 'Credential is the concatenation of some values',
+  `credential` char(60) NOT NULL DEFAULT '',
   UNIQUE KEY `user` (`uid`),
   CONSTRAINT `credentials_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `people` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -371,8 +371,8 @@ CREATE TABLE `people` (
   `email` char(60) NOT NULL,
   `membershipdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `name` char(50) NOT NULL,
-  `avatarInfo` varchar(320) NOT NULL,
-  `private_email` tinyint(1) NOT NULL,
+  `avatarInfo` varchar(320) NOT NULL DEFAULT 'a:0:{}',
+  `private_email` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`,`alias`),
   UNIQUE KEY `alias` (`alias`),
@@ -423,10 +423,10 @@ CREATE TABLE `phonelist` (
 
 CREATE TABLE `profile` (
   `id` bigint(20) unsigned NOT NULL COMMENT 'uid (people.id)',
-  `website` varchar(100) NOT NULL,
-  `location` varchar(40) NOT NULL,
-  `about` text NOT NULL COMMENT 'RAW user input',
-  `about_filtered` text NOT NULL COMMENT 'filtered about',
+  `website` varchar(100) DEFAULT '',
+  `location` varchar(40) DEFAULT '',
+  `about` text COMMENT 'RAW user input',
+  `about_filtered` text COMMENT 'filtered about',
   `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`id`) REFERENCES `people` (`id`) ON DELETE CASCADE

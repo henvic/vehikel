@@ -53,9 +53,9 @@ class Ml_Model_Credential extends Ml_Model_AccessSingleton
     {
         $hash = self::setHash($uid, $password);
         
-        $stmt = $this->_dbAdapter()
-         ->query('INSERT INTO `' . $this->_dbAdapter->quoteTableAs(self::$_dbTableName) . 
-         '` (`uid`, `credential`) VALUES (?, ?) ON DUPLICATE KEY UPDATE credential=VALUES(credential)',
+        $stmt = $this->_dbAdapter
+         ->query('INSERT INTO ' . $this->_dbAdapter->quoteTableAs(self::$_dbTableName) . 
+         ' (`uid`, `credential`) VALUES (?, ?) ON DUPLICATE KEY UPDATE credential=VALUES(credential)',
          array($uid, $hash));
         
         return $stmt->rowCount();
