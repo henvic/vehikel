@@ -6,12 +6,10 @@ class Ml_Resource_Myview extends Zend_Application_Resource_ResourceAbstract
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
-        Zend_View_Helper_PaginationControl::setDefaultViewPartial('my_pagination_control.phtml');
+        Zend_View_Helper_PaginationControl::setDefaultViewPartial("pagination.phtml");
         
         // Initialize view
         $view = new Zend_View;
-        
-        $view->setEncoding('UTF-8');
         
         // Add it to the ViewRenderer
         $viewRenderer =

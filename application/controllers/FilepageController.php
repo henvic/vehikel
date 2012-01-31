@@ -49,7 +49,6 @@ class FilepageController extends Zend_Controller_Action
             $signedUserInfo = $registry->get("signedUserInfo");
         }
         
-        $registry->set("isFilepage", true);//for use by the pagination_control
         $page = $request->getUserParam("page");
         
         $share = Ml_Model_Share::getInstance();

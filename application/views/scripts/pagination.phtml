@@ -1,0 +1,55 @@
+<hr class="lighten" />
+<div class="row">
+<div class="span14">
+<div class="pagination">
+<ul>
+<?php
+if (isset($this->previous)) {
+?>
+<li><a href="<?= $this->paginatorLink($this->previous); ?>">&larr; Previous</a></li>
+<?php
+} else {
+?>
+<li class="prev disabled"><a href="<?= $this->paginatorLink($this->previous); ?>">&larr; Previous</a></li>
+<?php
+}
+
+$pages = $this->paginator($this->current, $this->pageCount);
+
+while (current($pages)) {
+    $page = current($pages);
+    if ($this->current == $page) {
+?>
+<li class="active"><a href="<?= $this->paginatorLink($page); ?>"><?= $this->escape($page); ?></a></li>
+<?php
+    } else {
+?>
+<li><a href="<?= $this->paginatorLink($page); ?>"><?= $this->escape($page); ?></a></li>
+<?php
+    }
+    if(current($pages) != next($pages) - 1 && current($pages)) {
+?>
+<li class="disabled"><a>…</a></li>
+<?php
+    }
+}
+if (isset($this->next)) {
+?>
+<li><a href="<?= $this->paginatorLink($this->next); ?>">Next &rarr;</a></li>
+<?php
+} else {
+?>
+<li class="next disabled"><a href="<?= $this->paginatorLink($this->next); ?>">Next &rarr;</a></li>
+<?php
+}
+?>
+</ul>
+</div>
+<?php
+reset($pages);
+?>
+</div>
+<div class="span1 pagination-total-item-count">
+<span class="label"><?php echo $this->totalItemCount; ?> items</span>
+</div>
+</div>
