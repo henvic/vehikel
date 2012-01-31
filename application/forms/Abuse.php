@@ -38,7 +38,10 @@ class Ml_Form_Abuse extends Zend_Form
         
         $this->addElement('submit', 'report_abuse', array(
             'label'    => "Let us know",
-            'required' => false
+            'required' => false,
+            'class' => 'btn primary'
         ));
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

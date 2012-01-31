@@ -24,9 +24,11 @@ class Ml_Form_Redeem extends Zend_Form
         
         $this->addElement('submit', 'submit_redeem', array(
             'label'    => 'Redeem!',
+            'class'    => 'btn success',
         ));
         
         $this->addElement(Ml_Model_MagicCookies::formElement());
         
+        $this->setAttrib('class', 'form-stacked');
     }
 }

@@ -158,14 +158,18 @@ class Ml_Form_Call extends Zend_Form
         
         $this->addElement('submit', 'submit', array(
             'label'    => "Save to call",
+            'class'    => 'btn primary',
             'required' => false
         ));
         
         $this->addElement('submit', 'cancel', array(
             'label'    => "Cancel call",
+            'class'    => 'btn danger',
             'required' => false
         ));
         
         $this->addElement(Ml_Model_MagicCookies::formElement());
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

@@ -26,6 +26,9 @@ class Ml_Form_Recover extends Zend_Form
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'E-mail me!',
+            'class'    => 'btn primary',
         ));
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

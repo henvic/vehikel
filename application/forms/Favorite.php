@@ -11,8 +11,11 @@ class Ml_Form_Favorite extends Zend_Form
         
         $this->addElement(Ml_Model_MagicCookies::formElement());
         
-        $this->addElement('submit', 'deleteTag', array(
-            'label'    => 'Yes'
+        $this->addElement('submit', 'favoriteSubmit', array(
+            'label'    => 'Yes',
+            'class'    => 'btn primary'
         ));
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

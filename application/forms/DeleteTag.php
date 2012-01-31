@@ -13,7 +13,8 @@ class Ml_Form_DeleteTag extends Zend_Form
         $this->addElement(Ml_Model_MagicCookies::formElement());
         
         $this->addElement('submit', 'deleteTag', array(
-            'label'    => 'Delete tag'
+            'label'    => 'Delete tag',
+            'class'    => 'btn danger'
         ));
     }
 }

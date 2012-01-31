@@ -11,6 +11,7 @@ class Ml_Form_DeleteShare extends Zend_Form
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'Yes, delete it!',
+            'class'    => 'btn danger',
         ));
         /*
         $this->addElement('submit', 'forget', array(

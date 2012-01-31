@@ -10,9 +10,12 @@ class Ml_Form_AddTwitter extends Zend_Form
         
         $this->addElement('submit', 'connectToTwitter', array(
             'label'    => 'Connect to Twitter!',
-            'required' => true
+            'required' => true,
+            'class' => 'btn primary'
         ));
         
         $this->addElement(Ml_Model_MagicCookies::formElement());
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

@@ -10,9 +10,12 @@ class Ml_Form_RemoveTwitter extends Zend_Form
         
         $this->addElement('submit', 'remove', array(
             'label'    => 'Remove Twitter!',
-            'required' => true
+            'required' => true,
+            'class'    => 'btn danger',
         ));
         
         $this->addElement(Ml_Model_MagicCookies::formElement());
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

@@ -46,7 +46,8 @@ class Ml_Form_Login extends Zend_Form
         $login = $this->addElement('submit', 'login', array(
             'required' => false,
             'ignore'   => true,
-            'label'    => 'Sign in'
+            'label'    => 'Sign in',
+            'class'    => 'btn primary',
         ));
         
         
@@ -57,8 +58,10 @@ class Ml_Form_Login extends Zend_Form
             $this->getElement("login")->addDecorator("Errors");
         }
         
-        $this->getElement("username")->setAttrib('class', 'smallfield');
-        $this->getElement("password")->setAttrib('class', 'smallfield');
+        $this->getElement("username")->setAttrib('class', 'span3');
+        $this->getElement("password")->setAttrib('class', 'span3');
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }
  

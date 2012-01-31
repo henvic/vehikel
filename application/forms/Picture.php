@@ -24,13 +24,15 @@ class Ml_Form_Picture extends Zend_Form
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'Submit!',
+            'class'    => 'btn primary',
         ));
         
         $this->addElement('submit', 'delete', array(
-            'label'    => 'Delete current!',
+            'label'    => 'Delete current',
+            'class'    => 'btn danger',
         ));
         
-        $this->getElement("delete")->setAttrib("class", "likelink");
+        $this->setAttrib('class', 'form-stacked');
         
         $this->addElement(Ml_Model_MagicCookies::formElement());
     }

@@ -24,6 +24,7 @@ class Ml_Form_Comment extends Zend_Form
         $this->addElement('textarea', 'commentMsg', array(
             'label'      => $commentLabel,
             'required'   => true,
+            'placeholder' => "Write your comment here",
             'description' =>
                 '<small><a href="/help/html" class="new-window">' .
                 'HTML formatting</a></small>',
@@ -36,12 +37,14 @@ class Ml_Form_Comment extends Zend_Form
         
         $this->addElement('submit', 'getCommentPreview', array(
             'label'    => 'Preview',
-            'required' => false
+            'required' => false,
+            'class' => 'btn',
         ));
         
         $this->addElement('submit', 'commentPost', array(
             'label'    => $postCommentLabel,
-            'required' => false
+            'required' => false,
+            'class' => 'btn primary'
         ));
         
         $this->addElement(Ml_Model_MagicCookies::formElement());

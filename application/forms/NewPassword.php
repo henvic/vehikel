@@ -24,6 +24,7 @@ class Ml_Form_NewPassword extends Zend_Form
              'autocomplete' => 'off',
                 'required'   => true,
                 'label'      => 'Current Password:',
+                'class'      => 'span3',
             ));
         }
         
@@ -41,6 +42,7 @@ class Ml_Form_NewPassword extends Zend_Form
             'autocomplete' => 'off',
             'required'   => true,
             'label'      => 'New Password:',
+            'class'      => 'span3',
         ));
         
         $this->addElement('password', 'password_confirm', array(
@@ -48,6 +50,7 @@ class Ml_Form_NewPassword extends Zend_Form
             'required'   => true,
             'label'      => 'Confirm Password:',
             'autocomplete' => 'off',
+            'class'      => 'span3',
         ));
         
         if ($registry->isRegistered("changeUserProperPassword")) {
@@ -55,7 +58,8 @@ class Ml_Form_NewPassword extends Zend_Form
         }
         
         $this->addElement('submit', 'submit', array(
-            'label'    => 'Change it!'
+            'label'    => 'Change it!',
+            'class'    => 'btn primary',
         ));
         
         if ($config['ssl']) {
@@ -67,11 +71,8 @@ class Ml_Form_NewPassword extends Zend_Form
         
         if ($auth->hasIdentity()) {
             $this->addElement(Ml_Model_MagicCookies::formElement());
-            $this->getElement("currentpassword")
-                ->setAttrib('class', 'smallfield');
         }
         
-        $this->getElement("password")->setAttrib('class', 'smallfield');
-        $this->getElement("password_confirm")->setAttrib('class', 'smallfield');
+        $this->setAttrib('class', 'form-stacked');
     }
 }

@@ -13,7 +13,7 @@ class Ml_Form_Tweet extends Zend_Form
         
         $tweet = $this->addElement('textarea', 'tweet', array(
             'label'      => 'Tell them...',
-            'description' => '<b>or anything else...</b>',
+            'description' => 'Tweet something…',
             'required'   => true,
             'filters'    => array('StringTrim'),
             'validators' => array(
@@ -26,6 +26,9 @@ class Ml_Form_Tweet extends Zend_Form
         
         $this->addElement('submit', 'tweetSubmit', array(
             'label'    => 'Tweet!',
+            'class'    => 'btn primary'
         ));
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

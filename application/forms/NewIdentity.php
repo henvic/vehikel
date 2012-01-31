@@ -25,7 +25,8 @@ class Ml_Form_NewIdentity extends Zend_Form
                     'usernameNewUser'
                 ) //stringlenght there also
                 ),
-            'autocomplete' => 'off'
+            'autocomplete' => 'off',
+            'class'      => 'span3',
         ));
         
         $this->addElement('password', 'password', array(
@@ -43,12 +44,14 @@ class Ml_Form_NewIdentity extends Zend_Form
             'autocomplete' => 'off',
             'required'   => true,
             'label'      => 'Password:',
+            'class'      => 'span3',
         ));
         
         $this->addElement('password', 'password_confirm', array(
             'filters'    => array('StringTrim'),
             'required'   => true,
             'label'      => 'Confirm Password:',
+            'class'      => 'span3',
         ));
         
         
@@ -66,6 +69,7 @@ class Ml_Form_NewIdentity extends Zend_Form
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'Create account!',
+            'class'    => 'btn primary',
         ));
         
         if ($config['ssl']) {
@@ -79,11 +83,10 @@ class Ml_Form_NewIdentity extends Zend_Form
             array('salt' => '*UFEWWFfj0ic4w98j', 'timeout' => 6000
         ));
         
-        $this->getElement("newusername")->setAttrib('class', 'smallfield');
-        $this->getElement("password")->setAttrib('class', 'smallfield');
-        $this->getElement("password_confirm")->setAttrib('class', 'smallfield');
         $this->getElement("tos")->setErrorMessages(array(
             'You can only sign up to Plifk if you accept the Terms of Service'
         ));
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

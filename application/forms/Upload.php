@@ -40,6 +40,9 @@ class Ml_Form_Upload extends Zend_Form
         
         $this->addElement('submit', 'submitupload', array(
             'label'    => 'Upload!',
+            'class'    => 'btn primary',
         ));
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

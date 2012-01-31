@@ -14,6 +14,9 @@ class Ml_Form_DeleteComment extends Zend_Form
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'Delete it!',
+            'class'    => 'btn danger',
         ));
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

@@ -24,7 +24,10 @@ class Ml_Form_DeleteAccount extends Zend_Form
         $this->addElement(Ml_Model_AntiAttack::captchaElement());
         
         $this->addElement('submit', 'submit', array(
-            'label'    => 'Delete Account',
+            'label'    => 'Delete your account',
+            'class'    => 'btn danger',
         ));
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

@@ -22,5 +22,7 @@ class Ml_Form_Relationship extends Zend_Form
         ));
         
         $this->addElement(Ml_Model_MagicCookies::formElement());
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

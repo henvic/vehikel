@@ -72,9 +72,11 @@ class Ml_Form_AccountSettings extends Zend_Form
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'Save!',
+            'class' => 'btn primary'
         ));
         
         $this->addElement(Ml_Model_MagicCookies::formElement());
         
+        $this->setAttrib('class', 'form-stacked');
     }
 }

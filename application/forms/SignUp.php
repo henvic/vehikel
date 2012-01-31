@@ -27,7 +27,7 @@ class Ml_Form_SignUp extends Zend_Form
             'required'   => true,
             'description' =>
                 '<small>Read the <a href="/privacy" class="new-window">'.
-                'Privacy Policy</a></small> before proceeding',
+                'Privacy Policy</a> before proceeding</small>',
             'filters'    => array('StringTrim', 'StringToLower'),
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(1, 60)),
@@ -46,14 +46,16 @@ class Ml_Form_SignUp extends Zend_Form
                     )
             ));
             
-            $this->getElement("invitecode")->setAttrib('class', 'smallfield');
+            $this->getElement("invitecode")->setAttrib('class', 'span3');
         }
         
         $this->addElement(Ml_Model_AntiAttack::captchaElement());
         
         $this->addElement('submit', 'submit', array(
             'label'    => 'Sign up!',
+            'class'    => 'btn primary',
         ));
         
+        $this->setAttrib('class', 'form-stacked');
     }
 }

@@ -8,14 +8,18 @@ class Ml_Form_Logout extends Zend_Form
         $this->addElementPrefixPath('Ml_Filter', 'Ml/Filters/', 
         Zend_Form_Element::FILTER);
         
-        $this->addElement('submit', 'signout', array(
-            'label'    => 'Sign out!',
+        $this->addElement('submit', 'remote_signout', array(
+            'label'    => 'Sign out all other sessions',
+            'class'    => 'btn',
         ));
         
-        $this->addElement('submit', 'remote_signout', array(
-            'label'    => 'Sign out all other sessions'
+        $this->addElement('submit', 'signout', array(
+            'label'    => 'Sign out!',
+            'class'    => 'btn danger',
         ));
         
         $this->addElement(Ml_Model_MagicCookies::formElement());
+        
+        $this->setAttrib('class', 'form-stacked');
     }
 }

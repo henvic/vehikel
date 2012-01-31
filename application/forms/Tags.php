@@ -17,14 +17,17 @@ class Ml_Form_Tags extends Zend_Form
             'filters'    => array('StringTrim'),
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(1, 300))
-                )
+                ),
+            'placeholder' => 'Add a tag',
+            'class'      => 'span2',
         ));
         
         $this->addElement('submit', 'tagsSubmit', array(
             'label'    => 'Add',
-            'required' => false
+            'required' => false,
+            'class'    => 'btn primary'
         ));
         
-        $this->getElement("tags")->setAttrib('class', 'smallfield');
+        $this->setAttrib('class', 'form-stacked');
     }
 }
