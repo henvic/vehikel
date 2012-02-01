@@ -1,7 +1,7 @@
 <?php
 class Ml_Model_Share extends Ml_Model_AccessSingleton
 {
-    protected $_editableMetadata =
+    protected static $_editableMetadata =
     array("title", "filename", "short", "description");
     
     protected static $_dbTableName = "share";
@@ -226,7 +226,7 @@ class Ml_Model_Share extends Ml_Model_AccessSingleton
         $changeData = array();
         
         if ($errorHandle) {
-            foreach ($this->editableMetadata as $what) {
+            foreach (self::$_editableMetadata as $what) {
                 if (empty($errorHandle[$what]) &&
                  $metaData[$what] != $shareInfo[$what]) {
                     $changeData[$what] = $metaData[$what];
