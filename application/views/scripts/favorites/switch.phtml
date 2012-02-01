@@ -8,9 +8,9 @@ if (!$this->favoriteForm):
 if ($auth->hasIdentity() && $auth->getIdentity() != $shareInfo['byUid']) {
 ?>
 <?php if ($favorites->isFavorite($auth->getIdentity(), $shareInfo['id'])): ?>
-You count this file as a favorite, <a href="?unfavorite" rel="nofollow">undo</a>?
+<a href="?unfavorite" class="btn danger" rel="nofollow">Unfavorite</a>
 <?php else: ?>
-You can <a href="?favorite" rel="nofollow">add this file as a favorite</a>!
+<a href="?favorite" class="btn success" rel="nofollow">Favorite</a>
 <?php endif; ?>
 <?php
 } else if (!$auth->hasIdentity()) {
