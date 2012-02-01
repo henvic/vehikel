@@ -9,6 +9,8 @@ class Ml_Form_DeleteShare extends Zend_Form
         $this->addElementPrefixPath('Ml_Filter', 'Ml/Filters/', 
         Zend_Form_Element::FILTER);
         
+        $this->addElement(Ml_Model_MagicCookies::formElement());
+        
         $this->addElement('submit', 'submit', array(
             'label'    => 'Yes, delete it!',
             'class'    => 'btn danger',
