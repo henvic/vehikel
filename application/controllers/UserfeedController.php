@@ -141,9 +141,7 @@ class UserfeedController extends Zend_Controller_Action
             
             $enclosureElement
             ->appendChild($doc->newTextAttribute("url",
-             $this->view->escape($s3config['sharesBucketAddress'] .
-              $userInfo['alias'] . "/" . $share['id'] . "-" .
-               $share['download_secret'] . "/" . $share['filename'])));
+             $this->view->downloadLink($share, $userInfo)));
             
             $enclosureElement
             ->appendChild($doc->newTextAttribute("length", $share['fileSize']));
