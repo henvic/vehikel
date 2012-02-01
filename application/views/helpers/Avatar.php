@@ -4,11 +4,12 @@
  * Avatar
  * 
  * @author henrique
+ * @todo refactory this class
  *
  */
 class Ml_View_Helper_Avatar extends Zend_View_Helper_Abstract
 {
-     public function avatar($person, $size = "small")
+     public function avatar($person, $size = "small", $link = true, $dimension = array("width" => false, "height" => false))
      {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
@@ -52,14 +53,31 @@ class Ml_View_Helper_Avatar extends Zend_View_Helper_Abstract
                 $height = round($sizeInfo['dimension'] * 2 / 3);
             }
             
-            $html = '<a href="' .
+            if ($dimension['height']) {
+                $height = $dimension['height'];
+            }
+            
+            if ($dimension['width']) {
+                $width = $dimension['width'];
+            } else {
+                $width = $sizeInfo['dimension'];
+            }
+            
+            $html = "";
+            if ($link) {
+                $html .= '<a href="' .
                  $router->assemble(array("username" => $alias), 
-                "filestream_1stpage") . '/"><img src="' .
+                "filestream_1stpage") . '/">';
+            }
+            $html .= '<img src="' .
                  $config['cdn'] .
                  'images/happy-face' . $sizeInfo['typeextension'] .
-                 '.png" width="' . $sizeInfo['dimension'] . '" height="' .
-                 $height . '" alt="(' . $this->view->escape($alias) .
-                 ' has no picture)"' . " class=\"uid-" . $uid . "\" /></a>\n";
+                 '.png" width="' . $this->view->escape($width) . '" height="' .
+                 $this->view->escape($height) . '" alt="(' . $this->view->escape($alias) .
+                 ' has no picture)"' . " class=\"uid-" . $uid . "\" />";
+                 if ($link) {
+                     $html .= "</a>\n";
+                 }
         } else {
             $picUri = $config['services']['S3']['headshotsBucketAddress'] .
                 $uid . '-' . $picInfo['secret'] . $sizeInfo['typeextension'] .
@@ -67,21 +85,41 @@ class Ml_View_Helper_Avatar extends Zend_View_Helper_Abstract
             
             if (isset($picInfo['sizes'][$sizeInfo['urihelper']]['w']) &&
              isset($picInfo['sizes'][$sizeInfo['urihelper']]['h'])) {
-                $dim = ' width="' .
-                 $picInfo['sizes'][$sizeInfo['urihelper']]['w'] .
-                 '" height="' .
-                 $picInfo['sizes'][$sizeInfo['urihelper']]['h'] . '"';
+                if (isset($dimension['width'])) {
+                    $width = $dimension['width'];
+                } else {
+                    $width = $picInfo['sizes'][$sizeInfo['urihelper']]['w'];
+                }
+                
+                if (isset($dimension['height'])) {
+                    $height = $dimension['height'];
+                } else {
+                    $height = $picInfo['sizes'][$sizeInfo['urihelper']]['h'];
+                }
+                
+                
+                $dim = ' width="' . $width .
+                 '" height="' . $height . '"';
             } else {
                 $dim = '';
             }
             
-            $html = '<a href="' .
+            $html = "";
+            
+            if ($link) {
+                $html .= '<a href="' .
                  $this->view->url(array("username" => $alias), 
                 "filestream_1stpage") . '" title="' .
                  $this->view->escape($name) .
-                 '"><img src="' . $picUri . '"' . $dim . ' alt="' .
+                 '">';
+            }
+            $html .= '<img src="' . $picUri . '"' . $dim . ' alt="' .
                  $this->view->escape($alias) . "\" class=\"uid-" . $uid .
-                 "\" /></a>\n";
+                 "\" />";
+            
+            if ($link) {
+                $html .= "</a>\n";
+            }
         }
         return $html;
      }
