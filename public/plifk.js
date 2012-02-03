@@ -1,4 +1,5 @@
-// http://www.jslint.com/
+$(document).ready(function() {
+
 YUI({
 }).use('node', 'io', 'io-form', 'querystring-stringify-simple', 'anim', function(Y) {
 	/**
@@ -42,12 +43,12 @@ YUI({
 	 * Focus for the login screen in the Home
 	 * and edit page, etc
 	 */
-	var loadEditFocus = function (e) {
+
+	$(function() {
 		if (document.getElementById("filename") && document.getElementById("title")) {
 			document.getElementById("title").focus();
 		}
-	};
-	Y.on("domready", loadEditFocus, Y);
+	});
 	
 	var loadLoginFocus = function (e) {
 		if (document.getElementById("login")) {
@@ -260,7 +261,7 @@ YUI({
 		}
 		form.submit();
 	};
-	Y.on("click", logoutEvent, ["#logout_link"]);
+	Y.on("click", logoutEvent, ["#logout-link"]);
 	
 	
 	
@@ -656,4 +657,9 @@ YUI({
 });
 
 
-
+    $('#commentMsg, textarea#description').autoResize({
+    	minHeight: 50,
+        maxHeight: 200,
+        extraSpace: 15
+    });
+});

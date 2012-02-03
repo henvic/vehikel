@@ -7,8 +7,8 @@ $this->headTitle("Your ignore list", "PREPEND");
 
 $paginator = $this->paginator;
 ?>
-<div class="yui-ge">
-<div class="yui-u first">
+<div class="row">
+<div class="span11">
 <h2>Your ignore list</h2>
 <p>If someone is taking the fun of Plifk away from you, consider ignoring (blocking) the person.</p>
 <?php if (! $this->paginator->getTotalItemCount()): ?>
@@ -49,7 +49,7 @@ if ($this->paginator->count() > 1) {
 }
 ?>
 </div>
-<div class="yui-u">
+<div class="span4">
 <?php echo $this->partial("/contacts/menu.phtml"); ?>
 </div>
 </div>

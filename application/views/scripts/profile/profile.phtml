@@ -14,7 +14,8 @@ $this->headTitle($config['applicationname'] . ": " . $this->escape($userInfo['na
 $profileInfo = $profile->getById($userInfo['id']);
 
 ?>
-<div class="yui-g">
+<div class="row">
+<div class="span16">
 <h2>About <?php echo $this->escape($userInfo['name']); ?></h2>
 <ul>
 <?php
@@ -78,4 +79,5 @@ if ($auth->hasIdentity() && $auth->getIdentity() != $userInfo['id'] &&
 echo $this->url(array("username" => $userInfo['alias']), "contactRelationshipIgnore");
 ?>" rel="nofollow">Block this user?</a></small></p>
 <?php endif;?>
+</div>
 </div>

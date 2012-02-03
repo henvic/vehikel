@@ -5,13 +5,13 @@ $config = $registry->get("config");
 $signedUserInfo = $registry->get("signedUserInfo");
 $this->headTitle($config['applicationname'], "SET");
 ?>
-<div class="yui-g">
-<div class="yui-u first">
+<div class="row">
+<div class="span10">
 <h2 class="mainpage">Welcome <?php echo $this->escape($signedUserInfo['name']); ?>!</h2>
 <p><a href="<?php echo $this->url(array(), "upload"); ?>" class="big">Upload something</a></p>
 <?php echo $this->partial("activity/recent.phtml"); ?>
 </div>
-<div class="yui-u">
+<div class="span5">
 <?php
 if ($config['signup']['inviteonly']):
 $invites = Ml_Model_Invites::getInstance();

@@ -6,11 +6,11 @@ $this->headTitle("Upload your files");
 ?>
 <h2>Upload your files</h2>
 <?php if($this->uploadStatus['bandwidth']['remainingbytes'] > 0): ?>
-<div class="yui-gb">
-<div class="yui-u first">
-<?php echo $this->uploadForm ?> 
+<div class="row">
+<div class="span5">
+<?php echo $this->uploadForm ?>
 </div>
-<div class="yui-u">
+<div class="span6">
 <h3>Progress of your upload(s)</h3>
 <div id="uploadprogress">
 <div class="percentage"></div>
@@ -26,7 +26,7 @@ $print_available = round(($this->uploadStatus['bandwidth']['remainingbytes']/$th
 </div>
 <small id="bandwidthinfo"><?php echo $this->fileSize($this->uploadStatus['bandwidth']['remainingbytes'], true) ?> of <?php echo $this->fileSize($this->uploadStatus['bandwidth']['maxbytes'], true) ?> still available for use this month.</small>
 </div>
-<div class="yui-u">
+<div class="span4">
 <h3>How it works</h3>
 <p>Each month you have some bandwidth to use for uploading your files.</p>
 <h3>Your uploads</h3>

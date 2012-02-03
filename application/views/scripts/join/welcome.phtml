@@ -7,9 +7,9 @@ $config = $registry->get('config');
 $this->headTitle("Welcome to " . $config['applicationname'] . ", " .
  $this->escape($signedUserInfo['name']) . "!", "SET");
 ?>
-<div class="yui-g">
-<div class="yui-u first">
-<h2 class="joinconfirm">Welcome <?php echo $this->escape($signedUserInfo['name']); ?>!</h2>
+<div class="row">
+<div class="span16">
+<h2>Welcome <?php echo $this->escape($signedUserInfo['name']); ?>!</h2>
 <p><b>Your username is <?php
 echo $this->escape($signedUserInfo['alias']);
 ?></b>. You're signed in and can <a href="<?php
@@ -24,9 +24,5 @@ echo $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpa
 echo $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage");
 ?></a><br /><br />
 We hope you enjoy Plifk!</p>
-</div>
-<div class="yui-u">
-<h2 class="hidden">And here we go!</h2>
-<img src="<?php echo $this->staticversion("/illustrations/kid-with-painted-hands.jpg"); ?>" alt="" width="425" height="282" /> 
 </div>
 </div>

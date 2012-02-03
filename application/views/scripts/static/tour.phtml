@@ -6,13 +6,13 @@ $auth = Zend_Auth::getInstance();
 $config = $registry->get("config");
 $monthlyLimit = $this->escape($this->fileSize($config['share']['monthlyLimit'] * 1024 * 1024 * 8));
 ?>
-<div class="yui-gc">
-<div class="yui-u first">
+<div class="row">
+<div class="span7">
 <h2>Upload your files and share them with the world</h2>
 <p>Count with your Plifk account to let the world see what you have to share.</p>
 <p>Upload your files to your account, and let people know how to reach you here.</p>
 </div>
-<div class="yui-u">
+<div class="offset3 span5">
 <h2>Share your files</h2>
 <div id="bandwidth">
 <div class="used" style="width: 0%;"></div>

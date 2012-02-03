@@ -7,8 +7,8 @@ $this->headTitle("Sign out");
 
 $signedUserInfo = $registry->get("signedUserInfo");
 ?>
-<div class="yui-gc">
-<div class="yui-u first">
+<div class="row">
+<div class="span12">
 <?php
 if (! is_null(filter_input(INPUT_GET, "please", FILTER_UNSAFE_RAW)) ||
  $registry->isRegistered("pleaseSignout")):
@@ -18,20 +18,24 @@ if (! is_null(filter_input(INPUT_GET, "please", FILTER_UNSAFE_RAW)) ||
 <?php endif; ?>
 <h2>Sign out of <?php echo $this->escape($config['applicationname']); ?></h2>
 <p>If you ever forget to logout from a public computer, sign out all other sessions from this page.</p>
-<table class="styled">
-<caption>Last activity on this account</caption>
+<h3>Last activity on this account</h3>
+<table class="zebra-striped">
 <thead>
 <tr>
-<th>Access Type</th>
-<th>Location (IP address)</th>
-<th>Date/Time</th>
-<th>Connection</th>
+<th class="purple">#</th>
+<th class="yellow">Access Type</th>
+<th class="blue">Location (IP address)</th>
+<th class="green">Date/Time</th>
+<th class="red">Connection</th>
 </tr>
 </thead>
 <?php
 $currentSession = Zend_Session::getId();
 $accessTimeTmp = new Zend_Date();
-foreach ($this->recentActivity as $singleActivity): ?>
+$counter = 0;
+foreach ($this->recentActivity as $singleActivity):
+$counter++;
+?>
 <tr>
 <?php
 if (! $singleActivity):
@@ -39,7 +43,10 @@ if (! $singleActivity):
 <td>-</td>
 <td>-</td>
 <td>-</td>
+<td>-</td>
+<td>-</td>
 <?php else: ?>
+<td><?php echo $this->escape($counter); ?></td>
 <td>Browser</td>
 <td>
 <?php
@@ -78,7 +85,7 @@ if ($singleActivity['status'] == Ml_Model_Session::OPEN_STATUS):
 Active
 <?php
 if ($currentSession == $singleActivity['session']) {
-    echo "<br /><small><strong>(current / this one)</strong></small>";
+    echo ' <span class="label important">you</span>';
 }
 ?>
 <?php else: ?>
@@ -88,14 +95,14 @@ Closed
 </tr>
 <?php
 endforeach;
+unset($counter);
 unset($singleActivity);
 unset($accessTimeTmp);
 ?>
 </table>
-<p>The data show above might not be complete or accurate.
+<p><span class="label notice">Notice</span> The data show above might not be complete or accurate.
 <br /><br />
-This computer is using IP address <?php echo $this->escape($_SERVER['REMOTE_ADDR']); ?>.
-</p>
+You are connected from IP address <?php echo $this->escape($_SERVER['REMOTE_ADDR']); ?></p>
 <?php
 if ($this->remoteLogoutDone):
 ?>

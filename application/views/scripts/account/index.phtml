@@ -9,23 +9,22 @@ $this->accountForm
 ->getElement("about")->getDecorator("description")->setEscape(false);
 
 ?>
-<div class="yui-ge">
-<div class="yui-u first">
+<div class="row">
+<div class="span12">
 <h2>Welcome, <?php echo $this->escape($signedUserInfo['name']) ?></h2>
 <?php echo $this->render("/credits/info.phtml"); ?>
 <?php if(isset($this->changeEmail) && $this->changeEmail): ?>
 <strong>You have set a new e-mail address for your account. But before you start using it we require you validate it. We have sent you an e-mail to the new address confirming this operation.</strong>
 <?php endif; ?>
 <?php echo $this->accountForm ?>
-<br />
-<h4>More options</h4>
+<h3>More options</h3>
 <ul>
 <li><a href="<?php echo $this->url(array(), "accountapps"); ?>">Applications</a></li>
 <li><a href="<?php echo $this->url(array(), "logout"); ?>" id="remote_signout_link" rel="nofollow">Recent activity</a></li>
-<li><a href="<?php echo $this->url(array(), "accountdelete"); ?>" rel="nofollow" class="warning">Delete your account</a></li>
+<li><a href="<?php echo $this->url(array(), "accountdelete"); ?>" rel="nofollow" class="btn danger">Delete your account</a></li>
 </ul>
 </div>
-<div class="yui-u accountside">
+<div class="span3">
 <?php echo $this->render("/account/menu.phtml"); ?>
 </div>
 </div>

@@ -3,13 +3,18 @@ $auth = Zend_Auth::getInstance();
 $registry = Zend_Registry::getInstance();
 $userInfo = $registry->get('userInfo');
 ?>
-<div id="usermenu"> 
-<div class="avatar"> 
+<div id="usermenu" class="row">
+<div class="avatar">
 <?php echo $this->avatar($userInfo, "thumbnail") ?>
 </div>
 <div class="userinfo">
-<h2><a href="<?php echo $this->url(array("username" => $userInfo['alias']), "filestream_1stpage") ?>"><?php echo $this->escape($userInfo['name']) ?></a><?php if($auth->getIdentity() == $userInfo['id']): ?><small class="you">(you)</small><?php endif; ?></h2>
-
+<h2><a href="<?php
+echo $this->url(array("username" => $userInfo['alias']), "filestream_1stpage");
+?>"><?php
+echo $this->escape($userInfo['name']);
+?></a><?php
+if ($auth->getIdentity() == $userInfo['id']):
+?><small class="you">(you)</small><?php endif; ?></h2>
 <ul>
 <?php 
 $userLinks = array(
@@ -27,13 +32,13 @@ $requestUserParams['action'] == "user") $requestUserParams['action'] = "userfavo
 else if($requestUserParams['controller'] == "contacts" &&
 $requestUserParams['action'] == "list") $requestUserParams['action'] = "contacts";
 
-foreach($userLinks as $open_action => $userlink_info):
-if($open_action != $requestUserParams['action']):
+foreach($userLinks as $openAction => $userlinkInfo):
+if($openAction != $requestUserParams['action']):
 ?>
-<li><a href="<?php echo $this->escape($userlink_info['uri'])?>"><?php echo $this->escape($userlink_info['name']) ?></a></li>
+<li><a href="<?php echo $this->escape($userlinkInfo['uri']); ?>"><?php echo $this->escape($userlinkInfo['name']); ?></a></li>
 <?php else: ?>
-<li class="active"><a href="<?php echo $this->escape($userlink_info['uri'])?>"><?php echo $this->escape($userlink_info['name']) ?></a></li>
-<?php endif; endforeach; unset($open_action); unset($userlink_info); ?>
+<li class="active"><a href="<?php echo $this->escape($userlinkInfo['uri']); ?>"><?php echo $this->escape($userlinkInfo['name']); ?></a></li>
+<?php endif; endforeach; unset($openAction); unset($userlinkInfo); ?>
 </ul>
 </div>
 </div>

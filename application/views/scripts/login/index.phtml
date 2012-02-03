@@ -1,15 +1,8 @@
 <?php
 $this->headTitle("Login screen");
 ?>
-<div class="yui-g">
-<div class="yui-u first">
-<h2>Access your account</h2>
-<?php /*<p><strong>Not yet a member? <a href="/join/">Join us</a> today.</strong></p>*/?>
-<?php echo $this->loginform; ?>
-<p><small><a href="<?php echo $this->url(array(), "recover") ?>">Lost your username or password?</a><br />
-<b>Not already a user? <a href="<?php echo $this->url(array(), "join") ?>">Join us</a>.</b></small></p>
-</div>
-<div class="yui-u">
+<div class="row">
+<div class="span10">
 <?php if ($this->errorlogin): ?>
 <h2>Duh! Something is wrong!</h2>
 <img src="<?php echo $this->staticversion("/illustrations/girl-showing-tongue.jpg"); ?>" alt="" width="424" height="283" />
@@ -17,5 +10,11 @@ $this->headTitle("Login screen");
 <h2>Come in! We are waiting for you!</h2>
 <img src="<?php echo $this->staticversion("/illustrations/girl-inviting.jpg"); ?>" alt="" width="424" height="283" />
 <?php endif; ?>
+</div>
+<div class="span5">
+<h2>Access your account</h2>
+<?php echo $this->loginform; ?>
+<p><small><a href="<?php echo $this->url(array(), "recover") ?>">Lost your username or password?</a><br />
+Not already a user? <a href="<?php echo $this->url(array(), "join") ?>">Join us</a>.</small></p>
 </div>
 </div>

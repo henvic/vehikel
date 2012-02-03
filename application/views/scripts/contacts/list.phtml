@@ -12,8 +12,8 @@ if ($userInfo['id'] == $auth->getIdentity()) {
 
 $paginator = $this->paginator;
 ?>
-<div class="yui-ge">
-<div class="yui-u first">
+<div class="row">
+<div class="span11">
 <h2><?php
 if ($userInfo['id'] == $auth->getIdentity()) {
     echo 'Your';
@@ -72,7 +72,7 @@ if ($this->paginator->count() > 1) {
 }
 ?>
 </div>
-<div class="yui-u">
+<div class="span4">
 <?php echo $this->partial("/contacts/menu.phtml"); ?>
 </div>
 </div>

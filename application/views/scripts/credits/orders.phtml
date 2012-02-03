@@ -6,8 +6,8 @@ $this->headTitle("Your account balance / History");
 $signedUserInfo = $registry->get("signedUserInfo");
 
 ?>
-<div class="yui-ge">
-<div class="yui-u first">
+<div class="row">
+<div class="span12">
 <h2>Your account balance / History <?php
 if ($this->paginator->getCurrentPageNumber() > 1) {
     echo ' (continuing...)';
@@ -21,7 +21,7 @@ if ($this->paginator->count() > 1) {
 }
 ?>
 </div>
-<div class="yui-u accountside">
+<div class="span3">
 <?php echo $this->partial("/account/menu.phtml"); ?>
 </div>
 </div>

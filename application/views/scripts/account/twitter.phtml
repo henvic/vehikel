@@ -1,8 +1,8 @@
 <?php 
 $this->headTitle("Tweet easy!");
 ?>
-<div class="yui-ge">
-<div class="yui-u first">
+<div class="row">
+<div class="span12">
 <h2>Use Twitter to share your files even faster!</h2>
 <p>Everybody is using <a href="http://twitter.com/" class="new-window">Twitter</a> to share links, ideas, and all kinds of interesting stuff. Connect to your Twitter account here and next time you want to share a file to your Twitter followers you can do it in less than one second.</p>
 <?php if($this->twitterApiError): ?>
@@ -22,7 +22,7 @@ if(isset($this->twitterInfo) || isset($this->invalidTwitterAccount)):
 <?php endif; ?>
 <p class="tip"><small>Check your <a href="http://twitter.com/account/connections" class="new-window">connections on Twitter</a>.</small></p>
 </div>
-<div class="yui-u accountside">
+<div class="span3">
 <?php echo $this->render("/account/menu.phtml"); ?>
 </div>
 </div>

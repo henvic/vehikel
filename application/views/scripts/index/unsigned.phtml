@@ -8,9 +8,8 @@ $this->headTitle($config['applicationname'], "SET");
 
 $this->loginform = Ml_Model_Credential::loginForm();
 ?>
-
-<div class="yui-ge">
-<div class="yui-u first" id="home-page">
+<div class="row">
+<div class="span10" id="home-page">
 <h2>Uploading and sharing your files is now easy and free. <small>Create your Plifk account now.</small></h2>
 <img src="<?php echo $this->staticversion("/images/globe.jpg")?>" alt="Share your files with the world." width="170" height="141" />
 <p class="home-info">
@@ -23,25 +22,11 @@ echo $this->fileSize($config['share']['monthlyLimit'] * 1024 * 1024 * 8);
 ?> <em>every month.</em></p></li>
 </ul>
 </div>
-<div class="yui-u">
-<?php
-/*echo $this->randomImages(
-array(
-array("src" => "/illustrations/woman-smilling.jpg"),
-array("src" => "/illustrations/student-in-library.jpg"),
-array("src" => "/illustrations/kids-in-rain.jpg"),
-array("src" => "/illustrations/students-smilling.jpg"),
-array("src" => "/illustrations/scientist.jpg"),
-array("src" => "/illustrations/tubes-and-scientist.jpg", "width" => 424, "height" => 283),
-array("src" => "/illustrations/tubes.jpg", "width" => 426, "height" => 282),
-),
-array(425, 282)
-);*/
-?>
+<div class="span5">
 <h2>Access your account</h2>
 <?php echo $this->loginform; ?>
 <p><small><a href="<?php echo $this->url(array(), "recover") ?>">Lost your username or password?</a><br />
-<b>Not already a user? <a href="<?php echo $this->url(array(), "join"); ?>">Join us</a>.</b></small></p>
+Not already a user? <a href="<?php echo $this->url(array(), "join"); ?>">Join us</a>.</small></p>
 <a href="http://www.twitter.com/plifk" class="new-window"><img src="<?php
 echo $this->staticversion("/images/follow_bird_us-b.png");
 ?>" alt="Follow Plifk on Twitter" /></a>

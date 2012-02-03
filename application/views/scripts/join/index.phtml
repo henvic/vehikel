@@ -2,46 +2,37 @@
 $registry = Zend_Registry::getInstance();
 $config = $registry->get("config");
 
-$this->headTitle("Join Plifk", "SET");
+$this->headTitle("Join " . $config['applicationname'], "SET");
 
 if ($this->success): ?>
-<div class="yui-g">
-<div class="yui-u first">
-<h2 class="joinfirststep">Hi <?php echo $this->escape($this->entry['name']) ?>!</h2>
+<h2>Hi <?php echo $this->escape($this->entry['name']) ?>!</h2>
 <p>Please check your e-mail inbox and follow the instructions.<br /><br />
 You gave us the following e-mail address: <strong><?php echo $this->escape($this->entry['email']) ?></strong>.</p>
-</div>
-<div class="yui-u">
-<h2>You've Got Mail!</h2>
-<img src="<?php echo $this->staticversion("/illustrations/girl-with-thumbs-up.jpg") ?>" alt="" width="424" height="283" />
-</div>
-</div>
 <?php
 else:
 $this->signUpForm->getElement("email")->getDecorator("description")->setEscape(false);
 ?>
-<div class="yui-ge">
-<div class="yui-u first">
-<h2>Sign up for a Plifk account</h2>
+<section>
+<div class="row">
+<div class="span12">
+<h1>Sign up for a <?php echo $this->escape($config['applicationname']); ?> account</h1>
 <?php echo $this->signUpForm; ?>
 </div>
-<div class="yui-u">
-<h2>In just three steps</h2>
+<div class="span3">
+<h2>Three steps</h2>
 <ol>
 <li><b>Complete this form</b></li>
 <li>Confirm your e-mail address</li>
 <li>Choose a username</li>
 </ol>
+</div>
+</div>
+</section>
 <?php
 if ($config['signup']['inviteonly']):
 ?>
 <h2>Do you have an invite code?</h2>
 <p>To sign up, we require that you have one at the moment.</p>
-<?php endif; ?>
-<?php /*<h2>I think I'm about to sign up...</h2>
-<img src="<?php echo $this->staticversion("/illustrations/girl-thinking.jpg") ?>" alt="" width="424" height="283" />
-*/?>
-</div>
-</div>
 <?php
+endif;
 endif;

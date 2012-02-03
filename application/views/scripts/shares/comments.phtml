@@ -6,6 +6,7 @@ $userInfo = $registry->get('userInfo');
 $shareInfo = $registry->get('shareInfo');
 
 ?>
+<hr class="lighten" />
 <div id="comments">
 <?php if ($this->paginator->getTotalItemCount()): ?>
 <h3>Comments<?php
@@ -64,15 +65,12 @@ if ($auth->getIdentity() == $comment['uid'] ||
  <?php endif;?>
 </small></p>
 </div>
-<hr title="End of comments" />
 </div>
 <?php
 endforeach;
-if ($this->paginator->count() > 1) {
-    echo $this->paginator; 
-}
-
 endif;
+?>
+<?php
 if ($auth->hasIdentity()):
 if (isset($this->commentPreview)):
 $purifier = Ml_Model_HtmlPurifier::getInstance();

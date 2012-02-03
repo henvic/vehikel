@@ -8,8 +8,8 @@ $this->headTitle("Your order #".$this->escape($order['pid']));
 $signedUserInfo = $registry->get("signedUserInfo");
 
 ?>
-<div class="yui-ge">
-<div class="yui-u first">
+<div class="row">
+<div class="span12">
 <h2>Your order #<?php echo $this->escape(Ml_Model_Credits::printFormatedUUId($this->order['pid'])); ?></h2>
 <?php echo $this->render("/credits/transactions-table.phtml"); ?>
 <?php if(isset($this->orderCoupon['hash'])): ?>
@@ -18,7 +18,7 @@ $signedUserInfo = $registry->get("signedUserInfo");
 <h3>Transaction information</h3>
 <p>Paid for a product.</p>
 </div>
-<div class="yui-u accountside">
+<div class="span3">
 <?php echo $this->render("/account/menu.phtml"); ?>
 </div>
 </div>

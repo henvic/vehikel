@@ -11,8 +11,8 @@ if ($userInfo['id'] == $auth->getIdentity()) {
     $this->headTitle("Who counts ".$this->escape($userInfo['name'])." a contact", "PREPEND");
 }
 ?>
-<div class="yui-ge">
-<div class="yui-u first">
+<div class="row">
+<div class="span11">
 <h2>Who counts <?php
 if ($userInfo['id'] == $auth->getIdentity()) {
     echo 'you';
@@ -72,7 +72,7 @@ if ($this->paginator->count() > 1) {
 }
 ?>
 </div>
-<div class="yui-u">
+<div class="span4">
 <?php echo $this->partial("/contacts/menu.phtml"); ?>
 </div>
 </div>

@@ -1,8 +1,8 @@
 <?php
 $this->headTitle("Confirm your identity");
 ?>
-<div class="yui-g">
-<div class="yui-u first">
+<div class="row">
+<div class="span16">
 <h2>Make your Plifk identity</h2>
 <p>You are <b><?php
 echo $this->escape($this->entry['name']);
@@ -13,11 +13,5 @@ $this->confirmForm->getElement("password")->getDecorator("description")->setEsca
 $this->confirmForm->getElement("tos")->getDecorator("description")->setOption('escape', false);
 ?>
 <?php echo $this->confirmForm; ?>
-</div>
-<div class="yui-u">
-<h2>Make your prints</h2>
-<img src="<?php
-echo $this->staticversion("/illustrations/colorful-kid-hands.jpg");
-?>" alt="" width="425" height="282" /> 
 </div>
 </div>

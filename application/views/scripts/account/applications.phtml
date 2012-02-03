@@ -2,8 +2,8 @@
 $registry = Zend_Registry::getInstance();
 $this->headTitle("Applications you use");
 ?>
-<div class="yui-ge">
-<div class="yui-u first">
+<div class="row">
+<div class="span12">
 <h2>Application services</h2>
 <?php if(sizeof($this->listConsumerTokens)): ?>
 <p>See what applications you have authorized to access your account.</p>
@@ -54,7 +54,7 @@ echo $this->escape($consumer['token']);
 <p>If you are a developer using the Plifk API, <a href="<?php
 echo $this->url(array(), "apikeys") ?>" title="Your API keys">your keys are here</a>.</p>
 </div>
-<div class="yui-u accountside">
+<div class="span3">
 <?php echo $this->render("/account/menu.phtml"); ?>
 </div>
 </div>

@@ -3,8 +3,8 @@ $registry = Zend_Registry::getInstance();
 $this->headTitle("Change your avatar");
 $signedUserInfo = $registry->get("signedUserInfo");
 ?>
-<div class="yui-ge">
-<div class="yui-u first">
+<div class="row">
+<div class="span12">
 <h2>Your picture</h2>
 <?php
 
@@ -21,7 +21,7 @@ if ($avatarprofile) {
 <p>We can take almost any picture in the most common formats (JPEG, PNG and GIF). But a landscape JPEG with the important content in the center and aspect ratio 3:2 is advised to better suit on the layout. The file size can be up to 1&nbsp;MB.</p>
 <?php echo $this->submitPictureForm ?>
 </div>
-<div class="yui-u accountside">
+<div class="span3">
 <?php echo $this->render("/account/menu.phtml"); ?>
 </div>
 </div>

@@ -26,10 +26,9 @@ if ($registry->isRegistered("shareInfo") && $this->tagsList) {
 
 $this->headMeta()->appendName('keywords', $keywords);
 
-$this->webname = $config['applicationname'];
-
-if ($registry->isRegistered("signedUserInfo"))
-$signedUserInfo = $registry->get("signedUserInfo");
+if ($registry->isRegistered("signedUserInfo")) {
+    $signedUserInfo = $registry->get("signedUserInfo");
+}
 
 $this->headTitle()->setSeparator(' – ');
 
@@ -38,9 +37,6 @@ $this->headLink(array('rel' => 'icon',
 'type' => "image/x-icon"), 'PREPEND');
 $this->headLink(array('rel' => 'apple-touch-icon', 
 'href' => $this->staticversion("/images/apple-touch-icon.png")), 'PREPEND');
-
-// START Loading some Javascript
-// using this configuration: http://developer.yahoo.com/yui/articles/hosting/?animation&connection&dom&element&event&yahoo&yuiloader&MIN
 
 if ($registry->isRegistered("jsfiles")) {
     $addJsfiles = $registry->get("jsfiles");
@@ -64,10 +60,20 @@ if ($registry->isRegistered("globalHash")) {
 $this->addJsVar("webroot", $config['webroot']);
 
 //$this->headScript()->prependFile($this->staticversion("/javascript/plifk.js"));
-$this->headScript()->prependFile($this->staticUrl("/plifk.js"));
-$this->headScript()->prependFile("http://yui.yahooapis.com/combo?3.1.1/build/yui/yui-min.js");
+$this->headScript()
+->prependFile($this->staticUrl("/plifk.js"))
+->prependFile($this->staticUrl("/jquery.autoresize.js"))
+->prependFile("http://twitter.github.com/bootstrap/1.4.0/bootstrap-dropdown.js")
+->prependFile("http://twitter.github.com/bootstrap/1.4.0/bootstrap-twipsy.js")
+->prependFile("http://twitter.github.com/bootstrap/1.4.0/bootstrap-scrollspy.js")
+->prependFile("http://autobahn.tablesorter.com/jquery.tablesorter.min.js")
+->prependFile("http://code.jquery.com/jquery-1.7.1.min.js")
+->prependFile("http://yui.yahooapis.com/combo?3.1.1/build/yui/yui-min.js")
+;
+
 $this->headScript()->prependScript($this->getjsvarstext());
-$this->headLink()->appendStylesheet("http://yui.yahooapis.com/combo?2.8.1/build/reset-fonts-grids/reset-fonts-grids.css&2.8.1/build/base/base-min.css&2.8.1/build/container/assets/skins/sam/container.css", "screen", false, array("id" => "yuibasecss"));
+$this->headLink()->appendStylesheet("http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css", "screen", false, array("id" => "bootstrap"));
+
 //$this->headLink()->appendStylesheet($this->staticversion("/plifk.css"), "screen", false, array("id" => "yuibase"));
 $this->headLink()->appendStylesheet($this->staticUrl("/plifk.css"));
 ?>
@@ -75,60 +81,146 @@ $this->headLink()->appendStylesheet($this->staticUrl("/plifk.css"));
 
 <html lang="en"<?php /* manifest="<?php echo $this->staticUrl("/cache.manifest"); ?>"*/?>>
 <head>
-<?php echo $this->headTitle(); ?>
-
-<?php echo $this->headLink(); ?>
-
-<?php echo $this->headMeta(); ?>
-
+<?php
+echo $this->headTitle() . "\n" .
+$this->headLink() . "\n" .
+$this->headMeta() . "\n";
+?>
 <meta charset="utf-8" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <?php echo $this->headScript(); ?>
-
 <?php echo $this->headStyle(); ?>
 </head>
 <body>
-<div id="doc2" class="yui-t1">
-<div id="bd" <?php /* role="main"*/?>>
-<div id="yui-main">
-<div class="yui-b">
-<nav class="yui-g" id="nav-bar"><?php
-if (isset($signedUserInfo)):
-?>
-<ul>
-<li class="first">Signed in as <a href="<?php
-echo $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage")
-?>"><?php echo $this->escape($signedUserInfo['alias']) ?></a></li>
-<li><b><a href="<?php echo $this->url(array(), "upload") ?>">Upload</a></b></li>
-<li><a href="<?php echo $this->url(array(), "account") ?>">Account</a></li>
-<li><a href="<?php echo $this->staticUrl("/help") ?>">Help</a></li>
-<li class="logout last"><a href="<?php echo $this->url(array(), "logout") ?>" id="logout_link" rel="nofollow">Sign out</a></li>
-</ul>
-<?php else: ?>
-<ul class="unsigned">
-    <li><a href="<?php echo $this->url(array(), "join") ?>">Join&nbsp;us</a></li>
-    <li>You're not signed in.</li>
-    <li><a href="<?php echo $this->url(array(), "login") ?>" id="login-button">Sign&nbsp;in</a></li>
-</ul>
-<?php endif; ?></nav></div>
-</div>
-<header class="yui-b" id="logo">
-<h1><a href="<?php echo $this->url(array(), "index") ?>"><span></span><?php echo $this->escape($config['applicationname']) ?></a></h1>
-</header></div>
-<div id="hd">
+<header class="container">
+<div class="topbar-wrapper">
+    <div class="topbar" data-dropdown="dropdown" >
+      <div class="topbar-inner">
+      
+      
+        <div class="container">
+        <?php //<h3><a href="#">Plifk</a></h3>?>
+        <div id="logo"><h1><a href="<?php echo $this->url(array(), "index"); ?>"><span></span><?php echo $this->escape($config['applicationname']) ?></a></h1></div>
+        
+          <ul class="nav">
 <?php
-$controllerName = $request->getControllerName();
-
+if (isset($signedUserInfo)) {
+echo $this->liMenuItems(
+    array(
+        array("route" => "index", "name" => "Home"),
+        array("route" => "profile", "name" => "Profile", "params" =>
+            array("username" => $signedUserInfo["alias"])),
+        array("route" => "filestream_1stpage", "name" => "Files", "params" =>
+            array("username" => $signedUserInfo["alias"])),
+        array("route" => "upload", "name" => "Upload"),
+    )
+);
+?>
+<?php
+} else {
+echo $this->liMenuItems(
+    array(
+        array("route" => "join", "name" => "Join us"),
+    )
+);
+}
+?>
+</ul>
+<form class="pull-left" action="http://search.local/" method="get">
+<input type="text" placeholder="Search" name="q" />
+</form>
+<ul class="nav secondary-nav">
+<?php
+if (isset($signedUserInfo)) {
+?>
+<li class="dropdown">
+<a href="<?php
+echo $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage");
+?>" class="dropdown-toggle"><?php echo $this->avatar($signedUserInfo, "square", false, array("width" => "20", "height" => "20")); ?> <?php echo $this->escape($signedUserInfo['alias']) ?></a>
+<ul class="dropdown-menu">
+<?php
+echo $this->liMenuItems(
+    array(
+        array("route" => "account", "name" => "Account", "id" => "login-button"),
+        array("route" => "logout", "name" => "Sign out", "id" => "logout-link", "rel" => "nofollow"),
+    )
+);
+?>
+</ul>
+</li>
+<?php
+} else {
+echo $this->liMenuItems(
+    array(
+        array("route" => "login", "name" => "Sign&nbsp;in", "escape" => false, "id" => "login-button")
+    )
+);
+}
+?>
+</ul>
+</div>
+</div><!-- /topbar-inner -->
+</div><!-- /topbar -->
+</div><!-- /topbar-wrapper -->
+</header>
+<div class="container">
+<?php
 if ($registry->isRegistered("userInfo")) {
     echo $this->render("usermenu.phtml");
 }
 ?>
+<div class="row content">
 <?php echo $this->layout()->content ?>
 </div>
-<footer id="ft"><?php include("footer.phtml"); ?></footer>
+<footer id="footer" class="row content">
+<div class="span9">Plifk is a web service that helps you to share files.</div>
+<div class="span3">
+<ul>
+<li><a href="<?php echo $this->url(array(), "index"); ?>">Home</a></li>
+<li><a href="<?php echo $this->url(array(), "account"); ?>">Your account</a></li>
+<li><a href="<?php echo $this->staticUrl("/about") ?>">About</a></li>
+</ul>
 </div>
-<?php include("analytics.phtml"); ?>
+<div class="span3">
+<ul>
+<li><a href="<?php echo $this->staticUrl("/tos") ?>">Terms of Service</a></li>
+<li><a href="<?php echo $this->staticUrl("/privacy") ?>">Privacy Policy</a></li>
+<li><a href="<?php echo $this->staticUrl("/api") ?>">API</a></li>
+<li><a href="<?php echo $this->staticUrl("/help") ?>">Help</a></li>
+<li><a href="http://blog.plifk.com/" class="new-window">Blog</a></li>
+<li><a href="<?php echo $this->url(array(), "report_abuse") ?>">Report abuse</a></li>
+</ul>
+</div>
+</footer>
+<?php
+if (APPLICATION_ENV != "development"):
+?>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '<?php echo $config['services']['ganalytics']['tracker_id']; ?>']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<?php endif; ?>
+</div>
+<script>$(function () { prettyPrint() })</script>
+<script>
+$(document).ready(function() { 
+    // call the tablesorter plugin 
+    $("table").tablesorter({ 
+        // sort on the first column and third column, order asc 
+        sortList: [[3,1]] 
+    }); 
+}); 
+</script>
 </body>
 </html>
