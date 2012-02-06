@@ -8,7 +8,7 @@ class Ml_View_Helper_RandomImages extends Zend_View_Helper_Abstract
      * image arrays with
      * src, width, height. Optional: alt and absolutepath.
      * The latter tells that the path in src is absolute
-     * so it doesn't convert it with staticversion
+     * so it doesn't convert it with staticVersion
      * @return HTML img source
      * 
      * @todo weight
@@ -23,7 +23,7 @@ class Ml_View_Helper_RandomImages extends Zend_View_Helper_Abstract
         }
         
         if (! isset($image['absolutepath'])) {
-            $image['src'] = $this->view->staticversion($image['src']);
+            $image['src'] = $this->view->staticVersion($image['src']);
         }
         
         $width = (isset($image['width'])) ? $image['width']: $defaultSize[0];

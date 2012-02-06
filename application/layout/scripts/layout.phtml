@@ -33,10 +33,10 @@ if ($registry->isRegistered("signedUserInfo")) {
 $this->headTitle()->setSeparator(' – ');
 
 $this->headLink(array('rel' => 'icon',
-'href' => $this->staticversion("/favicon.ico"), 
+'href' => $this->staticVersion("/favicon.ico"), 
 'type' => "image/x-icon"), 'PREPEND');
 $this->headLink(array('rel' => 'apple-touch-icon', 
-'href' => $this->staticversion("/images/apple-touch-icon.png")), 'PREPEND');
+'href' => $this->staticVersion("/images/apple-touch-icon.png")), 'PREPEND');
 
 if ($registry->isRegistered("jsfiles")) {
     $addJsfiles = $registry->get("jsfiles");
@@ -59,32 +59,33 @@ if ($registry->isRegistered("globalHash")) {
 
 $this->addJsVar("webroot", $config['webroot']);
 
-//$this->headScript()->prependFile($this->staticversion("/javascript/plifk.js"));
 $this->headScript()
-->prependFile($this->staticUrl("/plifk.js"))
-->prependFile($this->staticUrl("/jquery.autoresize.js"))
-->prependFile("http://twitter.github.com/bootstrap/1.4.0/bootstrap-dropdown.js")
-->prependFile("http://twitter.github.com/bootstrap/1.4.0/bootstrap-twipsy.js")
-->prependFile("http://twitter.github.com/bootstrap/1.4.0/bootstrap-scrollspy.js")
-->prependFile("http://autobahn.tablesorter.com/jquery.tablesorter.min.js")
-->prependFile("http://code.jquery.com/jquery-1.7.1.min.js")
-->prependFile("http://yui.yahooapis.com/combo?3.1.1/build/yui/yui-min.js")
+->prependFile($this->staticVersion("/scripts/plifk.js"))
+->prependFile($this->staticVersion("/external/jquery-fn-autoResize/jquery.autoresize.js"))
+->prependFile($this->staticVersion("/external/bootstrap/bootstrap-dropdown.js"))
+->prependFile($this->staticVersion("/external/bootstrap/bootstrap-twipsy.js"))
+->prependFile($this->staticVersion("/external/bootstrap/bootstrap-scrollspy.js"))
+->prependFile($this->staticVersion("/external/jquery-tablesorter/jquery.tablesorter.min.js"))
+->prependFile($this->staticVersion("/external/jquery/jquery.min.js"))
+->prependFile($this->staticVersion("/external/yui/yui-min.js"))
 ;
 
 $this->headScript()->prependScript($this->getjsvarstext());
-$this->headLink()->appendStylesheet("http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css", "screen", false, array("id" => "bootstrap"));
 
-//$this->headLink()->appendStylesheet($this->staticversion("/plifk.css"), "screen", false, array("id" => "yuibase"));
-$this->headLink()->appendStylesheet($this->staticUrl("/plifk.css"));
+$this->headLink()
+->appendStylesheet($this->staticVersion("/external/bootstrap/bootstrap.min.css"), "screen", false, array("id" => "bootstrap"))
+->appendStylesheet($this->staticVersion("/style/plifk.css"))
+;
+
+
+echo $this->doctype() . PHP_EOL;
 ?>
-<?php echo $this->doctype(); ?>
-
 <html lang="en"<?php /* manifest="<?php echo $this->staticUrl("/cache.manifest"); ?>"*/?>>
 <head>
 <?php
-echo $this->headTitle() . "\n" .
-$this->headLink() . "\n" .
-$this->headMeta() . "\n";
+echo $this->headTitle() . PHP_EOL . 
+$this->headLink() . PHP_EOL .
+$this->headMeta() . PHP_EOL;
 ?>
 <meta charset="utf-8" />
 <!--[if lt IE 9]>
@@ -212,15 +213,5 @@ if (APPLICATION_ENV != "development"):
 </script>
 <?php endif; ?>
 </div>
-<script>$(function () { prettyPrint() })</script>
-<script>
-$(document).ready(function() { 
-    // call the tablesorter plugin 
-    $("table").tablesorter({ 
-        // sort on the first column and third column, order asc 
-        sortList: [[3,1]] 
-    }); 
-}); 
-</script>
 </body>
 </html>

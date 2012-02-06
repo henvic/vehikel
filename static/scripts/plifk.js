@@ -662,4 +662,9 @@ YUI({
         maxHeight: 200,
         extraSpace: 15
     });
+    
+    // call the tablesorter plugin 
+    $("#last-activity-table").tablesorter({ 
+        sortList: [[3,1]] 
+    });
 });
