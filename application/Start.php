@@ -63,5 +63,6 @@ try {
     
     $application->bootstrap()->run();
 } catch (Exception $e) {
-    throw new Ml_Model_Exception("Exception: " . $e->getMessage(), $e->getCode(), $e);
+    //don't throw it because there's no exception wrapper to treat it
+    new Ml_Model_Exception("Exception: " . $e->getMessage(), $e->getCode(), $e);
 }
