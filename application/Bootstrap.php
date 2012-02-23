@@ -11,10 +11,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         Zend_Locale::setCache($sysCache);
         Zend_Translate::setCache($sysCache);
         
-        if (HOST_MODULE == 'default' || HOST_MODULE == 'api') {
-            $this->registerPluginResource("Ml_Resource_Uri");
-        }
-        
         $configArray = $this->getOptions();
         
         $registry->set('config', $configArray);
@@ -29,21 +25,52 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     
     protected function _initDatabase()
     {
-        try {
-            $this->bootstrap('db');
-            
-            $db = $this->getResource('db');
-            
-            Zend_Db_Table_Abstract::setDefaultMetadataCache("sysCache");
-            
-            Zend_Registry::getInstance()->set("database", $db);
-        } catch (Exception $e) {
-            throw new Ml_Model_Exception("Can't connect to SQL database", $e->getCode(), $e);
-        }
+        $this->bootstrap('db');
+        
+        $db = $this->getResource('db');
+        
+        Zend_Db_Table_Abstract::setDefaultMetadataCache("sysCache");
+        
+        Zend_Registry::getInstance()->set("database", $db);
     }
     
     protected function _initRequest()
     {
-        require APPLICATION_PATH . '/resources/bootstrap/' . HOST_MODULE . '.php';
+        switch (HOST_MODULE) {
+            case "redirector" : {
+                $redirector = new Ml_Resource_Redirector();
+                $redirector->shortLink();
+                exit;
+            }
+            
+            case "default" : {
+                $this->registerPluginResource("Ml_Resource_Uri")
+                ->registerPluginResource("Ml_Resource_Mysession")
+                ->registerPluginResource("Ml_Resource_Myview")
+                ->registerPluginResource("Ml_Resource_Default")
+                ;
+                break;
+            }
+            
+            case "api" : {
+                $this
+                ->registerPluginResource("Ml_Resource_Api")
+                ->unregisterPluginResource("session")
+                ->unregisterPluginResource("view")
+                ->unregisterPluginResource("layout")
+                ;
+                break;
+            }
+            
+            case "services" : {
+                $this
+                ->registerPluginResource("Ml_Resource_Services")
+                ->unregisterPluginResource("session")
+                ->unregisterPluginResource("view")
+                ->unregisterPluginResource("layout")
+                ;
+                break;
+            }
+        }
     }
 }
