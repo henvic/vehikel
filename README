@@ -128,7 +128,6 @@ Right now all of those are delete operations:
 20 3 */2 * * /home/web/plifk.com/distribution/production/application/services/program.php --action cleanoldnewusers --controller garbage >> /dev/null 2>&1
 30 4 */3 * * /home/web/plifk.com/distribution/production/application/services/program.php --action cleanoldrecover --controller garbage >> /dev/null 2>&1
 40 5 */4 * * /home/web/plifk.com/distribution/production/application/services/program.php --action cleanoldemailchange --controller garbage >> /dev/null 2>&1
-45 * * * * /home/plifk/production/application/services/sync.php >> /dev/null 2>&1
 
 
 The service module is designed to be run with PHP standalone.
