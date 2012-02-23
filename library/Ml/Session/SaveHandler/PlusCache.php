@@ -94,15 +94,15 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
                 $responseCode = '';
             }
             
-            $requestInfo = array("http_user_agent" => $_SERVER['HTTP_USER_AGENT'],
-                "request_method" => $_SERVER['REQUEST_METHOD'],
-                "remote_addr" => $_SERVER['REMOTE_ADDR'],
+            $requestInfo = array("http_user_agent" => (string) $_SERVER['HTTP_USER_AGENT'],
+                "request_method" => (string) $_SERVER['REQUEST_METHOD'],
+                "remote_addr" => (string) $_SERVER['REMOTE_ADDR'],
                 "request_time" => (int) $_SERVER['REQUEST_TIME'],
-                "request_method" => $_SERVER['REQUEST_METHOD'],
-                "request_uri" => $_SERVER['REQUEST_URI'],
-                "http_response_code" => $responseCode,
-                "session" => $id,
-                "uid" => $auth->getIdentity());
+                "request_method" => (string) $_SERVER['REQUEST_METHOD'],
+                "request_uri" => (string) $_SERVER['REQUEST_URI'],
+                "http_response_code" => (string) $responseCode,
+                "session" => (string) $id,
+                "uid" => (string) $auth->getIdentity());
             
             $this->_cache->save($requestInfo, 
             $this->_lastActivityPrefix . $id, array(), 
