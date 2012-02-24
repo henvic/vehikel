@@ -71,6 +71,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 ;
                 break;
             }
+            
+            default : throw new Exception("Invalid HOST_MODULE called on the application bootstrap");
         }
     }
 }
