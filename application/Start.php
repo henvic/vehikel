@@ -26,10 +26,8 @@ defined('PUBLIC_PATH')
 defined('LIBRARY_PATH')
     or define('LIBRARY_PATH', realpath(APPLICATION_PATH.'/../library'));
 
-// don't use get_include_path() here to include the default include path of the
-// server so you always know exactly what's loaded or not
 set_include_path(implode(PATH_SEPARATOR,
-array(EXTERNAL_LIBRARY_PATH, LIBRARY_PATH)));
+array(EXTERNAL_LIBRARY_PATH, LIBRARY_PATH, get_include_path())));
 
 require EXTERNAL_LIBRARY_PATH . '/Zend/Loader/Autoloader.php';
 

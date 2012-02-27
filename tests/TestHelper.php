@@ -23,4 +23,4 @@ defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'testing'));
 
 set_include_path(implode(PATH_SEPARATOR,
-array(EXTERNAL_LIBRARY_PATH, LIBRARY_PATH)));
+array(EXTERNAL_LIBRARY_PATH, LIBRARY_PATH, get_include_path())));
