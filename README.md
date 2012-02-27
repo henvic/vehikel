@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/henvic/MediaLab.png?branch=master)](http://travis-ci.org/henvic/MediaLab)
+
 Below there is a copy of the README file for now.
 
 Please notice that the quality of this work vary a lot. This is my first project I release for the public. I'm sad it took me so long to do so. I hope something is useful.
