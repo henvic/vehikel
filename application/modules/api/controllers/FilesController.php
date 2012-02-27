@@ -7,6 +7,8 @@ class FilesController extends Zend_Controller_Action
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
+        $numbers = new Ml_Model_Numbers();
+        
         $request = $this->getRequest();
         
         $this->_helper->loadApiresource->user();
@@ -26,7 +28,7 @@ class FilesController extends Zend_Controller_Action
         
         $page = $request->getParam("page", 1);
         
-        if (! Ml_Model_Numbers::isNatural($page)) {
+        if (! $numbers->isNatural($page)) {
             $page = 1;
         }
         
@@ -109,6 +111,7 @@ class FilesController extends Zend_Controller_Action
         $favorites = Ml_Model_Favorites::getInstance();
         $comments = Ml_Model_Comments::getInstance();
         $tags = Ml_Model_Tags::getInstance();
+        $numbers = new Ml_Model_Numbers();
         
         $this->_helper->loadApiresource->share();
         $shareInfo = $registry->get("shareInfo");
@@ -165,7 +168,7 @@ class FilesController extends Zend_Controller_Action
               $userInfo['alias'] . "/" . $shareInfo['id'] . "-" .
               $shareInfo['download_secret'] . "/" . $shareInfo['filename'],
             "shorturl" => $config['URLshortening']['addr'] .
-               Ml_Model_Numbers::base58Encode($shareInfo['id']),
+               $numbers->base58Encode($shareInfo['id']),
             "comments" => $countComments,
             "favorites" => $countFavs
         );

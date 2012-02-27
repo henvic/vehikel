@@ -40,9 +40,11 @@ class Ml_Model_Share extends Ml_Model_AccessSingleton
     
     public function getUploadStatus($uid)
     {
+        $numbers = new Ml_Model_Numbers();
+        
         $config = self::$_registry->get("config");
         
-        if (! Ml_Model_Numbers::isNaturalDbId($uid)) {
+        if (! $numbers->isNaturalDbId($uid)) {
             return false;
         }
         

@@ -83,13 +83,15 @@ class Ml_Model_Invites extends Ml_Model_AccessSingleton
     
     public function create($quantity, $uid)
     {
+        $numbers = new Ml_Model_Numbers();
+        
         $tokens = array();
         
         for ($counter = 0; $counter < $quantity; $counter ++) {
             //not beautiful
-            $partialFirst = Ml_Model_Numbers::baseEncode(mt_rand(((36 * 36) + 1), ((36 * 36 * 36))), 
+            $partialFirst = $numbers->baseEncode(mt_rand(((36 * 36) + 1), ((36 * 36 * 36))), 
              "qwertyuiopasdfghjklzxcvbnm0123456789");
-            $partialSecond = Ml_Model_Numbers::baseEncode(mt_rand(((31 * 31) + 1), ((31 * 31 * 31))), 
+            $partialSecond = $numbers->baseEncode(mt_rand(((31 * 31) + 1), ((31 * 31 * 31))), 
              "qwrtyuopasdghjklzcvnm123456789");
             
             $tokens[] = $partialFirst . '-' . $partialSecond;

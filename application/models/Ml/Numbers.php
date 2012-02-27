@@ -1,46 +1,19 @@
 <?php
 class Ml_Model_Numbers
 {
-    /**
-     * Singleton pattern implementation makes "new" unavailable
-     *
-     * @return void
-     */
-    protected function __construct()
+    const base58 = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
+    
+    public function base58Encode($num)
     {
-    }
-
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
+        return self::baseEncode($num, self::base58);
     }
     
-    public static function getInstance()
+    public function base58Decode($num)
     {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
-        
-        return self::$_instance;
+        return self::baseDecode($num, self::base58);
     }
     
-    static public function base58Encode($num)
-    {
-        return self::baseEncode($num, 
-        "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");
-    }
-    
-    static public function base58Decode($num)
-    {
-        return self::baseDecode($num, 
-        "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");
-    }
-    
-    static public function baseEncode($num, $alphabet)
+    public function baseEncode($num, $alphabet)
     {
         $baseCount = strlen($alphabet);
         $encoded = '';
@@ -56,7 +29,7 @@ class Ml_Model_Numbers
         return $encoded;
     }
     
-    static public function baseDecode($num, $alphabet)
+    public function baseDecode($num, $alphabet)
     {
         $decoded = 0;
         $multi = 1;
@@ -69,15 +42,15 @@ class Ml_Model_Numbers
         return $decoded;
     }
     
-    static public function isNaturalDbId($val)
+    public function isNaturalDbId($val)
     {
-        if ((! Ml_Model_Numbers::isNatural($val)) || (strval((int) ($val)) != (string) ($val))) {
+        if ((! $this->isNatural($val)) || (strval((int) ($val)) != (string) ($val))) {
             return false;
         }
         return true;
     }
     
-    static public function isNatural($val, $acceptzero = false)
+    public function isNatural($val, $acceptzero = false)
     {
         $return = ((string) $val === (string) (int) $val);
         if ($acceptzero) {

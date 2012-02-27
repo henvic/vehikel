@@ -17,6 +17,8 @@ class Ml_Model_Twitter extends Ml_Model_AccessSingleton
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         
+        $numbers = new Ml_Model_Numbers();
+        
         if (! is_object($form)) {
             $router = Zend_Controller_Front::getInstance()->getRouter();
             
@@ -35,7 +37,7 @@ class Ml_Model_Twitter extends Ml_Model_AccessSingleton
         
         $form->setDefault("tweet", $shareInfo['title'] . ' ' .
          $config['URLshortening']['twitterlink'] .
-         Ml_Model_Numbers::base58Encode($shareInfo['id']));
+         $numbers->base58Encode($shareInfo['id']));
         
         return $form;
     }

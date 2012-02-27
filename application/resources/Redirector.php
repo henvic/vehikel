@@ -22,7 +22,9 @@ class Ml_Resource_Redirector
             $uri = mb_substr($uri, 1);
         }
         
-        $id =  Ml_Model_Numbers::base58Decode($uri);
+        $numbers = new Ml_Model_Numbers();
+        
+        $id =  $numbers->base58Decode($uri);
         
         if ($id) {
             //Is it a valid share ID?

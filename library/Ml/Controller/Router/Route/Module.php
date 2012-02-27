@@ -150,6 +150,8 @@ class Ml_Controller_Router_Route_Module extends Zend_Controller_Router_Route_Abs
      */
     public function match($path, $partial = false)
     {
+        $numbers = new Ml_Model_Numbers();
+        
         if (HOST_MODULE == "api") {
             return array("controller" => "notstatic", "action" => "error", 
             "module" => "api");
@@ -175,7 +177,7 @@ class Ml_Controller_Router_Route_Module extends Zend_Controller_Router_Route_Abs
                 } else {
                     if (mb_substr($path[4], 0, 4) == "page") {
                         $tryPage = mb_substr($path[4], 4);
-                        if (Ml_Model_Numbers::isNaturalDbId($tryPage)) {
+                        if ($numbers->isNaturalDbId($tryPage)) {
                             $page = $tryPage;
                         }
                     }

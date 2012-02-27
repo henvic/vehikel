@@ -19,7 +19,9 @@ class Ml_View_Helper_ShortLink extends Zend_View_Helper_Abstract
         
         $config = $registry->get("config");
         
-        $base58Id = Ml_Model_Numbers::base58Encode($shareId);
+        $numbers = new Ml_Model_Numbers();
+        
+        $base58Id = $numbers->base58Encode($shareId);
         
         $link = $config['URLshortening']['addr'] . $base58Id;
         

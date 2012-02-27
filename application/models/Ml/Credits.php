@@ -63,6 +63,8 @@ class Ml_Model_Credits extends Ml_Model_AccessSingleton
      */
     public static function makeUUId()
     {
+        $numbers = new Ml_Model_Numbers();
+        
         $lowerLimit = pow(29, 3);//==2111
         $upperLimit = pow(29, 4) - 1;//==ZZZZ
         $timeDivisor = 2.5;
@@ -71,11 +73,11 @@ class Ml_Model_Credits extends Ml_Model_AccessSingleton
         $rand1 = mt_rand($lowerLimit, $upperLimit);
         $rand2 = mt_rand($lowerLimit, $upperLimit);
         
-        $num1 = Ml_Model_Numbers::baseEncode($ptime, self::base);
-        $num2 = Ml_Model_Numbers::baseEncode($rand1, self::base);
-        $num3 = Ml_Model_Numbers::baseEncode($rand2, self::base);
+        $num1 = $numbers->baseEncode($ptime, self::base);
+        $num2 = $numbers->baseEncode($rand1, self::base);
+        $num3 = $numbers->baseEncode($rand2, self::base);
         
-        $uuid = $num1.$num2.$num3.Ml_Model_Verhoeff::calcsum($ptime.$rand1.$rand2);
+        $uuid = $num1 . $num2 . $num3 . Ml_Model_Verhoeff::calcsum($ptime . $rand1 . $rand2);
         
         return $uuid;
     }
