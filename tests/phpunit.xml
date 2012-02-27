@@ -13,6 +13,7 @@
 			<exclude>
 				<directory suffix=".phtml">../application/views</directory>
 				<file>../application/Bootstrap.php</file>
+				<file>../application/Start.php</file>
 			</exclude>
 		</whitelist>
 	</filter>
