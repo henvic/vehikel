@@ -1,4 +1,4 @@
-<phpunit bootstrap="./application/TestHelper.php" colors="true">
+<phpunit bootstrap="./TestHelper.php" colors="true">
 	<php>
 		<env name="APPLICATION_ENV" value="testing" />
 	</php>

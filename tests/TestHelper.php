@@ -13,7 +13,7 @@ defined('CACHE_PATH')
 // Define path to application directory
 defined('APPLICATION_PATH')
     || define('APPLICATION_PATH',
-              realpath(dirname(__FILE__) . '/../../application'));
+              realpath(dirname(__FILE__) . '/../application'));
 
 defined('LIBRARY_PATH')
     or define('LIBRARY_PATH', realpath(APPLICATION_PATH . '/../library'));
