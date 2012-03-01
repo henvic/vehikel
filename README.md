@@ -1,182 +1,135 @@
+#MediaLab
 [![Build Status](https://secure.travis-ci.org/henvic/MediaLab.png?branch=master)](http://travis-ci.org/henvic/MediaLab)
 
-Below there is a copy of the README file for now.
-
-Please notice that the quality of this work vary a lot. This is my first project I release for the public. I'm sad it took me so long to do so. I hope something is useful.
-
-This is incomplete, with parts that shouldn't even exists, with bad quality portions of code, etc. The code on production in www.plifk.com is very outdated related to this one, by the way.
-
-
-README
-***
-# MediaLab
 ## Presentation
-This is the code of a project I started by March 2009 but never had results in terms of users.
+This source code has it origins on the web service [Plifk](www.plifk.com) (the online version is pretty outdated however).
+This code is no way perfetct. There are several bad design choices and lack of methodology in developing it. Work is in progress to make it better.
 
-This project originated with the web service Plifk (www.plifk.com) which is a file sharing web service I created (the version currently running there is very outdated).
+Influence: [Flickr](http://www.flickr.com/), [Twitter](http://twitter.com/), [Last.fm](http://last.fm), and [Multiply](http://multiply.com/) (when it was more like [Facebook](http://www.fcebook/.com/)) and more.
 
-I started studying the Zend Framework and trying to do something. Not exactly in this order. Not knowing what I'd be creating next.
+Two other web services were based on forks of this code base:
 
-I was much influenced by Flickr, Twitter, Last.fm and Multiply when I start.
+* [to-post.it](http://to-post.it/) is a minimalist Twitter-based blogging system
+* [trazqueeupago.com](http://trazqueeupago.com/) is a flee market for the Twitter social network, with a GUI similar to that of to-post.it.
 
-The web service is discontinued but I plan to use this with something else (yet thinking about what's next).
+## Requirements
+This was only tested on Mac OS X and Linux environments. It might also work on Windows.
+Note that most of the system can work with a simpler setup, but don't assume this to be true.
 
-Before you ask me, I don't know if this name was given because of MIT's Media Lab or not. I don't recall.
+### PHP and Servers
+* [PHP](http://php.net/) >= 5.3.8
+* [MySQL](http://www.mysql.com/) >= 5.1
+* [memcached](http://memcached.org/) > 1.4
+* [Apache CouchDB](http://couchdb.apache.org/) >= 1.0.1
+* [Redis](http://redis.io/) >= 2.2.11
+* [MongoDB](http://www.mongodb.org/) >= 2.0.2
 
-I've launched two other sites that were built on a fork of this.
+Please note that the default memcached is insecure by design because it's freely accessible from everywhere. You must restrict access to it yourself.
 
-They're:
-to-post.it: a minimalist Twitter-based blogging system
-trazqueeupago.com: a fork of to-post.it, but with the focus on selling / buying instead and 'localized' to brazilian portuguese
+### Extensions
+* [XHP](http://github.com/facebook/xhp) (not in use)
+* [uploadprogress](http://pecl.php.net/package/uploadprogress) (to be removed thanks to HTML 5)
+* [memcached](http://php.net/memcached)
+* [mongo](http://php.net/mongo)
+* [ImageMagick](http://php.net/manual/en/book.imagick.php)
+* [GeoIP](http://www.maxmind.com/app/php) (you need a MaxMind's database service for that, this library will be changed soon)
 
-I'm not working on any of these three services right now.
+### PHP Libraries
+* [Zend Framework](http://framework.zend.com/) >= 1.11.11
+* [HTML Purifier](http://htmlpurifier.org/) >= 4.3.0 (get the standalone version)
+* [phpass](http://www.openwall.com/phpass/) >= 0.3
+* [PHP On Couch](https://github.com/dready92/PHP-on-Couch)
+* [oauth-php](http://code.google.com/p/oauth-php/)
+* [Predis](http://pearhub.org/projects/predis) >= 0.6.6
+* [XHP php-lib](https://github.com/facebook/xhp/tree/master/php-lib) (not in use, don't mind)
+* [twitter-async](https://github.com/jmathai/twitter-async)
 
-I think it might be useful for people looking to start using the amazing Zend Framework so I decided to make it available.
+For performance you want to strip the require_once's from the Zend framework code, see [How can I optimize my include_path?](http://framework.zend.com/manual/en/performance.classloading.html)
 
-The following notes encompass everything - I hope - you need to know in order to run it as I run for plifk.com (or almost it).
+### Services
+* [Amazon Web Services S3](http://aws.amazon.com/s3/) - profile pictures and files are stored with Amazon S3
+* [Twitter API](https://dev.twitter.com/) - ([create your key](https://dev.twitter.com/apps))
+* [GeoIP by MaxMind](http://www.maxmind.com/) - (get a [free] database, note we use a custom PHP extension rather than theirs)
 
-## License
-This is available 'as is'. If you have to consider a license I ask you consider either the MIT or the new BSD and it's fine.
+## Install
+You can install most of the extensions with PECL.
 
-## Quality problems?
-There are some bad design decisions that were made earlier in the development of this project. One of them is abuse by using the Zend_Registry everywhere. Fix will come eventually (I intend that they're available really fast).
+### Create the databases structures
+MySQL tables have to be built. The DB scheme is at [application/configs/db.sql](https://github.com/henvic/MediaLab/blob/master/application/configs/db.sql)
 
-## Prerequisites
-This system was never intended to be made possibly to be deployed easily anywhere so not regularly found extensions, databases and other mechanisms were used.
+The following CouchDB databases have to be created: *web_acess_log, and actions_log*.
 
-This list is given on a best effort basis and older versions may work or not.
-* PHP >= 5.3.8
-* MySQL >= 5.1.54
-* memcached >= 1.4.5
-* Apache CouchDB >= 1.0.1
-* Redis >= 2.2.1 (not in use right now and don't have plans to start using it)
+### Points of entry
+There are three modules: default, services and api. And also a simple redirector system.
 
-This system was tested with a virtual machine running Ubuntu and Zend Server 5.5 (with XHP and GeoIP extensions added).
+#### The services module
+It's command-line interface (CLI) based, not web based.
+Point of entry: *bin/services*
 
-### Not very common PHP extensions necessary:
-* GeoIP http://www.maxmind.com/app/php
-* uploadprogress http://pecl.php.net/package/uploadprogress
-* XHP http://github.com/facebook/xhp
-* memcached
-* ImageMagick
+#### Web based points of entry
+* *public/index.php* for the default
+* *public-api/index.php* for the API
+* *public-redirector/index.php* for the redirector system
 
-The upload progress will be removed thanks to a new feature of HTML 5 that avoids its need.
+You have to set up your web server configurations with regard to these. Use virtual hosts.
 
-XHP is not currently used at the time of the release of this document but will be soon after minor changes. More information regarding XHP can be found at https://www.facebook.com/notes/facebook-engineering/xhp-a-new-way-to-write-php/294003943919
+#### Rewrite rules
+If you use Apache as your web server, the following rewrite rules might be used so the system receives the requests sent to it:
 
-For MaxMind's GeoIP to work it needs a database of its IP-geolocation information installed on the system.
-
-### Libraries (and classes)
-* Zend Framework >= 1.11.11 http://framework.zend.com/
-* HTML Purifier (standalone version) >= 4.3.0 http://htmlpurifier.org/
-* phpass >= 0.3 http://www.openwall.com/phpass/
-* PHP On Couch >= unknown https://github.com/dready92/PHP-on-Couch
-* oauth-php >= unknown http://code.google.com/p/oauth-php/
-* Predis >= 0.6.6 http://pearhub.org/projects/predis (not in use right now)
-* XHP php-lib >= unknown https://github.com/facebook/xhp/tree/master/php-lib
-* twitter-async >= unknown https://github.com/jmathai/twitter-async
-* PEAR
-* UtfNormal >= unknown http://www.mediawiki.org/wiki/MediaWiki *
-
-UtfNormal is a class of the MediaWiki package. Due to licensing restrictions I can't just copy it on this repository.
-You've to download the MediaWiki package and copy the directory includes/normal to where the external libraries are located.
-
-CouchDB is currently used for logging purposes now, but will be used for some other things later.
-
-For performance you might want to strip all the require_once's from the Zend framework.
-Please take a look at http://framework.zend.com/manual/en/performance.classloading.html
-
-## Rewrite rules
-In order for this system to work you need to always call the index.php file for the PHP requests made to it.
-
-If you use Apache as your server you'll need some code rewrite rules like the following:
-
+```
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ – [NC,L]
 RewriteRule ^.*$ index.php [NC,L]
+```
 
-If you can avoid using .htaccess and put this configuration on a Apache configuration file and disable .htaccess completely for performance's sake. For this same reason a .htaccess is not included.
+For performance and to avoid the trouble with dealing with .htaccess I recommend not to use it (and disable it), instead put this on a Apache configuration file. Some text that might help you make a wise choice: [Remove index.php From URLs](http://expressionengine.com/wiki/Remove_index.php_From_URLs)
 
-Other rewrite rules might work better for you. Check out: http://expressionengine.com/wiki/Remove_index.php_From_URLs
+Note /index.php is hard-coded to return a 404 Not Found to make sure you do the proper thing and to avoid duplicates.
 
-If you are not using Apache please refer to literature to know how to do this step.
+### Environmental variables you have to set
 
-Important: any address starting with "http://<your-site's-home>/index.php" won't work (it will end up in a 404 Not Found). This is hardcoded and there to avoid having two pages with the same address which might be a SEO problem.
+You have to set the environmental variables listed in the example below.
 
-## Create databases structure
-Some pre-configuration has to be made to the MySQL and CouchDB that will be used for the system.
+```
+EXTERNAL_LIBRARY_PATH=/path/to/the/external-libraries/directory
+APPLICATION_ENV=development
+DEFAULT_TIMEZONE=GMT
+PLIFK_CONF_FILE=/path/to/your/application/configs/applicaion.ini)
+APPLICATION_PATH=/path/to/the/project/<application-directory>
+CACHE_PATH=/path/to/your/cache
+```
 
-At application/configs/db.sql there's the MySQL database that has to be created.
+They should be set separately to the very same values twice (this will be improved soon), one time for the web modules and the other for the CLI SAPI modules.
 
-For CouchDB you just have to create the following databases: web_acces_log and actions_log
+For the web: use *SetEnv* on your configuration file (.htaccess or a Apache's configuration file).
 
-## Secure the system
-You've to pay attention to secure your system properly. Please note that memcached doesn't provide security out of the box and might be freely accessible from everywhere if no steps are taken to secure it.
+If you need help about setting them on your CLI check out:
+[Making lasting changes](http://www.mcsr.olemiss.edu/unixhelp/environment/env3db.html)
+[EnvironmentVariables](https://help.ubuntu.com/community/EnvironmentVariables)
 
-## TODO
-Unit tests: tests/ is useless right now
-Continue to implement HTML 5, right now the implementation is at an early stage and might be breaking standards / drafts because of that.
-Start using Bootstrap with Less http://twitter.github.com/bootstrap/
-
-
-## CRONTAB
-Some expensive operations are scheduled instead of being done at the time of the requests.
-
-Right now all of those are delete operations:
-20 * * * * /home/web/plifk.com/distribution/production/services/program.php --action cleanfiles --controller garbage >> /dev/null 2>&1
-20 3 */2 * * /home/web/plifk.com/distribution/production/services/program.php --action cleanoldnewusers --controller garbage >> /dev/null 2>&1
-30 4 */3 * * /home/web/plifk.com/distribution/production/services/program.php --action cleanoldrecover --controller garbage >> /dev/null 2>&1
-40 5 */4 * * /home/web/plifk.com/distribution/production/services/program.php --action cleanoldemailchange --controller garbage >> /dev/null 2>&1
+## Scheduled tasks
+Some operations might be expensive. For example: if a user removes his account it is not smart to start a batch delete operation of all his files right away (and let him waiting for it, for instance).
+A way to solve this and other similar issues is to make use of a scheduled task to run from time to time and do this heavy work.
 
 
-The service module is designed to be run with PHP standalone.
+Right now there are only a few of crontab jobs as you can see on the example below:
 
-You can run it with the CLI (command line interface) the following way:
-./program.php --action controller.action
+```
+20 * * * * /path/to/application/bin/service --action cleanfiles --controller garbage >> /dev/null 2>&1
+20 3 */2 * * /path/to/application/bin/service --action cleanoldnewusers --controller garbage >> /dev/null 2>&1
+30 4 */3 * * /path/to/application/bin/service --action cleanoldrecover --controller garbage >> /dev/null 2>&1
+40 5 */4 * * /path/to/application/bin/service --action cleanoldemailchange --controller garbage >> /dev/null 2>&1
+```
 
+## Push, open bugs, etc.
+Feel free to push code to this repository. Anything you want, go to the [issue tracker](https://github.com/henvic/MediaLab/issues/).
 
-
-
-
-Other setup for this system:
-
-AWS S3 account for some functionality (profile's picture & file upload system) is used.
-
-
-The following environmental variables shall be set:
-
-EXTERNAL_LIBRARY_PATH
-APPLICATION_ENV (development/production)
-DEFAULT_TIMEZONE (GMT)
-PLIFK_CONF_FILE (where the configuration file resides, which may might be other than the application/configs/applicaion.ini)
-APPLICATION_PATH
-CACHE_PATH
-
-They should be set on the Apache server with SetEnv and for the service module (CLI) it should be set as in
-http://www.mcsr.olemiss.edu/unixhelp/environment/env3db.html
-https://help.ubuntu.com/community/EnvironmentVariables
-
-If you can't add them to public/index.php, public-redirector/index.php, public-, and system/....
-For more information read the issue tracker at https://github.com/henvic/MediaLab/issues/
-
-
-## Hacks to be fixed
-At library/ML/RouteModule.php you can find Ml_Controller_Router_Route_Module.
-It's almost a copy of Zend_Controller_Router_Route_Module, but there's some modifications to make it possible to use the tags system with internationalization like Flickr does. This is so that tags in languages such as japanese, for example, can be used on the URLs, like in http://link/<user>/tags/メインページ, for example. Stop using it and do the proper thing as soon as possible. It's only the way it is right now because it's legacy code from a long time ago.
-
-## TODO
-Start to use Facebook's Bootstrap (which uses LESS).
-Create legacy/ directory to put old useless code that might be interesting for some reason.
+## License
+This software is provided "as is", without warranty.
+The [New BSD License](http://en.wikipedia.org/wiki/New_BSD_license) and the [MIT License](http://en.wikipedia.org/wiki/MIT_License) is the license (case you need something legal).
 
 ## Author
-I'm the irresponsible that released this code and I'm not sorry for that.
-Henrique Vicente
-
-http://linkedin.com/in/henvic
-
-http://github.com/henvic
-
-https://twitter.com/henriquev
+Henrique Vicente de Oliveira Pinto ([email](mailto:henriquevicente@gmail.com), [Twitter](https://twitter.com/henriquev), [Flickr](http://www.flickr.com/photos/henriquev), [Linkedin](http://linkedin.com/in/henvic)).
