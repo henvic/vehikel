@@ -89,6 +89,11 @@ For performance and to avoid the trouble with dealing with .htaccess I recommend
 
 Note /index.php is hard-coded to return a 404 Not Found to make sure you do the proper thing and to avoid duplicates.
 
+#### A word on static assets
+You have static assets (on the *statics* directory) such as images, JavaScripts and CSS which your users need to access. For production it might be wise to use a CDN service (such as S3 + CloudFront) for this.
+
+For development (or in production if you don't want to use a CDN) you can set up even another virtual host for this (you don't need to point to any index.php in this case, even because it just doesn't exists). In case you are using this in production you may want to configure your web server not to list the directories contents.
+
 ### Environmental variables you have to set
 
 You have to set the environmental variables listed in the example below.
