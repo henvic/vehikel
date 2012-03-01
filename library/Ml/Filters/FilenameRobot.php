@@ -23,10 +23,7 @@ class Ml_Filter_FilenameRobot implements Zend_Filter_Interface
         // http://www.asciitable.com/
         $value = trim($value, "\x22\x27\x26\x2C");
         
-        // svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/includes/normal/
-        Zend_Loader::loadClass('UtfNormal', EXTERNAL_LIBRARY_PATH . '/normal/');
-        
-        $value = UtfNormal::cleanUp($value);
+        $value = preg_replace('/\p{M}/u', '', Normalizer::normalize($value, Normalizer::FORM_D));
         $value = mb_strtolower($value, "UTF-8");
         
         $bye = Array(

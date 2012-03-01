@@ -203,9 +203,6 @@ class Ml_Model_Tags extends Ml_Model_AccessSingleton
      */
     public function normalize($rawtag)
     {
-        Zend_Loader::loadClass('UtfNormal', EXTERNAL_LIBRARY_PATH . '/normal/');
-        // using http://svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/includes/normal/
-
         /*Like Flickr:
          * http://weblog.terrellrussell.com/2007/06/clean-and-store-your-raw-tags-like-flickr/
          * $cleantag = mb_substr(mb_strtolower(preg_replace("/[\\s\"!@#\\$\\%^&*():\\-_+=\\'\\/.;`<>\\[\\]?\\\\]/", '', $rawtag)), 0, 60);
@@ -213,9 +210,11 @@ class Ml_Model_Tags extends Ml_Model_AccessSingleton
          */
         $cleaning = $rawtag;
         
-        $cleaning = UtfNormal::cleanUp($cleaning);
+        //as of http://stackoverflow.com/questions/3542818/remove-accents-without-using-iconv
+        $cleaning = preg_replace('/\p{M}/u', '', Normalizer::normalize($cleaning, Normalizer::FORM_D));
+        
         $cleaning = mb_strtolower($cleaning, "UTF-8");
-
+        
         $bye = Array(
         ' ', '\"', '\'', '!', '@', '$', '%', '&', '*', '(', ')',
         ':', '-', '_', '+', '=', '\'', '/', '.', ';', '`', '<', '>', '[', ']',
