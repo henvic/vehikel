@@ -52,7 +52,7 @@ For performance you want to strip the require_once's from the Zend framework cod
 * [GeoIP by MaxMind](http://www.maxmind.com/) - (get a [free] database, note we use a custom PHP extension rather than theirs)
 
 ## Install
-You can install most of the extensions with PECL.
+You can install most of the extensions with [PECL](http://pecl.php.net/).
 
 ### Create the databases structures
 MySQL tables have to be built. The DB scheme is at [application/configs/db.sql](https://github.com/henvic/MediaLab/blob/master/application/configs/db.sql)
