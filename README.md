@@ -95,7 +95,6 @@ You have static assets (on the *statics* directory) such as images, JavaScripts 
 For development (or in production if you don't want to use a CDN) you can set up even another virtual host for this (you don't need to point to any index.php in this case, even because it just doesn't exists). In case you are using this in production you may want to configure your web server not to list the directories contents.
 
 ### Environmental variables you have to set
-
 You have to set the environmental variables listed in the example below.
 
 ```
