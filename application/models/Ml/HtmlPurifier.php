@@ -63,7 +63,7 @@ class Ml_Model_HtmlPurifier
         $purifierConfig->set('Core.ColorKeywords', '');
         //|target was here at the a element and also somewhere else
         $purifierConfig->set('HTML.Allowed', 'a[href|title],strong,b,br,em,i,img[src|alt|width|height|title],ins,del');
-
+        
         $def = $purifierConfig->getHTMLDefinition(true);
         //a rel nofollow http://htmlpurifier.org/phorum/read.php?3,1442,1661,quote=1
         
