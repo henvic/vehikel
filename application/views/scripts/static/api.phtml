@@ -12,7 +12,7 @@ $this->headTitle("API | Documentation");
 <li>An API key <small>(<a href="<?php echo $this->url(array(), "apply_api_key"); ?>">apply for a new one</a> | <a href="<?php echo $this->url(array(), "apikeys"); ?>">your API keys</a>)</small></li>
 <li>A token of the user using your program</li>
 </ol>
-<p>Times are given in the <?php echo getEnv("DEFAULT_TIMEZONE"); ?> standard timezone (no Daylight saving).</p>
+<p>Times are given in the <?php echo $this->escape(date_default_timezone_get()); ?> standard timezone (no Daylight saving).</p>
 
 <h3>Feed information</h3>
 <p>The user feed is a valuable element that is available for everyone. Typically you can retrieve the same information by using the API methods <b>/people/info</b> and <b>/files/list</b>, but in your use may make more sense to consume the feed (XML based RSS 2.0). Use the following address model to get a user feed: <code>http://www.plifk.com/<strong>(username)</strong>/feed</code></p>
