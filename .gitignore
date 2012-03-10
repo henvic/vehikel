@@ -1,0 +1,14 @@
+# based on https://github.com/github/gitignore
+.settings
+.project
+.buildpath
+# Mac
+.DS_Store
+.Spotlight-V100
+.Trashes
+# KDE
+.directory
+# Vim
+.*.sw[a-z]
+*.un~
+Session.vim
