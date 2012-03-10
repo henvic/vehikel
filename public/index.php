@@ -1,4 +1,4 @@
 <?php
 //public/index.php
 define("HOST_MODULE", "default");
-require "../application/Start.php";
+require __DIR__ . "/../application/Start.php";

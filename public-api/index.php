@@ -1,4 +1,4 @@
 <?php
 //public-api/index.php
 define("HOST_MODULE", "api");
-require "../application/Start.php";
+require __DIR__ . "/../application/Start.php";
