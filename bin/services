@@ -1,4 +1,4 @@
-#!/usr/local/zend/bin/php -q
+#!/usr/bin/php -q
 <?php
 define("HOST_MODULE", "services");
 require realpath(__DIR__ . "/../application/Start.php");
