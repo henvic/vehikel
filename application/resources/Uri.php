@@ -36,7 +36,7 @@ class Ml_Resource_Uri extends Zend_Application_Resource_ResourceAbstract
         
         header("HTTP/1.1 301 Moved Permanently");
         header("Location: " . $newHost . $newRequestUri);
-        header("Cache-Control: max-age=86400, must-revalidate");
+        header("Cache-Control: max-age=3600, must-revalidate");
         
         //cache-control shall be set: see
         //http://developer.yahoo.net/blog/archives/2007/07/high_performanc_9.html
