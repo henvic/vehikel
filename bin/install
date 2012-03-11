@@ -1,0 +1,300 @@
+#!/usr/bin/php -q
+<?php
+
+/**
+ * 
+ * Helps with the install and setup of the application
+ * See https://github.com/henvic/MediaLab/blob/master/README.md for more info
+ * 
+ * @todo adopt composer or anything similar to make the install process better
+ *
+ */
+class Install {
+    const PACKAGE_EXTRACT_TARBALL_GZ = "tgz";
+    const PACKAGE_EXTRACT_NONE = "";
+    
+    public $projectDirectory = "";
+    
+    public $colors;
+    
+    private function setValue ($prompt, &$value) {
+        fwrite(STDOUT, "$prompt " . $this->colors->getColoredString("[" . $value . "]", "light_red") . " : ");
+        $answer = mb_strcut(fgets(STDIN), 0, -1);
+        
+        if(! empty($answer)) {
+            $value = $answer;
+        }
+    }
+        
+    private function execSimple($command) {
+        exec($command, $output, $exitCode);
+        
+        if ($exitCode != 0) {
+            fwrite(STDERR, "Error executing: " . $command . "\nExit code: " . $exitCode . "\n");
+            exit(1);
+        }
+        return $exitCode;
+    }
+    
+    public function downloadPackage($filename, $url, $checksum = false, $extract = Install::PACKAGE_EXTRACT_TARBALL_GZ) {
+        $cmd = "curl -s -o " . escapeshellarg($filename) . " " . escapeshellarg($url);
+        
+        fwrite(STDOUT, "Trying to download " . $filename . "\n");
+        
+        $this->execSimple($cmd);
+        
+        $checksumLength = strlen($checksum);
+        
+        if (! $checksumLength) {
+            $checksumFunction = "";
+        } else if ($checksumLength == 40) {
+            $checksumFunction = "sha1_file";
+        } else if($checksumLength == 32) {
+            $checksumFunction = "md5_file";
+        } else {
+            fwrite(STDERR, "Invalid checksum for " . $filename . "\n");
+            exit(1);
+        }
+        
+        if ($checksumFunction && $checksumFunction($filename) != $checksum) {
+            fwrite(STDERR, "Checksum mismatch for " . $filename . ".\n");
+            
+            exit(1);
+        }
+        
+        if ($extract == Install::PACKAGE_EXTRACT_NONE) {
+            return true;
+        }
+        
+        if ($extract == Install::PACKAGE_EXTRACT_TARBALL_GZ) {
+            $cmd = "tar xzf " . escapeshellarg($filename);
+            
+            fwrite(STDOUT, "Extracting " . $filename . "\n");
+            $this->execSimple($cmd);
+            
+            unlink($filename);
+            
+            return true;
+        }
+        
+        exit(1);
+    }
+    
+    /**
+     * Get the path with regard to the project directory if inside it
+     * or the absolute one, if not.
+     * 
+     * @param string $path
+     * @return string $path
+     */
+    private function getPath($path) {
+        $pos = strlen($this->projectDirectory . "/");
+        if (substr($path, 0, $pos) == $this->projectDirectory . "/") {
+            $path = substr($path, $pos);
+        }
+        
+        return $path;
+    }
+    
+    public function setEnvironment() {
+        $env = array(
+            "APPLICATION_ENV" => "production",
+            "DEFAULT_TIMEZONE" => "GMT",
+            "CACHE_PATH" => $this->projectDirectory . "/data/cache",
+            "EXTERNAL_LIBRARY_PATH" => $this->projectDirectory . "/vendor",
+            "APPLICATION_CONF_FILE" => $this->projectDirectory . "/application/configs/application.ini.dist",
+        );
+        
+        // set environmental variables
+        if (! getenv("TRAVIS")) {
+            fwrite(STDOUT, "Configuration (to use the suggested value press return)\n");
+            $this->setValue("Application environment?", $env['APPLICATION_ENV']);
+            $this->setValue("Application Timezone?", $env['DEFAULT_TIMEZONE']);
+            $this->setValue("Cache path?", $env['CACHE_PATH']);
+            $this->setValue("External library path?", $env['EXTERNAL_LIBRARY_PATH']);
+            $this->setValue("Configuration file?", $env['APPLICATION_CONF_FILE']);
+        } else {
+            $env["APPLICATION_ENV"] = "testing";
+        }
+        
+        return $env;
+    }
+    
+    public function saveEnvironment($env) {
+        $vendor = $this->getPath($env['EXTERNAL_LIBRARY_PATH']);
+        $cache = $this->getPath($env['CACHE_PATH']);
+        $conf = $this->getPath($env['APPLICATION_CONF_FILE']);
+        
+        $data = "<?php\n// Define application environment configuration\n" .
+        "//This configuration file might be created by bin/install\n" .
+        'define("APPLICATION_ENV", (defined("PHPUnit_MAIN_METHOD")) ? "testing" : "' .
+        addslashes($env["APPLICATION_ENV"]) . '");' . "\n";
+        
+        $data .= 'define("EXTERNAL_LIBRARY_PATH", ';
+        if (substr($vendor, 0, 1) != '/') {
+            $data .= 'realpath(__DIR__ . "/../../' . addslashes($vendor) . '")';
+        } else {
+            $data .= '"' . addslashes($vendor) . '"';
+        }
+        $data .= ");\n";
+        
+        $data .= 'define("CACHE_PATH", ';
+        if (substr($cache, 0, 1) != '/') {
+            $data .= 'realpath(__DIR__ . "/../../' . addslashes($cache) . '")';
+        } else {
+            $data .= '"' . addslashes($cache) . '"';
+        }
+        $data .= ");\n";
+        
+        $data .=
+        'define("APPLICATION_CONF_FILE", ';
+        if (substr($conf, 0, 1) != '/') {
+            $data .= 'realpath(__DIR__ . "/../../' . addslashes($conf) . '")';
+        } else {
+            $data .= '"' . addslashes($conf) . '"';
+        }
+        $data .= ");\n";
+        
+        $data .=
+        'date_default_timezone_set("' . addslashes($env["DEFAULT_TIMEZONE"]) . '");' . "\n";
+        
+        file_put_contents(__DIR__ . "/../application/configs/Environment.php.dist", $data);
+        
+        fwrite(STDOUT, $this->colors->getColoredString("application/configs/Environment.php.dist set.\n", "light_green"));
+    }
+    
+    public function installDependencies($vendorPath) {
+        $originalWorkingDir = getcwd();
+        
+        chdir($vendorPath);
+        
+        $this->downloadPackage("phpass-0.3.tar.gz", "http://www.openwall.com/phpass/phpass-0.3.tar.gz", "400c9cafdd8cdcb882c1f43cd4b127180fd0e7ff");
+        
+        $this->downloadPackage("ZendFramework-1.11.11-minimal.tar.gz", "http://framework.zend.com/releases/ZendFramework-1.11.11/ZendFramework-1.11.11-minimal.tar.gz", "c6d818d7bdd697c2046450e673af86db");
+        $this->execSimple("mv ZendFramework-1.11.11-minimal/library/Zend Zend");
+        $this->execSimple("rm -r ZendFramework-1.11.11-minimal");
+        
+        $this->downloadPackage("htmlpurifier-4.4.0-standalone.tar.gz", "http://htmlpurifier.org/releases/htmlpurifier-4.4.0-standalone.tar.gz", "a227f5c9b5187473d59ff90eaacad03a3f8a6dc5");
+        $this->execSimple("mv htmlpurifier-4.4.0-standalone htmlpurifier-standalone");
+        
+        $this->downloadPackage("oauth-php-175.tar.gz", "http://oauth-php.googlecode.com/files/oauth-php-175.tar.gz", "2d459b62d46b85b48603aa3024ade968");
+        
+        $this->downloadPackage("predis-0.7.tar.gz", "https://nodeload.github.com/nrk/predis/tarball/v0.7", "");
+        $this->execSimple("mv nrk-predis-* predis");
+        
+        $this->downloadPackage("twitter-async.tar.gz", "https://nodeload.github.com/jmathai/twitter-async/tarball/master", "");
+        $this->execSimple("mv jmathai-twitter-async-* twitter-async");
+        
+        chdir($originalWorkingDir);
+    }
+    
+    public function copyConfig($file) {
+        if (! file_exists($file)) {
+            $q = "yes";
+            $this->setValue("Copy the configuration model to the choosen application config path?", $q);
+            
+            if ($q != "yes") {
+                return false;
+            }
+            
+            $this->execSimple("cp " . escapeshellarg("../application/configs/application.ini") . " " . escapeshellarg($file));
+            
+            fwrite(STDOUT, "Configuration file copied to " . escapeshellarg($file) . "\nDon't forget to edit it.\n");
+            
+            return true;
+        }
+    }
+    
+    public function checkExtensions() {
+        $test = array(
+            "xhp" => "not in use, can be safely ignored",
+            "uploadprogress" => "can be ignored",
+            "memcached" => "essential for the sessions system",
+            "mongo" => "can be ignored for now",
+            "imagick" => "essential for the image system",
+            "geoip" => "can be ignored",
+        );
+        
+        
+        $installed = get_loaded_extensions();
+        
+        $diff = array_diff(array_keys($test), $installed);
+        
+        if (empty($diff)) {
+            fwrite(STDOUT, $this->colors->getColoredString("All required PHP extensions are installed.\n", "light_green"));
+            return true;
+        }
+        
+        fwrite(STDERR, $this->colors->getColoredString("The following PHP extensions are missing:\n", "light_red"));
+        
+        foreach ($diff as $each) {
+            if (empty($test[$each])) {
+                $info = " * " . $each . "\n";
+            } else {
+                $info = " * " . $each . " (" . $test[$each] . ")\n";
+            }
+            
+            fwrite(STDERR, $this->colors->getColoredString($info, "red"));
+        }
+        
+        if (getenv("TRAVIS")) {
+            return $this->installExtensionsForTravis($diff);
+        }
+        
+        $value = "no";
+        $this->setValue("Ignore and continue? ", $value);
+        
+        if ($value == "no") {
+            exit(1);
+        }
+        
+        return false;
+    }
+    
+    public function installExtensionsForTravis($extensions) {
+        $packages = array(
+            "xhp",
+            "uploadprogress",
+            "memcached",
+            "mongo",
+            "imagick",
+            "geoip"
+        );
+        
+        //make sure we get updated channels
+        $this->execSimple("sudo pecl channel-update pecl.php.net");
+        
+        
+        foreach ($packages as $each) {
+            $this->execSimple("sudo pecl install " . escapeshellarg($each));
+            $this->execSimple("echo extension=" . escapeshellarg($each) . ".so >> /etc/php.ini");
+        }
+        
+        fwrite(STDOUT, "PHP extensions installed on the Travis worker.\n");
+    }
+    
+    public function __construct() {
+        require __DIR__ . "/../library/Ml/Console/Colors.php";
+        $this->colors = new Ml_Console_Colors();
+        
+        chdir( __DIR__ );
+        
+        fwrite(STDOUT, $this->colors->getColoredString("Welcome to the installation\nRight now this script can:\n - set the configs/Environment.php.dist values\n - resolve the PHP library dependencies\n - tell what PHP extensions are missing\n\nFollow the instructions on:\nhttps://github.com/henvic/MediaLab/blob/master/README.md\n\n", "cyan"));
+        
+        $this->projectDirectory = realpath(getcwd() . "/..");
+        
+        $this->checkExtensions();
+        
+        $env = $this->setEnvironment();
+        
+        $this->saveEnvironment($env);
+        
+        $this->copyConfig($env["APPLICATION_CONF_FILE"]);
+        
+        $this->installDependencies($env["EXTERNAL_LIBRARY_PATH"]);
+        
+        fwrite(STDOUT, $this->colors->getColoredString("Finished installation.\n\n", "light_green"));
+    }
+}
+
+new Install();
