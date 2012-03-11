@@ -13,7 +13,7 @@ Two other web services were based on forks of this code base:
 * [trazqueeupago.com](http://trazqueeupago.com/) is a flee market for the Twitter social network, with a GUI similar to that of to-post.it.
 
 ## Requirements
-This was only tested on Mac OS X and Linux environments. It might also work on Windows.
+This was only tested on Mac OS X and Linux environments. It might also work on Windows (but not the install script).
 Note that most of the system can work with a simpler setup, but don't assume this to be true.
 
 ### PHP and Servers
@@ -52,10 +52,30 @@ For performance you want to strip the require_once's from the Zend framework cod
 * [GeoIP by MaxMind](http://www.maxmind.com/) - (get a [free] database, note we use a custom PHP extension rather than theirs)
 
 ## Install
-You can install most of the extensions with [PECL](http://pecl.php.net/).
+On your CLI (command-line interface) run bin/install:
+
+```
+cd bin
+./install
+```
+
+This will take care of setting application paths, downloading and setting up the dependencies. But you will still need to do some work.
+It will write a *application/configs/Environment.php.dist similar to *[application/configs/Environment.php](https://github.com/henvic/MediaLab/blob/master/application/configs/Environment.php)*, with the choosen timezone and directory and file paths.
+If you are using Windows you will need to generate this file by your own (as well, solve dependencies, etc the way the installer does so you will want to take a look at its source code).
+
+If a extension is missing you will know it.
+You can get most of them with [PECL](http://pecl.php.net/) or apt-get on a Debian-based system such as Ubuntu.
+
+For example, if mongo is missing you can use:
+
+```
+sudo pecl channel-update pecl.php.net
+sudo pecl install mongo
+echo extension=mongo.so >> /etc/php.ini
+```
 
 ### Create the databases structures
-MySQL tables have to be built. The DB scheme is at [application/configs/db.sql](https://github.com/henvic/MediaLab/blob/master/application/configs/db.sql)
+MySQL tables have to be built. The DB scheme is at *[application/configs/db.sql](https://github.com/henvic/MediaLab/blob/master/application/configs/db.sql)*
 
 The following CouchDB databases have to be created: *web_acess_log, and actions_log*.
 
@@ -63,7 +83,7 @@ The following CouchDB databases have to be created: *web_acess_log, and actions_
 There are three modules: default, services and api. And also a simple redirector system.
 
 #### The services module
-It's command-line interface (CLI) based, not web based.
+It's CLI based, not web based.
 Point of entry: *bin/services*
 
 #### Web based points of entry
@@ -93,26 +113,6 @@ Note /index.php is hard-coded to return a 404 Not Found to make sure you do the 
 You have static assets (on the *statics* directory) such as images, JavaScripts and CSS which your users need to access. For production it might be wise to use a CDN service (such as S3 + CloudFront) for this.
 
 For development (or in production if you don't want to use a CDN) you can set up even another virtual host for this (you don't need to point to any index.php in this case, even because it just doesn't exists). In case you are using this in production you may want to configure your web server not to list the directories contents.
-
-### Environmental variables you have to set
-You have to set the environmental variables listed in the example below.
-
-```
-EXTERNAL_LIBRARY_PATH=/path/to/the/external-libraries/directory
-APPLICATION_ENV=development
-DEFAULT_TIMEZONE=GMT
-PLIFK_CONF_FILE=/path/to/your/application/configs/applicaion.ini)
-APPLICATION_PATH=/path/to/the/project/<application-directory>
-CACHE_PATH=/path/to/your/cache
-```
-
-They should be set separately to the very same values twice (this will be improved soon), one time for the web modules and the other for the CLI SAPI modules.
-
-For the web: use *SetEnv* on your configuration file (.htaccess or a Apache's configuration file).
-
-If you need help about setting them on your CLI check out:
-[Making lasting changes](http://www.mcsr.olemiss.edu/unixhelp/environment/env3db.html)
-[EnvironmentVariables](https://help.ubuntu.com/community/EnvironmentVariables)
 
 ## Scheduled tasks
 Some operations might be expensive. For example: if a user removes his account it is not smart to start a batch delete operation of all his files right away (and let him waiting for it, for instance).
