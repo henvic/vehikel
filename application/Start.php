@@ -1,30 +1,8 @@
 <?php
 
-date_default_timezone_set(getEnv("DEFAULT_TIMEZONE"));
-
-defined('EXTERNAL_LIBRARY_PATH')
-    or define('EXTERNAL_LIBRARY_PATH',
-    realpath(getenv('EXTERNAL_LIBRARY_PATH')));
-
-
-defined('CACHE_PATH')
-    or define('CACHE_PATH', realpath(getenv('CACHE_PATH')));
-
-// Define path to application directory
-defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH',
-              dirname(__FILE__));
-
-// Define application environment
-defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV',
-              getenv('APPLICATION_ENV'));
-
-defined('PUBLIC_PATH')
-    or define('PUBLIC_PATH', realpath(APPLICATION_PATH.'/../public'));
-
-defined('LIBRARY_PATH')
-    or define('LIBRARY_PATH', realpath(APPLICATION_PATH.'/../library'));
+define("APPLICATION_PATH", realpath(__DIR__));
+define("LIBRARY_PATH", realpath(APPLICATION_PATH . "/../library"));
+require __DIR__ . "/configs/Environment.php.dist";
 
 set_include_path(implode(PATH_SEPARATOR,
 array(EXTERNAL_LIBRARY_PATH, LIBRARY_PATH, get_include_path())));
@@ -56,7 +34,7 @@ Zend_Registry::getInstance()->set("sysCache", $sysCache);
 
 // Create application, bootstrap, and run
 try {
-    $application = new Ml_Application(APPLICATION_ENV, getenv("PLIFK_CONF_FILE"), 
+    $application = new Ml_Application(APPLICATION_ENV, APPLICATION_CONF_FILE, 
     $sysCache, true);
     
     $application->bootstrap()->run();
