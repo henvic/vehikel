@@ -238,7 +238,8 @@ class Install {
         }
         
         if (getenv("TRAVIS")) {
-            return $this->installExtensionsForTravis($diff);
+            fwrite(STDERR, $this->colors->getColoredString("Not installing any extension in Travis CI at this time.");
+            //return $this->installExtensionsForTravis($diff);
         }
         
         $value = "no";
@@ -260,9 +261,6 @@ class Install {
             "imagick",
             "geoip"
         );
-        
-        //install php5-dev package
-        $this->execSimple("sudo apt-get install php5-dev");
         
         //make sure we get updated channels
         $this->execSimple("sudo pecl channel-update pecl.php.net");
