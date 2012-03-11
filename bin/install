@@ -191,7 +191,10 @@ class Install {
     public function copyConfig($file) {
         if (! file_exists($file)) {
             $q = "yes";
-            $this->setValue("Copy the configuration model to the choosen application config path?", $q);
+            
+            if (! getenv("TRAVIS")) {
+                $this->setValue("Copy the configuration model to the choosen application config path?", $q);
+            }
             
             if ($q != "yes") {
                 return false;
