@@ -1,7 +1,4 @@
 <phpunit bootstrap="./TestHelper.php" colors="true">
-	<php>
-		<env name="APPLICATION_ENV" value="testing" />
-	</php>
 	<testsuite name="ApplicationTestSuite">
 		<directory>./application/</directory>
 		<directory>./library/</directory>
