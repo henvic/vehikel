@@ -15,15 +15,19 @@ class Ml_Model_Numbers
     
     public function baseEncode($num, $alphabet)
     {
+        $num = (string) $num;
+        
         $baseCount = strlen($alphabet);
         $encoded = '';
-        while ($num >= $baseCount) {
-            $div = $num / $baseCount;
-            $mod = ($num - ($baseCount * intval($div)));
+        
+        while (bccomp($num, $baseCount) > -1) {
+            $div = bcdiv($num, $baseCount, 0);
+            
+            $mod = bcsub($num, bcmul($baseCount, $div, 0), 0);
             $encoded = $alphabet[$mod] . $encoded;
-            $num = intval($div);
+            $num = $div;
         }
-        if ($num) {
+        if (bccomp($num, "1", 0) >= 0) {
             $encoded = $alphabet[$num] . $encoded;
         }
         return $encoded;
@@ -31,12 +35,16 @@ class Ml_Model_Numbers
     
     public function baseDecode($num, $alphabet)
     {
+        $num = (string) $num;
+        
         $decoded = 0;
         $multi = 1;
+        
         while (strlen($num) > 0) {
             $digit = $num[strlen($num) - 1];
-            $decoded += $multi * strpos($alphabet, $digit);
-            $multi = $multi * strlen($alphabet);
+            
+            $decoded = bcadd($decoded, (bcmul($multi, strpos($alphabet, $digit))));
+            $multi = bcmul($multi, strlen($alphabet));
             $num = substr($num, 0, - 1);
         }
         return $decoded;
