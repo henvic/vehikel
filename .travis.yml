@@ -3,4 +3,4 @@ php:
     - 5.3
     - 5.4
 before_script: php bin/install
-script: phpunit --configuration tests/phpunit.xml
+script: phpunit --coverage-text --configuration tests/phpunit.xml
