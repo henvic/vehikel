@@ -241,7 +241,7 @@ class Install {
         }
         
         if (getenv("TRAVIS")) {
-            fwrite(STDERR, $this->colors->getColoredString("Not installing any extension in Travis CI at this time.\n"));
+            fwrite(STDERR, $this->colors->getColoredString("Not installing any extension in Travis CI at this time.\n", "yellow"));
             return false;
             //return $this->installExtensionsForTravis($diff);
         }
