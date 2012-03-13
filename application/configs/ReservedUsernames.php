@@ -1,7 +1,10 @@
 <?php
+/**
+ * This is a reserved list of usernames which shall not be created
+ * because of the blacklist approach adopted to make more friendly URLs
+ */
 
-$reservedUsernames = 
-array(
+return array(
 "offline", "home", "recover",
 "mail", "email", "clock", "alarm", "notice", "status",
 "search", "wiki", "shares", "upload", "account",
