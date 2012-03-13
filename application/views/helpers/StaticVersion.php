@@ -5,15 +5,17 @@ class Ml_View_Helper_staticVersion extends Zend_View_Helper_Abstract
     
     protected static $_prePath = "";
     
-    function __construct()
+    protected function loadVersions()
+    {
+        return require APPLICATION_PATH . "/configs/static-versions.php";
+    }
+
+    public function __construct()
     {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
         self::$_prePath = mb_substr($config['cdn'], 0, -1);
-        
-        require APPLICATION_PATH . "/configs/static-versions.php";
-        
-        self::$_cacheFiles = $cacheFiles;
+        self::$_cacheFiles = $this->loadVersions();
     }
     
     /**
