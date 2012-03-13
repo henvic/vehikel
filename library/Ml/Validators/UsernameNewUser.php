@@ -26,7 +26,7 @@ class Ml_Validator_UsernameNewUser extends Zend_Validate_Abstract
             return false;
         }
         
-        require APPLICATION_PATH . "/configs/reserved-usernames.php";
+        require APPLICATION_PATH . "/configs/ReservedUsernames.php";
         
         if (in_array($value, $reservedUsernames)) {
             $this->_error(self::MSG_USERNAME_RESERVED);

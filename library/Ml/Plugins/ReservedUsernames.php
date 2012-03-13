@@ -18,7 +18,7 @@ class Ml_Plugins_ReservedUsernames extends Zend_Controller_Plugin_Abstract
         //@todo this is a workaround, the better approach was to get the string 'as it is'
         if (isset($params['username']) &&
          mb_strstr($_SERVER['REQUEST_URI'], "?", true) != 'proxy') {
-            require APPLICATION_PATH . "/configs/reserved-usernames.php";
+            require APPLICATION_PATH . "/configs/ReservedUsernames.php";
             
             if (in_array($params['username'], $reservedUsernames)) {
                 $request->setControllerName('static')
