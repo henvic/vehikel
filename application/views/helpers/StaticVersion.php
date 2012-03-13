@@ -7,7 +7,7 @@ class Ml_View_Helper_staticVersion extends Zend_View_Helper_Abstract
     
     protected function loadVersions()
     {
-        return require APPLICATION_PATH . "/configs/static-versions.php";
+        return require APPLICATION_PATH . "/configs/StaticVersions.php";
     }
 
     public function __construct()
