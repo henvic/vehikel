@@ -66,6 +66,9 @@ cd bin
 ./install
 ```
 
+*For development you will want to respond with "development" on the question about the application environment*
+
+
 This will take care of setting application paths, downloading and setting up the dependencies. But you will still need to do some work.
 It will write a *application/configs/Environment.php.dist similar to *[application/configs/Environment.php](https://github.com/henvic/MediaLab/blob/master/application/configs/Environment.php)*, with the choosen timezone and directory and file paths.
 If you are using Windows you will need to generate this file by your own (as well, solve dependencies, etc the way the installer does so you will want to take a look at its source code).
