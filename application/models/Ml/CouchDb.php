@@ -32,9 +32,9 @@ class Ml_Model_CouchDb
     public static function getInstance()
     {
         if (null === self::$_instance) {
-            require EXTERNAL_LIBRARY_PATH."/php-on-couch/lib/couch.php";
-            require EXTERNAL_LIBRARY_PATH."/php-on-couch/lib/couchClient.php";
-            require EXTERNAL_LIBRARY_PATH."/php-on-couch/lib/couchDocument.php";
+            require EXTERNAL_LIBRARY_PATH."/PHP-on-Couch/lib/couch.php";
+            require EXTERNAL_LIBRARY_PATH."/PHP-on-Couch/lib/couchClient.php";
+            require EXTERNAL_LIBRARY_PATH."/PHP-on-Couch/lib/couchDocument.php";
         
             $registry = Zend_Registry::getInstance();
             $config = $registry->get("config");
