@@ -191,6 +191,34 @@ class Install {
         $this->downloadPackage("twitter-async.tar.gz", "https://nodeload.github.com/jmathai/twitter-async/tarball/master", "");
         $this->execSimple("mv jmathai-twitter-async-* twitter-async");
         
+        fwrite(STDOUT, "Installing client-side vendor assets\n");
+        chdir(__DIR__ . "/../static/vendor");
+        
+        $this->downloadPackage("twitter-bootstrap.2.0.2.tar.gz", "https://nodeload.github.com/twitter/bootstrap/tarball/v2.0.2");
+        $this->execSimple("mv twitter-bootstrap-* bootstrap-2.0.2");
+        
+        $this->downloadPackage("twitter-bootstrap.1.4.0.tar.gz", "https://nodeload.github.com/twitter/bootstrap/tarball/v1.4.0");
+        $this->execSimple("mv twitter-bootstrap-* bootstrap-1.4.0");
+        
+        $this->downloadPackage("jquery-1.7.1.min.js", "http://code.jquery.com/jquery-1.7.1.min.js", "ddb84c1587287b2df08966081ef063bf", self::PACKAGE_EXTRACT_NONE);
+        $this->execSimple("mkdir jquery-1.7.1");
+        $this->execSimple("mv jquery-1.7.1.min.js jquery-1.7.1/jquery.min.js");
+        
+        $this->execSimple("mkdir jquery-tablesorter-2.0.5b");
+        chdir(__DIR__ . "/../static/vendor/jquery-tablesorter-2.0.5b");
+        $this->downloadPackage("tablesorter.zip", "http://tablesorter.com/__jquery.tablesorter.zip", "2078b52370eecea59188a71944458c36", self::PACKAGE_EXTRACT_NONE);
+        $this->execSimple("unzip tablesorter.zip jquery.tablesorter.min.js");
+        $this->execSimple("rm tablesorter.zip");
+        chdir(__DIR__ . "/../static/vendor");
+        
+        // @todo make a way to update the version of adolsey-jQuery.fn.autoResize
+        $this->downloadPackage("padolsey-jQuery.fn.autoResize.tar.gz", "https://nodeload.github.com/padolsey/jQuery.fn.autoResize/tarball/master");
+        $this->execSimple("mv padolsey-jQuery.fn.autoResize-* jquery-fn-autoResize-1.14");
+        
+        $this->downloadPackage("yui-min.js", "http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js", "fcc01ca1c5d15e4a401907280836624b", self::PACKAGE_EXTRACT_NONE);
+        $this->execSimple("mkdir yui-3.1.1");
+        $this->execSimple("mv yui-min.js yui-3.1.1/");
+        
         chdir($originalWorkingDir);
     }
     
