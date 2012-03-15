@@ -25,7 +25,7 @@ class Install {
             $value = $answer;
         }
     }
-        
+    
     private function execSimple($command) {
         exec($command, $output, $exitCode);
         
@@ -111,7 +111,7 @@ class Install {
             $this->setValue("Application environment?", $env['APPLICATION_ENV']);
             $this->setValue("Application Timezone?", $env['DEFAULT_TIMEZONE']);
             $this->setValue("Cache path?", $env['CACHE_PATH']);
-            $this->setValue("External library path?", $env['EXTERNAL_LIBRARY_PATH']);
+            $this->setValue("PHP external library path?", $env['EXTERNAL_LIBRARY_PATH']);
             $this->setValue("Configuration file?", $env['APPLICATION_CONF_FILE']);
         } else {
             $env["APPLICATION_ENV"] = "testing";
@@ -120,7 +120,7 @@ class Install {
         return $env;
     }
     
-    public function saveEnvironment($env) {
+    public function savePhpEnvironment($env) {
         $vendor = $this->getPath($env['EXTERNAL_LIBRARY_PATH']);
         $cache = $this->getPath($env['CACHE_PATH']);
         $conf = $this->getPath($env['APPLICATION_CONF_FILE']);
@@ -163,10 +163,10 @@ class Install {
         fwrite(STDOUT, $this->colors->getColoredString("application/configs/Environment.php.dist set.\n", "light_green"));
     }
     
-    public function installDependencies($vendorPath) {
+    public function installDependencies($backendVendorPath) {
         $originalWorkingDir = getcwd();
         
-        chdir($vendorPath);
+        chdir($backendVendorPath);
         
         $this->downloadPackage("phpass-0.3.tar.gz", "http://www.openwall.com/phpass/phpass-0.3.tar.gz", "400c9cafdd8cdcb882c1f43cd4b127180fd0e7ff");
         
@@ -182,9 +182,12 @@ class Install {
         // @todo make sure about what is the downloaded version of PHP-on-Couch
         $this->downloadPackage("PHP-on-Couch.tar.gz", "https://nodeload.github.com/dready92/PHP-on-Couch/tarball/master", "");
         $this->execSimple("mv dready92-PHP-on-Couch-* PHP-on-Couch");
+        
+        // @todo make sure about what is the downloaded version of nrk-predis
         $this->downloadPackage("predis-0.7.tar.gz", "https://nodeload.github.com/nrk/predis/tarball/v0.7", "");
         $this->execSimple("mv nrk-predis-* predis");
         
+        // @todo make sure about what is the downloaded version of jmathai-twitter-async
         $this->downloadPackage("twitter-async.tar.gz", "https://nodeload.github.com/jmathai/twitter-async/tarball/master", "");
         $this->execSimple("mv jmathai-twitter-async-* twitter-async");
         
@@ -295,7 +298,7 @@ class Install {
         
         $env = $this->setEnvironment();
         
-        $this->saveEnvironment($env);
+        $this->savePhpEnvironment($env);
         
         $this->copyConfig($env["APPLICATION_CONF_FILE"]);
         
