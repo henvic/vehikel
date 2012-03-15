@@ -46,6 +46,13 @@ Please note that the default memcached is insecure by design because it's freely
 
 For performance you want to strip the require_once's from the Zend framework code, see [How can I optimize my include_path?](http://framework.zend.com/manual/en/performance.classloading.html)
 
+### Client-side dependencies
+[Bootstrap, from Twitter](http://twitter.github.com/bootstrap/) (version 1.4, migration to 2.0 soon)
+[jQuery](http://jquery.com/)
+[jQuery.fn.autoResize](https://github.com/padolsey/jQuery.fn.autoResize)
+[Tablesorter](http://tablesorter.com/)
+[YUI 3](http://yuilibrary.com/) (version 3.1)
+
 ### Services
 * [Amazon Web Services S3](http://aws.amazon.com/s3/) - profile pictures and files are stored with Amazon S3
 * [Twitter API](https://dev.twitter.com/) - ([create your key](https://dev.twitter.com/apps))
