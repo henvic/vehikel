@@ -2,7 +2,7 @@
 [![Build Status](https://secure.travis-ci.org/henvic/MediaLab.png?branch=master)](http://travis-ci.org/henvic/MediaLab)
 
 ## Presentation
-This source code has it origins on the web service [Plifk](www.plifk.com) (the online version is pretty outdated however).
+This source code has its origins on the web service [Plifk](www.plifk.com) (the online version is pretty outdated however).
 This code is no way perfetct. There are several bad design choices and lack of methodology in developing it. Work is in progress to make it better.
 
 Influence: [Flickr](http://www.flickr.com/), [Twitter](http://twitter.com/), [Last.fm](http://last.fm), and [Multiply](http://multiply.com/) (when it was more like [Facebook](http://www.fcebook/.com/)) and more.
