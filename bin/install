@@ -179,6 +179,9 @@ class Install {
         
         $this->downloadPackage("oauth-php-175.tar.gz", "http://oauth-php.googlecode.com/files/oauth-php-175.tar.gz", "2d459b62d46b85b48603aa3024ade968");
         
+        // @todo make sure about what is the downloaded version of PHP-on-Couch
+        $this->downloadPackage("PHP-on-Couch.tar.gz", "https://nodeload.github.com/dready92/PHP-on-Couch/tarball/master", "");
+        $this->execSimple("mv dready92-PHP-on-Couch-* PHP-on-Couch");
         $this->downloadPackage("predis-0.7.tar.gz", "https://nodeload.github.com/nrk/predis/tarball/v0.7", "");
         $this->execSimple("mv nrk-predis-* predis");
         
