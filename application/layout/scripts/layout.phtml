@@ -61,19 +61,19 @@ $this->addJsVar("webroot", $config['webroot']);
 
 $this->headScript()
 ->prependFile($this->staticVersion("/scripts/plifk.js"))
-->prependFile($this->staticVersion("/external/jquery-fn-autoResize/jquery.autoresize.js"))
-->prependFile($this->staticVersion("/external/bootstrap/bootstrap-dropdown.js"))
-->prependFile($this->staticVersion("/external/bootstrap/bootstrap-twipsy.js"))
-->prependFile($this->staticVersion("/external/bootstrap/bootstrap-scrollspy.js"))
-->prependFile($this->staticVersion("/external/jquery-tablesorter/jquery.tablesorter.min.js"))
-->prependFile($this->staticVersion("/external/jquery/jquery.min.js"))
-->prependFile($this->staticVersion("/external/yui/yui-min.js"))
+->prependFile($this->staticVersion("/vendor/jquery-fn-autoResize/jquery.autoresize.js"))
+->prependFile($this->staticVersion("/vendor/bootstrap/js/bootstrap-dropdown.js"))
+->prependFile($this->staticVersion("/vendor/bootstrap/js/bootstrap-twipsy.js"))
+->prependFile($this->staticVersion("/vendor/bootstrap/js/bootstrap-scrollspy.js"))
+->prependFile($this->staticVersion("/vendor/jquery-tablesorter/jquery.tablesorter.min.js"))
+->prependFile($this->staticVersion("/vendor/jquery/jquery.min.js"))
+->prependFile($this->staticVersion("/vendor/yui/yui-min.js"))
 ;
 
 $this->headScript()->prependScript($this->getjsvarstext());
 
 $this->headLink()
-->appendStylesheet($this->staticVersion("/external/bootstrap/bootstrap.min.css"), "screen", false, array("id" => "bootstrap"))
+->appendStylesheet($this->staticVersion("/vendor/bootstrap/bootstrap.min.css"), "screen", false, array("id" => "bootstrap"))
 ->appendStylesheet($this->staticVersion("/style/plifk.css"))
 ;
 
