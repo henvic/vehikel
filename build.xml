@@ -2,10 +2,10 @@
 
 <project name="MediaLab" default="build">
  <target name="build"
-   depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc,phpunit,phpcb"/>
+   depends="prepare,install,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc,phpunit,phpcb"/>
 
  <target name="build-parallel"
-   depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
+   depends="prepare,install,lint,tools-parallel,phpunit,phpcb"/>
 
  <target name="tools-parallel"
          description="Run tools in parallel">
@@ -37,7 +37,14 @@
   <mkdir dir="${basedir}/build/logs"/>
   <mkdir dir="${basedir}/build/pdepend"/>
  </target>
-
+ 
+ <target name="install" description="Install the application with its dependencies and set up its environment">
+  <exec executable="php">
+   <arg path="${basedir}/bin/install" />
+   <arg value="auto" />
+  </exec>
+ </target>
+ 
  <target name="lint">
   <apply executable="php" failonerror="true">
    <arg value="-l" />
