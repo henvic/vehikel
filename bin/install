@@ -13,6 +13,8 @@ class Install {
     const PACKAGE_EXTRACT_TARBALL_GZ = "tgz";
     const PACKAGE_EXTRACT_NONE = "";
     
+    protected $_env = false;
+    
     public $projectDirectory = "";
     
     public $colors;
@@ -106,7 +108,7 @@ class Install {
         );
         
         // set environmental variables
-        if (! getenv("TRAVIS")) {
+        if (! $this->_env) {
             fwrite(STDOUT, "Configuration (to use the suggested value press return)\n");
             $this->setValue("Application environment?", $env['APPLICATION_ENV']);
             $this->setValue("Application Timezone?", $env['DEFAULT_TIMEZONE']);
@@ -226,7 +228,7 @@ class Install {
         if (! file_exists($file)) {
             $q = "yes";
             
-            if (! getenv("TRAVIS")) {
+            if (! $this->_env) {
                 $this->setValue("Copy the configuration model to the choosen application config path?", $q);
             }
             
@@ -274,10 +276,9 @@ class Install {
             fwrite(STDERR, $this->colors->getColoredString($info, "red"));
         }
         
-        if (getenv("TRAVIS")) {
-            fwrite(STDERR, $this->colors->getColoredString("Not installing any extension in Travis CI at this time.\n", "yellow"));
+        if ($this->_env) {
+            fwrite(STDERR, $this->colors->getColoredString("Not installing any extension for automatic installs at this time.\n", "yellow"));
             return false;
-            //return $this->installExtensionsForTravis($diff);
         }
         
         $value = "no";
@@ -315,6 +316,12 @@ class Install {
     public function __construct() {
         require __DIR__ . "/../library/Ml/Console/Colors.php";
         $this->colors = new Ml_Console_Colors();
+        
+        if (getenv("TRAVIS")) {
+            $this->_env = "travis-ci";
+        } else if (in_array("auto", $_SERVER["argv"])) {
+            $this->_env = "auto";
+        }
         
         chdir( __DIR__ );
         
