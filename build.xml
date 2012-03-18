@@ -51,8 +51,8 @@
 
    <fileset dir="${basedir}">
     <include name="**/*.php" />
-    <exclude name="${basedir}/build/*" />
-    <exclude name="${basedir}/vendor/*" />
+    <exclude name="build/**" />
+    <exclude name="vendor/**" />
     <modified />
    </fileset>
   </apply>
