@@ -148,7 +148,10 @@
  </target>
 
  <target name="phpunit" description="Run unit tests with PHPUnit">
-  <exec executable="phpunit" dir="${basedir}/tests" failonerror="true"/>
+  <exec executable="phpunit" failonerror="true">
+   <arg value="--configuration" />
+   <arg path="${basedir}/tests/phpunit.xml" />
+  </exec>
  </target>
 
  <target name="phpcb"
