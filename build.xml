@@ -135,18 +135,6 @@
   </exec>
  </target>
 
- <target name="phpdoc"
-         description="Generate API documentation using PHPDocumentor">
-  <exec executable="phpdoc">
-   <arg value="--directory" />
-   <arg path="${basedir}" />
-   <arg value="--ignore" />
-   <arg path="${basedir}/build,${basedir}/vendor" />
-   <arg value="--target" />
-   <arg path="${basedir}/build/api" />
-  </exec>
- </target>
-
  <target name="phpunit" description="Run unit tests with PHPUnit">
   <exec executable="phpunit" failonerror="true">
    <arg value="--configuration" />
