@@ -28,8 +28,8 @@
   <delete dir="${basedir}/build/pdepend"/>
   <delete dir="${basedir}/vendor"/>
   <delete dir="${basedir}/static/vendor"/>
-  <delete name="${basedir}/application/configs/Environment.php.dist"/>
-  <delete name="${basedir}/application/configs/application.ini.dist"/>
+  <delete file="${basedir}/application/configs/Environment.php.dist"/>
+  <delete file="${basedir}/application/configs/application.ini.dist"/>
  </target>
 
  <target name="prepare" depends="clean"
