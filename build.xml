@@ -26,6 +26,8 @@
   <delete dir="${basedir}/build/coverage"/>
   <delete dir="${basedir}/build/logs"/>
   <delete dir="${basedir}/build/pdepend"/>
+  <delete dir="${basedir}/vendor/**/"/>
+  <delete dir="${basedir}/static/vendor/**/"/>
  </target>
 
  <target name="prepare" depends="clean"
