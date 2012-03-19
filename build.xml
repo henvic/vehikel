@@ -39,6 +39,8 @@
   <mkdir dir="${basedir}/build/coverage"/>
   <mkdir dir="${basedir}/build/logs"/>
   <mkdir dir="${basedir}/build/pdepend"/>
+  <mkdir dir="${basedir}/vendor"/>
+  <mkdir dir="${basedir}/static/vendor"/>
  </target>
  
  <target name="install" description="Install the application with its dependencies and set up its environment">
