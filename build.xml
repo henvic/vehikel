@@ -44,7 +44,7 @@
  </target>
  
  <target name="install" description="Install the application with its dependencies and set up its environment">
-  <exec executable="php">
+  <exec executable="php" failonerror="true">
    <arg path="${basedir}/bin/install" />
    <arg value="auto" />
   </exec>
