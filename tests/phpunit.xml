@@ -16,8 +16,10 @@
 		</whitelist>
 	</filter>
 	<logging>
-		<log type="coverage-html" target="../data/log/tests/coverage"
+		<log type="coverage-clover" target="../build/logs/clover.xml" />	
+		<log type="coverage-html" target="../build/coverage"
 			charset="UTF-8" yui="false" highlight="false" lowUpperBound="35"
 			highLowerBound="70" />
+		<log type="junit" target="../build/logs/junit.xml" />
 	</logging>
 </phpunit>
