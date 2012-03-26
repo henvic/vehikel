@@ -4,8 +4,8 @@
     <project name="MediaLab" source="${basedir}" workdir="./build/api/xml">
         <collector publiconly="false">
             <include mask="*.php" />
-            <exclude mask="build/*" />
-            <exclude mask="vendor/*" />
+            <exclude mask="${basedir}/build/*" />
+            <exclude mask="${basedir}/vendor/*" />
         </collector>
         <generator output="./build/api/docs">
             <build engine="html" enabled="true" output="html" />
