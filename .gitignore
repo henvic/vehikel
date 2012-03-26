@@ -1,5 +1,6 @@
 # based on https://github.com/github/gitignore
-build/api
+build/api/xml
+build/api/docs
 build/code-browser
 build/coverage
 build/logs
