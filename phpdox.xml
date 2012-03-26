@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpdox xmlns="http://phpdox.de/config" silent="false">
+    <bootstrap />
+    <project name="MediaLab" source="${basedir}" workdir="./build/api/xml">
+        <collector publiconly="false">
+            <include mask="*.php" />
+            <exclude mask="build/*" />
+            <exclude mask="vendor/*" />
+        </collector>
+        <generator output="./build/api/docs">
+            <build engine="html" enabled="true" output="html" />
+            
+            <build engine="todo" enabled="true" output="todo">
+                <file name="TODO" encoding="utf-8" />
+            </build>
+            
+            <build engine="graph" enabled="true" output="graph">
+                <dot executable="/usr/bin/dot" render="true" format="png" />
+            </build>
+        </generator>
+    </project>
+</phpdox>
