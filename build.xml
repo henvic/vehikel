@@ -70,6 +70,8 @@
    <arg value="${basedir}/build" />
    <arg value="--exclude" />
    <arg value="${basedir}/vendor" />
+   <arg value="--exclude" />
+   <arg value="${basedir}/data" />
    <arg value="--log-csv" />
    <arg value="${basedir}/build/logs/phploc.csv" />
    <arg path="${basedir}" />
@@ -82,7 +84,7 @@
    <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
    <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
    <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
-   <arg value="--ignore=${basedir}/build,${basedir}/vendor" />
+   <arg value="--ignore=${basedir}/build,${basedir}/vendor,${basedir}/data" />
    <arg path="${basedir}" />
   </exec>
  </target>
@@ -94,7 +96,7 @@
    <arg value="text" />
    <arg value="${basedir}/build/phpmd.xml" />
    <arg value="--exclude" />
-   <arg path="${basedir}/build/*,${basedir}/vendor/*" />
+   <arg path="${basedir}/build/*,${basedir}/vendor/*,${basedir}/data/*" />
   </exec>
  </target>
 
@@ -107,7 +109,7 @@
    <arg value="--reportfile" />
    <arg value="${basedir}/build/logs/pmd.xml" />
    <arg value="--exclude" />
-   <arg path="${basedir}/build/*,${basedir}/vendor/*" />
+   <arg path="${basedir}/build/*,${basedir}/vendor/*,${basedir}/data/*" />
   </exec>
  </target>
 
@@ -136,7 +138,7 @@
    <arg value="--log-pmd" />
    <arg value="${basedir}/build/logs/pmd-cpd.xml" />
    <arg value="--exclude" />
-   <arg path="${basedir}/build,${basedir}/vendor" />
+   <arg path="${basedir}/build,${basedir}/vendor,${basedir}/data" />
    <arg path="${basedir}" />
   </exec>
  </target>
@@ -161,7 +163,7 @@
    <arg value="--source" />
    <arg path="${basedir}" />
    <arg value="--ignore" />
-   <arg path="${basedir}/build,${basedir}/vendor" />
+   <arg path="${basedir}/build,${basedir}/vendor,${basedir}/data" />
    <arg value="--output" />
    <arg path="${basedir}/build/code-browser" />
   </exec>
