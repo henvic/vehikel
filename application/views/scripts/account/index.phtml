@@ -12,7 +12,6 @@ $this->accountForm
 <div class="row">
 <div class="span12">
 <h2>Welcome, <?php echo $this->escape($signedUserInfo['name']) ?></h2>
-<?php echo $this->render("/credits/info.phtml"); ?>
 <?php if(isset($this->changeEmail) && $this->changeEmail): ?>
 <strong>You have set a new e-mail address for your account. But before you start using it we require you validate it. We have sent you an e-mail to the new address confirming this operation.</strong>
 <?php endif; ?>
