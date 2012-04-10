@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # http://code.google.com/p/sequel-pro/
 #
-# Host: 127.0.0.1 (MySQL 5.1.58-1ubuntu1)
+# Host: 127.0.0.1 (MySQL 5.1.61-0ubuntu0.11.10.1)
 # Database: medialab
-# Generation Time: 2011-12-12 03:18:20 +0000
+# Generation Time: 2012-04-10 19:43:23 +0000
 # ************************************************************
 
 
@@ -395,25 +395,6 @@ CREATE TABLE `people_deleted` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`,`alias`),
   KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table phonelist
-# ------------------------------------------------------------
-
-CREATE TABLE `phonelist` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `agenda` bigint(20) NOT NULL,
-  `phone` bigint(20) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `eid` varchar(100) DEFAULT NULL,
-  `timestamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `phone` (`phone`),
-  UNIQUE KEY `eid` (`eid`),
-  KEY `agenda` (`agenda`),
-  CONSTRAINT `phonelist_ibfk_1` FOREIGN KEY (`agenda`) REFERENCES `agenda` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
