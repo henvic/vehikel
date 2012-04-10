@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.1.61-0ubuntu0.11.10.1)
 # Database: medialab
-# Generation Time: 2012-04-10 19:43:23 +0000
+# Generation Time: 2012-04-10 19:48:16 +0000
 # ************************************************************
 
 
@@ -34,20 +34,6 @@ CREATE TABLE `abuse` (
   `solution` enum('unsolved','solved','notabuse') NOT NULL,
   UNIQUE KEY `id` (`id`),
   KEY `timestamp` (`timestamp`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table agenda
-# ------------------------------------------------------------
-
-CREATE TABLE `agenda` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `uid` bigint(20) unsigned NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `uid` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
