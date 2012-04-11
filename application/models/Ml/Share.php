@@ -103,9 +103,6 @@ class Ml_Model_Share extends Ml_Model_AccessSingleton
     {
         $config = self::$_registry->get("config");
         
-        //require_once(LIBRARY_PATH."/Ml/Filters/FilenameRobot.php");
-        //require_once(LIBRARY_PATH."/Ml/Validators/Filename.php");
-        
         $s3 = new Zend_Service_Amazon_S3($config['services']['S3']['key'], $config['services']['S3']['secret']);
         
         $filenameFilter = new Ml_Filter_FilenameRobot();
