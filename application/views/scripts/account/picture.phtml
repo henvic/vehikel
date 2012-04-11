@@ -8,7 +8,7 @@ $signedUserInfo = $registry->get("signedUserInfo");
 <h2>Your picture</h2>
 <?php
 
-$avatarprofile = $this->avatarprofile($signedUserInfo);
+$avatarprofile = $this->avatarProfile($signedUserInfo);
 if ($avatarprofile) {
     echo $avatarprofile; 
 } else {

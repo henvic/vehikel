@@ -70,7 +70,7 @@ $this->headScript()
 ->prependFile($this->staticVersion("/vendor/yui/yui-min.js"))
 ;
 
-$this->headScript()->prependScript($this->getjsvarstext());
+$this->headScript()->prependScript($this->getJsVarsText());
 
 $this->headLink()
 ->appendStylesheet($this->staticVersion("/vendor/bootstrap/bootstrap.min.css"), "screen", false, array("id" => "bootstrap"))
