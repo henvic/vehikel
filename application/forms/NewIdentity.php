@@ -9,7 +9,7 @@ class Ml_Form_NewIdentity extends Zend_Form
         $this->setMethod('post');
         $this->addElementPrefixPath('Ml_Validator', 'Ml/Validators/', 
         Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('Ml_Filter', 'Ml/Filters/', 
+        $this->addElementPrefixPath('Ml_Filter', 'Ml/Filter/', 
         Zend_Form_Element::FILTER);
         
         // beware it can not be ZERO
