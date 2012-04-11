@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.1.61-0ubuntu0.11.10.1)
 # Database: medialab
-# Generation Time: 2012-04-10 19:48:16 +0000
+# Generation Time: 2012-04-11 17:47:27 +0000
 # ************************************************************
 
 
@@ -530,7 +530,7 @@ CREATE TABLE `upload_history` (
   `fileSize` bigint(20) unsigned NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `filename` char(60) NOT NULL,
-  `uploadError` tinyint(1) NOT NULL,
+  `uploadError` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `byUid` (`byUid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
