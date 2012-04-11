@@ -61,7 +61,7 @@ class Ml_Model_Coupons extends Ml_Model_AccessSingleton
     public function state($hash, $state)
     {
         return $this->_dbTable->update(array("active" => $state), 
-            $this->_dbAdapter()
+            $this->_dbAdapter
                 ->quoteInto("hash = ?", $state));
     }
 }
