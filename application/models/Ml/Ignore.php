@@ -90,7 +90,7 @@ class Ml_Model_Ignore extends Ml_Model_AccessSingleton
             
             $form = new Ml_Form_Ignore(array(
                 'action' => $router->assemble(array("username" =>
-                 $userInfo['alias']), "contactRelationshipIgnore"),
+                 $userInfo['alias']), "contact_relationship_ignore"),
                 'method' => 'post',
             ));
         }

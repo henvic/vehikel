@@ -53,7 +53,7 @@ if ($contact['uid'] == $auth->getIdentity()) {
 <?php if($userInfo['id'] == $auth->getIdentity()): ?>
  <small>(<a href="<?php
  echo $this->url(array("username" => $contact['people.alias']),
- "contactRelationshipIgnore");
+ "contact_relationship_ignore");
  ?>">block?</a>)</small>
 <?php endif; ?>
 </td>

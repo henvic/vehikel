@@ -32,7 +32,7 @@ if ($auth->hasIdentity() && $auth->getIdentity() != $userInfo['id']) {
         
         if (isset($ignoreStatus['ignore'])) {
             echo '<li><b>You have blocked this user.</b> <a href="' .
-        $this->url(array("username" => $userInfo['alias']), "contactRelationshipIgnore") .
+        $this->url(array("username" => $userInfo['alias']), "contact_relationship_ignore") .
         '" rel="nofollow">Change?</a></li>' . "\n";
         }
         
@@ -76,7 +76,7 @@ if ($auth->hasIdentity() && $auth->getIdentity() != $userInfo['id'] &&
 (! isset($ignoreStatus) || ! is_array($ignoreStatus))):
 ?>
 <p class="longbreak"><small><a href="<?php
-echo $this->url(array("username" => $userInfo['alias']), "contactRelationshipIgnore");
+echo $this->url(array("username" => $userInfo['alias']), "contact_relationship_ignore");
 ?>" rel="nofollow">Block this user?</a></small></p>
 <?php endif;?>
 </div>
