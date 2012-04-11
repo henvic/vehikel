@@ -7,7 +7,7 @@ class Ml_Form_Picture extends Zend_Form
         $this->setAttrib('enctype', 'multipart/form-data');
         
         $this->setMethod('post');
-        $this->addElementPrefixPath('Ml_Validator', 'Ml/Validators/', 
+        $this->addElementPrefixPath('Ml_Validate', 'Ml/Validate/', 
         Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('Ml_Filter', 'Ml/Filter/', 
         Zend_Form_Element::FILTER);

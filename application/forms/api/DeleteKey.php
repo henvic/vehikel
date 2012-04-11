@@ -4,7 +4,7 @@ class Ml_Form_Api_DeleteKey extends Zend_Form
     public function init()
     {
         $this->setMethod('post');
-        $this->addElementPrefixPath('Ml_Validator', 'Ml/Validators/', 
+        $this->addElementPrefixPath('Ml_Validate', 'Ml/Validate/', 
         Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('Ml_Filter', 'Ml/Filter/', 
         Zend_Form_Element::FILTER);

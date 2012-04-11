@@ -2,7 +2,7 @@
 //require_once 'Zend/Validate/Abstract.php';
 //require_once 'Zend/Validate/Hostname.php';
 
-class Ml_Validator_Url extends Zend_Validate_Abstract
+class Ml_Validate_Url extends Zend_Validate_Abstract
 {
     const INVALID_URL = 'invalidUrl';
 

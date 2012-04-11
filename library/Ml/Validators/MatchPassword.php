@@ -1,7 +1,7 @@
 <?php
 //require_once 'Zend/Validate/Abstract.php';
 
-class Ml_Validator_MatchPassword extends Zend_Validate_Abstract
+class Ml_Validate_MatchPassword extends Zend_Validate_Abstract
 {
     const MSG_WRONG_PASSWORD = 'wrongPassword';
     

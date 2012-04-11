@@ -3,7 +3,7 @@
 //require_once 'Zend/Validate/Hostname.php';
 
 
-class Ml_Validator_AccountRecover extends Zend_Validate_Abstract
+class Ml_Validate_AccountRecover extends Zend_Validate_Abstract
 {
     const MSG_USERNAME_NOT_FOUND = 'usernameNotFound';
     const MSG_EMAIL_NOT_FOUND = 'emailNotFound';

@@ -6,7 +6,7 @@
  */
 //require_once 'Zend/Validate/Abstract.php';
 
-class Ml_Validator_MagicCookies extends Zend_Validate_Abstract
+class Ml_Validate_MagicCookies extends Zend_Validate_Abstract
 {
     const MSG_MAGIC_COOKIE_INVALID = 'invalidMagicCookie';
     const MSG_MAGIC_COOKIE_INVALID_FORMAT = "invalidFormatMagicCookie";
