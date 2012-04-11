@@ -1,0 +1,78 @@
+html{background:#c40038}body{padding-top:40px;background:#c40038;overflow:-moz-scrollbars-vertical;overflow-y:scroll;overflow-x:auto;color:#242424}
+#footer{color:#fff;background:#242424;border-top:0;margin-top:0}
+#footer ul{list-style-type:none}#footer ul a{color:#b21240}.top,.content{background:#fff}
+.content{padding:20px}table,p,dl,#hd ol,#hd ul{line-height:1.5em}
+hr{border:0;border-bottom:#b0b0b0 1px solid}hr.lighten{border-bottom:1px solid #efefef}
+img{vertical-align:bottom}p{margin-top:1.5em}#comments p{margin-top:0}
+.monospace{font-family:monospace}.somehtml ins{text-decoration:underline}
+dl dd p{margin-top:0}form .required{color:#242bab}form .optional{color:#707070}
+form .errors{color:#c33;font-weight:bold}form dl.zend_form #file-0,form dl.zend_form #file-1,form dl.zend_form #file-2,form dl.zend_form #file-3,form dl.zend_form #file-4,form dl.zend_form #file-5{display:block}
+.ok{color:#008000}.hidden{visibility:hidden}.hidden-from-gui{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+.rssicon{background:url(http://static.plifk.com/images/sprites0.v1.png) no-repeat;background-position:-10px -96px;padding-left:20px}
+.longbreak{margin-top:4em}.nodescr{color:#afafaf;font-weight:bold;font-style:italic}
+textarea{width:35em;height:15em}#logo{margin-left:-20px;background:#fff;width:87px}
+#logo h1{margin:0;width:87px;height:40px;overflow:hidden;display:block;float:left}
+#logo h1 a{width:87px;height:40px;position:relative;text-decoration:none;display:block;padding-top:5px}
+#logo h1 a span{background:url(http://static.plifk.com/images/plifk.v2.png) no-repeat #fff;position:absolute;width:100%;height:100%;display:block}
+#usermenu{padding:15px;background:#b21240;overflow:hidden}#usermenu .avatar{float:left;text-align:right;display:inline-table;width:7.8em;min-width:7.8em;min-height:5em;height:5.1em}
+#usermenu .userinfo{min-width:34em;max-width:53em;float:right;border-radius:6px;-webkit-border-radius:6px;-moz-border-radius:6px;-radius:6px;padding-left:1.5em;padding-right:1em}
+#usermenu ul{line-height:1em}#usermenu ul li.you{color:#222}
+#usermenu h2{margin:0;padding:0;font-size:245%}#usermenu h2 .you{font-size:100%;margin-left:.3em}
+#usermenu ul{margin:0;margin-top:.6em}#usermenu ul li{display:inline;margin-right:1.5em}
+#usermenu ul li a{font-weight:bold;font-size:120%}#usermenu ul li a{text-decoration:none}
+#usermenu ul li a:link,#usermenu ul li a:visited{border-bottom:3px solid #fff;color:#000}
+#usermenu ul li a:active,#usermenu ul li a:hover{border-bottom:3px solid #242424;color:#121212}
+#usermenu ul li.active a{border-bottom:3px solid #430718}#usermenu h2 a{text-decoration:none}
+#usermenu h2 a:link,#usermenu h2 a:visited{color:#000}#usermenu h2 a:active,#usermenu h2 a:hover{color:#000;border-radius:6px;-webkit-border-radius:6px;-moz-border-radius:6px;background:rgba(255,255,255,0.2)}
+#thetags a{text-decoration:none}#thetags .delete{color:#f00}
+#tags-form{padding-left:0;width:230px}#tags-form dt{display:none}
+#tags-label{display:none}#tagsSubmit-label,#tagsSubmit-element{margin:0}
+#tags-element,#tagsSubmit-label,#tagsSubmit-element{display:inline}
+.verticalmenu{margin:0}.verticalmenu li{list-style-type:none}
+.verticalmenu li a{margin-top:.5em;margin-bottom:.5em;display:block;margin:0;padding-top:.2em;padding-bottom:.2em;padding-left:1.2em;padding-right:.8em;text-decoration:none;font-weight:bold;border-left:1em solid #2ea4ae}
+.verticalmenu li a:hover,.verticalmenu li a:active{border-left:1em solid #000064;color:#000064;background:#eee}
+.verticalmenu li.active a{border-left:1em solid #444;color:#444;background:#f5f5f5}
+#nav-account{float:right}#nav-account li a{width:6em}#nav-account li{display:inline;margin-right:2em}
+#nav-account li a{-webkit-border-radius:0;-moz-border-radius:6px;-radius:6px;background:#fafafa;padding:1em;font-weight:bold}
+#nav-account li a:active,#nav-account li a:hover{text-decoration:underline}
+#nav-account li.active a{background:#efefef;color:#444;text-decoration:none}
+#nav-account li a{text-decoration:none}#files{width:60%}#files dt{list-style-type:none}
+#files dt a{text-align:left;font-size:x-large;display:block;padding:.5em;padding-top:0;padding-bottom:0;margin-bottom:0;line-height:1.5em;border-radius:6px;-webkit-border-radius:6px;-moz-border-radius:6px}
+#files dt a:link,#files dt a:visited{background:#f0f0f0;color:#132d6f}
+#files dt a:hover{color:white;background:#132d6f}#files dt a:active{color:white;background:#23a3ff}
+#files dd .rounded-corners,#files dd ul{list-style-type:none}
+.file-info{margin-left:0;list-style-type:none}#files div.info ul li{list-style-type:none;float:left;margin-right:.3em}
+.x-small-font{font-size:x-small}.xx-small-font{font-size:xx-small}
+#tweet-form{padding-left:0}#tweet-form dd{margin-left:0}#tweet-label{display:none}
+#tweet{resize:none;width:14em;height:7em;color:#444}#tweetSubmit-label{display:none}
+#tweetSubmit-element{margin-top:4px}#tweet-box #tweet-element .description{color:#ec5800;margin-bottom:0;letter-spacing:.1em}
+#twitter-servicemsg{font-weight:bold;min-height:1.6em}#twitter-servicemsg p{margin-top:0;font-size:90%}
+#twitter-servicemsg .sent{color:#232cab;letter-spacing:.1em}
+#twitter-servicemsg .error{color:#c33;letter-spacing:.1em}.tweetchar{margin-left:.3em;font-weight:bold;min-width:2.2em;display:inline-block;text-align:right;color:#ccc}
+.tweetcharok{color:#5c0003}.tweetchartoomuch{color:#d40d12}#commentMsg-label{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+#commentMsg-element{margin-left:0}#commentMsg,#commentPreview{width:392px;padding:.5em;font-size:100%}
+#commentPreview{padding-bottom:0}#commentMsg{min-height:30px;height:54px;max-height:240px;resize:vertical}
+#commentPreview,#descriptionBox{background:#f9f9f9;border:1px solid #eaeaea;margin-bottom:1.5em}
+#comments h3{margin-top:.6em}#comments div.block{display:table;margin-bottom:2.4em;width:100%}
+#comments div .uimg{float:left;padding-right:1em}#comments div .commentmeta{margin:0;padding:0}
+#commentPost-label,#getCommentPreview-label{display:none}#commentPost-element,#getCommentPreview-element{margin:0;display:inline}
+p#description{border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;margin-top:0;margin-bottom:2em}
+table.styled{text-align:center}table.styled thead tr th{background:#eee;border:0}
+table.styled tbody tr td{border:0;border-bottom:1px solid #eee}
+table.styled tfoot tr td{border:0;background:#f4f4f4}table.styled td.left{text-align:left}
+table.contacts th.since{width:130px}table.contacts th.name{width:150px}
+table.contacts th.relationship{width:110px}#contactrels li{list-style-type:none;margin-top:1em}
+#contactrels li .first{margin:0}h2.mainpage{color:#4f4f4f}a.bigjoin,a.big{font-size:148%;font-weight:bold;text-decoration:none}
+a.bigjoin{padding-left:1em}#doc2{padding-top:1.5em;background:#fff}
+#doc2{border-radius:6px;-webkit-border-radius:6px;-moz-border-radius:6px}
+#bandwidth,#uploadprogress{height:2em;width:22em;font-family:Courier}
+#bandwidth .used,#uploadprogress .percentage{height:1.6em;padding-top:.4em;text-align:center;float:left}
+#bandwidth .used{background:#ff1e1e;color:white}#bandwidth .available{height:1.6em;background:#00df00;padding-top:.4em;text-align:center}
+#uploadprogress{background:#b9cdff}#uploadprogress .percentage{background:#0048ff;color:#fff;font-weight:bold;width:0}
+#tour-screenshots,#tour-screenshots p{text-align:center}#tour-screenshots img{border:1px solid #e5e5e5}
+#home-page h2{font-size:230%;font-weight:normal;overflow:hidden;display:block;color:#242424;line-height:1.17em}
+#home-page h2 small{font-size:70%}#home-page img{float:left;margin-top:.8em;margin-bottom:1.2em}
+#home-page p.home-info{margin-top:50px;margin-bottom:2em}#home-buttons{float:left;display:block;font-size:200%}
+.pagination{margin-top:0}.pagination-total-item-count{margin-top:11px}
+.pagination-total-item-count .label{font-size:16px;margin-left:10px;border-top:1px solid #fefefe;border:1px solid #eee;background:#fafafa;color:#bdbdbd;text-transform:none;font-weight:normal}
+::-moz-selection{background:#3b80c1;color:#fff}::selection{background:#3b80c1;color:#fff}
