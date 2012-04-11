@@ -51,7 +51,7 @@ class Ml_Model_Recover extends Ml_Model_AccessSingleton
      */
     public function closeCase($uid)
     {
-        $delete = $this->_dbTable->delete($this->_dbTable->quoteInto('uid = ?', $uid));
+        $delete = $this->_dbTable->delete($this->_dbAdapter->quoteInto('uid = ?', $uid));
         
         return ($delete) ? true : false;
     }

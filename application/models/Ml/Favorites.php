@@ -165,7 +165,7 @@ WHERE `E`.`uid` = '33' ORDER BY `E`.`timestamp` DESC
     {
         $delete = $this->_dbTable
         ->delete($this->_dbAdapter->quoteInto("uid = ?", $uid) .
-        $this->_dbTable->quoteInto(" AND share = ?", $shareId));
+        $this->_dbAdapter->quoteInto(" AND share = ?", $shareId));
         
         if ($delete) {
             return true;
