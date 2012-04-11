@@ -129,8 +129,9 @@ echo $this->liMenuItems(
 }
 ?>
 </ul>
-<form class="pull-left" action="http://search.local/" method="get">
+<form class="pull-left" action="http://www.google.com/search" method="get">
 <input type="text" placeholder="Search" name="q" />
+<input type="hidden" name="as_sitesearch" value="<?php echo $this->escape($config['webhost']); ?>" />
 </form>
 <ul class="nav secondary-nav">
 <?php
