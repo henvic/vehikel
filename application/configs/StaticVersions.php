@@ -1,6 +1,6 @@
 <?php
 /**
- * This is required by the Ml_View_Helper_staticVersion
+ * This is required by the Ml_View_Helper_StaticVersion
  */
 
 return array(
