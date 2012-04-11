@@ -248,7 +248,7 @@ class Install {
         $test = array(
             "xhp" => "not in use, can be safely ignored",
             "uploadprogress" => "can be ignored",
-            "memcached" => "essential for the sessions system",
+            "memcached" => "essential for the sessions system and the security hashing mechanism",
             "mongo" => "can be ignored for now",
             "imagick" => "essential for the image system",
             "geoip" => "can be ignored",
