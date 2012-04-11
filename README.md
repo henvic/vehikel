@@ -87,7 +87,7 @@ echo extension=mongo.so >> /etc/php.ini
 ### Create the databases structures
 MySQL tables have to be built. The DB scheme is at *[application/configs/db.sql](https://github.com/henvic/MediaLab/blob/master/application/configs/db.sql)*
 
-The following CouchDB databases have to be created: *web_acess_log, and actions_log*.
+The following CouchDB databases have to be created: *web_access_log, and actions_log*.
 
 ### Points of entry
 There are three modules: default, services and api. And also a simple redirector system.
