@@ -213,9 +213,9 @@ class Install {
         $this->execSimple("rm tablesorter.zip");
         chdir(__DIR__ . "/../static/vendor");
         
-        // @todo make a way to update the version of adolsey-jQuery.fn.autoResize
-        $this->downloadPackage("padolsey-jQuery.fn.autoResize.tar.gz", "https://nodeload.github.com/henvic/jQuery.fn.autoResize/tarball/master");
-        $this->execSimple("mv padolsey-jQuery.fn.autoResize-* jquery-fn-autoResize-1.14");
+        // @todo make a way to update the version of henvic-jQuery.fn.autoResize
+        $this->downloadPackage("henvic-jQuery.fn.autoResize.tar.gz", "https://nodeload.github.com/henvic/jQuery.fn.autoResize/tarball/master");
+        $this->execSimple("mv henvic-jQuery.fn.autoResize-* jquery-fn-autoResize-1.14");
         
         $this->downloadPackage("yui-min.js", "http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js", "fcc01ca1c5d15e4a401907280836624b", self::PACKAGE_EXTRACT_NONE);
         $this->execSimple("mkdir yui-3.1.1");
