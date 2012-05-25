@@ -6,7 +6,7 @@
 return array(
 "/images/share-your-files.png" => "/images/share-your-files.v3.png",
 //"/javascript/plifk.js" => "/scripts/plifk-min.v4.js",
-//"/plifk.css" => "/style/plifk-min.v16.css",
+//"/style/plifk.css" => "/style/plifk-min.v16.css",
 "/vendor/jquery/jquery.min.js" => "/vendor/jquery-1.7.1/jquery.min.js",
 "/vendor/yui/yui-min.js" => "/vendor/yui-3.1.1/yui-min.js",
 "/vendor/jquery-fn-autoResize/jquery.autoresize.js" => "/vendor/jquery-fn-autoResize-1.14/jquery.autoresize.js",
