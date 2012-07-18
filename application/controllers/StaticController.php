@@ -12,7 +12,10 @@ class StaticController extends Zend_Controller_Action
         
         $intReqUri = mb_substr($_SERVER['REQUEST_URI'], mb_strlen($config['webroot']));
         
-        $uri = explode("?", $intReqUri, 2);
+        // avoid the Null-Byte attack (%00 at the URI) which is the same as 'end of string'
+        $safeIntReqUri = str_replace(chr(0), "", $intReqUri);
+        
+        $uri = explode("?", $safeIntReqUri, 2);
         
         if (mb_substr($uri[0], -1) != '/') {
             $findPath = mb_substr($uri[0], 1);
