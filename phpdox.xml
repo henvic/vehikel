@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpdox xmlns="http://phpdox.de/config" silent="false">
     <bootstrap />
-    <project name="MediaLab" source="${basedir}" workdir="./build/api/xml">
+    <project name="vehikel" source="${basedir}" workdir="./build/api/xml">
         <collector publiconly="false">
             <include mask="*.php" />
             <exclude mask="${basedir}/build/*" />

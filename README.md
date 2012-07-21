@@ -1,22 +1,13 @@
-#MediaLab
-[![Build Status](https://secure.travis-ci.org/henvic/MediaLab.png?branch=master)](http://travis-ci.org/henvic/MediaLab)
+#vehikel
+[![Build Status](https://secure.travis-ci.org/henvic/vehikel.png?branch=master)](http://travis-ci.org/henvic/vehikel)
 
 ## Presentation
-This source code has its origins on the web service [Plifk](www.plifk.com) (the online version is pretty outdated however).
-This code is no way perfetct. There are several bad design choices and lack of methodology in developing it. Work is in progress to make it better.
-
-Influence: [Flickr](http://www.flickr.com/), [Twitter](http://twitter.com/), [Last.fm](http://last.fm), and [Multiply](http://multiply.com/) (when it was more like [Facebook](http://www.fcebook/.com/)) and more.
-
-Two other web services were based on forks of this code base:
-
-* [to-post.it](http://to-post.it/) is a minimalist Twitter-based blogging system
-* [trazqueeupago.com](http://trazqueeupago.com/) is a flee market for the Twitter social network, with a GUI similar to that of to-post.it.
+This is built based on the [MediaLab](https://github.com/henvic/MediaLab) project.
 
 ## Requirements
-This was only tested on Mac OS X and Linux environments. It might also work on Windows (but not the install script).
-Note that most of the system can work with a simpler setup, but don't assume this to be true.
 
 ### PHP and Servers
+* Unix-like system
 * [PHP](http://php.net/) >= 5.3.8
 * [MySQL](http://www.mysql.com/) >= 5.1
 * [memcached](http://memcached.org/) > 1.4
@@ -28,7 +19,6 @@ Please note that the default memcached is insecure by design because it's freely
 
 ### Extensions
 * [XHP](http://github.com/facebook/xhp) (not in use)
-* [uploadprogress](http://pecl.php.net/package/uploadprogress) (to be removed thanks to HTML 5)
 * [memcached](http://php.net/memcached)
 * [mongo](http://php.net/mongo)
 * [ImageMagick](http://php.net/manual/en/book.imagick.php)
@@ -70,7 +60,7 @@ cd bin
 
 
 This will take care of setting application paths, downloading and setting up the dependencies. But you will still need to do some work.
-It will write a *application/configs/Environment.php.dist similar to *[application/configs/Environment.php](https://github.com/henvic/MediaLab/blob/master/application/configs/Environment.php)*, with the choosen timezone and directory and file paths.
+It will write a *application/configs/Environment.php.dist similar to *[application/configs/Environment.php](https://github.com/henvic/vehikel/blob/master/application/configs/Environment.php)*, with the choosen timezone and directory and file paths.
 If you are using Windows you will need to generate this file by your own (as well, solve dependencies, etc the way the installer does so you will want to take a look at its source code).
 
 If a extension is missing you will know it.
@@ -85,7 +75,7 @@ echo extension=mongo.so >> /etc/php.ini
 ```
 
 ### Create the databases structures
-MySQL tables have to be built. The DB scheme is at *[application/configs/db.sql](https://github.com/henvic/MediaLab/blob/master/application/configs/db.sql)*
+MySQL tables have to be built. The DB scheme is at *[application/configs/db.sql](https://github.com/henvic/vehikel/blob/master/application/configs/db.sql)*
 
 The following CouchDB databases have to be created: *web_access_log, and actions_log*.
 
@@ -139,7 +129,7 @@ Right now there are only a few of crontab jobs as you can see on the example bel
 ```
 
 ## Push, open bugs, etc.
-Feel free to push code to this repository. Anything you want, go to the [issue tracker](https://github.com/henvic/MediaLab/issues/).
+Feel free to push code to this repository. Anything you want, go to the [issue tracker](https://github.com/henvic/vehikel/issues/).
 
 ## License
 This software is provided "as is", without warranty.
