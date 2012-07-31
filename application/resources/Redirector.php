@@ -11,7 +11,7 @@ class Ml_Resource_Redirector
         
         if ($uri == '/') {
             header("HTTP/1.1 301 Moved Permanently");
-            header("Location: http://".$config['webhost']."/");
+            header("Location: http://" . $config['webhost'] . "/");
             exit();
         }
         
