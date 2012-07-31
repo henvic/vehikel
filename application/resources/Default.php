@@ -21,7 +21,7 @@ class Ml_Resource_Default extends Zend_Application_Resource_ResourceAbstract
         $router->removeDefaultRoutes();
         
         //@todo remove this patched route module and use the original instead ASAP
-        $compat = new Ml_Controller_Router_Route_Module(array(), $dispatcher, $request);
+        $compat = new Zend_Controller_Router_Route_Module(array(), $dispatcher, $request);
         
         $router->addRoute("default", $compat);
         
