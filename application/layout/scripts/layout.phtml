@@ -18,7 +18,7 @@ $this->headScript()->prependScript($this->getJsVarsText());
 
 $this->headLink()
 ->appendStylesheet($this->staticVersion("/vendor/bootstrap/bootstrap.min.css"), "screen", false, array("id" => "bootstrap"))
-->appendStylesheet($this->staticVersion("/style/plifk.css"))
+->appendStylesheet($this->staticVersion("/stylesheets/style.css"))
 ;
 
 if ($auth->hasIdentity()) {
