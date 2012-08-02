@@ -17,7 +17,8 @@ $this->addJsVar("webroot", $config['webroot']);
 $this->headScript()->prependScript($this->getJsVarsText());
 
 $this->headLink()
-->appendStylesheet($this->staticVersion("/vendor/bootstrap/bootstrap.min.css"), "screen", false, array("id" => "bootstrap"))
+->appendStylesheet($this->staticVersion("/vendor/bootstrap/css/bootstrap.css"))
+->appendStylesheet($this->staticVersion("/vendor/bootstrap/css/bootstrap-responsive.css"))
 ->appendStylesheet($this->staticVersion("/stylesheets/style.css"))
 ;
 
