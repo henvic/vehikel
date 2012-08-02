@@ -172,9 +172,9 @@ class Install {
         
         $this->downloadPackage("phpass-0.3.tar.gz", "http://www.openwall.com/phpass/phpass-0.3.tar.gz", "400c9cafdd8cdcb882c1f43cd4b127180fd0e7ff");
         
-        $this->downloadPackage("ZendFramework-1.11.11-minimal.tar.gz", "http://framework.zend.com/releases/ZendFramework-1.11.11/ZendFramework-1.11.11-minimal.tar.gz", "c6d818d7bdd697c2046450e673af86db");
-        $this->execSimple("mv ZendFramework-1.11.11-minimal/library/Zend Zend");
-        $this->execSimple("rm -r ZendFramework-1.11.11-minimal");
+        $this->downloadPackage("ZendFramework-1.11.12-minimal.tar.gz", "http://framework.zend.com/releases/ZendFramework-1.11.12/ZendFramework-1.11.12-minimal.tar.gz", "457fc5e7ad8e44d066fdcdb658827281");
+        $this->execSimple("mv ZendFramework-1.11.12-minimal/library/Zend Zend");
+        $this->execSimple("rm -r ZendFramework-1.11.12-minimal");
         
         $this->downloadPackage("htmlpurifier-4.4.0-standalone.tar.gz", "http://htmlpurifier.org/releases/htmlpurifier-4.4.0-standalone.tar.gz", "a227f5c9b5187473d59ff90eaacad03a3f8a6dc5");
         $this->execSimple("mv htmlpurifier-4.4.0-standalone htmlpurifier-standalone");
