@@ -47,6 +47,7 @@ For performance you want to strip the require_once's from the Zend framework cod
 * [Amazon Web Services S3](http://aws.amazon.com/s3/) - profile pictures and files are stored with Amazon S3
 * [Twitter API](https://dev.twitter.com/) - ([create your key](https://dev.twitter.com/apps))
 * [GeoIP by MaxMind](http://www.maxmind.com/) - (get a [free] database, note we use a custom PHP extension rather than theirs)
+* [reCAPTCHA](http://www.google.com/recaptcha) - captcha service
 
 ## Install
 On your CLI (command-line interface) run bin/install:
