@@ -202,9 +202,9 @@ class Install {
         $this->downloadPackage("twitter-bootstrap.1.4.0.tar.gz", "https://nodeload.github.com/twitter/bootstrap/tarball/v1.4.0");
         $this->execSimple("mv twitter-bootstrap-* bootstrap-1.4.0");
         
-        $this->downloadPackage("jquery-1.7.1.min.js", "http://code.jquery.com/jquery-1.7.1.min.js", "ddb84c1587287b2df08966081ef063bf", self::PACKAGE_EXTRACT_NONE);
-        $this->execSimple("mkdir jquery-1.7.1");
-        $this->execSimple("mv jquery-1.7.1.min.js jquery-1.7.1/jquery.min.js");
+        $this->downloadPackage("jquery-1.7.2.min.js", "http://code.jquery.com/jquery-1.7.2.min.js", "b8d64d0bc142b3f670cc0611b0aebcae", self::PACKAGE_EXTRACT_NONE);
+        $this->execSimple("mkdir jquery-1.7.2");
+        $this->execSimple("mv jquery-1.7.2.min.js jquery-1.7.2/jquery.min.js");
         
         $this->execSimple("mkdir jquery-tablesorter-2.0.5b");
         chdir(__DIR__ . "/../static/vendor/jquery-tablesorter-2.0.5b");
