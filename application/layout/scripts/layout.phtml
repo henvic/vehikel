@@ -156,9 +156,9 @@ if ($registry->isRegistered("userInfo")) {
 </footer>
 </div>
 <?php
-if (APPLICATION_ENV != "development"):
+if (APPLICATION_ENV != "development") {
 ?>
-<script type="text/javascript">
+<script>
 
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', '<?php echo $config['services']['ganalytics']['tracker_id']; ?>']);
@@ -171,7 +171,7 @@ if (APPLICATION_ENV != "development"):
   })();
 
 </script>
-<?php endif; ?>
+<?php } ?>
 <script src="<?php echo $this->staticVersion("/vendor/jquery/jquery.js"); ?>"></script>
 <script src="<?php echo $this->staticVersion("/vendor/bootstrap/js/bootstrap.js"); ?>"></script>
 <script src="<?php echo $this->staticVersion("/vendor/jquery-tablesorter/jquery.tablesorter.js"); ?>"></script>
