@@ -19,5 +19,5 @@ cache.properties
 .*.sw[a-z]
 *.un~
 Session.vim
-/nbproject/private/
+/nbproject
 
