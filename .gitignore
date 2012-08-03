@@ -1,4 +1,9 @@
 # based on https://github.com/github/gitignore
+# nodejs
+node_modules
+pids
+npm-debug.log
+# build
 build/api/xml
 build/api/docs
 build/code-browser
