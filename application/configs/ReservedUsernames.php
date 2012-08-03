@@ -5,6 +5,7 @@
  */
 
 return array(
+"add",
 "offline", "home", "recover",
 "mail", "email", "clock", "alarm", "notice", "status",
 "search", "wiki", "shares", "upload", "account",
