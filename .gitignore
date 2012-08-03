@@ -20,4 +20,5 @@ cache.properties
 *.un~
 Session.vim
 /nbproject
+.idea
 
