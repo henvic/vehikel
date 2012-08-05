@@ -4,7 +4,7 @@ class Ml_View_Helper_LiMenuItems extends Zend_View_Helper_Abstract
     /**
      * 
      * Create li menu items (the active link's li has the active class)
-     * @param array $items (each item is a array containing keys route, and name required; array params, escape name boolean and link id / rel are optionals)
+     * @param array $items (item: array w/ route, name required; params, name escape boole and id, rel, class optionals)
      * @return string $partialMenuHtml the list elements
      * 
      */
