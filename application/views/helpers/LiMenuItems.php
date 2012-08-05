@@ -54,6 +54,10 @@ class Ml_View_Helper_LiMenuItems extends Zend_View_Helper_Abstract
             if (isset($item["rel"])) {
                 $each .= ' rel="' . $this->view->escape($item["rel"]) . '"';
             }
+
+            if (isset($item["class"])) {
+                $each .= ' class="' . $this->view->escape($item["class"]) . '"';
+            }
             
             $each .= '>';
             
