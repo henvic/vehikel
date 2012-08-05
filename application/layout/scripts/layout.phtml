@@ -55,106 +55,119 @@ $this->headMeta() , PHP_EOL;
 <script src="<?php echo $this->staticVersion("/vendor/modernizr/modernizr.js"); ?>"></script>
 </head>
 <body>
-<header class="container">
-<div class="topbar-wrapper">
-    <div class="topbar" data-dropdown="dropdown" >
-      <div class="topbar-inner">
-      
-      
-        <div class="container">
-        <div id="logo"><h1><a href="<?php echo $this->url(array(), "index"); ?>"><span></span><?php echo $this->escape($config['applicationname']) ?></a></h1></div>
-        
-          <ul class="nav">
-<?php
-if (isset($signedUserInfo)) {
-echo $this->liMenuItems(
-    array(
-        array("route" => "index", "name" => "Home"),
-        array("route" => "profile", "name" => "Profile", "params" =>
-            array("username" => $signedUserInfo["alias"])),
-        array("route" => "filestream_1stpage", "name" => "Files", "params" =>
-            array("username" => $signedUserInfo["alias"])),
-        array("route" => "upload", "name" => "Upload"),
-    )
-);
-?>
-<?php
-} else {
-echo $this->liMenuItems(
-    array(
-        array("route" => "join", "name" => "Join us"),
-    )
-);
-}
-?>
-</ul>
-<form class="pull-left" action="http://www.google.com/search" method="get">
-<input type="text" placeholder="Search" name="q" />
-<input type="hidden" name="as_sitesearch" value="<?php echo $this->escape($config['webhost']); ?>" />
-</form>
-<ul class="nav secondary-nav">
-<?php
-if (isset($signedUserInfo)) {
-?>
-<li class="dropdown">
-<a href="<?php
-echo $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage");
-?>" class="dropdown-toggle"><?php echo $this->avatar($signedUserInfo, "square", false, array("width" => "20", "height" => "20")); ?> <?php echo $this->escape($signedUserInfo['alias']) ?></a>
-<ul class="dropdown-menu">
-<?php
-echo $this->liMenuItems(
-    array(
-        array("route" => "account", "name" => "Account", "id" => "login-button"),
-        array("route" => "logout", "name" => "Sign out", "id" => "logout-link", "rel" => "nofollow"),
-    )
-);
-?>
-</ul>
-</li>
-<?php
-} else {
-echo $this->liMenuItems(
-    array(
-        array("route" => "login", "name" => "Sign&nbsp;in", "escape" => false, "id" => "login-button")
-    )
-);
-}
-?>
-</ul>
+<div class="site-logotype">
+<a href="<?php echo $this->url(array(), "index"); ?>">
+<img src="<?php echo $this->staticVersion("/images/logotype.png"); ?>" width="551" height="65" /></a>
 </div>
-</div><!-- /topbar-inner -->
-</div><!-- /topbar -->
-</div><!-- /topbar-wrapper -->
-</header>
-<div class="container">
+<div id="sticky-anchor"></div>
+<div class="navbar navbar-fixed-top navbar-fixed-top-override" id="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="<?php echo $this->url(array(), "index"); ?>"><?php echo $this->escape($config['applicationname']); ?></a>
+      <div class="nav-collapse">
+        <ul class="nav">
+            <li class="divider-vertical"></li>
+<?php
+echo $this->liMenuItems(
+    array(
+        array("route" => "ad_new", "name" => '<i class="icon-pencil icon-white"></i> Anunciar', "escape" => false)
+    )
+);
+?>
+            <li class="divider-vertical"></li>
+        </ul>
+        <form class="navbar-search form-inline pull-left" action="http://www.google.com/search" method="get">
+          <label for="search-query"><i class="icon-white icon-search"></i>&nbsp;</label>
+          <input type="text" id="search-query" class="search-query" placeholder="Search" name="q" />
+          <input type="hidden" name="as_sitesearch" value="<?php echo $this->escape($config['webhost']); ?>" />
+        </form>
+        <ul class="nav pull-right">
+            <li class="divider-vertical"></li>
+            <?php
+            if (isset($signedUserInfo)) {
+?>
+        <li class="dropdown">
+            <a href="#"
+               class="dropdown-toggle"
+               data-toggle="dropdown">
+                <?php echo $this->avatar($signedUserInfo, "square", false, array("width" => "20", "height" => "20")); ?> <?php echo $this->escape($signedUserInfo['alias']) ?>
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                    <?php
+                    echo $this->liMenuItems(
+                        array(
+                            array("route" => "profile", "name" => "Abrir perfil", "params" => array("username" => $signedUserInfo['alias'])),
+                            array("route" => "filestream_1stpage", "name" => "Lista de veículos", "params" => array("username" => $signedUserInfo['alias'])),
+                            array("route" => "account", "name" => "Sua conta")
+                        )
+                    );
+                    ?>
+                <li class="divider"></li>
+                <?php
+                echo $this->liMenuItems(
+                    array(
+                        array("route" => "logout", "name" => "Sair", "id" => "logout-link", "class" => "navbar-logout-link", "rel" => "nofollow", "escape" => false),
+                    )
+                );
+                ?>
+            </ul>
+        </li>
+<?php
+} else {
+    ?>
+<?php
+echo $this->liMenuItems(
+    array(
+        array("route" => "login", "name" => '<i class="icon-user icon-white"></i> Entrar', "escape" => false, "id" => "login-button")
+    )
+);
+}
+?>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div><!-- end of navbar -->
 <?php
 if ($registry->isRegistered("userInfo")) {
     echo $this->render("usermenu.phtml");
 }
 ?>
-<div class="row content">
-<?php echo $this->layout()->content ?>
-</div>
-<footer id="footer" class="row content">
-<div class="span9">Plifk is a web service that helps you to share files.</div>
-<div class="span3">
-<ul>
-<li><a href="<?php echo $this->url(array(), "index"); ?>">Home</a></li>
-<li><a href="<?php echo $this->url(array(), "account"); ?>">Your account</a></li>
-<li><a href="<?php echo $this->staticUrl("/about") ?>">About</a></li>
-</ul>
-</div>
-<div class="span3">
-<ul>
-<li><a href="<?php echo $this->staticUrl("/tos") ?>">Terms of Service</a></li>
-<li><a href="<?php echo $this->staticUrl("/privacy") ?>">Privacy Policy</a></li>
-<li><a href="<?php echo $this->staticUrl("/api") ?>">API</a></li>
-<li><a href="<?php echo $this->staticUrl("/help") ?>">Help</a></li>
-<li><a href="http://blog.plifk.com/" class="new-window">Blog</a></li>
-</ul>
+<?php echo $this->layout()->content; ?>
+<footer>
+<div class="container">
+  <div class="row">
+    <div class="span6 visible-desktop">
+      <p>Anuncie o seu carro no trazqueeupago.com você também.<br />
+      <a href="http://www.twitter.com/<?php
+      echo $this->escape($config['services']['twitter']['username']); ?>" class="new-window"><img src="<?php
+echo $this->staticVersion("/images/follow_bird_us-b.png");
+?>" alt="Follow us on Twitter" /></a></p>
+    </div><!-- end of div -->
+    <div class="span3">
+      <ul>
+        <li><a href="<?php echo $this->url(array(), "index"); ?>">Página inicial</a></li>
+        <li><a href="<?php echo $this->url(array(), "account"); ?>">Sua conta</a></li>
+        <li><a href="<?php echo $this->staticUrl("/about") ?>">Sobre</a></li>
+      </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><a href="<?php echo $this->staticUrl("/tos") ?>">Termos de Serviço</a></li>
+        <li><a href="<?php echo $this->staticUrl("/privacy") ?>">Política de Privacidade</a></li>
+        <li><a href="<?php echo $this->staticUrl("/api") ?>">API</a></li>
+        <li><a href="<?php echo $this->staticUrl("/help") ?>">Suporte</a></li>
+      </ul>
+    </div>
+  </div><!-- end of div.row -->
 </div>
 </footer>
-</div>
 <?php
 if (APPLICATION_ENV != "development") {
 ?>
