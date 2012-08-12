@@ -10,6 +10,7 @@ build/code-browser
 build/coverage
 build/logs
 build/pdepend
+static/build
 cache.properties
 .settings
 .project
