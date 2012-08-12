@@ -1,8 +1,6 @@
-"use strict";
-
 module.exports = function(grunt) {
-
-  // Project configuration.
+    "use strict";
+    // Project configuration.
   grunt.initConfig({
     pkg: '<json:package.json>',
     lint: {
@@ -17,8 +15,8 @@ module.exports = function(grunt) {
         src: ['static/stylesheets/*.less'],
         dest: 'static/stylesheets/style.css',
         options: {
-            compile: true,
-            compress: true
+            compile: false,
+            compress: false
         }
       }
     },
@@ -35,7 +33,11 @@ module.exports = function(grunt) {
         boss: true,
         eqnull: true,
         node: true,
-        globalstrict: true,
+        strict: true,
+        plusplus: true,
+        quotmark: "double",
+        trailing: true,
+        browser: true,
         es5: true
       },
       globals: {
