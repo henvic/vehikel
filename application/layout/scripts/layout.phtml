@@ -14,8 +14,6 @@ $this->headTitle()->setSeparator(' – ');
 
 $this->addJsVar("webroot", $config['webroot']);
 
-$this->headScript()->prependScript($this->getJsVarsText());
-
 $this->headLink()
 ->appendStylesheet($this->staticVersion("/vendor/bootstrap/css/bootstrap.css"))
 ->appendStylesheet($this->staticVersion("/vendor/bootstrap/css/bootstrap-responsive.css"))
@@ -33,6 +31,8 @@ if ($registry->isRegistered("signedUserInfo")) {
 if ($registry->isRegistered("globalHash")) {
     $this->addJsVar("global_auth_hash", $registry->get("globalHash"));
 }
+
+$this->headScript()->prependScript($this->getJsVarsText());
 
 ?>
 <!DOCTYPE html>
