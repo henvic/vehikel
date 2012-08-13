@@ -54,8 +54,8 @@ $this->headMeta() , PHP_EOL;
 ?>
 <script src="<?php echo $this->staticVersion("/vendor/modernizr/modernizr.js"); ?>"></script>
 </head>
-<body>
-<div class="site-logotype">
+<body id="body">
+<div class="site-logotype" id="site-logotype">
 <a href="<?php echo $this->url(array(), "index"); ?>">
 <img src="<?php echo $this->staticVersion("/images/logotype.png"); ?>" width="551" height="65" /></a>
 </div>
