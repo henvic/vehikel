@@ -44,22 +44,31 @@ body
     overflow-y: scroll;
 }
 
-.navbar {
-    .navbar-inner a {
-        &,&:link, &:visited, &:active, &:hover {
-            color: #ffffff;
+@media (min-width : 767px) {
+    .navbar {
+        .navbar-inner a {
+            &,&:link, &:visited, &:active, &:hover {
+                color: #ffffff;
+            }
+        }
+        .dropdown-menu a {
+            &,&:link, &:visited {
+                color: #4995cd;
+            }
+            &:active, &:hover {
+                color: #ffffff;
+            }
+        }
+        .search-query {
+            background: @navbarSearchBackground;
         }
     }
-    .dropdown-menu a {
-        &,&:link, &:visited {
-            color: #4995cd;
-        }
-        &:active, &:hover {
-            color: #ffffff;
-        }
+    .navbar-login-well {
+        padding: 15px;
+        margin-bottom: 0;
     }
-    .search-query {
-        background: @navbarSearchBackground;
+    .navbar-login-submit {
+        text-align: right;
     }
     .navbar-logout-link {
         background: #fff !important;

@@ -91,10 +91,10 @@ echo $this->liMenuItems(
             <?php
             if (isset($signedUserInfo)) {
 ?>
-        <li class="dropdown">
-            <a href="#"
-               class="dropdown-toggle"
-               data-toggle="dropdown">
+        <li id="navbar-user" class="dropdown">
+            <a href="<?php
+                echo $this->url(array("username" => $signedUserInfo['alias']), "profile");
+                ?>" id="navbar-user-button" class="dropdown-toggle" data-toggle="dropdown">
                 <?php echo $this->avatar($signedUserInfo, "square", false, array("width" => "20", "height" => "20")); ?> <?php echo $this->escape($signedUserInfo['alias']) ?>
                 <b class="caret"></b>
             </a>
@@ -112,7 +112,7 @@ echo $this->liMenuItems(
                 <?php
                 echo $this->liMenuItems(
                     array(
-                        array("route" => "logout", "name" => "Sair", "id" => "logout-link", "class" => "navbar-logout-link", "rel" => "nofollow", "escape" => false),
+                        array("route" => "logout", "name" => "Sair", "id" => "navbar-logout-link", "class" => "navbar-logout-link", "rel" => "nofollow", "escape" => false),
                     )
                 );
                 ?>
@@ -120,13 +120,34 @@ echo $this->liMenuItems(
         </li>
 <?php
 } else {
+                $this->loginform = Ml_Model_Credential::loginForm();
     ?>
+                <li id="navbar-user" class="dropdown">
+                    <a href="<?php echo $this->url(array(), "login") ?>" id="navbar-user-button" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="icon-user icon-white"></i> Entrar
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <form class="navbar-login-well" enctype="application/x-www-form-urlencoded" action="<?php echo $this->loginform->getAction(); ?>" method="post">
+                                <label for="navbar-login-username">Usuário ou e-mail</label>
+                                <input type="text" id="navbar-login-username" name="username" required="required">
+                                <label for="navbar-login-password">Senha</label>
+                                <input type="password" id="navbar-login-password" name="password" required="required">
+                                <fieldset class="form-inline">
+                                    <input type="hidden" name="remember_me" value="0" />
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="remember_me" value="1" /> Relembrar-me
+                                    </label>
+                                    <button type="submit" class="btn">Entrar</button>
+                                </fieldset>
+                            </form>
+                        </li>
+                        <li><a href="<?php echo $this->url(array(), "recover") ?>">Perdeu seu usuário ou senha?</a></li>
+                        <li><a href="<?php echo $this->url(array(), "join"); ?>">Cadastre-se</a></li>
+                    </ul>
+                </li>
 <?php
-echo $this->liMenuItems(
-    array(
-        array("route" => "login", "name" => '<i class="icon-user icon-white"></i> Entrar', "escape" => false, "id" => "login-button")
-    )
-);
 }
 ?>
         </ul>
