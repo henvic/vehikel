@@ -1,8 +1,9 @@
-module.exports = function(grunt) {
+/*jshint indent:4 */
+module.exports = function (grunt) {
     "use strict";
     // Project configuration.
     grunt.initConfig({
-        pkg: '<json:package.json>',
+        pkg: "<json:package.json>",
         lint: {
             files: ["grunt.js",
                 "static/javascripts/models/**/*.js",
@@ -14,13 +15,13 @@ module.exports = function(grunt) {
             ]
         },
         watch: {
-            files: ['<config:lint.files>', '<config:recess.dist.src>'],
-            tasks: 'default'
+            files: ["<config:lint.files>", "<config:recess.dist.src>"],
+            tasks: "default"
         },
         recess: {
             dist: {
-                src: ['static/stylesheets/*.less'],
-                dest: 'static/stylesheets/style.css',
+                src: ["static/stylesheets/*.less"],
+                dest: "static/stylesheets/style.css",
                 options: {
                     compile: false,
                     compress: false
@@ -54,8 +55,8 @@ module.exports = function(grunt) {
     });
 
     // Default task.
-    grunt.registerTask('default', 'lint recess');
+    grunt.registerTask("default", "lint recess");
 
-    grunt.loadNpmTasks('grunt-recess');
+    grunt.loadNpmTasks("grunt-recess");
 
 };
