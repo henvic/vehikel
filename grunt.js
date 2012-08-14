@@ -4,7 +4,14 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: '<json:package.json>',
         lint: {
-            files: ['grunt.js', 'static/javascripts/**/*.js']
+            files: ["grunt.js",
+                "static/javascripts/models/**/*.js",
+                "static/javascripts/plugins/**/*.js",
+                "static/javascripts/routers/**/*.js",
+                "static/javascripts/tests/**/*.js",
+                "static/javascripts/views/**/*.js",
+                "static/javascripts/main.js"
+            ]
         },
         watch: {
             files: ['<config:lint.files>', '<config:recess.dist.src>'],
