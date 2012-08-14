@@ -5,15 +5,16 @@
 This is built based on the [MediaLab](https://github.com/henvic/MediaLab) project.
 
 ## Requirements
+Unless otherwise referenced to, the versions for the requirements are given by the install script or other way.
 
 ### PHP and Servers
 * Unix-like system
-* [PHP](http://php.net/) >= 5.3.8
+* [PHP](http://php.net/) >= 5.4.x
 * [MySQL](http://www.mysql.com/) >= 5.1
-* [memcached](http://memcached.org/) > 1.4
-* [Apache CouchDB](http://couchdb.apache.org/) >= 1.0.1
-* [Redis](http://redis.io/) >= 2.2.11
-* [MongoDB](http://www.mongodb.org/) >= 2.0.2
+* [memcached](http://memcached.org/)
+* [Apache CouchDB](http://couchdb.apache.org/)
+* [Redis](http://redis.io/)
+* [MongoDB](http://www.mongodb.org/)
 
 Please note that the default memcached is insecure by design because it's freely accessible from everywhere. You must restrict access to it yourself.
 
@@ -25,31 +26,34 @@ Please note that the default memcached is insecure by design because it's freely
 * [GeoIP](http://www.maxmind.com/app/php) (you need a MaxMind's database service for that, this library will be changed soon)
 
 ### PHP Libraries
-* [Zend Framework](http://framework.zend.com/) >= 1.11.11
-* [HTML Purifier](http://htmlpurifier.org/) >= 4.3.0 (get the standalone version)
-* [phpass](http://www.openwall.com/phpass/) >= 0.3
+* [Zend Framework](http://framework.zend.com/)
+* [HTML Purifier](http://htmlpurifier.org/) (use the standalone version)
+* [phpass](http://www.openwall.com/phpass/)
 * [PHP On Couch](https://github.com/dready92/PHP-on-Couch)
 * [oauth-php](http://code.google.com/p/oauth-php/)
-* [Predis](http://pearhub.org/projects/predis) >= 0.6.6
-* [XHP php-lib](https://github.com/facebook/xhp/tree/master/php-lib) (not in use, don't mind)
+* [Predis](http://pearhub.org/projects/predis)
 * [twitter-async](https://github.com/jmathai/twitter-async)
 
 For performance you want to strip the require_once's from the Zend framework code, see [How can I optimize my include_path?](http://framework.zend.com/manual/en/performance.classloading.html)
 
 ### Client-side dependencies
-[Bootstrap, from Twitter](http://twitter.github.com/bootstrap/) (version 1.4, migration to 2.0 soon)
+[Bootstrap, from Twitter](http://twitter.github.com/bootstrap/)
 [jQuery](http://jquery.com/)
 [jQuery.fn.autoResize](https://github.com/padolsey/jQuery.fn.autoResize)
 [Tablesorter](http://tablesorter.com/)
-[YUI 3](http://yuilibrary.com/) (version 3.1)
+[RequireJS](http://requirejs.org)
+[Backbone.js](http://backbonejs.org)
+
 
 ### Services
-* [Amazon Web Services S3](http://aws.amazon.com/s3/) - profile pictures and files are stored with Amazon S3
+* [Amazon Web Services S3](http://aws.amazon.com/s3/) - pictures and static documents are stored with Amazon S3
 * [Twitter API](https://dev.twitter.com/) - ([create your key](https://dev.twitter.com/apps))
 * [GeoIP by MaxMind](http://www.maxmind.com/) - (get a [free] database, note we use a custom PHP extension rather than theirs)
 * [reCAPTCHA](http://www.google.com/recaptcha) - captcha service
 
 ## Install
+This install procedure only works on Unix-like systems with bash available (aka. should not work on Windows).
+
 On your CLI (command-line interface) run bin/install:
 
 ```
@@ -60,9 +64,8 @@ cd bin
 *For development you will want to respond with "development" on the question about the application environment*
 
 
-This will take care of setting application paths, downloading and setting up the dependencies. But you will still need to do some work.
+This will take care of setting application paths, downloading and setting up the dependencies.
 It will write a *application/configs/Environment.php.dist similar to *[application/configs/Environment.php](https://github.com/henvic/vehikel/blob/master/application/configs/Environment.php)*, with the choosen timezone and directory and file paths.
-If you are using Windows you will need to generate this file by your own (as well, solve dependencies, etc the way the installer does so you will want to take a look at its source code).
 
 If a extension is missing you will know it.
 You can get most of them with [PECL](http://pecl.php.net/) or apt-get on a Debian-based system such as Ubuntu.
@@ -84,7 +87,7 @@ The following CouchDB databases have to be created: *web_access_log, and actions
 There are three modules: default, services and api. And also a simple redirector system.
 
 #### The services module
-It's CLI based, not web based.
+There is a CLI based services module.
 Point of entry: *bin/services*
 
 #### Web based points of entry
@@ -106,14 +109,17 @@ RewriteRule ^.*$ – [NC,L]
 RewriteRule ^.*$ index.php [NC,L]
 ```
 
-For performance and to avoid the trouble with dealing with .htaccess I recommend not to use it (and disable it), instead put this on a Apache configuration file. Some text that might help you make a wise choice: [Remove index.php From URLs](http://expressionengine.com/wiki/Remove_index.php_From_URLs)
+For performance and to avoid the trouble of dealing with .htaccess I recommend not to use it (and disable it), instead put this on a Apache configuration file. Some text that might help you make a wise choice: [Remove index.php From URLs](http://expressionengine.com/wiki/Remove_index.php_From_URLs)
 
 Note /index.php is hard-coded to return a 404 Not Found to make sure you do the proper thing and to avoid duplicates.
 
-#### A word on static assets
-You have static assets (on the *statics* directory) such as images, JavaScripts and CSS which your users need to access. For production it might be wise to use a CDN service (such as S3 + CloudFront) for this.
+#### Static assets
+You have static assets (on the *statics* directory) such as images, JavaScripts and CSS which your users need to access.
 
-For development (or in production if you don't want to use a CDN) you can set up even another virtual host for this (you don't need to point to any index.php in this case, even because it just doesn't exists). In case you are using this in production you may want to configure your web server not to list the directories contents.
+For production you should use a CDN service (such as S3 + CloudFront) to serve them.
+
+If you install as a development environment a link is made inside *public*. It is *public/dev-static-link*.
+It is useful especially for crafting the templates files with XHR restrictions issues (in production the files' contents are placed in .js files to overcome this).
 
 ## Scheduled tasks
 Some operations might be expensive. For example: if a user removes his account it is not smart to start a batch delete operation of all his files right away (and let him waiting for it, for instance).
