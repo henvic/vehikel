@@ -206,11 +206,9 @@ if (APPLICATION_ENV != "development") {
 
 </script>
 <?php } ?>
-<script src="<?php echo $this->staticVersion("/vendor/jquery/jquery.js"); ?>"></script>
-<script src="<?php echo $this->staticVersion("/vendor/bootstrap/js/bootstrap.js"); ?>"></script>
-<script src="<?php echo $this->staticVersion("/vendor/jquery-tablesorter/jquery.tablesorter.js"); ?>"></script>
-<script src="<?php echo $this->staticVersion("/vendor/jquery-fn-autoResize/jquery.autoresize.js"); ?>"></script>
-<script src="<?php echo $this->staticVersion("/javascripts/vehikel.js"); ?>"></script>
+<script data-main="<?php
+echo $this->staticVersion("/javascripts/main.js");
+?>" src="<?php echo $this->staticVersion("/vendor/require/require.js"); ?>"></script>
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
