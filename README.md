@@ -50,12 +50,13 @@ For performance you want to strip the require_once's from the Zend framework cod
 * [reCAPTCHA](http://www.google.com/recaptcha) - captcha service
 
 ## Install
-This install procedure only works on Unix-like systems with bash available (aka. should not work on Windows).
 
-On your CLI (command-line interface) run bin/install:
+On your CLI (command-line interface):
 
 ```
+npm install
 cd bin
+./install-vendors.sh
 ./install
 ```
 
