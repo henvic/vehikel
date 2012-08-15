@@ -10,9 +10,7 @@
  *
  */
 class Install {
-    const PACKAGE_EXTRACT_TARBALL_GZ = "tgz";
-    const PACKAGE_EXTRACT_NONE = "";
-    
+
     protected $_env = false;
     
     public $projectDirectory = "";
@@ -37,51 +35,6 @@ class Install {
         }
         return $exitCode;
     }
-    
-    public function downloadPackage($filename, $url, $checksum = false, $extract = Install::PACKAGE_EXTRACT_TARBALL_GZ) {
-        $cmd = "curl -s -o " . escapeshellarg($filename) . " " . escapeshellarg($url);
-        
-        fwrite(STDOUT, "Trying to download " . $filename . "\n");
-        
-        $this->execSimple($cmd);
-        
-        $checksumLength = strlen($checksum);
-        
-        if (! $checksumLength) {
-            $checksumFunction = "";
-        } else if ($checksumLength == 40) {
-            $checksumFunction = "sha1_file";
-        } else if($checksumLength == 32) {
-            $checksumFunction = "md5_file";
-        } else {
-            fwrite(STDERR, "Invalid checksum for " . $filename . "\n");
-            exit(1);
-        }
-        
-        if ($checksumFunction && $checksumFunction($filename) != $checksum) {
-            fwrite(STDERR, "Checksum mismatch for " . $filename . ".\n");
-            
-            exit(1);
-        }
-        
-        if ($extract == Install::PACKAGE_EXTRACT_NONE) {
-            return true;
-        }
-        
-        if ($extract == Install::PACKAGE_EXTRACT_TARBALL_GZ) {
-            $cmd = "tar xzf " . escapeshellarg($filename);
-            
-            fwrite(STDOUT, "Extracting " . $filename . "\n");
-            $this->execSimple($cmd);
-            
-            unlink($filename);
-            
-            return true;
-        }
-        
-        exit(1);
-    }
-    
     /**
      * Get the path with regard to the project directory if inside it
      * or the absolute one, if not.
@@ -164,66 +117,7 @@ class Install {
         
         fwrite(STDOUT, $this->colors->getColoredString("application/configs/Environment.php.dist set.\n", "light_green"));
     }
-    
-    public function installDependencies($backendVendorPath) {
-        $originalWorkingDir = getcwd();
-        
-        chdir($backendVendorPath);
-        
-        $this->downloadPackage("phpass-0.3.tar.gz", "http://www.openwall.com/phpass/phpass-0.3.tar.gz", "400c9cafdd8cdcb882c1f43cd4b127180fd0e7ff");
-        
-        $this->downloadPackage("ZendFramework-1.11.12-minimal.tar.gz", "http://framework.zend.com/releases/ZendFramework-1.11.12/ZendFramework-1.11.12-minimal.tar.gz", "457fc5e7ad8e44d066fdcdb658827281");
-        $this->execSimple("mv ZendFramework-1.11.12-minimal/library/Zend Zend");
-        $this->execSimple("rm -r ZendFramework-1.11.12-minimal");
-        
-        $this->downloadPackage("htmlpurifier-4.4.0-standalone.tar.gz", "http://htmlpurifier.org/releases/htmlpurifier-4.4.0-standalone.tar.gz", "a227f5c9b5187473d59ff90eaacad03a3f8a6dc5");
-        $this->execSimple("mv htmlpurifier-4.4.0-standalone htmlpurifier-standalone");
-        
-        $this->downloadPackage("oauth-php-175.tar.gz", "http://oauth-php.googlecode.com/files/oauth-php-175.tar.gz", "2d459b62d46b85b48603aa3024ade968");
-        
-        // @todo make sure about what is the downloaded version of PHP-on-Couch
-        $this->downloadPackage("PHP-on-Couch.tar.gz", "https://nodeload.github.com/dready92/PHP-on-Couch/tarball/master", "");
-        $this->execSimple("mv dready92-PHP-on-Couch-* PHP-on-Couch");
-        
-        // @todo make sure about what is the downloaded version of nrk-predis
-        $this->downloadPackage("predis-0.7.tar.gz", "https://nodeload.github.com/nrk/predis/tarball/v0.7", "");
-        $this->execSimple("mv nrk-predis-* predis");
-        
-        // @todo make sure about what is the downloaded version of jmathai-twitter-async
-        $this->downloadPackage("twitter-async.tar.gz", "https://nodeload.github.com/jmathai/twitter-async/tarball/master", "");
-        $this->execSimple("mv jmathai-twitter-async-* twitter-async");
-        
-        fwrite(STDOUT, "Installing client-side vendor assets\n");
-        chdir(__DIR__ . "/../static/vendor");
-        
-        $this->downloadPackage("twitter-bootstrap.2.0.2.tar.gz", "https://nodeload.github.com/twitter/bootstrap/tarball/v2.0.2");
-        $this->execSimple("mv twitter-bootstrap-* bootstrap-2.0.2");
-        
-        $this->downloadPackage("twitter-bootstrap.1.4.0.tar.gz", "https://nodeload.github.com/twitter/bootstrap/tarball/v1.4.0");
-        $this->execSimple("mv twitter-bootstrap-* bootstrap-1.4.0");
-        
-        $this->downloadPackage("jquery-1.7.2.min.js", "http://code.jquery.com/jquery-1.7.2.min.js", "b8d64d0bc142b3f670cc0611b0aebcae", self::PACKAGE_EXTRACT_NONE);
-        $this->execSimple("mkdir jquery-1.7.2");
-        $this->execSimple("mv jquery-1.7.2.min.js jquery-1.7.2/jquery.min.js");
-        
-        $this->execSimple("mkdir jquery-tablesorter-2.0.5b");
-        chdir(__DIR__ . "/../static/vendor/jquery-tablesorter-2.0.5b");
-        $this->downloadPackage("tablesorter.zip", "http://tablesorter.com/__jquery.tablesorter.zip", "2078b52370eecea59188a71944458c36", self::PACKAGE_EXTRACT_NONE);
-        $this->execSimple("unzip tablesorter.zip jquery.tablesorter.min.js");
-        $this->execSimple("rm tablesorter.zip");
-        chdir(__DIR__ . "/../static/vendor");
-        
-        // @todo make a way to update the version of henvic-jQuery.fn.autoResize
-        $this->downloadPackage("henvic-jQuery.fn.autoResize.tar.gz", "https://nodeload.github.com/henvic/jQuery.fn.autoResize/tarball/master");
-        $this->execSimple("mv henvic-jQuery.fn.autoResize-* jquery-fn-autoResize-1.14");
-        
-        $this->downloadPackage("yui-min.js", "http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js", "fcc01ca1c5d15e4a401907280836624b", self::PACKAGE_EXTRACT_NONE);
-        $this->execSimple("mkdir yui-3.1.1");
-        $this->execSimple("mv yui-min.js yui-3.1.1/");
-        
-        chdir($originalWorkingDir);
-    }
-    
+
     public function copyConfig($file) {
         if (! file_exists($file)) {
             $q = "yes";
@@ -250,7 +144,6 @@ class Install {
             "mongo" => "can be ignored for now",
             "geoip" => "can be ignored",
         );
-        
         
         $installed = get_loaded_extensions();
         
@@ -330,9 +223,7 @@ class Install {
         $this->savePhpEnvironment($env);
         
         $this->copyConfig($env["APPLICATION_CONF_FILE"]);
-        
-        $this->installDependencies($env["EXTERNAL_LIBRARY_PATH"]);
-        
+
         fwrite(STDOUT, $this->colors->getColoredString("Finished installation.\n\n", "light_green"));
     }
 }
