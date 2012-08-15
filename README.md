@@ -19,10 +19,8 @@ Unless otherwise referenced to, the versions for the requirements are given by t
 Please note that the default memcached is insecure by design because it's freely accessible from everywhere. You must restrict access to it yourself.
 
 ### Extensions
-* [XHP](http://github.com/facebook/xhp) (not in use)
 * [memcached](http://php.net/memcached)
 * [mongo](http://php.net/mongo)
-* [ImageMagick](http://php.net/manual/en/book.imagick.php)
 * [GeoIP](http://www.maxmind.com/app/php) (you need a MaxMind's database service for that, this library will be changed soon)
 
 ### PHP Libraries
