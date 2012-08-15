@@ -246,11 +246,8 @@ class Install {
     
     public function checkExtensions() {
         $test = array(
-            "xhp" => "not in use, can be safely ignored",
-            "uploadprogress" => "can be ignored",
             "memcached" => "essential for the sessions system and the security hashing mechanism",
             "mongo" => "can be ignored for now",
-            "imagick" => "essential for the image system",
             "geoip" => "can be ignored",
         );
         
@@ -293,11 +290,8 @@ class Install {
     
     public function installExtensionsForTravis($extensions) {
         $packages = array(
-            "xhp",
-            "uploadprogress",
             "memcached",
             "mongo",
-            "imagick",
             "geoip"
         );
         
