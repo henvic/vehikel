@@ -16,7 +16,7 @@ var config = (function () {
             "jquery.fn.autoResize": "../vendor/jquery-fn-autoResize-1.14/jquery.autoresize",
 
             // Require.js Plugins
-            text: "../vendor/require-2.0.4/text-2.0.1",
+            text: "../vendor/require-2.0.5/text-2.0.3",
 
             // common code
             common: "plugins/common",
