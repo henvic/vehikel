@@ -57,7 +57,7 @@ On your CLI (command-line interface):
 npm install
 cd bin
 ./install-vendors.sh
-./install
+./install.php
 ```
 
 *For development you will want to respond with "development" on the question about the application environment*
