@@ -47,8 +47,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 $this->registerPluginResource("Ml_Resource_Uri")
                 ->registerPluginResource("Ml_Resource_Mysession")
                 ->registerPluginResource("Ml_Resource_Myview")
-                ->registerPluginResource("Ml_Resource_Default")
-                ;
+                ->registerPluginResource("Ml_Resource_Default");
                 break;
             }
             
@@ -57,8 +56,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 ->registerPluginResource("Ml_Resource_Api")
                 ->unregisterPluginResource("session")
                 ->unregisterPluginResource("view")
-                ->unregisterPluginResource("layout")
-                ;
+                ->unregisterPluginResource("layout");
                 break;
             }
             
@@ -67,8 +65,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 ->registerPluginResource("Ml_Resource_Services")
                 ->unregisterPluginResource("session")
                 ->unregisterPluginResource("view")
-                ->unregisterPluginResource("layout")
-                ;
+                ->unregisterPluginResource("layout");
                 break;
             }
             
