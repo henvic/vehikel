@@ -25,6 +25,7 @@ Please note that the default memcached is insecure by design because it's freely
 
 ### PHP Libraries
 * [Zend Framework](http://framework.zend.com/)
+* [Symfony](http://symfony.com/) (some components)
 * [HTML Purifier](http://htmlpurifier.org/) (use the standalone version)
 * [phpass](http://www.openwall.com/phpass/)
 * [PHP On Couch](https://github.com/dready92/PHP-on-Couch)
