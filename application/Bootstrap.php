@@ -1,4 +1,10 @@
 <?php
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
     protected function _initRun()
@@ -34,6 +40,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $registry = Zend_Registry::getInstance();
 
         $registry->set("database", $db);
+
+        $scCacheFile = CACHE_PATH . "/ServiceContainerCache.php";
+
+        if ("development" != APPLICATION_ENV && file_exists($scCacheFile)) {
+            require $scCacheFile;
+            $container = new MyCachedContainer();
+        } else {
+            $container = new ContainerBuilder();
+            $loader = new YamlFileLoader($container, new FileLocator(__DIR__));
+            $loader->load(APPLICATION_PATH . "/configs/services.yml");
+
+            if ("development" != APPLICATION_ENV) {
+                $container->compile();
+                $dumper = new PhpDumper($container);
+                file_put_contents($scCacheFile, $dumper->dump(array('class' => 'MyCachedContainer')));
+            }
+        }
+
+        $registry->set("sc", $container);
     }
     
     protected function _initRequest()
