@@ -30,8 +30,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $db = $this->getResource('db');
         
         Zend_Db_Table_Abstract::setDefaultMetadataCache("sysCache");
-        
-        Zend_Registry::getInstance()->set("database", $db);
+
+        $registry = Zend_Registry::getInstance();
+
+        $registry->set("database", $db);
     }
     
     protected function _initRequest()
