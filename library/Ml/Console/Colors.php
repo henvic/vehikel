@@ -7,7 +7,9 @@
  * from http://goo.gl/0R7lY
  *
  */
-class Ml_Console_Colors
+namespace Ml;
+
+class Console_Colors
 {
     private $_foregroundColors = array(
         'black' => '0;30',
