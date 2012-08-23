@@ -9,7 +9,7 @@ array(EXTERNAL_LIBRARY_PATH, LIBRARY_PATH, get_include_path())));
 
 require EXTERNAL_LIBRARY_PATH . '/Zend/Loader/Autoloader.php';
 
-Zend_Loader_Autoloader::getInstance()->registerNamespace('Ml_');
+Zend_Loader_Autoloader::getInstance()->registerNamespace('Ml');
 Zend_Loader_Autoloader::getInstance()->registerNamespace('Symfony');
 
 $resourceLoader =
