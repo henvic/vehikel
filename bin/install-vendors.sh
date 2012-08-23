@@ -25,7 +25,7 @@ install() {
 
   # Download Twitter Bootstrap
   echo "Downloading Twitter Bootstrap"
-  curl -o bootstrap.v2.0.4.zip -O https://raw.github.com/twitter/bootstrap/630859769d0bd22fe5740b2e4819701665741f9b/assets/bootstrap.zip
+  curl -o bootstrap.v2.1.0.zip -O https://raw.github.com/twitter/bootstrap/90234c4f37c3b190c786e7ca094df8d01aa479ac/assets/bootstrap.zip
 
   # Download elements
   echo "Downloading elements"
@@ -98,9 +98,9 @@ install() {
 
   echo "Uncompressing / Installing some libraries"
 
-  unzip bootstrap.v2.0.4.zip
-  mv bootstrap bootstrap-2.0.4
-  rm bootstrap.v2.0.4.zip
+  unzip bootstrap.v2.1.0.zip
+  mv bootstrap bootstrap-2.1.0
+  rm bootstrap.v2.1.0.zip
 
   cd jquery-fn-autoResize-1.14/
   unzip henvic-jquery.fn.autoResize-1.14.zip henvic-jQuery.fn.autoResize-653c1e7/jquery.autoresize.js

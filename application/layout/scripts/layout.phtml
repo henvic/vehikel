@@ -60,7 +60,7 @@ $this->headMeta() , PHP_EOL;
 <img src="<?php echo $this->staticVersion("/images/logotype.png"); ?>" width="551" height="65" /></a>
 </div>
 <div id="sticky-anchor"></div>
-<div class="navbar navbar-fixed-top navbar-fixed-top-override" id="navbar">
+<div class="navbar navbar-inverse navbar-fixed-top navbar-fixed-top-override" id="navbar">
   <div class="navbar-inner">
     <div class="container">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -94,7 +94,7 @@ echo $this->liMenuItems(
         <li id="navbar-user" class="dropdown">
             <a href="<?php
                 echo $this->url(array("username" => $signedUserInfo['alias']), "profile");
-                ?>" id="navbar-user-button" class="dropdown-toggle" data-toggle="dropdown">
+                ?>" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
                 <?php echo $this->avatar($signedUserInfo, "square", false, array("width" => "20", "height" => "20")); ?> <?php echo $this->escape($signedUserInfo['alias']) ?>
                 <b class="caret"></b>
             </a>
@@ -123,7 +123,7 @@ echo $this->liMenuItems(
                 $this->loginform = Ml_Model_Credential::loginForm();
     ?>
                 <li id="navbar-user" class="dropdown">
-                    <a href="<?php echo $this->url(array(), "login") ?>" id="navbar-user-button" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="<?php echo $this->url(array(), "login") ?>" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="icon-user icon-white"></i> Entrar
                         <b class="caret"></b>
                     </a>

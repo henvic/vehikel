@@ -11,7 +11,7 @@ var config = (function () {
             jquery: "../vendor/jquery-1.8.0/jquery",
             underscore: "../vendor/underscore-1.3.3/underscore",
             backbone: "../vendor/backbone-0.9.2/backbone",
-            "twitter.bootstrap": "../vendor/bootstrap-2.0.4/js/bootstrap",
+            "twitter.bootstrap": "../vendor/bootstrap-2.1.0/js/bootstrap",
             "jquery.tablesorter": "../vendor/jquery-tablesorter-2.0.5b/jquery.tablesorter",
             "jquery.fn.autoResize": "../vendor/jquery-fn-autoResize-1.14/jquery.autoresize",
 

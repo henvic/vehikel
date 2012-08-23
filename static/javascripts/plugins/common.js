@@ -26,20 +26,6 @@ define(["jquery", "backbone"], function ($, Backbone) {
             stickyRelocate();
         } ());
 
-
-
-        var navbarUserClosure = (function () {
-            var userTab = $("#navbar-user");
-            var openTab = function () {
-                userTab.addClass('open');
-            };
-            var userTabAnchor = $("#navbar-user-button");
-            userTabAnchor.click(function (e) {
-                window.setTimeout(openTab, 1, true);
-                e.preventDefault();
-            });
-        } ());
-
         $("a[rel=\"external\"]")
            .click(function () {
                 window.open($(this).attr("href"));
