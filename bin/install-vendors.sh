@@ -31,7 +31,7 @@ install() {
   echo "Downloading elements"
   mkdir elements
   cd elements
-  curl -o elements.css -O https://raw.github.com/dmitryf/elements/3df7be1ea5b3c284efc19361d1abf9899ae310b1/elements.less
+  curl -o elements.less -O https://raw.github.com/dmitryf/elements/3df7be1ea5b3c284efc19361d1abf9899ae310b1/elements.less
   cd ..
 
   # Download jQuery
