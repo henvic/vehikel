@@ -12,7 +12,10 @@ array(EXTERNAL_LIBRARY_PATH, LIBRARY_PATH, get_include_path())));
 
 require EXTERNAL_LIBRARY_PATH . '/Zend/Loader/Autoloader.php';
 
-Zend_Loader_Autoloader::getInstance()->registerNamespace('Ml');
+$autoLoader = Zend_Loader_Autoloader::getInstance();
+$autoLoader->registerNamespace('Ml');
+$autoLoader->registerNamespace('Symfony');
+$autoLoader->registerNamespace('Twitter');
 
 $resourceLoader =
 new Zend_Loader_Autoloader_Resource(array('basePath' => APPLICATION_PATH,
