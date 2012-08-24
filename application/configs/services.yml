@@ -1,3 +1,6 @@
 parameters:
 
 services:
+    signup:
+        class: Ml_Model_SignUp
+        arguments: [@memCache]

@@ -1,38 +1,15 @@
 <?php
 $registry = Zend_Registry::getInstance();
 $config = $registry->get("config");
-
-$this->headTitle("Join " . $config['applicationname'], "SET");
-
-if ($this->success): ?>
-<h2>Hi <?php echo $this->escape($this->entry['name']) ?>!</h2>
-<p>Please check your e-mail inbox and follow the instructions.<br /><br />
-You gave us the following e-mail address: <strong><?php echo $this->escape($this->entry['email']) ?></strong>.</p>
-<?php
-else:
+$this->headTitle("Cadastre-se em " . $config['applicationname'], "SET");
 $this->signUpForm->getElement("email")->getDecorator("description")->setEscape(false);
 ?>
-<section>
-<div class="row">
-<div class="span12">
-<h1>Sign up for a <?php echo $this->escape($config['applicationname']); ?> account</h1>
-<?php echo $this->signUpForm; ?>
-</div>
-<div class="span3">
-<h2>Three steps</h2>
-<ol>
-<li><b>Complete this form</b></li>
-<li>Confirm your e-mail address</li>
-<li>Choose a username</li>
-</ol>
-</div>
-</div>
-</section>
-<?php
-if ($config['signup']['inviteonly']):
-?>
-<h2>Do you have an invite code?</h2>
-<p>To sign up, we require that you have one at the moment.</p>
-<?php
-endif;
-endif;
+&nbsp;
+<div class="container">
+  <div class="row">
+      <div class="span12">
+          <h1>Cadastre-se</h1>
+          <?php echo $this->signUpForm; ?>
+      </div>
+  </div><!-- end of .row -->
+</div><!-- end of .container -->

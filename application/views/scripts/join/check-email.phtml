@@ -1,0 +1,15 @@
+<?php
+$registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+$this->headTitle("Confirme o seu cadastro");
+?>
+&nbsp;
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <h1>Bem-vindo <?php echo $this->escape($this->newUserInfo['name']); ?>!</h1>
+            <p>Confira a caixa de entrada de seu email e siga as instruções.<br /><br />
+            Você usou o seguinte endereço de email: <strong><?php echo $this->escape($this->newUserInfo['email']); ?></strong>.</p>
+        </div>
+    </div><!-- end of .row -->
+</div><!-- end of .container -->

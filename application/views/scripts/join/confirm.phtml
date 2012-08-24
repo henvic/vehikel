@@ -1,17 +1,61 @@
 <?php
-$this->headTitle("Confirm your identity");
-?>
-<div class="row">
-<div class="span16">
-<h2>Make your Plifk identity</h2>
-<p>You are <b><?php
-echo $this->escape($this->entry['name']);
-?></b> (<?php echo $this->escape($this->entry['email']); ?>).</p>
-<p id="usernamelinkpreview"></p>
-<?php
+$registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+$this->headTitle("Continue o seu cadastro em " . $config['applicationname'], "SET");
 $this->confirmForm->getElement("password")->getDecorator("description")->setEscape(false);
-$this->confirmForm->getElement("tos")->getDecorator("description")->setOption('escape', false);
+
+$form = $this->confirmForm;
+/** @var $form \Ml_Form_NewIdentity() */
+
 ?>
-<?php echo $this->confirmForm; ?>
-</div>
-</div>
+&nbsp;
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <h1>Cadastro</h1>
+            <form enctype="application/x-www-form-urlencoded" action="<?= $form->getAction(); ?>" class="form-stacked" method="post">
+            <?php
+                //echo $form;
+                echo $form->name, $form->email, $form->newusername, $form->password, $form->password_confirm;
+
+                $tosElement = $form->getElement("tos");
+                $tosErrors = $tosElement->getErrors();
+
+                if (! empty($tosErrors)) {
+                    $tosErrorClass = " error ";
+                } else {
+                    $tosErrorClass = "";
+                }
+            ?>
+                <div class="control-group <?= $tosErrorClass; ?>">
+                    <div class="controls">
+                        <label class="checkbox inline">
+                        <input type="hidden" name="tos" value="0" />
+                        <input type="checkbox" name="tos" id="tos" value="agree"
+                            <?php
+                                if($tosElement->getValue() == "agree") {
+                                    echo ' checked="checked" ';
+                                }
+                            ?>
+                        />
+                        Eu concordo com os Termos de Serviço
+                        </label>&nbsp;<small> <a href="/tos" title="Termos de Serviço" rel="external">(abrir)</a></small>
+                        <?php
+                            if (! empty($tosErrorClass)) {
+                        ?>
+                        <span class="help-block">Você deve concordar com os Termos de Serviço para poder continuar.</span>
+                        <?php
+                            }
+                        ?>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <input type="submit" name="submit" id="submit" value="Confirmar cadastro" class="btn btn-primary btn-large" />
+                </div>
+                <?php
+                    echo $form->no_csrf_foo;
+                ?>
+            </form>
+        </div>
+    </div><!-- end of .row -->
+</div><!-- end of .container -->

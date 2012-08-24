@@ -1,20 +1,20 @@
 <?php
 
-class Ml_Form_SignUp extends Zend_Form
+class Ml_Form_SignUp extends Twitter_Bootstrap_Form_Horizontal
 {
     public function init()
     {
-        $registry = Zend_Registry::getInstance();
-        $config = $registry->get("config");
-        
+        $url = $this->getView()->url(array(), "join");
+        $this->setAction($url);
         $this->setMethod('post');
+
         $this->addElementPrefixPath('Ml_Validate', 'Ml/Validate/', 
         Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('Ml_Filter', 'Ml/Filter/', 
         Zend_Form_Element::FILTER);
         
         $this->addElement('text', 'name', array(
-            'label'      => 'Name:',
+            'label'      => 'Nome:',
             'required'   => true,
             'filters'    => array('StringTrim'),
             'validators' => array(
@@ -23,11 +23,11 @@ class Ml_Form_SignUp extends Zend_Form
         ));
         
         $email = $this->addElement('text', 'email', array(
-            'label'      => 'E-mail address:',
+            'label'      => 'Endereço de email:',
             'required'   => true,
             'description' =>
-                '<small>Read the <a href="/privacy" class="new-window">'.
-                'Privacy Policy</a> before proceeding</small>',
+                '<small>Leia a <a href="/privacy" rel="external">'.
+                'Política de privacidade</a> antes de continuar</small>',
             'filters'    => array('StringTrim', 'StringToLower'),
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(1, 60)),
@@ -36,26 +36,22 @@ class Ml_Form_SignUp extends Zend_Form
                 )
         ));
         
-        if ($config['signup']['inviteonly']) {
-            $this->addElement('text', 'invitecode', array(
-                'label'      => 'Invite code:',
-                'required'   => true,
-                'autoInsertNotEmptyValidator' => false,
-                'validators' => array(
-                    array('validator' => 'Invite'),
-                    )
-            ));
-            
-            $this->getElement("invitecode")->setAttrib('class', 'span3');
-        }
-        
         $this->addElement(Ml_Model_AntiAttack::captchaElement());
         
         $this->addElement('submit', 'submit', array(
-            'label'    => 'Sign up!',
-            'class'    => 'btn primary',
+            'label'    => 'Cadastrar',
+            'class'    => 'btn btn-primary btn-large',
         ));
-        
+
+        $this->addDisplayGroup(
+            array('submit', 'reset'),
+            'actions',
+            array(
+                'disableLoadDefaultDecorators' => true,
+                'decorators' => array('Actions')
+            )
+        );
+
         $this->setAttrib('class', 'form-stacked');
     }
 }

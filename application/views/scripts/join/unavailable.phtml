@@ -1,5 +1,15 @@
 <?php
-$this->headTitle("Can't confirm your email address");
+$registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+$this->headTitle("Não foi possível confirmar o seu email");
 ?>
-<h2>Can't confirm your email address</h2>
-<p>We are sorry, but we can't confirm your e-mail address, so we can't continue your sign-up process. Most likely you took longer to confirm your email than we would expect. <small><a href="<?php echo $this->url(array(), "join") ?>">Sign up again?</a></small></p>
+&nbsp;
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <h1>Não foi possível confirmar o seu email</h1>
+            <p>Provavelmente você já possui um cadastro ou esse link de confirmação expirou.<br /><br />
+            <a href="<?php echo $this->url(array(), "join"); ?>" class="btn">Tentar iniciar o cadastro novamente</a></p>
+        </div>
+    </div><!-- end of .row -->
+</div><!-- end of .container -->

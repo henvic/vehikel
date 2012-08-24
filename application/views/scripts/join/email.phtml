@@ -1,11 +1,11 @@
 <?php
 $config = Zend_Registry::getInstance()->get('config');
 ?>
-Hi <?php echo $this->escape($this->entry['name']) ?>!
+Olá <?php echo $this->escape($this->newUserInfo['name']) ?>!
 
-Welcome to <?php echo $this->escape($config['applicationname']); ?>.
+Bem vindo ao <?php echo $this->escape($config['applicationname']); ?>.
 
-Please confirm your e-mail address at
+Para continuar o seu cadastro por favor confirme o seu endereço de email em:
 <?php
 
 if ($config['ssl']) {
@@ -14,12 +14,12 @@ if ($config['ssl']) {
     echo "http://" . $config['webhost'];
 }
 
-echo $this->url(array("security_code" => $this->entry['securitycode']), "join_emailconfirm");
+echo $this->url(array("security_code" => $this->newUserInfo['securitycode']), "join_emailconfirm");
 ?>
 
 
-Terms of Service - http://<?php echo $this->escape($config['webhost']) ?><?php echo $this->staticUrl("/tos") ?>
-Privacy Policy - http://<?php echo $this->escape($config['webhost']) ?><?php echo $this->staticUrl("/privacy") ?>
+Política de privacidade - http://<?php echo $this->escape($config['webhost']) ?><?php echo $this->staticUrl("/privacy") ?>
+
 
 -
 <?php
