@@ -1,0 +1,13 @@
+{
+    "name": "henvic/vehikel",
+    "description": "car ad website.",
+    "require": {
+        "rych/phpass": "2.1.x-dev"
+    },
+    "authors": [
+        {
+            "name": "Henrique Vicente",
+            "email": "henriquevicente@gmail.com"
+        }
+    ]
+}

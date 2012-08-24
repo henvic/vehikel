@@ -1,0 +1,25 @@
+{
+    "hash": "b2656432c76bf5c4f69b22b9eeb34c8e",
+    "packages": [
+        {
+            "package": "rych/phpass",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "rych/phpass",
+            "version": "dev-master",
+            "source-reference": "1174a7a5b1c95ef8d4b7d861f3bc208913803645",
+            "commit-date": "1344141053"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "rych/phpass": 20
+    }
+}

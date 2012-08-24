@@ -141,9 +141,6 @@ install() {
   echo "Downloading oauth-php"
   curl -o oauth-php-175.tar.gz -O http://oauth-php.googlecode.com/files/oauth-php-175.tar.gz
 
-  echo "Downloading phpass-0.3"
-  curl -o phpass-0.3.tar.gz -O http://www.openwall.com/phpass/phpass-0.3.tar.gz
-
   echo "Downloading predis"
   curl -o predis-0.7.tar.gz -O https://nodeload.github.com/nrk/predis/tarball/v0.7
 
@@ -185,12 +182,12 @@ install() {
   tar xzf oauth-php-175.tar.gz
   rm oauth-php-175.tar.gz
 
-  tar xzf phpass-0.3.tar.gz
-  rm phpass-0.3.tar.gz
-
   tar xzf predis-0.7.tar.gz
   mv nrk-predis-6e9db69 predis
   rm predis-0.7.tar.gz
+
+  cd ..
+  composer install
 
   echo "./vendor installed\n"
 

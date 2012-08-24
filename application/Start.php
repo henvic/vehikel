@@ -22,6 +22,8 @@ $resourceLoader->addResourceType('form', 'forms/', 'Form')
 ->addResourceType('models', 'models/Ml/', 'Model')
 ->addResourceType('resources', 'resources/', 'Resource');
 
+require EXTERNAL_LIBRARY_PATH . "/autoload.php";
+
 require EXTERNAL_LIBRARY_PATH . '/Zend/Registry.php';
 require EXTERNAL_LIBRARY_PATH . '/Zend/Cache/Core.php';
 
