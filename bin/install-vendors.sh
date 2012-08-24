@@ -130,6 +130,10 @@ install() {
   curl -o ZendFramework-1.11.12-minimal.tar.gz -O \
   http://framework.zend.com/releases/ZendFramework-1.11.12/ZendFramework-1.11.12-minimal.tar.gz
 
+  echo "Downloading zend-form-decorators-bootstrap"
+  curl -o twitter.bootstrap.tar.gz -O \
+  https://nodeload.github.com/Emagister/zend-form-decorators-bootstrap/tarball/0.1.3
+
   echo "Downloading HTML Purifier (standalone version)"
   curl -o htmlpurifier-4.4.0-standalone.tar.gz -O \
   http://htmlpurifier.org/releases/htmlpurifier-4.4.0-standalone.tar.gz
@@ -168,6 +172,11 @@ install() {
   mv ZendFramework-1.11.12-minimal/library/Zend .
   rm -r ZendFramework-1.11.12-minimal
   rm ZendFramework-1.11.12-minimal.tar.gz
+
+  tar xzf twitter.bootstrap.tar.gz
+  mv Emagister-zend-form-decorators-bootstrap-78f94a6/Twitter .
+  rm -r Emagister-zend-form-decorators-bootstrap-78f94a6
+  rm twitter.bootstrap.tar.gz
 
   tar xzf htmlpurifier-4.4.0-standalone.tar.gz
   mv htmlpurifier-4.4.0-standalone htmlpurifier-standalone
