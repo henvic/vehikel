@@ -43,10 +43,11 @@ class Ml_Resource_Default extends Zend_Application_Resource_ResourceAbstract
         if (file_exists($classFileIncCache)) {
             require $classFileIncCache;
         }
-        
+
         Zend_Loader_PluginLoader::setIncludeFileCache($classFileIncCache);
-        
+
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
         $viewRenderer->initView();
+
     }
 }

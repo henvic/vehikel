@@ -6,7 +6,7 @@ class Ml_Resource_Services extends Zend_Application_Resource_ResourceAbstract
         Zend_Controller_Action_HelperBroker::addPath(APPLICATION_PATH . '/controllers/helpers');
         
         $frontController = $this->getBootstrap()->getResource('FrontController');
-        
+
         $frontController
         ->setParam('noViewRenderer', true)
         ->addModuleDirectory(APPLICATION_PATH.'/modules')
