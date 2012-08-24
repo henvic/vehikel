@@ -67,9 +67,7 @@ class Ml_Model_AntiAttack extends Ml_Model_AccessSingleton
         
         $recaptcha = new Zend_Service_ReCaptcha($keys['public'], 
          $keys['private'], array("ssl" => true, "xhtml" => true));
-        
-        $recaptcha->setOption('theme', 'clean');
-        
+
         $captcha = new Zend_Form_Element_Captcha('challenge',
               array('label' => 'Type the challenge below',
                       'captcha'        => 'ReCaptcha',
