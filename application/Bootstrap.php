@@ -7,16 +7,21 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
+    protected $_sysCache = null;
+    protected $_memCache = null;
+    protected $_container = null;
+
     protected function _initRun()
     {
         $registry = Zend_Registry::getInstance();
         
         //sysCache initialized in Start.php
         $sysCache = $registry->get("sysCache");
+        $this->_sysCache = $sysCache;
         Zend_Date::setOptions(array('cache' => $sysCache));
         Zend_Locale::setCache($sysCache);
         Zend_Translate::setCache($sysCache);
-        
+
         $configArray = $this->getOptions();
         
         $registry->set('config', $configArray);
@@ -27,12 +32,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $memCache->setBackend(new Zend_Cache_Backend_Memcached($memcacheConfig));
         
         $registry->set("memCache", $memCache);
+        $this->_memCache = $memCache;
     }
     
     protected function _initDatabase()
     {
         $this->bootstrap('db');
-        
+
         $db = $this->getResource('db');
         
         Zend_Db_Table_Abstract::setDefaultMetadataCache("sysCache");
@@ -58,7 +64,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             }
         }
 
+        $container->set("sysCache", $this->_sysCache);
+        $container->set("memCache", $this->_memCache);
+        $memCache = $container->get("memCache");
+
+        $container->set("config", $registry->get("config"));
+
         $registry->set("sc", $container);
+        $this->_container = $container;
     }
     
     protected function _initRequest()
@@ -98,5 +111,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             
             default : throw new Exception("Invalid HOST_MODULE called on the application bootstrap");
         }
+
+        $frontController = Zend_Controller_Front::getInstance();
+        $router = $frontController->getRouter();
+        $this->_container->set("router", $router);
     }
 }
