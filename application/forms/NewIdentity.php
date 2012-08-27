@@ -1,9 +1,20 @@
 <?php
 class Ml_Form_NewIdentity extends Twitter_Bootstrap_Form_Horizontal
 {
-    public function __construct($options = null, $securityCode = "")
+    /**
+     * @param null $options
+     * @param string $securityCode
+     * @param Zend_Config array $config
+     */
+    public function __construct($options = null, $securityCode = "", array $config)
     {
-        $url = $this->getView()->url(
+        if ($this->_config['ssl']) {
+            $url = 'https://' . $this->_config['webhostssl'];
+        } else {
+            $url = '';
+        }
+
+        $url .= $this->getView()->url(
             array(
                 "security_code" => $securityCode),
             "join_emailconfirm"
