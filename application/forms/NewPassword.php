@@ -2,20 +2,50 @@
 
 class Ml_Form_NewPassword extends Zend_Form
 {
+    protected $_config = null;
+    protected $_auth = null;
+
+    /**
+     * @param null $options
+     * @param Zend_Config array $config
+     */
+    public function __construct($options = null, array $config, Zend_Auth $auth, $uid = null, $securityCode = null)
+    {
+        $this->_auth = $auth;
+        $this->_config = $config;
+        $this->_uid = null;
+
+
+        if (! $uid) {
+            $path = $this->getView()->url(array(), "password");
+        } else {
+            $this->_uid = $uid;
+            $path = $this->getView()->url(array("confirm_uid" => $uid,
+                    "security_code" => $securityCode),
+                "password_unsigned");
+        }
+
+        if ($this->_config['ssl']) {
+            $action = 'https://' . $this->_config['webhostssl'] . $this->_config['webroot'] . $path;
+        } else {
+            $action = $this->_config['webroot'] . $path;
+        }
+
+        $this->setAction($action);
+
+        return parent::__construct($options);
+    }
+
     public function init()
     {
-        $registry = Zend_Registry::getInstance();
-        $config = $registry->get("config");
-        
-        $auth = Zend_Auth::getInstance();
-        
         $this->setMethod('post');
+
         $this->addElementPrefixPath('Ml_Validate', 'Ml/Validate/', 
         Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('Ml_Filter', 'Ml/Filter/', 
         Zend_Form_Element::FILTER);
         
-        if ($auth->hasIdentity()) {
+        if ($this->_auth->hasIdentity() && ($this->_uid == null)) {
             $this->addElement('password', 'currentpassword', array(
                 'validators' => array(
                     array('validator' => 'matchPassword') //stringlenght there
@@ -49,24 +79,24 @@ class Ml_Form_NewPassword extends Zend_Form
             'autocomplete' => 'off',
             'class'      => 'span3',
         ));
-        
-        if ($registry->isRegistered("changeUserProperPassword")) {
+
+        if (! $this->_auth->hasIdentity()) {
             $this->addElement(Ml_Model_AntiAttack::captchaElement());
         }
-        
+
         $this->addElement('submit', 'submit', array(
             'label'    => 'Change it!',
             'class'    => 'btn primary',
         ));
         
-        if ($config['ssl']) {
+        if ($this->_config['ssl']) {
             $this->getElement("submit")->addValidator("Https");
             
             //By default the submit element doesn't display a error decorator
             $this->getElement("submit")->addDecorator("Errors");
         }
         
-        if ($auth->hasIdentity()) {
+        if ($this->_auth->hasIdentity()) {
             $this->addElement(Ml_Model_MagicCookies::formElement());
         }
         
