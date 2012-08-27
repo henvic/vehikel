@@ -107,20 +107,6 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
             $this->_cache->save($requestInfo, 
             $this->_lastActivityPrefix . $id, array(), 
             $this->_getLifetime($id));
-            
-            if ($config['log']['requests']) {
-                $couchDb = Ml_Model_CouchDb::getInstance();
-                
-                $requestInfo['_id'] = Ml_Model_Request::getId();
-                
-                try {
-                    $couchDb->useDatabase("web_access_log");
-                    $couchDb->storeDoc((object) ($requestInfo));
-                } catch (Exception $e) {
-                    trigger_error('Failure to store authenticated access log of user id ' .
-                    $auth->getIdentity(), E_USER_NOTICE);
-                }
-            }
         }
         
         return parent::write($id, $data);
