@@ -1,6 +1,8 @@
 parameters:
 
 services:
+    mongo:
+        class: Mongo
     signup:
         class: Ml_Model_SignUp
         arguments: [@memCache]
