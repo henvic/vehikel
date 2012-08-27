@@ -1,8 +1,16 @@
 parameters:
 
+    logger.adapter.mongo.collection: log
+    logger.adapter.mongo.db: vehikel
 services:
     mongo:
         class: Mongo
     signup:
         class: Ml_Model_SignUp
         arguments: [@memCache]
+    loggerAdapterMongo:
+        class: Ml_Logger_Adapter_Mongo
+        arguments: [%logger.adapter.mongo.collection%, %logger.adapter.mongo.db%, @Mongo, @zend_auth]
+    logger:
+        class: Ml_Logger
+        arguments: [@loggerAdapterMongo, @zend_auth]
