@@ -44,8 +44,6 @@
  */
 class Ml_Auth_Adapter implements Zend_Auth_Adapter_Interface
 {
-    const PASSWORD_HASH_ITERATION_COUNT = "8";
-    
     /**
      * Database Connection
      *
@@ -471,10 +469,12 @@ class Ml_Auth_Adapter implements Zend_Auth_Adapter_Interface
      */
     protected function _authenticateValidateResult($resultIdentity)
     {
-        $tHasher = new PasswordHash(self::PASSWORD_HASH_ITERATION_COUNT, FALSE);
-        
-        if (! $tHasher->CheckPassword($this->_credential,
-         $resultIdentity['credential'])) {
+        $adapter = new \Phpass\Hash\Adapter\Pbkdf2();
+        $phpassHash = new \Phpass\Hash($adapter);
+
+        $checkPassword = $phpassHash->checkPassword($this->_credential, $resultIdentity["credential"]);
+
+        if (! $checkPassword) {
             $this->_authenticateResultInfo['code'] = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
             $this->_authenticateResultInfo['messages'][] = 'Supplied credential is invalid.';
             return $this->_authenticateCreateAuthResult();
