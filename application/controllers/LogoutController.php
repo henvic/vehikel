@@ -1,47 +1,47 @@
-<?php 
-class LogoutController extends Zend_Controller_Action
+<?php
+class LogoutController extends Ml_Controller_Action
 {
     public function indexAction()
     {
-        $auth = Zend_Auth::getInstance();
-        $registry = Zend_Registry::getInstance();
-        
-        $router = Zend_Controller_Front::getInstance()->getRouter();
-        
-        $request = $this->getRequest();
-        
-        $params = $request->getParams();
-        
-        $credential = Ml_Model_Credential::getInstance();
-        $session = Ml_Model_Session::getInstance();
-        
-        if (! $auth->hasIdentity()) {
-            $this->_redirect($router->assemble(array(), "index"), array("exit"));
+        $credential =  $this->_sc->get("credential");
+        /** @var $credential \Ml_Model_Credential() */
+
+        $logger =  $this->_sc->get("logger");
+        /** @var $logger \Ml_Logger() */
+
+        $session =  $this->_sc->get("session");
+        /** @var $session \Ml_Session() */
+
+        if (! $this->_auth->hasIdentity()) {
+            $this->_redirect($this->_router->assemble(array(), "index"), array("exit"));
         }
-        
-        if ($registry->isRegistered("signedUserInfo")) {
-            $signedUserInfo = $registry->get("signedUserInfo");
+
+        if ($this->_registry->isRegistered("signedUserInfo")) {
+            $signedUserInfo = $this->_registry->get("signedUserInfo");
         }
-        
-        $form = $credential->logoutForm();
-        
-        if ($request->isPost() && $form->isValid($request->getPost())) {
-            
+
+        $form = $this->_sc->get("logout_form");
+        /** @var $form \Ml_Form_Logout() */
+
+        if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+
             ignore_user_abort(true);
-            
+
             $unfilteredValues = $form->getUnfilteredValues();
-            
+
             if (isset($unfilteredValues['remote_signout'])) {
                 $session->remoteLogout();
+                $logger->log(array("action" => "remote_logout_request"));
                 $this->view->remoteLogoutDone = true;
             } else {
                 $session->logout();
-                $this->_redirect($router->assemble(array(), "index"), array("exit"));
+                $logger->log(array("action" => "logout_request"));
+                $this->_redirect($this->_router->assemble(array(), "index"), array("exit"));
             }
         }
-        
+
         $recentActivity = $session->getRecentActivity($signedUserInfo['id']);
-        
+
         $this->view->logoutForm = $form;
         $this->view->recentActivity = $recentActivity;
     }
