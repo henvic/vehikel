@@ -10,10 +10,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected $_sysCache = null;
     protected $_memCache = null;
     protected $_container = null;
+    protected $_registry = null;
 
     protected function _initRun()
     {
         $registry = Zend_Registry::getInstance();
+        $this->_registry = $registry;
         
         //sysCache initialized in Start.php
         $sysCache = $registry->get("sysCache");
@@ -43,9 +45,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         
         Zend_Db_Table_Abstract::setDefaultMetadataCache("sysCache");
 
-        $registry = Zend_Registry::getInstance();
-
-        $registry->set("database", $db);
+        $this->_registry->set("database", $db);
 
         $scCacheFile = CACHE_PATH . "/ServiceContainerCache.php";
 
@@ -68,14 +68,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $container->set("memCache", $this->_memCache);
         $memCache = $container->get("memCache");
 
-        $container->set("config", $registry->get("config"));
-
-        $registry->set("sc", $container);
         $this->_container = $container;
     }
     
     protected function _initRequest()
     {
+        $this->_registry->set("sc", $this->_container);
+        $this->_container->set("config", $this->_registry->get("config"));
+        $this->_container->set("zendAuth", Zend_Auth::getInstance());
+        $this->_container->set("memCache", $this->_registry->get("memCache"));
+
         switch (HOST_MODULE) {
             case "redirector" : {
                 $redirector = new Ml_Resource_Redirector();
