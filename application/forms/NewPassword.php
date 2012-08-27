@@ -44,7 +44,6 @@ class Ml_Form_NewPassword extends Zend_Form
         ));
         
         $this->addElement('password', 'password_confirm', array(
-            'filters'    => array('StringTrim'),
             'required'   => true,
             'label'      => 'Confirm Password:',
             'autocomplete' => 'off',
