@@ -1,28 +1,33 @@
 <?php
 $registry = Zend_Registry::getInstance();
+$config = $registry->get("config");
+$this->headTitle("Complete o seu cadastro");
+
 $signedUserInfo = $registry->get("signedUserInfo");
-
-$config = $registry->get('config');
-
-$this->headTitle("Welcome to " . $config['applicationname'] . ", " .
- $this->escape($signedUserInfo['name']) . "!", "SET");
 ?>
-<div class="row">
-<div class="span16">
-<h2>Welcome <?php echo $this->escape($signedUserInfo['name']); ?>!</h2>
-<p><b>Your username is <?php
-echo $this->escape($signedUserInfo['alias']);
-?></b>. You're signed in and can <a href="<?php
-echo $this->url(array(), "upload");
-?>" rel="nofollow">start uploading files</a>.<br /><br />
-<b>Do you use Twitter?</b> <a href="<?php
-echo $this->url(array(), "accounttwitter");
-?>">Connect Plifk to your Twitter account now!</a><br /><br />
-<b>People can find you at </b> <a href="http://www.plifk.com<?php
-echo $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage");
-?>">http://www.plifk.com<?php
-echo $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage");
-?></a><br /><br />
-We hope you enjoy Plifk!</p>
-</div>
-</div>
+&nbsp;
+<div class="container" xmlns="http://www.w3.org/1999/html">
+    <div class="row">
+        <div class="span12">
+            <h1>Bem vindo, <?php echo $this->escape($signedUserInfo['name']); ?>!</h1>
+            <div class="alert alert-info">
+                <p>
+                    <strong>As pessoas podem encontrar você em:</strong><br />
+                    <?php
+                        echo '<a href="http://', $config["webhost"],
+                        $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage"), '">',
+                        "http://", $config["webhost"],
+                        $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage"), '</a>';
+                    ?>
+                </p>
+            </div>
+            <p><a class="btn btn-large" href="<?= $this->url(array(), "account"); ?>">
+                <i class="icon-arrow-right"></i> Configurar a sua conta
+            </a>&nbsp;&nbsp;&nbsp;
+                <a class="btn btn-large" href="<?= $this->url(array(), "ad_new"); ?>">
+                    <i class="icon-arrow-right"></i> Anunciar
+                </a>
+            </p>
+        </div>
+    </div><!-- end of .row -->
+</div><!-- end of .container -->

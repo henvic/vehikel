@@ -15,19 +15,12 @@ $form = $this->confirmForm;
             <h1>Cadastro</h1>
             <form enctype="application/x-www-form-urlencoded" action="<?= $form->getAction(); ?>" class="form-stacked" method="post">
             <?php
-                //echo $form;
                 echo $form->name, $form->email, $form->newusername, $form->password, $form->password_confirm;
 
                 $tosElement = $form->getElement("tos");
                 $tosErrors = $tosElement->getErrors();
-
-                if (! empty($tosErrors)) {
-                    $tosErrorClass = " error ";
-                } else {
-                    $tosErrorClass = "";
-                }
             ?>
-                <div class="control-group <?= $tosErrorClass; ?>">
+                <div class="control-group<?= (empty($tosErrors)) ? "" : " error"; ?>">
                     <div class="controls">
                         <label class="checkbox inline">
                         <input type="hidden" name="tos" value="0" />
@@ -41,7 +34,7 @@ $form = $this->confirmForm;
                         Eu concordo com os Termos de Serviço
                         </label>&nbsp;<small> <a href="/tos" title="Termos de Serviço" rel="external">(abrir)</a></small>
                         <?php
-                            if (! empty($tosErrorClass)) {
+                            if (! empty($tosError)) {
                         ?>
                         <span class="help-block">Você deve concordar com os Termos de Serviço para poder continuar.</span>
                         <?php
