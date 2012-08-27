@@ -2,10 +2,32 @@
 
 class Ml_Form_SignUp extends Twitter_Bootstrap_Form_Horizontal
 {
+    protected $_config = null;
+
+    /**
+     * @param null $options
+     * @param Zend_Config array $config
+     */
+    public function __construct($options = null, array $config)
+    {
+        $this->_config = $config;
+
+        return parent::__construct($options);
+    }
+
     public function init()
     {
-        $url = $this->getView()->url(array(), "join");
+        $this->setMethod('post');
+
+        if ($this->_config['ssl']) {
+            $url = 'https://' . $this->_config['webhostssl'];
+        } else {
+            $url = '';
+        }
+
+        $url .= $this->getView()->url(array(), "join");
         $this->setAction($url);
+
         $this->setMethod('post');
 
         $this->addElementPrefixPath('Ml_Validate', 'Ml/Validate/', 
@@ -19,7 +41,8 @@ class Ml_Form_SignUp extends Twitter_Bootstrap_Form_Horizontal
             'filters'    => array('StringTrim'),
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(1, 50))
-                )
+                ),
+            'prepend' => '<i class="icon-user"></i>',
         ));
         
         $email = $this->addElement('text', 'email', array(
@@ -33,7 +56,8 @@ class Ml_Form_SignUp extends Twitter_Bootstrap_Form_Horizontal
                 array('validator' => 'StringLength', 'options' => array(1, 60)),
                 array('validator' => 'emailNewUser'),//stringlenght there also
                 array('validator' => 'EmailAddress')
-                )
+                ),
+            'prepend' => '<i class="icon-envelope"></i>',
         ));
         
         $this->addElement(Ml_Model_AntiAttack::captchaElement());
