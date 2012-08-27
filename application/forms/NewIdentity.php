@@ -31,13 +31,15 @@ class Ml_Form_NewIdentity extends Twitter_Bootstrap_Form_Horizontal
             'filters'    => array('StringTrim'),
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(1, 50))
-            )
+            ),
+            'prepend' => '<i class="icon-user"></i>',
         ));
 
         $email = $this->addElement('text', 'email', array(
             'label'      => 'Endereço de email:',
             'required'   => true,
             "readonly" => true,
+            'prepend' => '<i class="icon-envelope"></i>',
             'append' => '<i class="icon-ok"></i>',
         ));
 
