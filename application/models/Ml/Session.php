@@ -116,12 +116,8 @@ class Ml_Model_Session extends Ml_Model_AccessSingleton
     
     public function logout()
     {
-        $logger = Ml_Model_Logger::getInstance();
-        
         $auth = Zend_Auth::getInstance();
-        
-        $logger->log(array("action" => "logout_request"));
-        
+
         $oldUid = $auth->getIdentity();
         
         $auth->clearIdentity();
@@ -147,11 +143,7 @@ class Ml_Model_Session extends Ml_Model_AccessSingleton
     
     public function remoteLogout()
     {
-        $logger = Ml_Model_Logger::getInstance();
-        
         $auth = Zend_Auth::getInstance();
-        
-        $logger->log(array("action" => "remote_logout_request"));
         
         $sessionsList = $this->listRecentSessionsMeta($auth->getIdentity());
         
