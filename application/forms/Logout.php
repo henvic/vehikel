@@ -3,6 +3,10 @@ class Ml_Form_Logout extends Zend_Form
 {
     public function init()
     {
+        $url = $this->getView()->url(array(), "logout");
+        $this->setAction($url);
+        $this->setMethod('post');
+
         $this->addElementPrefixPath('Ml_Validate', 'Ml/Validate/', 
         Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('Ml_Filter', 'Ml/Filter/', 
