@@ -15,6 +15,8 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
      * @var string
      */
     protected $_lastActivityPrefix = "la_";
+
+    protected $_auth = null;
     
     /**
      * Constructor
@@ -22,13 +24,16 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
      * @param Zend_Cache_Core $handler
      * @param string $sessionPrefix session prefix
      * @param string $activityPrefix last activity prefix
+     * @param Zend_Auth $auth
      */
-    public function __construct($handler, $sessionPrefix = null, $lastActivityPrefix)
+    public function __construct($handler, $sessionPrefix = null, $lastActivityPrefix, Zend_Auth $auth = null)
     {
         if ($lastActivityPrefix) {
             $this->setLastActivityPrefix($lastActivityPrefix);
         }
-        
+
+        $this->_auth = $auth;
+
         return parent::__construct($handler, $sessionPrefix);
     }
     
@@ -75,14 +80,8 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
      */
     public function write($id, $data)
     {
-        $auth = Zend_Auth::getInstance();
-        
-        $registry = Zend_Registry::getInstance();
-        
-        $config = $registry->get("config");
-        
         //if user is identified, save additional information
-        if ($auth->hasIdentity()) {
+        if ($this->_auth->hasIdentity()) {
             $frontController = Zend_Controller_Front::getInstance();
             
             //if for some reason (which might be or not right) the script
@@ -93,7 +92,7 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
             } else {
                 $responseCode = '';
             }
-            
+
             $requestInfo = array("http_user_agent" => (string) $_SERVER['HTTP_USER_AGENT'],
                 "request_method" => (string) $_SERVER['REQUEST_METHOD'],
                 "remote_addr" => (string) $_SERVER['REMOTE_ADDR'],
@@ -102,7 +101,7 @@ class Ml_Session_SaveHandler_PlusCache extends Ml_Session_SaveHandler_Cache
                 "request_uri" => (string) $_SERVER['REQUEST_URI'],
                 "http_response_code" => (string) $responseCode,
                 "session" => (string) $id,
-                "uid" => (string) $auth->getIdentity());
+                "uid" => (string) $this->_auth->getIdentity());
             
             $this->_cache->save($requestInfo, 
             $this->_lastActivityPrefix . $id, array(), 
