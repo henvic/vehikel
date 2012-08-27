@@ -12,7 +12,7 @@ services:
         class: Ml_Model_Credential
     loggerAdapterMongo:
         class: Ml_Logger_Adapter_Mongo
-        arguments: [%logger.adapter.mongo.collection%, %logger.adapter.mongo.db%, @Mongo, @zend_auth]
+        arguments: [%logger.adapter.mongo.collection%, %logger.adapter.mongo.db%, @Mongo, @zendAuth]
     logger:
         class: Ml_Logger
-        arguments: [@loggerAdapterMongo, @zend_auth]
+        arguments: [@loggerAdapterMongo, @zendAuth]
