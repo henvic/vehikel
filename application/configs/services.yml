@@ -8,6 +8,8 @@ services:
     signup:
         class: Ml_Model_SignUp
         arguments: [@memCache]
+    credential:
+        class: Ml_Model_Credential
     loggerAdapterMongo:
         class: Ml_Logger_Adapter_Mongo
         arguments: [%logger.adapter.mongo.collection%, %logger.adapter.mongo.db%, @Mongo, @zend_auth]
