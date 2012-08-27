@@ -9,9 +9,6 @@
  *
  */
 
-namespace Ml;
-use Ml;
-
 class Install
 {
     protected $_env = false;
@@ -218,7 +215,7 @@ class Install
     public function __construct()
     {
         require __DIR__ . "/../library/Ml/Console/Colors.php";
-        $this->colors = new Console_Colors();
+        $this->colors = new Ml_Console_Colors();
 
         if (getenv("TRAVIS")) {
             $this->_env = "travis-ci";
@@ -244,6 +241,8 @@ Follow the instructions on:\nhttps://github.com/henvic/MediaLab/blob/master/READ
         $this->savePhpEnvironment($env);
 
         $this->copyConfig($env["APPLICATION_CONF_FILE"]);
+
+        mkdir($env['CACHE_PATH'] . "/tests");
 
         fwrite(STDOUT, $this->colors->getColoredString("Finished installation.\n\n", "light_green"));
     }
