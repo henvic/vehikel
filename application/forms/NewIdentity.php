@@ -61,7 +61,6 @@ class Ml_Form_NewIdentity extends Twitter_Bootstrap_Form_Horizontal
         ));
 
         $this->addElement('password', 'password', array(
-            'filters'    => array('StringTrim'),
 //            'description' => "Six or more characters required; case-sensitive",
             'validators' => array(
                 array('validator' =>
@@ -78,7 +77,6 @@ class Ml_Form_NewIdentity extends Twitter_Bootstrap_Form_Horizontal
         ));
         
         $this->addElement('password', 'password_confirm', array(
-            'filters'    => array('StringTrim'),
             'required'   => true,
             'label'      => 'Repita a senha:',
         ));

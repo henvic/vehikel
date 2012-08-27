@@ -17,7 +17,6 @@ class Ml_Form_NewPassword extends Zend_Form
         
         if ($auth->hasIdentity()) {
             $this->addElement('password', 'currentpassword', array(
-                'filters'    => array('StringTrim'),
                 'validators' => array(
                     array('validator' => 'matchPassword') //stringlenght there
                 ),
@@ -29,7 +28,6 @@ class Ml_Form_NewPassword extends Zend_Form
         }
         
         $this->addElement('password', 'password', array(
-            'filters'    => array('StringTrim'),
             'description' => "Six or more characters required; case-sensitive",
             'validators' => array(
                 array('validator' => 'StringLength', 'options' => array(6, 20)),
