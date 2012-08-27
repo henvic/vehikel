@@ -1,20 +1,57 @@
 <?php
-$this->headTitle("Login screen");
+$this->headTitle("Acesse sua conta");
 ?>
-<div class="row">
-<div class="span10">
-<?php if ($this->errorlogin): ?>
-<h2>Duh! Something is wrong!</h2>
-<img src="<?php echo $this->staticVersion("/illustrations/girl-showing-tongue.jpg"); ?>" alt="" width="424" height="283" />
-<?php else: ?>
-<h2>Come in! We are waiting for you!</h2>
-<img src="<?php echo $this->staticVersion("/illustrations/girl-inviting.jpg"); ?>" alt="" width="424" height="283" />
-<?php endif; ?>
-</div>
-<div class="span5">
-<h2>Access your account</h2>
-<?php echo $this->loginform; ?>
-<p><small><a href="<?php echo $this->url(array(), "recover") ?>">Lost your username or password?</a><br />
-Not already a user? <a href="<?php echo $this->url(array(), "join") ?>">Join us</a>.</small></p>
-</div>
-</div>
+&nbsp;
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <h1>Acesse sua conta</h1>
+            <form enctype="application/x-www-form-urlencoded" action="<?= $this->loginform->getAction(); ?>" class="form-stacked" method="post">
+                <?php
+                    echo $this->loginform->username;
+
+                    // just give password feedback if the user has not a challenge error set
+                    $passwordErrorsArray = $this->loginform->password->getErrors();
+                    $challengeErrorsArray = array();
+                    if (is_object($this->loginform->challenge)) {
+                        $challengeErrorsArray = $this->loginform->challenge->getErrors();
+                    }
+
+                    if (! empty($passwordErrorsArray) && empty($challengeErrorsArray)) {
+                        $passwordError = true;
+                    } else {
+                        $passwordError = false;
+                    }
+                ?>
+                <div class="control-group<?= ($passwordError) ? ' error' : '' ?>">
+                    <label for="password" class="control-label required">Senha</label>
+                    <div class="controls">
+                        <input type="password" name="password" id="password" value="" required="required" class="" />
+                        <?php
+                            if ($passwordError) {
+                                echo '<span class="help-inline">Senha incorreta</span>';
+                            }
+                        ?>
+                    </div>
+                </div>
+                <?php
+                    if (is_object($this->loginform->challenge)) {
+                        echo $this->loginform->challenge;
+                    }
+                ?>
+                <fieldset class="form-inline">
+                    <input type="hidden" name="remember_me" value="0" />
+                    <label class="checkbox">
+                        <input type="checkbox" name="remember_me" value="1" /> Relembrar-me
+                    </label>
+                    <button type="submit" class="btn">Entrar</button>
+                </fieldset>
+                &nbsp;
+                <ul class="unstyled">
+                    <li><a href="<?php echo $this->url(array(), "recover") ?>">Perdeu seu usuário ou senha?</a></li>
+                    <li><a href="<?php echo $this->url(array(), "join"); ?>">Cadastre-se</a></li>
+                </ul>
+            </form>
+        </div>
+    </div><!-- end of .row -->
+</div><!-- end of .container -->
