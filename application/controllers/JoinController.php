@@ -3,140 +3,136 @@
  * Sign Up
 */
 
-class JoinController extends Zend_Controller_Action
+class JoinController extends Ml_Controller_Action
 {
     public function indexAction()
     {
-        $auth = Zend_Auth::getInstance();
-        $registry = Zend_Registry::getInstance();
-        
-        $router = Zend_Controller_Front::getInstance()->getRouter();
-        
-        $config = $registry->get('config');
-        
-        $request = $this->getRequest();
-        
-        if ($auth->hasIdentity()) {
-            $this->_redirect($router->assemble(array(), "logout") . "?please", array("exit"));
+        if ($this->_auth->hasIdentity()) {
+            $this->_redirect($this->_router->assemble(array(), "logout") . "?please", array("exit"));
         }
+
+        $signUp =  $this->_sc->get("signup");
+        /** @var $signUp \Ml_Model_SignUp() */
+
+        $form = new Ml_Form_SignUp(null, $this->_config);
         
-        $signUp = Ml_Model_SignUp::getInstance();
-        
-        $form = $signUp->signUpForm();
-        
-        if ($request->isPost() && $form->isValid($request->getPost())) {
+        if (! $this->_request->isPost() || ! $form->isValid($this->_request->getPost())) {
+            $this->view->signUpForm = $form;
+        } else {
             $data = $form->getValues();
             
-            if (isset($data['invitecode'])) {
-                $inviteCode = $data['invitecode'];
-            } else {
-                $inviteCode = false;
+            $newUserInfo = $signUp->create($data['name'], $data['email']);
+
+            if (! $newUserInfo) {
+                throw new Exception("Could not sign up the user.");
             }
-            
-            $newUserInfo = $signUp->newUser($data['name'], $data['email'], $inviteCode);
-            
-            $this->view->entry = $newUserInfo;
-            
-            $mail = new Zend_Mail();
-            
+
+            $this->view->newUserInfo = $newUserInfo;
+
+            $mail = new Ml_Mail($this->_registry->get("config"));
+
             $mail->setBodyText($this->view->render("join/email.phtml"))
-                ->setFrom($config['robotEmail']['addr'], $config['robotEmail']['name'])
                 ->addTo($data['email'], $data['name'])
-                ->setSubject('Your new ' . $config['applicationname'] . ' account')
+                ->setSubject('Cadastro - ' . $this->_config['applicationname'])
                 ->send();
-            
-            $this->view->success = true;
-        } else {
-            $this->view->signUpForm = $form;
+
+            $this->render("check-email");
         }
     }
-    
+
     public function unavailableAction()
     {
     }
-    
+
     public function confirmAction()
     {
-        $auth = Zend_Auth::getInstance();
-        
-        $request = $this->getRequest();
-        
-        $registry = Zend_Registry::getInstance();
-        
-        $router = Zend_Controller_Front::getInstance()->getRouter();
-        
-        $config = $registry->get("config");
-        
-        if ($auth->hasIdentity()) {
-            $registry->set("pleaseSignout", true);
-            return $this->_forward("index", "logout");
+        if ($this->_auth->hasIdentity()) {
+            $this->_redirect($this->_router->assemble(array(), "logout") . "?please", array("exit"));
         }
-        
-        $signUp = Ml_Model_SignUp::getInstance();
-        $credential = Ml_Model_Credential::getInstance();
-        $people = Ml_Model_People::getInstance();
-        $profile = Ml_Model_Profile::getInstance();
-        
-        if ($config['ssl'] && (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")) {
-            $this->_redirect("https://" . $config['webhostssl'] .
-              $router->assemble(array($request->getUserParams()), 
-              "join_emailconfirm"), array("exit"));
+
+        if ($this->_config['ssl'] && (! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")) {
+            $this->_redirect("https://" . $this->_config['webhostssl'] .
+                $this->_router->assemble(array($this->_request->getUserParams()),
+                    "join_emailconfirm"), array("exit"));
         }
-        
-        $securityCode = $request->getParam("security_code");
-        
-        $confirmationInfo = $signUp->getByHash($securityCode);
-        
-        if (! $confirmationInfo) {
+
+        $signUp =  $this->_sc->get("signup");
+        /** @var $signUp \Ml_Model_SignUp() */
+
+        $securityCode = $this->_request->getParam("security_code");
+        $read = $signUp->read($securityCode);
+
+        if (! $read) {
             $this->getResponse()->setHttpResponseCode(404);
             return $this->_forward("unavailable");
         }
-        
-        $form = $signUp->newIdentityForm($securityCode);
-           
-        if ($request->isPost() && $form->isValid($request->getPost())) {
-            $newUsername = $form->getValue("newusername");
-            $password = $form->getValue("password");
-            
-            $preUserInfo = (array(
-            "alias" => $newUsername, 
-            "membershipdate" => $confirmationInfo['timestamp'], 
-            "name" => $confirmationInfo['name'], 
-            "email" => $confirmationInfo['email']));
-            
-            $uid = $people
-            ->create($newUsername, $password, $preUserInfo, $confirmationInfo);
-            
-            $getUserByUsername = $people->getByUsername($preUserInfo['alias']);
-            
-            $adapter = $credential
-            ->getAuthAdapter($getUserByUsername['id'], $password);
-            
-            if ($adapter) {
-                $result  = $auth->authenticate($adapter);
-                if ($result->getCode() != Zend_Auth_Result::SUCCESS) {
-                    throw new Exception("Could not authenticate 'just created' user");
-                }
-            }
-            
-            Zend_Session::regenerateId();
-            
-            $this->_redirect($router->assemble(array(), "join_welcome"), array("exit"));
+
+        $people =  $this->_sc->get("people");
+        /** @var $people \Ml_Model_People() */
+        $userInfo = $people->getByEmail($read["email"]);
+
+        if (is_array($userInfo)) {
+            $read = false;
+            $signUp->delete($securityCode);
+            $this->getResponse()->setHttpResponseCode(410);
+            return $this->_forward("unavailable");
         }
-        
-        $this->view->entry = $confirmationInfo;
-        $this->view->confirmForm = $form;
+
+        $form = new Ml_Form_NewIdentity(null, $securityCode, $this->_config);
+
+        $form->populate(
+            array(
+                "name" => $read["name"],
+                "email" => $read["email"]
+            )
+        );
+
+        if (! $this->_request->isPost() || ! $form->isValid($this->_request->getPost())) {
+            $this->view->entry = $read;
+            $this->view->confirmForm = $form;
+            return true;
+        }
+
+        $values = $form->getValues();
+
+        $people =  $this->_sc->get("people");
+        /** @var $people \Ml_Model_People() */
+
+        $credential =  $this->_sc->get("credential");
+        /** @var $credential \Ml_Model_Credential() */
+
+        ignore_user_abort(true);
+
+        // remove authorization to create account
+        $signUp->delete($securityCode);
+
+        $userInfoId = $people->create($values["newusername"], $values["name"], $values["email"]);
+
+        if (! $userInfoId) {
+            throw new Exception("Could not create user account.");
+        }
+
+        $credential->setCredential($userInfoId, $values["password"]);
+
+        $adapter = $credential->getAuthAdapter($userInfoId, $values["password"]);
+
+        $result = $this->_auth->authenticate($adapter);
+
+        if ($result->getCode() != Zend_Auth_Result::SUCCESS) {
+            throw new Exception("Could not authenticate: " . implode(" ", $result->getCode()));
+        }
+
+        Zend_Session::regenerateId();
+
+        $this->_redirect($this->_router->assemble(array(), "join_welcome"), array("exit"));
     }
     
     public function welcomeAction()
     {
-        $auth = Zend_Auth::getInstance();
-        
-        if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()
-            ->registerPlugin(new Ml_Plugins_LoginRedirect());
+        if (! $this->_auth->hasIdentity()) {
+            $this->getFrontController()->registerPlugin(new Ml_Plugins_LoginRedirect());
         }
-        
+
         $this->view->joined = true;
     }
 }
