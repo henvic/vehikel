@@ -1,5 +1,5 @@
 <?php
-class Ml_Form_Logout extends Zend_Form
+class Ml_Form_Logout extends Twitter_Bootstrap_Form_Vertical
 {
     public function init()
     {
@@ -13,17 +13,15 @@ class Ml_Form_Logout extends Zend_Form
         Zend_Form_Element::FILTER);
         
         $this->addElement('submit', 'remote_signout', array(
-            'label'    => 'Sign out all other sessions',
-            'class'    => 'btn',
+            'label'    => 'Fechar as outras sessões',
+            'class'    => 'btn bnt-large',
         ));
         
         $this->addElement('submit', 'signout', array(
-            'label'    => 'Sign out!',
-            'class'    => 'btn danger',
+            'label'    => 'Sair',
+            'class'    => 'btn btn-danger',
         ));
         
         $this->addElement(Ml_Model_MagicCookies::formElement());
-        
-        $this->setAttrib('class', 'form-stacked');
     }
 }
