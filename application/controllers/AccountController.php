@@ -117,9 +117,8 @@ class AccountController extends Zend_Controller_Action
                 $this->view->securitycode = $securitycode;
                 
                 $mail->setBodyText($this->view->render("account/emailChange.phtml"))
-                ->setFrom($config['robotEmail']['addr'], $config['robotEmail']['name'])
                 ->addTo($changeData['email'], $signedUserInfo['name'])
-                ->setSubject('Changing your '.$config['applicationname'].' email')
+                ->setSubject('Changing your email')
                 ->send();
                 
                 $this->view->changeEmail = true;

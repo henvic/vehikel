@@ -33,7 +33,7 @@ class JoinController extends Ml_Controller_Action
 
             $mail->setBodyText($this->view->render("join/email.phtml"))
                 ->addTo($data['email'], $data['name'])
-                ->setSubject('Cadastro - ' . $this->_config['applicationname'])
+                ->setSubject('Cadastro')
                 ->send();
 
             $this->render("check-email");
