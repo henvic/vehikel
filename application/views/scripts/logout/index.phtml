@@ -1,113 +1,140 @@
 <?php
+$this->headTitle("Sair");
 
 $registry = Zend_Registry::getInstance();
 $config = $registry->get("config");
 
-$this->headTitle("Sign out");
+?>
+&nbsp;
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <h1>Sair de <?php echo $this->escape($config['applicationname']); ?></h1>
+            <?php
+            if ($this->remoteLogoutDone) {
+                ?>
+                <p><strong>Your other sessions have been signed out!</strong></p>
+            <?php
+                }
+            ?>
+            <?php
+                if (! is_null(filter_input(INPUT_GET, "please", FILTER_UNSAFE_RAW))) {
+            ?>
+                <div class="alert alert-info">
+                    <p>
+                        <strong>A ação que você tentou realizar não pode ser feita enquanto conectado com este usuário.</strong><br />
+                        Por favor, saia e tente novamente.
+                    </p>
+                </div>
+            <?php
+                }
+            ?>
+            <p><span class="label label-info">Dica</span> Caso se esqueça de se deslogar deste site em um computador público, feche todas as outras sessões através desta página.</p>
+            <?php echo $this->logoutForm; ?>
+        </div>
+    </div><!-- end of .row -->
+    <div clas="row">
+        <h2>Últimos acessos a esta conta</h2>
+        <table id="last-activity-table" class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Tipo de acesso</th>
+                <th>Localidade (endereço IP)</th>
+                <th>Data/Hora</th>
+                <th>Sessão</th>
+            </tr>
+            </thead>
+            <?php
+                $currentSession = Zend_Session::getId();
+                $accessTimeTmp = new Zend_Date();
+                $counter = 0;
+                foreach ($this->recentActivity as $singleActivity) {
+                    $counter++;
+                ?>
+                <tr
+                 <?php
+                    if ($singleActivity) {
+                        if ($currentSession == $singleActivity['session']) {
+                            echo ' class="success"';
+                        } else if ($singleActivity['status'] == Ml_Model_Session::OPEN_STATUS) {
+                            echo ' class="info"';
+                        }
+                    }
+                 ?>>
+                    <?php
+                        if (! $singleActivity) {
+                    ?>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <?php
+                            } else {
+                        ?>
+                        <td><?php echo $this->escape($counter); ?></td>
+                        <td>Navegador</td>
+                        <td>
+                            <?php
+                            if (isset($singleActivity['geo']) && is_array($singleActivity['geo'])) {
+                                echo $this->escape($singleActivity['geo']['country_name']);
+                                if ($singleActivity['geo']['region']) {
+                                    echo $this->escape(" (".$singleActivity['geo']['region'].")");
+                                }
+                            } else {
+                                echo "-";
+                            }
 
-$signedUserInfo = $registry->get("signedUserInfo");
-?>
-<div class="row">
-<div class="span12">
-<?php
-if (! is_null(filter_input(INPUT_GET, "please", FILTER_UNSAFE_RAW)) ||
- $registry->isRegistered("pleaseSignout")):
-?>
-<h2>Logout first</h2>
-<p>Either an action you have tried to perform or a section you have tried to access can not be performed as a signed in user to the account <em><?php echo $this->escape($signedUserInfo['name']) ?> (<?php echo $this->escape($signedUserInfo['alias']); ?>)</em>. Please, sign out and try again.</p>
-<?php endif; ?>
-<h2>Sign out of <?php echo $this->escape($config['applicationname']); ?></h2>
-<p>If you ever forget to logout from a public computer, sign out all other sessions from this page.</p>
-<h3>Last activity on this account</h3>
-<table id="last-activity-table" class="zebra-striped">
-<thead>
-<tr>
-<th class="purple">#</th>
-<th class="yellow">Access Type</th>
-<th class="blue">Location (IP address)</th>
-<th class="green">Date/Time</th>
-<th class="red">Connection</th>
-</tr>
-</thead>
-<?php
-$currentSession = Zend_Session::getId();
-$accessTimeTmp = new Zend_Date();
-$counter = 0;
-foreach ($this->recentActivity as $singleActivity):
-$counter++;
-?>
-<tr>
-<?php
-if (! $singleActivity):
-?>
-<td>-</td>
-<td>-</td>
-<td>-</td>
-<td>-</td>
-<td>-</td>
-<?php else: ?>
-<td><?php echo $this->escape($counter); ?></td>
-<td>Browser</td>
-<td>
-<?php
-if (isset($singleActivity['geo']) && is_array($singleActivity['geo'])) {
-    echo $this->escape($singleActivity['geo']['country_name']);
-    if ($singleActivity['geo']['region']) {
-        echo $this->escape(" (".$singleActivity['geo']['region'].")");
-    }
-} else {
-    echo "-";
-}
-
-if (isset($singleActivity['remote_addr'])) {
-?>
-<br />
-(<?php echo $this->escape($singleActivity['remote_addr']); ?>)
-<?php
-}
-?>
-</td>
-<td>
-<?php
-if (isset($singleActivity['request_time'])) {
-    $accessTimeTmp->set($singleActivity['request_time'], Zend_Date::TIMESTAMP);
-    echo $this->escape($accessTimeTmp . " GMT " . $accessTimeTmp->getGmtOffset()) .
-    "<br />" . $this->escape(Ml_Model_Time::ago($accessTimeTmp, Zend_Date::TIMESTAMP));
-} else {
-?>-<?php
-}
-?></td>
-<?php endif; ?>
-<td>
-<?php
-if ($singleActivity['status'] == Ml_Model_Session::OPEN_STATUS):
-?>
-Active
-<?php
-if ($currentSession == $singleActivity['session']) {
-    echo ' <span class="label important">you</span>';
-}
-?>
-<?php else: ?>
-Closed
-<?php endif; ?>
-</td>
-</tr>
-<?php
-endforeach;
-unset($counter);
-unset($singleActivity);
-unset($accessTimeTmp);
-?>
-</table>
-<p><span class="label notice">Notice</span> The data show above might not be complete or accurate.
-<br /><br />
-You are connected from IP address <?php echo $this->escape($_SERVER['REMOTE_ADDR']); ?></p>
-<?php
-if ($this->remoteLogoutDone):
-?>
-<p><strong>Your other sessions have been signed out!</strong></p>
-<?php endif; ?>
-<?php echo $this->logoutForm ?>
-</div>
-</div>
+                            if (isset($singleActivity['remote_addr'])) {
+                                ?>
+                                <br />
+                                (<?php echo $this->escape($singleActivity['remote_addr']); ?>)
+                                <?php
+                            }
+                            ?>
+                        </td>
+                        <td>
+                            <?php
+                            if (isset($singleActivity['request_time'])) {
+                                $accessTimeTmp->set($singleActivity['request_time'], Zend_Date::TIMESTAMP);
+                                echo $this->escape($accessTimeTmp . " GMT " . $accessTimeTmp->getGmtOffset()) .
+                                    "<br />" . $this->escape(Ml_Model_Time::ago($accessTimeTmp, Zend_Date::TIMESTAMP));
+                            } else {
+                                ?>-<?php
+                            }
+                            ?>
+                        </td>
+                    <?php
+                        }
+                    ?>
+                    <td>
+                        <?php
+                        if ($singleActivity['status'] == Ml_Model_Session::OPEN_STATUS) {
+                            ?>
+                            <?php
+                            if ($currentSession == $singleActivity['session']) {
+                                echo '<span class="badge badge-success">Ativa (atual)</span>';
+                            } else {
+                                echo '<span class="badge badge-info">Ativa</span>';
+                            }
+                            ?>
+                            <?php
+                                } else {
+                            ?>
+                            <span class="badge">Inativa</span>
+                            <?php
+                                }
+                            ?>
+                    </td>
+                </tr>
+                <?php
+                    }
+                   unset($counter);
+                   unset($singleActivity);
+                   unset($accessTimeTmp);
+                ?>
+        </table>
+        <p><span class="label label-info">Aviso</span> Os dados acima podem não ser completos ou corretos.</p>
+    </div><!-- end of .row -->
+</div><!-- end of .container -->
