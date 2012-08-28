@@ -1,22 +1,21 @@
 <?php
 $this->headTitle("Sair");
-
-$registry = Zend_Registry::getInstance();
-$config = $registry->get("config");
-
 ?>
 &nbsp;
 <div class="container">
     <div class="row">
         <div class="span12">
-            <h1>Sair de <?php echo $this->escape($config['applicationname']); ?></h1>
             <?php
             if ($this->remoteLogoutDone) {
                 ?>
-                <p><strong>Your other sessions have been signed out!</strong></p>
-            <?php
-                }
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <p>As suas outras sessões foram fechadas.</p>
+                </div>
+                <?php
+            }
             ?>
+            <h1>Sair do site</h1>
             <?php
                 if (! is_null(filter_input(INPUT_GET, "please", FILTER_UNSAFE_RAW))) {
             ?>
@@ -114,7 +113,7 @@ $config = $registry->get("config");
                             ?>
                             <?php
                             if ($currentSession == $singleActivity['session']) {
-                                echo '<span class="badge badge-success">Ativa (atual)</span>';
+                                echo '<span class="badge badge-success">Atual</span>';
                             } else {
                                 echo '<span class="badge badge-info">Ativa</span>';
                             }
