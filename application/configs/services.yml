@@ -19,3 +19,6 @@ services:
     session:
         class: Ml_Model_Session
         arguments: [@zendAuth , @memCache]
+    login_form:
+        class: Ml_Form_Login
+        arguments: [null, @config]
