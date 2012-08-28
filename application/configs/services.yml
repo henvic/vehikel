@@ -22,3 +22,5 @@ services:
     login_form:
         class: Ml_Form_Login
         arguments: [null, @config]
+    logout_form:
+        class: Ml_Form_Logout
