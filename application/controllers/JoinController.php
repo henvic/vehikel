@@ -29,7 +29,7 @@ class JoinController extends Ml_Controller_Action
 
             $this->view->newUserInfo = $newUserInfo;
 
-            $mail = new Ml_Mail($this->_registry->get("config"));
+            $mail = new Zend_Mail('UTF-8');
 
             $mail->setBodyText($this->view->render("join/email.phtml"))
                 ->addTo($data['email'], $data['name'])

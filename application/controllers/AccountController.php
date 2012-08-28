@@ -111,8 +111,8 @@ class AccountController extends Zend_Controller_Action
                 
                 $securitycode =
                 $emailChange->newChange($signedUserInfo['id'], $changeData['email'], $signedUserInfo['name']);
-                
-                $mail = new Zend_Mail();
+
+                $mail = new Zend_Mail('UTF-8');
                 
                 $this->view->securitycode = $securitycode;
                 
