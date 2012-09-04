@@ -27,30 +27,6 @@ class GarbageController extends Zend_Controller_Action
         " (seconds) deleted in antiattack: " . $deleted . "\n";
     }
     
-    public function cleanoldnewusersAction()
-    {
-        $maxAge = 24 * 60 * 60;
-        
-        $signUp = Ml_Model_SignUp::getInstance();
-        
-        $deleted = $signUp->gc($maxAge);
-        
-        echo "Number of rows with age > " . $maxAge .
-        " (seconds) deleted in signUp: " . $deleted . "\n";
-    }
-    
-    public function cleanoldrecoverAction()
-    {
-        $maxAge = 48 * 60 * 60;
-        
-        $recover = Ml_Model_Recover::getInstance();
-        
-        $deleted = $recover->gc($maxAge);
-        
-        echo "Number of rows with age > " . $maxAge .
-        " (seconds) deleted in recover: " . $deleted . "\n";
-    }
-    
     public function cleanoldemailchangeAction()
     {
         $maxAge = 48 * 60 * 60;
