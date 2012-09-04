@@ -20,7 +20,7 @@ class LogoutController extends Ml_Controller_Action
             $signedUserInfo = $this->_registry->get("signedUserInfo");
         }
 
-        $form = $this->_sc->get("logout_form");
+        $form = $this->_sc->get("logoutForm");
         /** @var $form \Ml_Form_Logout() */
 
         if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {

@@ -62,7 +62,7 @@ class LoginController extends Ml_Controller_Action
             return $this->_forward("goback");
         }
 
-        $form =  $this->_sc->get("login_form");
+        $form =  $this->_sc->get("loginForm");
         /** @var $form \Ml_Form_Login() */
 
         if (Ml_Model_AntiAttack::ensureHuman()) {

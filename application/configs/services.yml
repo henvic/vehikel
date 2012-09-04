@@ -22,10 +22,10 @@ services:
     session:
         class: Ml_Model_Session
         arguments: [@zendAuth , @memCache]
-    login_form:
+    loginForm:
         class: Ml_Form_Login
         arguments: [null, @config]
-    logout_form:
+    logoutForm:
         class: Ml_Form_Logout
     recoverForm:
         class: Ml_Form_Recover
