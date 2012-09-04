@@ -42,6 +42,7 @@ class JoinController extends Ml_Controller_Action
 
     public function unavailableAction()
     {
+        $this->getResponse()->setHttpResponseCode(410);
     }
 
     public function confirmAction()
@@ -63,7 +64,6 @@ class JoinController extends Ml_Controller_Action
         $read = $signUp->read($securityCode);
 
         if (! $read) {
-            $this->getResponse()->setHttpResponseCode(404);
             return $this->_forward("unavailable");
         }
 
@@ -74,7 +74,6 @@ class JoinController extends Ml_Controller_Action
         if (is_array($userInfo)) {
             $read = false;
             $signUp->delete($securityCode);
-            $this->getResponse()->setHttpResponseCode(410);
             return $this->_forward("unavailable");
         }
 
