@@ -72,7 +72,6 @@ class Ml_Form_NewIdentity extends Twitter_Bootstrap_Form_Horizontal
         ));
 
         $this->addElement('password', 'password', array(
-//            'description' => "Six or more characters required; case-sensitive",
             'validators' => array(
                 array('validator' =>
                     'StringLength', 'options' => array(6, 20)

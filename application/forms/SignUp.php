@@ -36,7 +36,7 @@ class Ml_Form_SignUp extends Twitter_Bootstrap_Form_Horizontal
         Zend_Form_Element::FILTER);
         
         $this->addElement('text', 'name', array(
-            'label'      => 'Nome:',
+            'label'      => 'Nome',
             'required'   => true,
             'filters'    => array('StringTrim'),
             'validators' => array(
@@ -46,7 +46,7 @@ class Ml_Form_SignUp extends Twitter_Bootstrap_Form_Horizontal
         ));
         
         $email = $this->addElement('text', 'email', array(
-            'label'      => 'Endereço de email:',
+            'label'      => 'Endereço de email',
             'required'   => true,
             'description' =>
                 '<small>Leia a <a href="/privacy" rel="external">'.
