@@ -36,14 +36,14 @@ class Ml_Model_SignUpTest extends PHPUnit_Framework_TestCase
 
         $example = $signUp->create($name, $email);
 
-        $read = $signUp->read($example["securitycode"]);
+        $read = $signUp->read($example["security_code"]);
 
         $this->assertArrayHasKey("name", $example);
         $this->assertArrayHasKey("email", $example);
-        $this->assertArrayHasKey("securitycode", $example);
+        $this->assertArrayHasKey("security_code", $example);
         $this->assertEquals($example, $read, "Retrieved object is different than stored object");
 
-        $delete = $signUp->delete($example["securitycode"]);
+        $delete = $signUp->delete($example["security_code"]);
         $this->assertTrue($delete, "Object could not be removed");
     }
 
