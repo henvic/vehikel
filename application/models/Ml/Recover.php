@@ -1,94 +1,67 @@
 <?php
-class Ml_Model_Recover extends Ml_Model_AccessSingleton
+class Ml_Model_Recover
 {
-    protected static $_dbTableName = "recover";
-    
-    protected static $_dbPrimaryRow = "uid";
-    
-    /**
-     * Singleton instance
-     *
-     */
-    protected static $_instance = null;
-    
-    public static function form()
+    const REQUEST_EXPIRAL_TIME = 86400;
+
+    protected $_cache = null;
+    protected $_cachePrefix = "recover_req_";
+
+    public function __construct(Zend_Cache_Core $cache)
     {
-        static $form = '';
-        
-        if (! is_object($form)) {
-            $router = Zend_Controller_Front::getInstance()->getRouter();
-            
-            $form = new Ml_Form_Recover(array(
-                'action' => $router->assemble(array(), "recover"),
-                'method' => 'post',
-            ));
-        }
-        return $form;
+        $this->_cache = $cache;
     }
-    
-    /**
-     * 
-     * Creates a new case for password recovery
-     * @param big int $uid
-     * @return security code
-     */
-    public function newCase($uid)
+
+    public function create($uid)
     {
-        $securityCode = sha1(md5(mt_rand(0, 1000) . time() . microtime()) .
-        deg2rad(mt_rand(0, 360)));
-        
-        $this->_dbAdapter
-        ->query('INSERT INTO `recover` (`uid`, `securitycode`) VALUES (?, ?) ON DUPLICATE KEY UPDATE uid=VALUES(uid), securitycode=VALUES(securitycode), timestamp=CURRENT_TIMESTAMP',
-        array($uid, $securityCode));
-        
-        return $securityCode;
-    }
-    
-    /**
-     * 
-     * Remove the existing case for password recovery for a given user
-     * @param big int $uid
-     */
-    public function closeCase($uid)
-    {
-        $delete = $this->_dbTable->delete($this->_dbAdapter->quoteInto('uid = ?', $uid));
-        
-        return ($delete) ? true : false;
-    }
-    
-    /**
-     * 
-     * Get authorization for password change / account recovery
-     * @param big int $uid
-     * @param string $securityCode
-     * @return authorization info array on success, false on failure
-     */
-    public function getAuthorization($uid, $securityCode)
-    {
-        $select = $this->_dbTable->select()
-        ->where("uid = ?", $uid)
-        ->where("securitycode = ?", $securityCode)
-        ->where("CURRENT_TIMESTAMP < TIMESTAMP(timestamp, '12:00:00')");
-        
-        $recoverInfo = $this->_dbTable->fetchRow($select);
-        if (! is_object($recoverInfo)) {
+        $securityCode = sha1($uid . openssl_random_pseudo_bytes(20) . mt_rand() . microtime());
+
+        $data = array("uid" => $uid, "security_code" => $securityCode);
+
+        $saved = $this->_cache->save($data, $this->getCacheKey($uid, $securityCode), array(), self::REQUEST_EXPIRAL_TIME);
+
+        if ($saved) {
+            return $data;
+        } else {
             return false;
         }
-        return $recoverInfo->toArray();
     }
-    
-	/**
-     * 
-     * Garbage collector
-     * @param int $maxAge in seconds
-     * @return number of deleted items
-     */
-    public function gc($maxAge)
+
+    public function read($uid, $securityCode)
     {
-        $deleted = $this->_dbAdapter
-         ->delete($this->_dbTable->getTableName(), $this->_dbAdapter
-         ->quoteInto("timestamp < ?", date("Y-m-d H:i:s", time() - ($maxAge))));
-         
-         return $deleted;
+        if (! $this->isCacheKeySane($uid, $securityCode)) {
+            return false;
+        }
+
+        return $this->_cache->load($this->getCacheKey($uid, $securityCode));
+    }
+
+    public function delete($uid, $securityCode)
+    {
+        if (! $this->isCacheKeySane($uid, $securityCode)) {
+            return false;
+        }
+
+        return $this->_cache->remove($this->getCacheKey($uid, $securityCode));
+    }
+
+    /**
+     * Checks if the passed params seems to be sane to be passed as part of cache key
+     * @param $uid
+     * @param $securityCode
+     * @return bool
+     */
+    protected function isCacheKeySane($uid, $securityCode)
+    {
+        if (! ctype_digit($uid) || strlen($uid) > 20 || ! ctype_xdigit($securityCode) || strlen($securityCode) != 40) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function getCacheKey($uid, $securityCode)
+    {
+        return $this->_cachePrefix . $uid . "_" . $securityCode;
     }
 }
+

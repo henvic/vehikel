@@ -10,6 +10,9 @@ services:
         arguments: [@memCache]
     credential:
         class: Ml_Model_Credential
+    recover:
+        class: Ml_Model_Recover
+        arguments: [@memCache]
     loggerAdapterMongo:
         class: Ml_Logger_Adapter_Mongo
         arguments: [%logger.adapter.mongo.collection%, %logger.adapter.mongo.db%, @Mongo, @zendAuth]
@@ -24,3 +27,6 @@ services:
         arguments: [null, @config]
     logout_form:
         class: Ml_Form_Logout
+    recoverForm:
+        class: Ml_Form_Recover
+        arguments: [null, @people]

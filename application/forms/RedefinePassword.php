@@ -1,14 +1,16 @@
 <?php
 
-class Ml_Form_NewPassword extends Twitter_Bootstrap_Form_Horizontal
+class Ml_Form_RedefinePassword extends Twitter_Bootstrap_Form_Horizontal
 {
     protected $_config = null;
 
-    public function __construct($options = null, array $config)
+    public function __construct($options = null, array $config, $uid = null, $securityCode = null)
     {
         $this->_config = $config;
 
-        $path = $this->getView()->url(array(), "password");
+        $path = $this->getView()->url(array("confirm_uid" => $uid,
+                "security_code" => $securityCode),
+            "password_recovering");
 
         if ($this->_config['ssl']) {
             $action = 'https://' . $this->_config['webhostssl'] . $this->_config['webroot'] . $path;

@@ -1,48 +1,39 @@
 <?php
-//require_once 'Zend/Validate/Abstract.php';
-//require_once 'Zend/Validate/Hostname.php';
-
 
 class Ml_Validate_AccountRecover extends Zend_Validate_Abstract
 {
     const MSG_USERNAME_NOT_FOUND = 'usernameNotFound';
     const MSG_EMAIL_NOT_FOUND = 'emailNotFound';
-    
+
     protected $_messageTemplates = array(
         self::MSG_USERNAME_NOT_FOUND => "No user by this username was found.",
         self::MSG_EMAIL_NOT_FOUND => "No user using this email was found.",
     );
- 
+
+    protected $_people = null;
+
+    public function __construct(Ml_Model_People $people)
+    {
+        $this->_people = $people;
+    }
+
     public function isValid($value)
     {
-        $registry = Zend_Registry::getInstance();
-        
         $this->_setValue($value);
-         
+
         $valueString = (string) $value;
-        
-        if (mb_strlen($value) < 1 || mb_strlen($value) > 100) {
-            return false;
+
+        $userInfo = $this->_people->get($value);
+
+        if (! empty($userInfo)) {
+            return true;
         }
-        
-        $method = (strpos($value, '@') === FALSE) ? "alias" : "email";
-        
-        $people = Ml_Model_People::getInstance();
-        
-        if ($method ==  "alias") {
-            $getUser = $people->getByUsername($value);
+
+        if (strpos($value, '@') === false) {
+            $this->_error(self::MSG_USERNAME_NOT_FOUND);
         } else {
-            $getUser = $people->getByEmail($value);
+            $this->_error(self::MSG_EMAIL_NOT_FOUND);
         }
-        
-        if (empty($getUser)) {
-            if($method == "alias") $this->_error(self::MSG_USERNAME_NOT_FOUND);
-            else $this->_error(self::MSG_EMAIL_NOT_FOUND);
-            return false;
-        }
-        
-        $registry->set("accountRecover", $getUser);
-        
-        return true;
+        return false;
     }
 }

@@ -1,0 +1,29 @@
+<?php
+//this is an e-mail text
+$registry = Zend_Registry::getInstance();
+$config = $registry->get('config');
+?>
+Olá <?php echo $this->escape($this->userInfo['name']); ?>!
+
+Alguém ou você pediu para resetar a sua senha.
+
+O seu nome de usuário é <?php echo $this->escape($this->userInfo['username']); ?>.
+
+Para resetar a sua senha acesse
+<?php
+
+if ($config['ssl']) {
+    echo "https://" . $config['webhostssl'];
+} else {
+    echo "http://" . $config['webhost'];
+}
+
+echo $this->url(array("confirm_uid" => $this->recoverInfo["uid"],
+"security_code" => $this->recoverInfo["security_code"]), "password_recovering");
+?>
+
+-
+<?php
+echo $this->escape($config['applicationname']) . "\n"
+. $this->escape($config['webhost']);
+?>

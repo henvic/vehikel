@@ -1,6 +1,13 @@
 <?php
-$this->headTitle("Can't change your password");
+$this->headTitle("Não foi possível recuperar a sua senha");
 ?>
-<h2>Can't change your password</h2>
-<p>We are sorry, but you can't change your password. Most likely you tried to recover your account and we emailed you a link that you could use to set up a new password and you took longer than we would expect.</p>
-<p><small><a href="<?php echo $this->url(array(), "recover") ?>">Lost your username or password?</a></small></p>
+&nbsp;
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <h1>Não foi possível recuperar a sua senha</h1>
+            <p>Provavelmente você já a recuperou ou esse link de confirmação expirou.<br /><br />
+                <a href="<?php echo $this->url(array(), "recover"); ?>" class="btn">Tentar recuperar a senha novamente</a></p>
+        </div>
+    </div><!-- end of .row -->
+</div><!-- end of .container -->

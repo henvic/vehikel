@@ -1,133 +1,130 @@
 <?php
-class PasswordController extends Zend_Controller_Action
+class PasswordController extends Ml_Controller_Action
 {
     public function unavailableAction()
     {
-        $this->getResponse()->setHttpResponseCode(404);
+        $this->getResponse()->setHttpResponseCode(410);
     }
-    
+
     public function recoverAction()
     {
-        $request = $this->getRequest();
-        
-        $registry = Zend_Registry::getInstance();
-        $auth = Zend_Auth::getInstance();
-        
-        $config = $registry->get('config');
-        
-        if ($auth->hasIdentity()) {
-            $registry->set("pleaseSignout", true);
-            return $this->_forward("index", "logout");
+        if ($this->_auth->hasIdentity()) {
+            $this->_redirect($this->_router->assemble(array(), "logout") . "?please", array("exit"));
         }
-        
-        $people = Ml_Model_People::getInstance();
-        $recover = Ml_Model_Recover::getInstance();
-        
-        $form = $recover->form();
-        
-        if ($request->isPost() && $form->isValid($request->getPost())) {
-            $find = $form->getValues();
-            
-            //AccountRecover.php validator pass this data: not very hortodox
-            $getUser = $registry->accountRecover;
-            
-            $securityCode = $recover->newCase($getUser['id']);
-            
-            $this->view->securitycode = $securityCode;
-            $this->view->recoverUser = $getUser;
-            
-            $this->view->recovering = true;
-            
-            $mail = new Zend_Mail();
-            
+
+        $recover =  $this->_sc->get("recover");
+        /** @var $recover \Ml_Model_Recover() */
+
+        $form =  $this->_sc->get("recoverForm");
+        /** @var $form \Ml_Form_Recover() */
+
+        $people =  $this->_sc->get("people");
+        /** @var $people \Ml_Model_People() */
+
+        if (! $this->_request->isPost() || ! $form->isValid($this->_request->getPost())) {
+            $this->view->recoverForm = $form;
+        } else {
+            $data = $form->getValues();
+
+            $userInfo = $people->get($data['recover']);
+
+            if (! $userInfo) {
+                throw new Exception("Error in retrieving userInfo");
+            }
+
+            $recoverInfo = $recover->create($userInfo['id']);
+
+            if (! $recoverInfo) {
+                throw new Exception("Error in creating security code");
+            }
+
+            $this->view->recoverInfo = $recoverInfo;
+
+            $mail = new Zend_Mail('UTF-8');
+
             $mail
-            ->setBodyText($this->view->render("password/emailRecover.phtml"))
-            ->setFrom($config['robotEmail']['addr'], $config['robotEmail']['name'])
-            ->addTo($getUser['email'], $getUser['name'])
-            ->setSubject('Recover your '.$config['applicationname'].' account')
-            ->send();
+                ->setBodyText($this->view->render("password/email-recover.phtml"))
+                ->addTo($userInfo['email'], $userInfo['name'])
+                ->setSubject('Perdeu seu usuário ou senha?')
+                ->send();
+
+            $this->render("check-email-recover");
         }
-        
-        $this->view->recoverForm = $form;
     }
-    
+
+
+    public function recoveringAction()
+    {
+        $people =  $this->_sc->get("people");
+        /** @var $people \Ml_Model_People() */
+
+        $credential =  $this->_sc->get("credential");
+        /** @var $credential \Ml_Model_Credential() */
+
+        $recover =  $this->_sc->get("recover");
+        /** @var $recover \Ml_Model_Recover() */
+
+        $params = $this->_request->getParams();
+
+        $recoverInfo = $recover->read($params["confirm_uid"], $params["security_code"]);
+
+        if (! $recoverInfo) {
+            return $this->_forward("unavailable");
+        }
+
+        $userInfo = $people->getById($recoverInfo['uid']);
+
+        if (! $userInfo) {
+            throw new Exception("Error in retrieving userInfo.");
+        }
+
+        $form = new Ml_Form_RedefinePassword(
+            null,
+            $this->_config,
+            $params["confirm_uid"],
+            $params["security_code"]
+        );
+
+        if (! $this->_request->isPost() || ! $form->isValid($this->_request->getPost())) {
+            $form->setDefault("username", $userInfo['username']);
+
+            $this->view->redefinePasswordForm = $form;
+        } else {
+            $recover->delete($recoverInfo["uid"], $recoverInfo["security_code"]);
+            $credential->setCredential($recoverInfo["uid"], $form->getValue("password"));
+
+            $this->render("redefined");
+        }
+    }
+
     public function passwordAction()
     {
-        $request = $this->getRequest();
-        
-        $auth = Zend_Auth::getInstance();
-        $registry = Zend_Registry::getInstance();
-        
-        $router = Zend_Controller_Front::getInstance()->getRouter();
-        
-        $people = Ml_Model_People::getInstance();
-        $credential = Ml_Model_Credential::getInstance();
-        $recover = Ml_Model_Recover::getInstance();
-        
-        $params = $request->getParams();
-        
-        $this->view->request = $request;
-        
-        if ($auth->hasIdentity()) {
-            if (isset($params['confirm_uid'])) {
-                $this->_redirect($router->assemble(array(), "logout") . "?please", array("exit"));
-            }
-            
-            $form = $credential->newPasswordForm();
-            $uid = $auth->getIdentity();
-            $registry->set("changeUserProperPassword", true);
-            
-            $signedUserInfo = $registry->get("signedUserInfo");
-            
+        $people =  $this->_sc->get("people");
+        /** @var $people \Ml_Model_People() */
+
+        $credential =  $this->_sc->get("credential");
+        /** @var $credential \Ml_Model_Credential() */
+
+        $params = $this->_request->getParams();
+
+        if (! $this->_auth->hasIdentity()) {
+            $this->_frontController->registerPlugin(new Ml_Plugins_LoginRedirect());
+        }
+
+        $userInfo = $this->_registry->get("signedUserInfo");
+
+        $form = new Ml_Form_NewPassword(null, $this->_config);
+
+        if (! $this->_request->isPost() || ! $form->isValid($this->_request->getPost())) {
+            $form->setDefault("username", $userInfo['username']);
+
+            $this->view->redefinePasswordForm = $form;
         } else {
-            if (isset($params['confirm_uid']) && isset($params['security_code'])) {
-                $recoverInfo = $recover
-                ->getAuthorization($params["confirm_uid"], $params["security_code"]);
-                
-                if (! $recoverInfo) {
-                    return $this->_forward("unavailable");
-                }
-                
-                $form = $credential
-                ->newPasswordForm($params["confirm_uid"], $params["security_code"]);
-                
-                $uid = $recoverInfo['uid'];
-            } else {
-                return $this->_forward("redirect", "login");
-            }
+            $credential->setCredential($userInfo["id"], $form->getValue("password"));
+
+            $this->render("redefined");
         }
-        
-        if ($auth->hasIdentity()) {
-            $this->view->userInfoDataForPasswordChange = $signedUserInfo;
-        } else {
-            $userInfo = $people->getById($request->getParam("confirm_uid"));
-            $this->view->userInfoDataForPasswordChange = $userInfo;
-        }
-        
-        if ($request->isPost()) {
-            $credentialInfo = $credential->getByUid($uid);
-            
-            if (! $credentialInfo) {
-                $this->_redirect($router->assemble(array(), "index"), array("exit"));
-            }
-            
-            $registry->set('credentialInfoDataForPasswordChange', $credentialInfo);
-            
-            if ($form->isValid($request->getPost())) {
-                $password = $form->getValue("password");
-                
-                if (isset($recoverInfo)) {
-                    $recover->closeCase($uid);
-                }
-                
-                $credential->setCredential($uid, $password);
-                
-                $this->view->passwordReset = true;
-            }
-        }
-        if (! isset($this->view->passwordReset)) {
-            $this->view->passwordForm = $form;
-        }
+
     }
-    
+
 }
