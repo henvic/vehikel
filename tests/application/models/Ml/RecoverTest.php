@@ -14,7 +14,8 @@ class Ml_Model_RecoverTest extends PHPUnit_Framework_TestCase
     public function outOfRangeProvider()
     {
         return array(
-            array("f2", "39ba8b9xxx")
+            array("f2", "39ba8b9xxx"),
+            array("2223", "39ba8b9xxx")
         );
     }
 
