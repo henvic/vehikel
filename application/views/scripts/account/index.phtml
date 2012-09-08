@@ -1,29 +1,52 @@
-<?php 
-$registry = Zend_Registry::getInstance();
-$config = $registry->get("config");
-
-$this->headTitle("Your account overview");
-$signedUserInfo = $registry->get("signedUserInfo");
-
-$this->accountForm
-->getElement("about")->getDecorator("description")->setEscape(false);
-
+<?php
+    $this->headTitle("Sua conta");
+    $form = $this->accountForm;
 ?>
-<div class="row">
-<div class="span12">
-<h2>Welcome, <?php echo $this->escape($signedUserInfo['name']) ?></h2>
-<?php if(isset($this->changeEmail) && $this->changeEmail): ?>
-<strong>You have set a new e-mail address for your account. But before you start using it we require you validate it. We have sent you an e-mail to the new address confirming this operation.</strong>
-<?php endif; ?>
-<?php echo $this->accountForm ?>
-<h3>More options</h3>
-<ul>
-<li><a href="<?php echo $this->url(array(), "accountapps"); ?>">Applications</a></li>
-<li><a href="<?php echo $this->url(array(), "logout"); ?>" id="remote_signout_link" rel="nofollow">Recent activity</a></li>
-<li><a href="<?php echo $this->url(array(), "accountdelete"); ?>" rel="nofollow" class="btn danger">Delete your account</a></li>
-</ul>
-</div>
-<div class="span3">
-<?php echo $this->render("/account/menu.phtml"); ?>
-</div>
+<div class="container">
+    <div class="row">
+        <?= $this->render("/account/menu.phtml"); ?>
+        <div class="span6">
+        <?php
+            if ($this->changeEmail) {
+        ?>
+            &nbsp;
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <p>Você requisitou uma atualização de email. Um email com um link de ativação foi enviado para o seu email. A mudança será efetuada apenas quando esta ativação for concluída.</p>
+            </div>
+        <?php
+            }
+        ?>
+            <h1>Sua conta</h1>
+            <form enctype="application/x-www-form-urlencoded" action="<?= $form->getAction(); ?>" class="form-stacked" method="post">
+                <?php
+                    echo $form->name, $form->username, $form->email;
+                ?>
+                <div class="controls">
+                    <label class="checkbox inline optional">
+                        <input type="hidden" name="private_email" value="0" />
+                        <input type="checkbox" name="private_email" value="1"
+                            <?php
+                            if($form->getElement("private_email")->getValue() == "1") {
+                                echo ' checked="checked" ';
+                            }
+                            ?>
+                            />
+                        Não mostrar email publicamente
+                    </label>
+                </div>
+                &nbsp;
+                <?php
+                    echo $form->website, $form->location, $form->about;
+                ?>
+                <div class="form-actions">
+                    <input type="submit" name="submit" id="submit" value="Salvar" class="btn btn-primary btn-large" />
+                </div>
+                <?php
+                    echo $form->hash;
+                ?>
+            </form>
+            <a href="<?php echo $this->url(array(), "accountdelete"); ?>" rel="nofollow" class="btn btn-danger btn-mini">Apagar sua conta</a>
+        </div>
+    </div>
 </div>
