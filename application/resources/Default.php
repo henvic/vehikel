@@ -18,17 +18,16 @@ class Ml_Resource_Default extends Zend_Application_Resource_ResourceAbstract
         $request = $frontController->getRequest();
         
         $router = $frontController->getRouter();
-        $router->removeDefaultRoutes();
 
-        $compat = new Zend_Controller_Router_Route_Module(array(), $dispatcher, $request);
+        $compat = new Zend_Controller_Router_Route('*');
         
         $router->addRoute("default", $compat);
         
         $routerConfig = $cacheFiles->getConfigIni(APPLICATION_PATH . '/configs/' . HOST_MODULE . 'Routes.ini');
         
         $router->addConfig($routerConfig, "routes");
-        
-        $frontController->registerPlugin(new Ml_Plugins_ReservedUsernames());
+
+        $router->removeDefaultRoutes();
         
         Zend_Controller_Action_HelperBroker::getStaticHelper("Redirector")->setPrependBase(false);
         
