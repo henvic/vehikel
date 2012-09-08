@@ -1,29 +1,32 @@
 <?php
-$accountLinks = array(
-"index" => array("Settings" => $this->url(array(), "account")),
-"picture" => array("Picture" => $this->url(array(), "accountpicture")),
-"twitter" => array("Twitter" => $this->url(array(), "accounttwitter")),
-//"applications" => array("Applications" => $this->url(array(), "accountapps")),
-"password" => array("Password" => $this->url(array(), "password")),
+$currentRoute = Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName();
+
+$menuLinks = array(
+    "Configurações gerais" => "account",
+    "Imagem do perfil" => "accountpicture",
+    "Redefinir sua senha" => "password",
+    "Últimos acessos" => "logout"
 );
-?>
-<ul id="nav-account" class="verticalmenu">
-<?php
 
-$request = Zend_Controller_Front::getInstance()->getRequest();
-
-foreach ($accountLinks as $action => $rel) {
-    if ($action == $request->getActionName()) :
-    ?>
-    <li class="active"><a href="<?php echo current($rel) ?>"><?php echo key($rel) ?></a></li>
-    <?php
-    else :
-    ?>
-    <li><a href="<?php echo current($rel) ?>"><?php echo key($rel) ?></a></li>
-    <?php
-    endif;
-}
-unset($action);
-unset($rel);
 ?>
-</ul>
+<div class="span3">
+    &nbsp;
+    <ul class="nav nav-pills nav-stacked">
+        <?php
+        foreach ($menuLinks as $name => $route) {
+            if ($currentRoute != $route) {
+                ?><li><?php
+            } else {
+            ?><li class="disabled"><?php
+            }
+    ?><a href="<?php
+                echo $this->url(array(), $route);
+            ?>"><i class="icon-chevron-right"></i> <?php
+                echo $this->escape($name);
+            ?></a>
+    <?php
+            echo '</li>';
+        }
+    ?>
+    </ul>
+</div>
