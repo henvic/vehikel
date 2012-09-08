@@ -1,0 +1,13 @@
+<?php
+$this->headTitle("Não foi possível confirmar o seu email");
+?>
+&nbsp;
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <h1>Não foi possível confirmar o seu email</h1>
+            <p>Provavelmente você já o confirmou ou esse link de confirmação expirou.<br /><br />
+                <a href="<?php echo $this->url(array(), "account"); ?>" class="btn">Tentar modificar o seu email novamente</a></p>
+        </div>
+    </div><!-- end of .row -->
+</div><!-- end of .container -->
