@@ -123,6 +123,10 @@ class JoinController extends Ml_Controller_Action
 
         Zend_Session::regenerateId();
 
+        $session =  $this->_sc->get("session");
+        /** @var $session \Ml_Model_Session() */
+        $session->associate($this->_auth->getIdentity(), Zend_Session::getId());
+
         $this->_redirect($this->_router->assemble(array(), "join_welcome"), array("exit"));
     }
     
