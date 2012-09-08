@@ -20,7 +20,7 @@ class Ml_Model_SignUp
      */
     public function create($name, $email)
     {
-        $securityCode = sha1($email . mt_rand() . microtime());
+        $securityCode = sha1($email . openssl_random_pseudo_bytes(40) . mt_rand() . microtime());
 
         $data = array("name" => $name,
             "email" => $email,
