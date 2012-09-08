@@ -86,7 +86,7 @@ class LoginController extends Ml_Controller_Action
             //the captcha is required.
             if ($form->isValid($this->_request->getPost())) {//@see below
                 $session =  $this->_sc->get("session");
-                /** @var $session \Ml_Session() */
+                /** @var $session \Ml_Model_Session() */
 
                 //rememberMe and ForgetMe already regenerates the ID
                 if ($form->getElement("remember_me")->isChecked()) {
