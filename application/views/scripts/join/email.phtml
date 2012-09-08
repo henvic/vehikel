@@ -14,7 +14,7 @@ if ($config['ssl']) {
     echo "http://" . $config['webhost'];
 }
 
-echo $this->url(array("security_code" => $this->newUserInfo['securitycode']), "join_emailconfirm");
+echo $this->url(array("security_code" => $this->newUserInfo['security_code']), "join_emailconfirm");
 ?>
 
 
