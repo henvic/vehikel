@@ -1,16 +1,12 @@
 <?php
 
-class StaticController extends Zend_Controller_Action
+class StaticController extends Ml_Controller_Action
 {
     public function docsAction()
     {
-        $registry = Zend_Registry::getInstance();
-        
-        $config = $registry->get("config");
-        
         $request = $this->getRequest();
         
-        $intReqUri = mb_substr($_SERVER['REQUEST_URI'], mb_strlen($config['webroot']));
+        $intReqUri = mb_substr($_SERVER['REQUEST_URI'], mb_strlen($this->_config['webroot']));
         
         // avoid the Null-Byte attack (%00 at the URI) which is the same as 'end of string'
         $safeIntReqUri = str_replace(chr(0), "", $intReqUri);
