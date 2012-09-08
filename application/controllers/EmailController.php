@@ -1,38 +1,30 @@
 <?php
 
-class EmailController extends Zend_Controller_Action
+class EmailController extends Ml_Controller_Action
 {
+    public function unavailableAction()
+    {
+        $this->getResponse()->setHttpResponseCode(410);
+    }
+
     public function confirmAction()
     {
-        $auth = Zend_Auth::getInstance();
+        $people =  $this->_sc->get("people");
+        /** @var $people \Ml_Model_People() */
+
+        $emailChange =  $this->_sc->get("emailChange");
+        /** @var $emailChange \Ml_Model_EmailChange() */
         
-        $router = Zend_Controller_Front::getInstance()->getRouter();
+        $confirmUid = $this->_request->getParam("confirm_uid");
+        $securityCode = $this->_request->getParam("security_code");
         
-        $request = $this->getRequest();
-        
-        $people = Ml_Model_People::getInstance();
-        
-        $emailChange = Ml_Model_EmailChange::getInstance();
-        
-        $confirmUid = $request->getParam("confirm_uid");
-        $securityCode = $request->getParam("security_code");
-        
-        $changeInfo = $emailChange->get($confirmUid, $securityCode);
+        $changeInfo = $emailChange->read($confirmUid, $securityCode);
         
         if (! $changeInfo) {
-            $this->_redirect("/email/unconfirmed", array("exit"));
+            return $this->_forward("unavailable");
         }
-        
-        if ($auth->hasIdentity() && $changeInfo['uid'] != $auth->getIdentity()) {
-            $this->_redirect($router->assemble(array(), "logout") . "?please", array("exit"));
-        }
-        
-        $confirm = $emailChange->setChange($confirmUid, $changeInfo['email']);
-        
-        if ($confirm) {
-            $this->_redirect($this->view->StaticUrl("/email/confirmed"), array("exit"));
-        } else {
-            throw new Exception("Couldn't confirm new e-mail.");
-        }
+
+        $emailChange->delete($confirmUid, $securityCode);
+        $people->update($confirmUid, array("email" => $changeInfo["new_email"]));
     }
 }
