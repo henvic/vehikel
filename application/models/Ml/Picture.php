@@ -1,268 +1,140 @@
 <?php
 
-/**
- * 
- * Deals with the picture for the user account
- * 
- * @todo use a cropping system
- *
- */
 class Ml_Model_Picture
 {
-    protected static $_imageQuality = 80;
-    
-    /** Explantion for the $sizes array data:
-     * 0: urihelper: for the links, i.e., /pictures/<id>/s is for the small pic
-     * 1: typeextension: for the picture uri, i.e., <id>/sq.jpg
-     * 2: name: the name of the resource
-     * 3: dimension: the largest possible dimension for that picture resource
-     */
-    protected $_sizes = array(//array("h", "-h", "huge", 2048),
-        array("b", "-b", "large", 1024),
-        array("m", "", "medium", 500),
-        array("s", "-m", "small", 240),
-        array("t", "-t", "thumbnail", 100),
-        array("sq", "-s", "square", 48));
-    
-    // the types below are given as in the $sizes array order
-    protected $_sizeTypes =
-     array("urihelper", "typeextension", "name", "dimension");
-    
+    protected $_imageQuality = 80;
+
+    protected $_s3config = null;
+
+    protected $_s3 = null;
+
     /**
-     * Singleton instance
-     *
+     * @param Zend_Config array $config
      */
-    protected static $_instance = null;
-    
-    
-    /**
-     * Singleton pattern implementation makes "new" unavailable
-     *
-     * @return void
-     */
-    protected function __construct()
+    public function __construct(array $config)
     {
+        $this->_s3config = $config['services']['S3'];
+        $this->_s3 = new Zend_Service_Amazon_S3($this->_s3config['key'], $this->_s3config['secret']);
     }
-    
+
+    protected $_sizes = array(
+        "square.jpg" => 75,
+        "square@2x.jpg" => 150,
+        "thumbnail.jpg" => 100,
+        "thumbnail@2x.jpg" => 200,
+        "small.jpg" => 320,
+        "small@2x.jpg" => 640,
+        "medium.jpg" => 800,
+        "medium@2x.jpg" => 1600,
+        "large.jpg" => 1280,
+        "large@2x.jpg" => 2096
+    );
+
     /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
+     * @param $source path to a image
+     * @param $prefix image prefix that should be used
+     * @return array with picture data in success, false otherwise
      */
-    protected function __clone()
+    public function create($source, $prefix)
     {
-    }
-    
-    
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
+        $originalIm = new Imagick($source);
+
+        $originalDimension = $originalIm->getimagegeometry();
+
+        if (! $originalDimension) {
+            return false;
         }
 
-        return self::$_instance;
-    }
-    
-    /**
-     * Get image size infos
-     * @param array with key => value, where key is the type of information
-     * @return array with a given's size datatable info and false in failure
-     */
-    public function getSizeInfo($sizeNeedle)
-    {
-        $match = false;
-        $hasKey = false;
-        
-        if (is_array($sizeNeedle)) {
-            $hasKey = true;
-            
-            $key = array_search(key($sizeNeedle), $this->_sizeTypes, true);
-            
-            $sizeNeedle = current($sizeNeedle);
-        }
-        
-        foreach ($this->_sizes as $size) {
-            if (in_array($sizeNeedle, $size)) {
-                if ($hasKey) {
-                    if ($size[$key] != $sizeNeedle) {
-                        continue;
-                    }
-                }
-                
-                $match = array_combine($this->_sizeTypes, $size);
-            }
-        }
-        
-        return $match;
-    }
-    
-    /**
-     * Calls the function above for each size and return
-     * for every element $sizes the appropriate data
-     * @return array with information for each size
-     */
-    public function getSizesInfo()
-    {
-        $data = array();
-        foreach ($this->_sizes as $size) {
-            $data[] = $this->getSizeInfo(array("name" => $size[2]));
-        }
-        
-        return $data;
-    }
-    
-    public static function pictureForm()
-    {
-        static $form = '';
-        
-        if (! is_object($form)) {
-            $router = Zend_Controller_Front::getInstance()->getRouter();
-            
-            $form = new Ml_Form_Picture(array(
-                'action' => $router->assemble(array(), "accountpicture"),
-                'method' => 'post',
-            ));
-        }
-        return $form;
-    }
-    
-    public function deleteFiles($userInfo)
-    {
-        $registry = Zend_Registry::getInstance();
-        $config = $registry->get("config");
-        
-        $s3config = $config['services']['S3'];
-        
-        $avatarInfo = unserialize($userInfo['avatarInfo']);
-        if (!isset($avatarInfo['secret'])) {
-            return false;
-        }
-        
-        $s3 = new Zend_Service_Amazon_S3($s3config['key'], $s3config['secret']);
-        
-        foreach ($this->_sizes as $sizeInfo) {
-            $s3->removeObject($s3config['headshotsBucket'] . "/" .
-            $userInfo['id'] . '-' . $avatarInfo['secret'] . $sizeInfo[1] . '.jpg');
-        }
-        
-        return true;
-    }
-    
-    public function deleteAvatar($userInfo)
-    {
-        $this->deleteFiles($userInfo);
-        
-        $people = Ml_Model_People::getInstance();
-        
-        $people->update($userInfo['id'], array("avatarInfo" => serialize(array())));
-        
-        return true;
-    }
-    
-    public function setAvatar($userInfo, $source)
-    {
-        $registry = Zend_Registry::getInstance();
-        $config = $registry->get("config");
-        
-        $people = Ml_Model_People::getInstance();
-        
-        $s3config = $config['services']['S3'];
-        
-        $s3 = new Zend_Service_Amazon_S3($s3config['key'], $s3config['secret']);
-        
-        try {
-            $im = new Imagick($source);
-            
-            $im->setimagecompressionquality(self::$_imageQuality);
-            
-            $dim = $im->getimagegeometry();
-            
-            if (! $dim) {
-                return false;
-            }
-            
-        } catch(Exception $e) {
-            return false;
-        }
-        
-        $sizesInfo = array();
-        $tmpFilenames = array();
-        $im->unsharpMaskImage(0 , 0.5 , 1 , 0.05);
-        foreach ($this->_sizes as $sizeInfo) {
-            $tmpFilenames[$sizeInfo[1]] = tempnam(sys_get_temp_dir(), 'HEADSHOT');
-            
-            if ($sizeInfo[0] == "sq") {
-                
-                if ($dim['height'] < $dim['width']) {
-                    $size = $dim['height'];
+        $originalIm->setimagecompressionquality($this->_imageQuality);
+
+        $originalIm->unsharpMaskImage(0 , 0.5 , 1 , 0.05);
+
+        $originalIm->setImageFormat('jpeg');
+
+        $files = array();
+
+        foreach ($this->_sizes as $partialPath => $maxDim) {
+            $im = $originalIm->getImage();
+
+            $tmpFile = tempnam(sys_get_temp_dir(), 'IMAGE-' . $prefix . '-' . mt_rand() . '-');
+
+            if ($partialPath == "square.jpg" || $partialPath == "square@2x.jpg") {
+                if ($originalDimension['height'] < $originalDimension['width']) {
+                    $size = $originalDimension['height'];
                 } else {
-                    $size = $dim['width'];
+                    $size = $originalDimension['width'];
                 }
-                
-                //@todo let the user crop using Javascript, so he/she can set the offsets (default 0,0)
-                $im->cropThumbnailImage($sizeInfo[3], $sizeInfo[3]);
-                
-            } else if ($dim['width'] < $sizeInfo[3] &&
-                $dim['height'] < $sizeInfo[3] && $sizeInfo[2] != 'huge') {
-                    copy($source, $tmpFilenames[$sizeInfo[1]]);
-            } else {
-                if ($dim['width'] > $dim['height']) {
-                    $im->resizeimage($sizeInfo[3], 0, Imagick::FILTER_LANCZOS, 1);
+                $im->cropThumbnailImage($maxDim, $maxDim);
+            } else if ($originalDimension['width'] > $maxDim && $originalDimension['height'] > $maxDim) {
+                if ($originalDimension['width'] > $originalDimension['height']) {
+                    $im->resizeimage($maxDim, 0, Imagick::FILTER_LANCZOS, 1);
                 } else {
-                    $im->resize(0, $sizeInfo[3], Imagick::FILTER_LANCZOS, 1);
+                    $im->resizeimage(0, $maxDim, Imagick::FILTER_LANCZOS, 1);
                 }
             }
-            
-            $im->writeimage($tmpFilenames[$sizeInfo[1]]);
-            
+
+            $im->writeimage($tmpFile);
+
             $imGeometry = $im->getimagegeometry();
-            
-            $sizesInfo[$sizeInfo[0]] = array("w" => $imGeometry['width'], "h" => $imGeometry['height']);
-        }
-        
-        $oldData = unserialize($userInfo['avatarInfo']);
-        
-        //get the max value of mt_getrandmax() or the max value of the unsigned int type
-        if (mt_getrandmax() < 4294967295) {
-            $maxRand = mt_getrandmax();
-        } else {
-            $maxRand = 4294967295;
-        }
-        
-        $newSecret = mt_rand(0, $maxRand);
-        
-        if (isset($oldData['secret'])) {
-            while ($oldData['secret'] == $newSecret) {
-                $newSecret = mt_rand(0, $maxRand);
-            }
-        }
-        
-        foreach ($tmpFilenames as $size => $file) {
-            if ($size == '_h') {
-                $privacy = Zend_Service_Amazon_S3::S3_ACL_PRIVATE;
-            } else {
-                $privacy = Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ;
-            }
-            
-            $picAddr = $s3config['headshotsBucket'] . "/" . $userInfo['id'] . '-' . $newSecret . $size . '.jpg';
-            
-            $meta = array(Zend_Service_Amazon_S3::S3_ACL_HEADER => $privacy,
-              "Content-Type" => Zend_Service_Amazon_S3::getMimeType($picAddr),
-              "Cache-Control" => "max-age=37580000, public",
-              "Expires" => "Thu, 10 May 2029 00:00:00 GMT"
+
+            $files[$partialPath] = array(
+                "path" => $tmpFile,
+                "width" => $imGeometry['width'],
+                "height" => $imGeometry['height']
             );
-            
-            $s3->putFile($file, $picAddr, $meta);
-            
-            unlink($file);
         }
-        
-        $newAvatarInfo = serialize(array("sizes" => $sizesInfo, "secret" => $newSecret));
-        $people->update($userInfo['id'], array("avatarInfo" => $newAvatarInfo));
-        
-        //delete the old files
-        $this->deleteFiles($userInfo);
-        
-        return true;
+
+        $secret = md5(openssl_random_pseudo_bytes(20) . mt_rand());
+
+        foreach ($files as $partialPath => &$info) {
+            $this->_s3->putFile(
+                $info["path"],
+                $this->getImagePath($prefix, $secret, $partialPath),
+                array(
+                    Zend_Service_Amazon_S3::S3_ACL_HEADER => Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ,
+                    "Content-Type" => "image/jpeg",
+                    "Cache-Control" => "max-age=37580000, public",
+                    "Expires" => "Thu, 10 May 2029 00:00:00 GMT"
+                )
+            );
+
+            unlink($info["path"]);
+            unset($info["path"]);
+        }
+
+        $this->_s3->putFile(
+            $source,
+            $this->getImagePath($prefix, $secret, "original"),
+            array(Zend_Service_Amazon_S3::S3_ACL_HEADER => Zend_Service_Amazon_S3::S3_ACL_PRIVATE)
+        );
+
+        return array("prefix" => $prefix, "secret" => $secret, "sizes" => $files);
+    }
+
+    public function delete($picturesInfo)
+    {
+        if (! is_array($picturesInfo)) {
+            return;
+        }
+
+        foreach ($this->_sizes as $sizeInfo) {
+            $this->_s3->removeObject($this->getImagePath($picturesInfo['prefix'], $picturesInfo['secret'], $sizeInfo[1]));
+        }
+
+        $this->_s3->removeObject($this->getImagePath($picturesInfo['prefix'], $picturesInfo['secret'], "original"));
+    }
+
+    public function getImagePath($prefix, $secret, $size)
+    {
+        $picturePath = $this->_s3config["picturesBucket"] . "/" . $prefix . "-" . $secret . "-" . $size;
+
+        return $picturePath;
+    }
+
+    public function getImageLink($prefix, $secret, $size)
+    {
+        $pictureLink = $this->_s3config["picturesBucketAddress"] . $prefix . "-" . $secret . "-" . $size;
+
+        return $pictureLink;
     }
 }
