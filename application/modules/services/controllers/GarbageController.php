@@ -26,16 +26,4 @@ class GarbageController extends Zend_Controller_Action
         echo "Number of rows with age > " . $maxAge .
         " (seconds) deleted in antiattack: " . $deleted . "\n";
     }
-    
-    public function cleanoldemailchangeAction()
-    {
-        $maxAge = 48 * 60 * 60;
-        
-        $emailChange = Ml_Model_EmailChange::getInstance();
-        
-        $deleted = $emailChange->gc($maxAge);
-        
-        echo "Number of rows with age > " . $maxAge .
-        " (seconds) deleted in EmailChange: " . $deleted . "\n";
-    }
 }
