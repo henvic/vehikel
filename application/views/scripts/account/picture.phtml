@@ -1,27 +1,38 @@
 <?php 
 $registry = Zend_Registry::getInstance();
-$this->headTitle("Change your avatar");
+$this->headTitle("Imagem do perfil");
 $signedUserInfo = $registry->get("signedUserInfo");
 ?>
-<div class="row">
-<div class="span12">
-<h2>Your picture</h2>
-<?php
-
-$avatarprofile = $this->avatarProfile($signedUserInfo);
-if ($avatarprofile) {
-    echo $avatarprofile; 
-} else {
-?><p><b>You don't have a picture.</b></p>
-<?php
-    $this->submitPictureForm->removeElement("delete");
-}
-
-?>
-<p>We can take almost any picture in the most common formats (JPEG, PNG and GIF). But a landscape JPEG with the important content in the center and aspect ratio 3:2 is advised to better suit on the layout. The file size can be up to 1&nbsp;MB.</p>
-<?php echo $this->submitPictureForm ?>
-</div>
-<div class="span3">
-<?php echo $this->render("/account/menu.phtml"); ?>
-</div>
+<div class="container">
+    <div class="row">
+        <?= $this->render("/account/menu.phtml"); ?>
+        <div class="span6">
+            <h1>Imagem do perfil</h1>
+            <form enctype="multipart/form-data" method="post" action="<?= $this->submitPictureForm->getAction(); ?>">
+                <div class="form-actions">
+                    <?php
+                        if ($this->pictureLink) {
+                    ?>
+                    <button class="btn btn-danger" name="delete" value="Remover"><i class="icon-remove icon-white"></i> Remover</button>
+                    <?php
+                        }
+                    ?>
+                    <button id="choose-image" class="btn btn-primary"><i class="icon-file icon-white"></i> Escolher uma imagem</button>
+                    <button class="btn btn-success" name="submit"><i class="icon-upload icon-white"></i> Enviar</button>
+                </div>
+                <input type="file" name="Image" id="upload-image" ignoreNoFile="1" />
+                <?= $this->submitPictureForm->getElement("hash"); ?>
+                <input type="hidden" name="MAX_FILE_SIZE" value="<?= $this->submitPictureForm->_max_picture_size; ?>" />
+            </form>
+            <?php
+                if ($this->pictureLink) {
+                    echo '<img src="', $this->pictureLink, '" class="img-polaroid" />';
+                } else {
+            ?><p><b>Você ainda não tem uma imagem do perfil.</b></p>
+            <?php
+                    $this->submitPictureForm->removeElement("delete");
+                }
+            ?>
+        </div>
+    </div>
 </div>
