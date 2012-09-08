@@ -10,6 +10,9 @@ services:
     signup:
         class: Ml_Model_SignUp
         arguments: [@memCache]
+    picture:
+        class: Ml_Model_Picture
+        arguments: [@config]
     credential:
         class: Ml_Model_Credential
     recover:
