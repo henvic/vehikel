@@ -5,6 +5,8 @@ parameters:
 services:
     mongo:
         class: Mongo
+    purifier:
+        class: Ml_Model_HtmlPurifier
     signup:
         class: Ml_Model_SignUp
         arguments: [@memCache]
