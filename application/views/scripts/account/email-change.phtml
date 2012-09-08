@@ -1,0 +1,30 @@
+<?php
+$config = Zend_Registry::getInstance()->get('config');
+?>
+Olá <?php echo $this->escape($this->signedUserInfo['name']) ?>!
+
+Alguém ou você pediu para modificar o seu email para este.
+
+O seu nome de usuário é <?= $this->escape($this->signedUserInfo['username']); ?>.
+
+Para conectar este email à sua conta acesse
+<?php
+
+if ($config['ssl']) {
+    echo "https://" . $config['webhostssl'];
+} else {
+    echo "http://" . $config['webhost'];
+}
+
+echo $this->url(array("confirm_uid" => $this->signedUserInfo['id'], "security_code" => $this->securityCode), "emailconfirm");
+?>
+
+Caso seja um engano não abra o link de confirmação.
+
+Política de privacidade - http://<?= $this->escape($config['webhost']) ?><?php echo $this->staticUrl("/privacy"); ?>
+
+
+-
+<?php
+echo $this->escape($config['applicationname']) . "\n"
+    . $this->escape($config['webhost']);
