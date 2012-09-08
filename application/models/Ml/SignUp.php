@@ -24,7 +24,7 @@ class Ml_Model_SignUp
 
         $data = array("name" => $name,
             "email" => $email,
-            "securitycode" => $securityCode);
+            "security_code" => $securityCode);
 
         $saved = $this->_cache->save($data, $this->_cachePrefix . $securityCode, array(), self::REQUEST_EXPIRAL_TIME);
 
