@@ -38,6 +38,8 @@ class PasswordController extends Ml_Controller_Action
                 throw new Exception("Error in creating security code");
             }
 
+            $this->view->userInfo = $userInfo;
+
             $this->view->recoverInfo = $recoverInfo;
 
             $mail = new Zend_Mail('UTF-8');
