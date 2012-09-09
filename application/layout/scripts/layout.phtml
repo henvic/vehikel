@@ -102,8 +102,7 @@ $this->headMeta() , PHP_EOL;
         </li>
 <?php
 } else {
-                $this->loginform = Ml_Model_Credential::loginForm();
-    ?>
+?>
                 <li id="navbar-user" class="dropdown">
                     <a href="<?php echo $this->url(array(), "login") ?>" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="icon-user icon-white"></i> Entrar
@@ -111,7 +110,7 @@ $this->headMeta() , PHP_EOL;
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <form class="navbar-login-well" enctype="application/x-www-form-urlencoded" action="<?php echo $this->loginform->getAction(); ?>" method="post">
+                            <form class="navbar-login-well" enctype="application/x-www-form-urlencoded" action="<?= $this->url(array(), "login"); ?>" method="post">
                                 <label for="navbar-login-username">Usuário ou email</label>
                                 <input type="text" id="navbar-login-username" name="username" required="required">
                                 <label for="navbar-login-password">Senha</label>
