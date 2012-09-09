@@ -52,6 +52,10 @@ class LoginController extends Ml_Controller_Action
         $sessionConfig = $this->_config['resources']['session'];
 
         Ml_Model_AntiAttack::loadRules();
+
+        $people =  $this->_sc->get("people");
+        /** @var $people \Ml_Model_People() */
+
         $credential =  $this->_sc->get("credential");
         /** @var $credential \Ml_Model_Credential() */
 
@@ -62,8 +66,7 @@ class LoginController extends Ml_Controller_Action
             return $this->_forward("goback");
         }
 
-        $form =  $this->_sc->get("loginForm");
-        /** @var $form \Ml_Form_Login() */
+        $form = new Ml_Form_Login(null, $this->_auth, $this->_config, $people, $credential);
 
         if (Ml_Model_AntiAttack::ensureHuman()) {
             $ensureHuman = true;
@@ -71,55 +74,46 @@ class LoginController extends Ml_Controller_Action
             $ensureHuman = false;
         }
 
-        if ($this->_request->isPost()) {
+        $this->view->loginform = $form;
 
-            ignore_user_abort(true);
+        if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
 
-            //A way to sign in only if captcha is right. This is a workaround to
-            //signout if the captcha is wrong.
-            //
-            //I've decided to put the sign in code in the validator itself,
-            //but couldn't find a way to make the password validator
-            //load after the captcha one (but to let it come first in code,
-            //and that's ugly on the screen) and get a result if the
-            //validation worked. Notice that it is only useful when
-            //the captcha is required.
-            if ($form->isValid($this->_request->getPost())) {//@see below
-                $session =  $this->_sc->get("session");
-                /** @var $session \Ml_Model_Session() */
+            $userInfo = $people->get($form->getValue("username"));
 
-                //rememberMe and ForgetMe already regenerates the ID
-                if ($form->getElement("remember_me")->isChecked()) {
-                    Zend_Session::rememberMe($sessionConfig['cookie_lifetime']);
-                } else {
-                    Zend_Session::ForgetMe();
-                }
+            if (! $userInfo) {
+                throw Exception("Couldn't retrieve userInfo for login");
+            }
 
-                $session->associate($this->_auth->getIdentity(), Zend_Session::getId());
+            $adapter = $credential->getAuthAdapter($userInfo["id"], $form->getValue("password"));
+            $result = $this->_auth->authenticate($adapter);
 
-                $logger->log(array("action" => "login",
-                    "username" => $form->getValue("username")));
+            if (! $result->isValid()) {
+                throw Exception("Login failure");
+            }
 
-                $this->_forward("goback");
+            $session =  $this->_sc->get("session");
+            /** @var $session \Ml_Model_Session() */
+
+            //rememberMe and ForgetMe already regenerates the ID
+            if ($form->getElement("remember_me")->isChecked()) {
+                Zend_Session::rememberMe($sessionConfig['cookie_lifetime']);
             } else {
-                //@see above
-                if ($this->_auth->hasIdentity()) {
-                    $this->_auth->clearIdentity();
-                }
+                Zend_Session::ForgetMe();
+            }
 
-                $logger->log(array("action" => "login_denied",
-                    "username" => $form->getValue("username")));
+            $session->associate($this->_auth->getIdentity(), Zend_Session::getId());
 
-                $this->view->errorlogin = true;
-            }//@end of workaround
+            $logger->log(array("action" => "login",
+                "username" => $form->getValue("username")));
+
+            return $this->_forward("goback");
         }
+
         $challenge = $form->getElement("challenge");
 
         //don't show missing value in the first time that asks for the captcha
         if (! $ensureHuman && is_object($challenge)) {
             $challenge->setErrorMessages(array("missingValue" => ''));
         }
-
-        $this->view->loginform = $form;
     }
 }
