@@ -22,6 +22,7 @@ define(['jquery', 'backbone', 'views/view', 'views/anotherView'], function ($, B
         },
         routes: {
             '': 'home',
+            'account/picture' : 'account/picture',
             '*default': 'default'
 
         },
@@ -34,6 +35,15 @@ define(['jquery', 'backbone', 'views/view', 'views/anotherView'], function ($, B
             if (! this.firstPageLoad()) {
                 return;
             }
+        },
+        'account/picture': function () {
+            if (! this.firstPageLoad()) {
+                return;
+            }
+
+            require(['views/account/picture'], function (AccountPictureView) {
+                var accountPictureView = new AccountPictureView();
+            });
         }
     });
 
