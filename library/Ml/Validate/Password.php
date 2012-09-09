@@ -5,41 +5,50 @@
 class Ml_Validate_Password extends Zend_Validate_Abstract
 {
     const MSG_WRONG_PASSWORD = 'wrongPassword';
-    
+
     protected $_messageTemplates = array(
         self::MSG_WRONG_PASSWORD => "Wrong password",
     );
- 
+
+    protected $_auth = null;
+
+    protected $_credential = null;
+
+    protected $_usernameValidate = null;
+
+    public function __construct(
+            Zend_Auth $auth,
+            Ml_Model_Credential $credential,
+            Ml_Validate_Username $usernameValidate
+    )
+    {
+        $this->_auth = $auth;
+
+        $this->_credential = $credential;
+
+        $this->_usernameValidate = $usernameValidate;
+    }
+
     public function isValid($value, $context = null)
-    {    
-        $registry = Zend_Registry::getInstance();
-        
-        $credential = Ml_Model_Credential::getInstance();
-        
+    {
         $this->_setValue($value);
-         
-        $valueString = (string) $value;
-        
-        if(mb_strlen($value) < 6 || mb_strlen($value) > 20) return false;
-        
-        if(!$registry->isRegistered('loginUserInfo')) return false;
-        $loginUserInfo = $registry->get('loginUserInfo');
-        
-        $adapter = $credential->getAuthAdapter($loginUserInfo['id'], $value);
-        
-        // Get our authentication adapter and check credentials
-        if ($adapter) {
-            $auth    = Zend_Auth::getInstance();
-            $result  = $auth->authenticate($adapter);
-            
-            if ($result->isValid()) {
-                return true;
-            }
-            
-            $this->_error(self::MSG_WRONG_PASSWORD);
-            Ml_Model_AntiAttack::log(Ml_Model_AntiAttack::WRONG_CREDENTIAL);
+
+        $value = (string) $value;
+
+        $userId = $this->_usernameValidate->getUserId();
+
+        if (! $userId) {
+            return false;
         }
-        
+
+        $adapter = $this->_credential->getAuthAdapter($userId, $value);
+        $resp = $adapter->authenticate();
+
+        if ($resp->getCode() == Zend_Auth_Result::SUCCESS) {
+            return true;
+        }
+
+        $this->_error(self::MSG_WRONG_PASSWORD);
         return false;
     }
 }

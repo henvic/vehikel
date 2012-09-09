@@ -1,41 +1,37 @@
 <?php
-//require_once 'Zend/Validate/Abstract.php';
 
 class Ml_Validate_MatchPassword extends Zend_Validate_Abstract
 {
     const MSG_WRONG_PASSWORD = 'wrongPassword';
-    
+
     protected $_messageTemplates = array(
         self::MSG_WRONG_PASSWORD => "Wrong password",
     );
- 
+
+    protected $_credential = null;
+
+    protected $_uid = null;
+
+    public function __construct(Ml_Model_Credential $credential, $uid)
+    {
+        $this->_credential = $credential;
+
+        $this->_uid = $uid;
+    }
+
     public function isValid($value)
     {
-        $registry = Zend_Registry::getInstance();
-        
-        $credential = Ml_Model_Credential::getInstance();
-        
         $this->_setValue($value);
-         
-        $valueString = (string) $value;
-        
-        if (mb_strlen($value) < 6 || mb_strlen($value) > 20) {
-            return false;
-        }
-        
-        $credentialInfoData =
-         $registry->get('credentialInfoDataForPasswordChange');
-        
-        $adapter = $credential->getAuthAdapter($credentialInfoData['uid'], 
-        $value);
-        
-        $authenticate = $adapter->authenticate();
-        
-        if ($authenticate->getCode() != Zend_Auth_Result::SUCCESS) {
+
+        $value = (string) $value;
+
+        $adapter = $this->_credential->getAuthAdapter($this->_uid, $value);
+        $resp = $adapter->authenticate();
+
+        if ($resp->getCode() != Zend_Auth_Result::SUCCESS) {
             $this->_error(self::MSG_WRONG_PASSWORD);
             return false;
         }
-        
         return true;
     }
 }
