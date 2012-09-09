@@ -83,6 +83,7 @@ class PasswordController extends Ml_Controller_Action
         $form = new Ml_Form_RedefinePassword(
             null,
             $this->_config,
+            $credential,
             $params["confirm_uid"],
             $params["security_code"]
         );
