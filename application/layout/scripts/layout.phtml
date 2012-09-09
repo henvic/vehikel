@@ -72,13 +72,7 @@ $this->headMeta() , PHP_EOL;
       <div class="nav-collapse">
         <ul class="nav">
             <li class="divider-vertical"></li>
-<?php
-echo $this->liMenuItems(
-    array(
-        array("route" => "ad_new", "name" => '<i class="icon-pencil icon-white"></i> Anunciar', "escape" => false)
-    )
-);
-?>
+            <li><a href="<?= $this->url(array(), "ad_new"); ?>"><i class="icon-pencil icon-white"></i> Anunciar</a></li>
             <li class="divider-vertical"></li>
         </ul>
         <form class="navbar-search form-inline pull-left" action="http://www.google.com/search" method="get">
@@ -99,15 +93,9 @@ echo $this->liMenuItems(
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                    <?php
-                    echo $this->liMenuItems(
-                        array(
-                            array("route" => "profile", "name" => "Abrir perfil", "params" => array("username" => $signedUserInfo['alias'])),
-                            array("route" => "filestream_1stpage", "name" => "Lista de veículos", "params" => array("username" => $signedUserInfo['alias'])),
-                            array("route" => "account", "name" => "Sua conta")
-                        )
-                    );
-                    ?>
+                <li><a href="<?= $this->url(array("username" => $signedUserInfo['alias']), "profile"); ?>">Abrir perfil</a></li>
+                <li><a href="<?= $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage"); ?>">Lista de veículos</a></li>
+                <li><a href="<?= $this->url(array(), "account"); ?>">Sua conta</a></li>
                 <li class="divider"></li>
                 <?php
                 echo $this->liMenuItems(
