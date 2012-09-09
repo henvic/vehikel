@@ -15,11 +15,10 @@ class PasswordController extends Ml_Controller_Action
         $recover =  $this->_sc->get("recover");
         /** @var $recover \Ml_Model_Recover() */
 
-        $form =  $this->_sc->get("recoverForm");
-        /** @var $form \Ml_Form_Recover() */
-
         $people =  $this->_sc->get("people");
         /** @var $people \Ml_Model_People() */
+
+        $form = new Ml_Form_Recover(null, $people);
 
         if (! $this->_request->isPost() || ! $form->isValid($this->_request->getPost())) {
             $this->view->recoverForm = $form;
@@ -116,7 +115,7 @@ class PasswordController extends Ml_Controller_Action
 
         $userInfo = $this->_registry->get("signedUserInfo");
 
-        $form = new Ml_Form_NewPassword(null, $this->_config);
+        $form = new Ml_Form_NewPassword(null, $this->_config, $credential, $userInfo["id"]);
 
         if (! $this->_request->isPost() || ! $form->isValid($this->_request->getPost())) {
             $form->setDefault("username", $userInfo['username']);
