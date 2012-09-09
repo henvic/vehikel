@@ -30,9 +30,3 @@ services:
     session:
         class: Ml_Model_Session
         arguments: [@zendAuth , @memCache]
-    loginForm:
-        class: Ml_Form_Login
-        arguments: [null, @config]
-    recoverForm:
-        class: Ml_Form_Recover
-        arguments: [null, @people]
