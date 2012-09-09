@@ -72,20 +72,15 @@ class Ml_Form_NewIdentity extends Twitter_Bootstrap_Form_Horizontal
         ));
 
         $this->addElement('password', 'password', array(
-            'validators' => array(
-                array('validator' =>
-                    'StringLength', 'options' => array(6, 20)
-                ),
-                array('validator' =>
-                    'newPasswordRepeat' //stringlenght there also
-                ),
-                array('validator' => 'Hardpassword')
-            ),
             'autocomplete' => 'off',
             'required'   => true,
             'label'      => 'Senha:',
         ));
-        
+
+        $this->getElement('password')->addValidator(new Ml_Validate_StringLength(array("min" => 6, "max" => 20)), true);
+        $this->getElement('password')->addValidator(new Ml_Validate_HardPassword(), true);
+        $this->getElement('password')->addValidator(new Ml_Validate_NewPasswordRepeat(), true);
+
         $this->addElement('password', 'password_confirm', array(
             'required'   => true,
             'label'      => 'Repita a senha:',
