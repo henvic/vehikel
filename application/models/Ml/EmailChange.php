@@ -1,87 +1,67 @@
 <?php
-class Ml_Model_EmailChange extends Ml_Model_AccessSingleton
+class Ml_Model_EmailChange
 {
-    protected static $_dbTableName = "email_change";
-    protected static $_dbPrimaryRow = "uid";
-    
-    /**
-     * Singleton instance
-     *
-     */
-    protected static $_instance = null;
-    
-    public function newChange($uid, $email, $name)
+    const REQUEST_EXPIRAL_TIME = 86400;
+
+    protected $_cache = null;
+    protected $_cachePrefix = "email_change_req_";
+
+    public function __construct(Zend_Cache_Core $cache)
     {
-        $registry = Zend_Registry::getInstance();
-        $config = $registry->get('config');
-        
-        $securityCode =
-         sha1($uid . $email . md5(time() . microtime()) .
-          deg2rad(mt_rand(0, 360)));
-        
-        $this->_dbAdapter->query('INSERT INTO ' . 
-        $this->_dbAdapter->quoteTableAs($this->_dbTable->getTableName())
-        . ' (`uid`, `email`, `securitycode`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE email=VALUES(email), securitycode=VALUES(securitycode)',
-        array($uid, $email, $securityCode));
-        
-        return $securityCode;
+        $this->_cache = $cache;
     }
-    
-    public function get($uid, $securityCode)
+
+    public function create($uid, $email)
     {
-        $select = $this->_dbTable->select()->where("uid = ?", $uid)
-        ->where("securitycode = ?", $securityCode)
-        ->where("CURRENT_TIMESTAMP < TIMESTAMP(timestamp, '12:00:00')");
-        $query = $this->_dbTable->fetchRow($select);
-        
-        if (! is_object($query)) {
+        $securityCode = sha1($uid . openssl_random_pseudo_bytes(20) . mt_rand() . microtime());
+
+        $data = array("uid" => $uid, "security_code" => $securityCode, "new_email" => $email);
+
+        $saved = $this->_cache->save($data, $this->getCacheKey($uid, $securityCode), array(), self::REQUEST_EXPIRAL_TIME);
+
+        if ($saved) {
+            return $data;
+        } else {
             return false;
         }
-        
-        return $query->toArray();
     }
-    
-    /**
-     * 
-     * Change user's e-mail
-     * @param big int $uid
-     * @param string $email
-     * @param bool $removeTicket removes update request ticket
-     */
-    public function setChange($uid, $email, $removeTicket = true)
+
+    public function read($uid, $securityCode)
     {
-        $people = Ml_Model_People::getInstance();
-        
-        if ($removeTicket) {
-            $rename = $people->update($uid, array("email" => $email));
-            
-            if (! $rename) {
-                return false;
-            }
-        }
-        
-        $deleteRequest = $this->_dbTable->delete($this->_dbAdapter
-        ->quoteInto('uid = ?', $uid));
-        
-        if (! $deleteRequest) {
+        if (! $this->isCacheKeySane($uid, $securityCode)) {
             return false;
         }
-        
+
+        return $this->_cache->load($this->getCacheKey($uid, $securityCode));
+    }
+
+    public function delete($uid, $securityCode)
+    {
+        if (! $this->isCacheKeySane($uid, $securityCode)) {
+            return false;
+        }
+
+        return $this->_cache->remove($this->getCacheKey($uid, $securityCode));
+    }
+
+    /**
+     * Checks if the passed params seems to be sane to be passed as part of cache key
+     * @param $uid
+     * @param $securityCode
+     * @return bool
+     */
+    protected function isCacheKeySane($uid, $securityCode)
+    {
+        if (! ctype_digit($uid) || strlen($uid) > 20 || ! ctype_xdigit($securityCode) || strlen($securityCode) != 40) {
+            return false;
+        }
+
         return true;
     }
-    
-    /**
-     * 
-     * Garbage collector
-     * @param int $maxAge in seconds
-     * @return number of deleted items
-     */
-    public function gc($maxAge)
+
+    protected function getCacheKey($uid, $securityCode)
     {
-        $deleted = $this->_dbAdapter
-         ->delete($this->_dbTable->getTableName(), $this->_dbAdapter
-         ->quoteInto("timestamp < ?", date("Y-m-d H:i:s", time() - ($maxAge))));
-         
-         return $deleted;
+        return $this->_cachePrefix . $uid . "_" . $securityCode;
     }
 }
+
