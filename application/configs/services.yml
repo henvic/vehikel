@@ -33,8 +33,6 @@ services:
     loginForm:
         class: Ml_Form_Login
         arguments: [null, @config]
-    logoutForm:
-        class: Ml_Form_Logout
     recoverForm:
         class: Ml_Form_Recover
         arguments: [null, @people]
