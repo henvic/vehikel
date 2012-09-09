@@ -4,9 +4,29 @@ class Ml_Form_RedefinePassword extends Twitter_Bootstrap_Form_Horizontal
 {
     protected $_config = null;
 
-    public function __construct($options = null, array $config, $uid = null, $securityCode = null)
+    protected $_credential = null;
+
+    protected $_uid = null;
+
+    /**
+     * @param mixed $options
+     * @param Zend_Config array $config
+     * @param int $uid
+     * @param sha1 $securityCode
+     */
+    public function __construct(
+        $options = null,
+        array $config,
+        Ml_Model_Credential $credential,
+        $uid = null,
+        $securityCode = null
+    )
     {
         $this->_config = $config;
+
+        $this->_credential = $credential;
+
+        $this->_uid = $uid;
 
         $path = $this->getView()->url(array("confirm_uid" => $uid,
                 "security_code" => $securityCode),
@@ -45,16 +65,20 @@ class Ml_Form_RedefinePassword extends Twitter_Bootstrap_Form_Horizontal
         $this->addElement('password', 'password', array(
             'autocomplete' => 'off',
             'required'   => true,
-            'label'      => 'Senha',
+            'label'      => 'Nova senha',
         ));
 
         $this->getElement('password')->addValidator(new Ml_Validate_StringLength(array("min" => 6, "max" => 20)), true);
         $this->getElement('password')->addValidator(new Ml_Validate_HardPassword(), true);
+        $this->getElement('password')->addValidator(new Ml_Validate_NewPassword(
+            $this->_credential,
+            $this->_uid
+        ), true);
         $this->getElement('password')->addValidator(new Ml_Validate_NewPasswordRepeat(), true);
 
         $this->addElement('password', 'password_confirm', array(
             'required'   => true,
-            'label'      => 'Repita a senha',
+            'label'      => 'Confirme a nova senha',
         ));
 
         $this->addElement('submit', 'submit', array(
