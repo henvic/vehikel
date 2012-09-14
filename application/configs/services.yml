@@ -13,9 +13,13 @@ services:
     emailChange:
         class: Ml_Model_EmailChange
         arguments: [@memCache]
+    people:
+        class: Ml_Model_People
     picture:
         class: Ml_Model_Picture
         arguments: [@config]
+    profile:
+        class: Ml_Model_Profile
     credential:
         class: Ml_Model_Credential
     recover:
@@ -34,3 +38,6 @@ services:
         class: GearmanClient
         calls:
             - [ addServers ]
+    account:
+        class: Ml_Model_Account
+        arguments: [@people, @gearmanClient]
