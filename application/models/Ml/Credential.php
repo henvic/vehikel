@@ -50,7 +50,7 @@ class Ml_Model_Credential
         return $authAdapter;
     }
 
-    public function setCredential($uid, $password)
+    public function set($uid, $password)
     {
         $hash = $this->setHash($uid, $password);
 
@@ -62,6 +62,11 @@ class Ml_Model_Credential
         $result = $stmt->rowCount();
 
         return (bool) $result;
+    }
+
+    public function delete($uid)
+    {
+        return $this->_dbTable->delete($this->_dbAdapter->quoteInto("uid = ?", $uid));
     }
 
     public function getByUid($uid)

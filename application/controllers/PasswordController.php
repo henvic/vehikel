@@ -93,7 +93,7 @@ class PasswordController extends Ml_Controller_Action
             $this->view->redefinePasswordForm = $form;
         } else {
             $recover->delete($recoverInfo["uid"], $recoverInfo["security_code"]);
-            $credential->setCredential($recoverInfo["uid"], $form->getValue("password"));
+            $credential->set($recoverInfo["uid"], $form->getValue("password"));
 
             $this->render("redefined");
         }
@@ -122,7 +122,7 @@ class PasswordController extends Ml_Controller_Action
 
             $this->view->redefinePasswordForm = $form;
         } else {
-            $credential->setCredential($userInfo["id"], $form->getValue("password"));
+            $credential->set($userInfo["id"], $form->getValue("password"));
 
             $this->render("redefined");
         }
