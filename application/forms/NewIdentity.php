@@ -1,13 +1,17 @@
 <?php
 class Ml_Form_NewIdentity extends Twitter_Bootstrap_Form_Horizontal
 {
+    protected $_people;
+
     /**
      * @param null $options
      * @param string $securityCode
      * @param Zend_Config array $config
      */
-    public function __construct($options = null, $securityCode = "", array $config)
+    public function __construct($options = null, $securityCode = "", array $config, Ml_Model_People $people)
     {
+        $this->_people = $people;
+
         if ($this->_config['ssl']) {
             $url = 'https://' . $this->_config['webhostssl'];
         } else {
@@ -58,18 +62,19 @@ class Ml_Form_NewIdentity extends Twitter_Bootstrap_Form_Horizontal
             'label'      => 'Seu nome de usuário:',
             'required'   => true,
             'filters'    => array('StringTrim', 'StringToLower'),
-            'validators' => array(
-                array('validator' =>
-                    'StringLength', 'options' => array(1, 15)
-                ),
-                array('validator' =>
-                    'usernameNewUser'
-                ) //stringlenght there also
-                ),
             'autocomplete' => 'off',
             'class'      => 'input-small',
             'prepend' => $config['webhost'] . '/',
         ));
+
+        $this->getElement('newusername')->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 15)), true);
+        $this->getElement('newusername')->addValidator(
+            new Ml_Validate_UsernameNewUser(
+                $this->_people,
+                APPLICATION_PATH . "/configs/reserved-usernames.json"
+            ),
+            true
+        );
 
         $this->addElement('password', 'password', array(
             'autocomplete' => 'off',
