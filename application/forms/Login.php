@@ -13,7 +13,7 @@ class Ml_Form_Login extends Twitter_Bootstrap_Form_Horizontal
     protected $_userId = null;
 
     /**
-     * @param null $options
+     * @param mixed $options
      * @param Zend_Auth $auth
      * @param Zend_Config array $config
      * @param Ml_Model_People $people
@@ -64,7 +64,8 @@ class Ml_Form_Login extends Twitter_Bootstrap_Form_Horizontal
             'filters'    => array('StringTrim', 'StringToLower')
         ));
 
-        $this->getElement('username')->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 15)), true);
+        // it accepts up to 60 characters here because it might be the user email instead of the username
+        $this->getElement('username')->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 60)), true);
 
         $usernameValidate = new Ml_Validate_Username($this->_people);
 
