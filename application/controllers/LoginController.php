@@ -81,14 +81,14 @@ class LoginController extends Ml_Controller_Action
             $userInfo = $people->get($form->getValue("username"));
 
             if (! $userInfo) {
-                throw Exception("Couldn't retrieve userInfo for login");
+                throw new Exception("Couldn't retrieve userInfo for login");
             }
 
             $adapter = $credential->getAuthAdapter($userInfo["id"], $form->getValue("password"));
             $result = $this->_auth->authenticate($adapter);
 
             if (! $result->isValid()) {
-                throw Exception("Login failure");
+                throw new Exception("Login failure");
             }
 
             $session =  $this->_sc->get("session");
