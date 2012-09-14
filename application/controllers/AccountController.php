@@ -17,9 +17,9 @@ class AccountController extends Ml_Controller_Action
         $profile =  $this->_sc->get("profile");
         /** @var $profile \Ml_Model_Profile() */
 
-        $form = new Ml_Form_AccountSettings();
-
         $signedUserInfo = $this->_registry->get("signedUserInfo");
+
+        $form = new Ml_Form_AccountSettings(null, $people, array($signedUserInfo["email"]));
 
         $profileInfo = $profile->getById($signedUserInfo['id']);
 

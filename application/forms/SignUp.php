@@ -4,12 +4,16 @@ class Ml_Form_SignUp extends Twitter_Bootstrap_Form_Horizontal
 {
     protected $_config = null;
 
+    protected $_people;
+
     /**
      * @param null $options
      * @param Zend_Config array $config
      */
-    public function __construct($options = null, array $config)
+    public function __construct($options = null, array $config, Ml_Model_People $people)
     {
+        $this->_people = $people;
+
         $this->_config = $config;
 
         return parent::__construct($options);
@@ -45,20 +49,24 @@ class Ml_Form_SignUp extends Twitter_Bootstrap_Form_Horizontal
             'prepend' => '<i class="icon-user"></i>',
         ));
         
-        $email = $this->addElement('text', 'email', array(
+        $this->addElement('text', 'email', array(
             'label'      => 'Endereço de email',
             'required'   => true,
             'description' =>
                 '<small>Leia a <a href="/privacy" rel="external">'.
                 'Política de privacidade</a> antes de continuar</small>',
             'filters'    => array('StringTrim', 'StringToLower'),
-            'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 60)),
-                array('validator' => 'emailNewUser'),//stringlenght there also
-                array('validator' => 'EmailAddress')
-                ),
             'prepend' => '<i class="icon-envelope"></i>',
         ));
+
+        $this->getElement('email')->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 60)), true);
+        $this->getElement('email')->addValidator(new Zend_Validate_EmailAddress(), true);
+        $this->getElement('email')->addValidator(
+            new Ml_Validate_EmailNewUser(
+                $this->_people
+            ),
+            true
+        );
         
         $this->addElement(Ml_Model_AntiAttack::captchaElement());
         

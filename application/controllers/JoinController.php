@@ -14,7 +14,10 @@ class JoinController extends Ml_Controller_Action
         $signUp =  $this->_sc->get("signup");
         /** @var $signUp \Ml_Model_SignUp() */
 
-        $form = new Ml_Form_SignUp(null, $this->_config);
+        $people =  $this->_sc->get("people");
+        /** @var $people \Ml_Model_People() */
+
+        $form = new Ml_Form_SignUp(null, $this->_config, $people);
         
         if (! $this->_request->isPost() || ! $form->isValid($this->_request->getPost())) {
             $this->view->signUpForm = $form;

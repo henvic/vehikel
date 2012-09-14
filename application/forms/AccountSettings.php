@@ -1,6 +1,19 @@
 <?php
 class Ml_Form_AccountSettings extends Twitter_Bootstrap_Form_Horizontal
 {
+    protected $_emails = array();
+
+    protected $_people;
+
+    public function __construct($options = null, Ml_Model_People $people, $emails)
+    {
+        $this->_people = $people;
+
+        $this->_emails = $emails;
+
+        return parent::__construct($options);
+    }
+
     public function init()
     {
         $this->setMethod('post');
@@ -29,21 +42,24 @@ class Ml_Form_AccountSettings extends Twitter_Bootstrap_Form_Horizontal
             'readonly' => true
         ));
 
-        $email = $this->addElement('text', 'email', array(
+        $this->addElement('text', 'email', array(
             'label'      => 'Endereço de email',
             'required'   => true,
             'filters'    => array('StringTrim', 'StringToLower'),
-            'validators' => array(
-                array('validator' =>
-                    'StringLength', 'options' => array(1, 60)),
-                array('validator' =>
-                    'emailCheckUser'), //stringlenght there also
-                array('validator' => 'EmailAddress')
-                ),
             'prepend' => '<i class="icon-envelope"></i>',
         ));
 
-        $emailprivacy = $this->addElement(
+        $this->getElement('email')->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 60)), true);
+        $this->getElement('email')->addValidator(new Zend_Validate_EmailAddress(), true);
+        $this->getElement('email')->addValidator(
+            new Ml_Validate_EmailNewUser(
+                $this->_people,
+                $this->_emails
+            ),
+            true
+        );
+
+        $this->addElement(
             'checkbox',
             'private_email',
             array(
