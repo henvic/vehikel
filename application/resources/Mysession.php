@@ -6,7 +6,9 @@ class Ml_Resource_Mysession extends Zend_Application_Resource_ResourceAbstract
     {
         $registry = Zend_Registry::getInstance();
         $auth = Zend_Auth::getInstance();
-        
+
+        $sc = $registry->get("sc");
+
         $config = $registry->get("config");
         
         $sessionConfig = $config['resources']['session'];
@@ -37,6 +39,20 @@ class Ml_Resource_Mysession extends Zend_Application_Resource_ResourceAbstract
         if ($auth->hasIdentity()) {
             $people = Ml_Model_People::getInstance();
             $signedUserInfo = $people->getById($auth->getIdentity());
+
+            if (! is_array($signedUserInfo)) {
+                throw new Exception("Can't retrieve the signed userInfo data or user deactivated");
+            }
+
+            if (! isset($signedUserInfo["active"]) || ! $signedUserInfo["active"]) {
+                //log out deactivated user
+                $session =  $sc->get("session");
+                /** @var $session \Ml_Model_Session() */
+
+                $session->logout();
+                throw new Exception("Trying to load deactivated user session");
+            }
+
             $registry->set('signedUserInfo', $signedUserInfo);
         }
         
