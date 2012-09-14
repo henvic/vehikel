@@ -60,6 +60,10 @@ class Ml_Form_NewPassword extends Twitter_Bootstrap_Form_Horizontal
             'label'      => 'Senha atual',
         ));
 
+        $this->getElement('current_password')->addValidator(
+            new Ml_Validate_StringLength(array("min" => 6, "max" => 20)),
+            true
+        );
         $this->getElement('current_password')->addValidator(new Ml_Validate_MatchPassword(
                 $this->_credential,
                 $this->_uid
