@@ -67,7 +67,7 @@ class Ml_Form_AccountSettings extends Twitter_Bootstrap_Form_Horizontal
             )
         );
 
-        $website = $this->addElement('text', 'website', array(
+        $this->addElement('text', 'website', array(
             'label'      => 'Seu site',
             'required'   => false,
             'filters'    => array('StringTrim', 'UrlFilter'),
@@ -78,7 +78,7 @@ class Ml_Form_AccountSettings extends Twitter_Bootstrap_Form_Horizontal
                 )
         ));
 
-        $location = $this->addElement('text', 'location', array(
+        $this->addElement('text', 'location', array(
             'label'      => 'Localidade',
             'required'   => false,
             'filters'    => array('StringTrim'),
@@ -88,7 +88,7 @@ class Ml_Form_AccountSettings extends Twitter_Bootstrap_Form_Horizontal
                 )
         ));
 
-        $about = $this->addElement('textarea', 'about', array(
+        $this->addElement('textarea', 'about', array(
             'label'      => 'Sobre',
             'description' =>
                 '<small><a href="' .

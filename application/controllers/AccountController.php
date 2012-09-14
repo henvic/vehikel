@@ -147,7 +147,7 @@ class AccountController extends Ml_Controller_Action
             $people->update($signedUserInfo["id"], array("avatarInfo" => false));
             $oldPicturesInfo = $signedUserInfo["avatarInfo"];
             $picture->delete($oldPicturesInfo);
-            $this->_redirect($this->_router->assemble(array(), "accountpicture"), array("exit"));
+            $this->_redirect($this->_router->assemble(array(), "account_picture"), array("exit"));
         } else if ($form->Image->isUploaded()) {
             $fileInfo = $form->Image->getFileInfo();
             $picturesInfo = $picture->create($fileInfo['Image']['tmp_name'], $signedUserInfo['id']);
@@ -158,10 +158,51 @@ class AccountController extends Ml_Controller_Action
                 if (is_array($oldPicturesInfo) && isset($oldPicturesInfo["secret"])) {
                     $picture->delete($oldPicturesInfo);
                 }
-                $this->_redirect($this->_router->assemble(array(), "accountpicture"), array("exit"));
+                $this->_redirect($this->_router->assemble(array(), "account_picture"), array("exit"));
             } else {
                 throw new Exception("Error creating pictures.");
             }
         }
+    }
+
+    public function deleteAction()
+    {
+        $credential =  $this->_sc->get("credential");
+        /** @var $credential \Ml_Model_Credential() */
+
+        $logger = $this->_sc->get("logger");
+        /** @var $logger \Ml_Logger() */
+
+        $session = $this->_sc->get("session");
+        /** @var $session \Ml_Model_Session() */
+
+        $account = $this->_sc->get("account");
+        /** @var $account \Ml_Model_Account */
+
+        $signedUserInfo = $this->_registry->get("signedUserInfo");
+
+        $form = new Ml_Form_DeleteAccount(null, $credential, $signedUserInfo["id"]);
+
+        $this->view->deleteAccountForm = $form;
+
+        if (! $this->_request->isPost() || ! $form->isValid($this->_request->getPost())) {
+            return;
+        }
+
+        $result = $account->deactive($signedUserInfo["id"]);
+
+        if (! $result) {
+            throw new Exception("Failure in deactivating account");
+        }
+
+        $logger->log(array(
+            "action" => "deactive_account",
+            "uid" => $signedUserInfo["id"]
+        ));
+
+        $session->remoteLogout();
+        $session->logout();
+
+        $this->_redirect("/help/account/termination", array("exit"));
     }
 }
