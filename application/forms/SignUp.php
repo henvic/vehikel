@@ -62,7 +62,7 @@ class Ml_Form_SignUp extends Twitter_Bootstrap_Form_Horizontal
         $this->getElement('email')->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 60)), true);
         $this->getElement('email')->addValidator(new Zend_Validate_EmailAddress(), true);
         $this->getElement('email')->addValidator(
-            new Ml_Validate_EmailNewUser(
+            new Ml_Validate_NewEmail(
                 $this->_people
             ),
             true
