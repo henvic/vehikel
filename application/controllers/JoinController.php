@@ -80,7 +80,7 @@ class JoinController extends Ml_Controller_Action
             return $this->_forward("unavailable");
         }
 
-        $form = new Ml_Form_NewIdentity(null, $securityCode, $this->_config);
+        $form = new Ml_Form_NewIdentity(null, $securityCode, $this->_config, $people);
 
         $form->populate(
             array(
@@ -114,7 +114,7 @@ class JoinController extends Ml_Controller_Action
             throw new Exception("Could not create user account.");
         }
 
-        $credential->setCredential($userInfoId, $values["password"]);
+        $credential->set($userInfoId, $values["password"]);
 
         $adapter = $credential->getAuthAdapter($userInfoId, $values["password"]);
 
