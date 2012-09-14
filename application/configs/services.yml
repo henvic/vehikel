@@ -30,3 +30,7 @@ services:
     session:
         class: Ml_Model_Session
         arguments: [@zendAuth , @memCache]
+    gearmanClient:
+        class: GearmanClient
+        calls:
+            - [ addServers ]
