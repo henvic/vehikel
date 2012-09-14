@@ -33,8 +33,9 @@ class Ml_Form_Recover extends Twitter_Bootstrap_Form_Horizontal
             'autocomplete' => 'off',
         ));
 
-        $this->getElement('recover')->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 100)), true);
-        $this->getElement('recover')->addValidator(new Ml_Validate_AccountRecover($this->_people), true);
+        // it accepts up to 60 characters here because it might be the user email instead of the username
+        $this->getElement('recover')->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 60)), true);
+        $this->getElement('recover')->addValidator(new Ml_Validate_Username($this->_people), true);
 
         $this->addElement(Ml_Model_AntiAttack::captchaElement());
         
