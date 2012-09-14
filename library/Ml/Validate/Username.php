@@ -4,10 +4,12 @@ class Ml_Validate_Username extends Zend_Validate_Abstract
 {
     const MSG_USERNAME_NOT_FOUND = 'usernameNotFound';
     const MSG_EMAIL_NOT_FOUND = 'emailNotFound';
+    const MSG_USER_NOT_ACTIVE = 'userNotActive';
 
     protected $_messageTemplates = array(
         self::MSG_USERNAME_NOT_FOUND => "User not found",
         self::MSG_EMAIL_NOT_FOUND => "Email not found",
+        self::MSG_USER_NOT_ACTIVE => "Inactive user"
     );
 
     protected $_people = null;
@@ -23,30 +25,31 @@ class Ml_Validate_Username extends Zend_Validate_Abstract
     {
         $this->_setValue($value);
 
-        $string = (string) $value;
+        $value = (string) $value;
 
-        if (mb_strstr($value, "@")) {
-            $userInfo = $this->_people->getByEmail($value);
-
-            if (! is_array($userInfo)) {
-                $this->_error(self::MSG_EMAIL_NOT_FOUND);
+        if (strpos($value, '@') === false) {
+            if (preg_match('#([^a-z0-9_-]+)#is', $value) || $value == '0') {
+                $this->_error(self::MSG_USERNAME_NOT_FOUND);
                 return false;
             }
 
-            $this->_userId = $userInfo["id"];
+            $userInfo = $this->_people->getByUsername($value);
 
-            return true;
+            if (! is_array($userInfo)) {
+                $this->_error(self::MSG_USERNAME_NOT_FOUND);
+                return false;
+            }
+        } else {
+            $userInfo = $this->_people->getByEmail($value);
         }
 
-        if (preg_match('#([^a-z0-9_-]+)#is', $value) || $value == '0') {
-            $this->_error(self::MSG_USERNAME_NOT_FOUND);
+        if (! is_array($userInfo)) {
+            $this->_error(self::MSG_EMAIL_NOT_FOUND);
             return false;
         }
 
-        $userInfo = $this->_people->getByUsername($value);
-
-        if (empty($userInfo)) {
-            $this->_error(self::MSG_USERNAME_NOT_FOUND);
+        if (! $userInfo["active"]) {
+            $this->_error(self::MSG_USER_NOT_ACTIVE);
             return false;
         }
 
