@@ -92,7 +92,7 @@ class UserfeedController extends Zend_Controller_Action
         
         if (! empty($iconSecret)) {
             $imageElement = $doc->createElement("image");
-            $picUri = $s3config['headshotsBucketAddress'] . $userInfo['id'] . '-' . $iconSecret . '-s.jpg';
+            $picUri = $s3config['picturesBucketAddress'] . $userInfo['id'] . '-' . $iconSecret . '-s.jpg';
             $imageElement->appendChild($doc->newTextElement("url", $picUri));
             $imageElement->appendChild($doc->newTextElement("title", "Shares from " . $userInfo['name']));
             $imageElement->appendChild($doc->newTextElement("link", $userLink));
