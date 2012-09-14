@@ -9,7 +9,7 @@ class Ml_Form_Picture extends Twitter_Bootstrap_Form_Horizontal
         $this->setAttrib('enctype', 'multipart/form-data');
 
         $this->setMethod('post');
-        $this->setAction($this->getView()->url(array(), 'accountpicture'));
+        $this->setAction($this->getView()->url(array(), 'account_picture'));
 
         $this->addElementPrefixPath('Ml_Validate', 'Ml/Validate/', 
         Zend_Form_Element::VALIDATE);
