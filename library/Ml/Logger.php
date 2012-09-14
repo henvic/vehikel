@@ -22,9 +22,17 @@ class Ml_Logger
             throw new Exception("Action key doesn't exists in the data array.");
         }
 
-        if (isset($data['server']) || isset($data['raw_post']) ||
-            isset($data['uid'])) {
+        if (isset($data['server']) || isset($data['raw_post'])) {
             throw new Exception("Trying to use reserved log internal key.");
+        }
+
+        if (is_object(($this->_auth))) {
+            $uid = $this->_auth->getIdentity();
+            if (isset($data['uid']) && $data['uid'] != $uid) {
+                throw new Exception("Trying to set the uid param as for another user rather than the logged in one");
+            }
+
+            $data['uid'] = $uid;
         }
 
         $data['server'] = filter_input_array(INPUT_SERVER, FILTER_UNSAFE_RAW);
@@ -35,10 +43,6 @@ class Ml_Logger
 
         if ($logPost) {
             $data['raw_post'] = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
-        }
-
-        if (is_object(($this->_auth))) {
-            $data['uid'] = $this->_auth->getIdentity();
         }
 
         $this->_adapter->log($data);
