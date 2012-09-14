@@ -10,7 +10,7 @@ class LogoutController extends Ml_Controller_Action
         /** @var $logger \Ml_Logger() */
 
         $session =  $this->_sc->get("session");
-        /** @var $session \Ml_Session() */
+        /** @var $session \Ml_Model_Session() */
 
         if (! $this->_auth->hasIdentity()) {
             $this->_redirect($this->_router->assemble(array(), "index"), array("exit"));
