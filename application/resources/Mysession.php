@@ -37,7 +37,9 @@ class Ml_Resource_Mysession extends Zend_Application_Resource_ResourceAbstract
         }
         
         if ($auth->hasIdentity()) {
-            $people = Ml_Model_People::getInstance();
+            $people =  $sc->get("people");
+            /** @var $people \Ml_Model_People() */
+
             $signedUserInfo = $people->getById($auth->getIdentity());
 
             if (! is_array($signedUserInfo)) {
