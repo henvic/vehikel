@@ -15,6 +15,7 @@ services:
         arguments: [@memCache]
     people:
         class: Ml_Model_People
+        arguments: [null, @memCache]
     picture:
         class: Ml_Model_Picture
         arguments: [@config]
