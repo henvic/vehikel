@@ -152,7 +152,7 @@ class Ml_Model_Share extends Ml_Model_AccessSingleton
                 throw new Exception("Can not create upload ID.");
             }
             
-            $objectKey = $userInfo['alias'] . "/" . $uploadId . "-" . $downloadSecret . "/" . $filename;
+            $objectKey = $userInfo['username'] . "/" . $uploadId . "-" . $downloadSecret . "/" . $filename;
             
             $put = $s3->putFile($fileInfo['tmp_name'],
              $config['services']['S3']['sharesBucket'] . "/" . $objectKey,
@@ -164,7 +164,7 @@ class Ml_Model_Share extends Ml_Model_AccessSingleton
               'Content-Disposition' => 'attachment;',
               "x-amz-meta-id" => $uploadId,
               "x-amz-meta-uid" => $userInfo['id'],
-              "x-amz-meta-username" => $userInfo['alias']
+              "x-amz-meta-username" => $userInfo['username']
               ));
               
             if (! $put) {
@@ -244,7 +244,7 @@ class Ml_Model_Share extends Ml_Model_AccessSingleton
             $config['services']['S3']['secret']);
             
             $bucketPlusObjectKeyPrefix = $config['services']['S3']['sharesBucket'] . "/" .
-            $userInfo['alias'] . "/" . $shareInfo['id'] . "-" . $shareInfo['download_secret'] . "/";
+            $userInfo['username'] . "/" . $shareInfo['id'] . "-" . $shareInfo['download_secret'] . "/";
             
             $source = $bucketPlusObjectKeyPrefix.$shareInfo['filename'];
             $destination = $bucketPlusObjectKeyPrefix.$changeData['filename'];
@@ -271,7 +271,7 @@ class Ml_Model_Share extends Ml_Model_AccessSingleton
                 "byUid" => $shareInfo['byUid'],
                 "download_secret" => $shareInfo['download_secret'],
                 "filename" => $shareInfo['filename'],
-                "alias" => $userInfo['alias']));
+                "username" => $userInfo['username']));
             //Using delete from the S3 Zend class here doesn't work because of a bug
             //is not working for some reason after the _makeRequest or other things I tried to COPY...
         } else {
@@ -299,7 +299,7 @@ class Ml_Model_Share extends Ml_Model_AccessSingleton
     {    
         $removeFiles = Ml_Model_RemoveFiles::getInstance();
         
-        if (! isset($shareInfo['secret']) || ! isset($userInfo['alias'])) {
+        if (! isset($shareInfo['secret']) || ! isset($userInfo['username'])) {
             throw new Exception("Not shareInfo or userInfo data.");
         }
         
@@ -309,7 +309,7 @@ class Ml_Model_Share extends Ml_Model_AccessSingleton
             $removeFiles->addFileGc(array(
                 "id" => $shareInfo['id'],
                 "byUid" => $shareInfo['byUid'],
-                "alias" => $userInfo['alias'],
+                "username" => $userInfo['username'],
                 "download_secret" => $shareInfo['download_secret'],
                 "filename" => $shareInfo['filename'],
             ));
@@ -367,7 +367,7 @@ class Ml_Model_Share extends Ml_Model_AccessSingleton
             $userInfo = $registry->get('userInfo');
             
             $form = new Ml_Form_DeleteShare(array('action' =>
-            $router->assemble(array("username" => $userInfo['alias'],
+            $router->assemble(array("username" => $userInfo['username'],
                 "share_id" => $shareInfo['id']), "deleteshare"),
                 'method' => 'post'));
         }
@@ -387,7 +387,7 @@ class Ml_Model_Share extends Ml_Model_AccessSingleton
             $userInfo = $registry->get('userInfo');
             
             $form = new Ml_Form_Filepage(array('action'
-            => $router->assemble(array("username" => $userInfo['alias'],
+            => $router->assemble(array("username" => $userInfo['username'],
                 "share_id" => $shareInfo['id']), "editsharepage"),
                 'method' => 'post'));
         }

@@ -66,7 +66,7 @@ class FilepageController extends Zend_Controller_Action
         if ((! $paginator->count() && $page != 1) ||
          $paginator->getCurrentPageNumber() != $page)
             $this->_redirect(Zend_Controller_Front::getInstance()->getRouter()
-                ->assemble(array("username" => $userInfo['alias'],
+                ->assemble(array("username" => $userInfo['username'],
             "share_id" => $shareInfo['id']), "sharepage_1stpage"), array("exit"));
         
         $tagsList = $tags->getShareTags($shareInfo['id']);

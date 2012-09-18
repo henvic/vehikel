@@ -12,7 +12,7 @@ $this->commentForm
 $this->headTitle("Edit comment");
 ?>
 <h2><a href="<?php
-echo $this->url(array("username" => $userInfo['alias'],
+echo $this->url(array("username" => $userInfo['username'],
 "share_id" => $shareInfo['id'],
 "comment_id" => $commentInfo['id']),
 "commentpermalink");

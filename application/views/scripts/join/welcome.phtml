@@ -15,9 +15,9 @@ $signedUserInfo = $registry->get("signedUserInfo");
                     <strong>As pessoas podem encontrar você em:</strong><br />
                     <?php
                         echo '<a href="http://', $config["webhost"],
-                        $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage"), '">',
+                        $this->url(array("username" => $signedUserInfo['username']), "filestream_1stpage"), '">',
                         "http://", $config["webhost"],
-                        $this->url(array("username" => $signedUserInfo['alias']), "filestream_1stpage"), '</a>';
+                        $this->url(array("username" => $signedUserInfo['username']), "filestream_1stpage"), '</a>';
                     ?>
                 </p>
             </div>

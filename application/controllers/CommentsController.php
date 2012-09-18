@@ -112,7 +112,7 @@ class CommentsController extends Zend_Controller_Action
             $comments->delete($comment['id']);
             
             $this->_redirect($router->assemble(array("username"
-            => $userInfo['alias'],
+            => $userInfo['username'],
              "share_id" =>
              $shareInfo['id']), "sharepage_1stpage"), array("exit"));
         }
@@ -155,7 +155,7 @@ class CommentsController extends Zend_Controller_Action
         }
         
         $this->_redirect($router
-        ->assemble(array("username" => $userInfo['alias'],
+        ->assemble(array("username" => $userInfo['username'],
         "share_id" => $shareInfo['id'], 
         "page" => $position['page']),
         $route) . '#comment' . $commentId, array("exit"));

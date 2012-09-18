@@ -28,7 +28,7 @@ $date->set($shareInfo['uploadedTime'], Zend_Date::ISO_8601);
 <ul class="file-info">
 <li><?php echo $date->get(Zend_Date::DATE_LONG); ?></li>
 <li>File-Type: <?php echo $this->escape($shareInfo['type']); ?></li>
-<li><a href="<?php echo $this->url(array("username" => $userInfo['alias'],
+<li><a href="<?php echo $this->url(array("username" => $userInfo['username'],
     "share_id" => $shareInfo['id']), "favorites_1stpage"); ?>">Favorites</a></li>
 </ul>
 <div id="TagList">
@@ -66,10 +66,10 @@ if ($auth->getIdentity() == $userInfo['id']) {
 if ($auth->getIdentity() == $shareInfo['byUid']) {
 ?>
 <a href="<?php
-echo $this->url(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']),
+echo $this->url(array("username" => $userInfo['username'], "share_id" => $shareInfo['id']),
 "editsharepage");?>" class="btn primary small" rel="nofollow">Edit info</a>
 <a href="<?php
-echo $this->url(array("username" => $userInfo['alias'],
+echo $this->url(array("username" => $userInfo['username'],
 "share_id" => $shareInfo['id']), "deleteshare");
 ?>" title="Delete this file" class="btn danger small" rel="nofollow">Delete file</a>
 <?php

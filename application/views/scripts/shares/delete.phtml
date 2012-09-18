@@ -6,7 +6,7 @@ $shareInfo = $registry->get('shareInfo');
 $this->headTitle("Delete this file?");
 ?>
 <h2><a href="<?php
-echo $this->url(array("username" => $userInfo['alias'],
+echo $this->url(array("username" => $userInfo['username'],
 "share_id" => $shareInfo['id']),
 "sharepage_1stpage");
 ?>"><?php echo $this->escape($shareInfo['title']); ?></a></h2>

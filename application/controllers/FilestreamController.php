@@ -39,7 +39,7 @@ class FilestreamController extends Zend_Controller_Action
         if (((! $paginator->count() && $page != 1) && $page != 1) ||
          $paginator->getCurrentPageNumber() != $page) {
             $this->_redirect($router->assemble(array("username" =>
-            $userInfo['alias']), "filestream_1stpage"), array("exit"));
+            $userInfo['username']), "filestream_1stpage"), array("exit"));
         }
         
         $this->view->paginator = $paginator;

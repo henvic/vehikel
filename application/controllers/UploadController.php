@@ -68,12 +68,12 @@ class UploadController extends Zend_Controller_Action
                 
                 //@todo batch editing. Load like /upload/batchedit/id1/id2/id3...
                 $this->_redirect($router->assemble(array("username" =>
-                $signedUserInfo['alias']), "filestream_1stpage") . "?uploaded=true", array("exit"));
+                $signedUserInfo['username']), "filestream_1stpage") . "?uploaded=true", array("exit"));
                 
             } else if ($upNum == 1) {
                 
                 $this->_redirect($router->assemble(array("username" =>
-                $signedUserInfo['alias'], "share_id" => $uploaded[0]),
+                $signedUserInfo['username'], "share_id" => $uploaded[0]),
                 "editsharepage"), array("exit"));
                 
             }

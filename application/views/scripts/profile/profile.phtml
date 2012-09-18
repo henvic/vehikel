@@ -23,8 +23,8 @@ if ($auth->hasIdentity() && $auth->getIdentity() != $userInfo['id']) {
     $contactInfo = $contacts->getRelationship($auth->getIdentity(), $userInfo['id']);
     
     if (isset($contactInfo['id'])) {
-        echo '<li><b>You count ' . $this->escape($userInfo['alias']) .
-        '</b> as a contact (<a href="' . $this->url(array("username" => $userInfo['alias']),
+        echo '<li><b>You count ' . $this->escape($userInfo['username']) .
+        '</b> as a contact (<a href="' . $this->url(array("username" => $userInfo['username']),
         "contact_relationship").'" rel="nofollow">change?</a>).</li>' . "\n";
     } else {
         $ignore = Ml_Model_Ignore::getInstance();
@@ -32,17 +32,17 @@ if ($auth->hasIdentity() && $auth->getIdentity() != $userInfo['id']) {
         
         if (isset($ignoreStatus['ignore'])) {
             echo '<li><b>You have blocked this user.</b> <a href="' .
-        $this->url(array("username" => $userInfo['alias']), "contact_relationship_ignore") .
+        $this->url(array("username" => $userInfo['username']), "contact_relationship_ignore") .
         '" rel="nofollow">Change?</a></li>' . "\n";
         }
         
-        echo '<li><b><a href="' . $this->url(array("username" => $userInfo['alias']),
+        echo '<li><b><a href="' . $this->url(array("username" => $userInfo['username']),
         "contact_relationship") . '" rel="nofollow">Add ' .
-        $this->escape($userInfo['alias']) . ' as a contact</a></b></li>';
+        $this->escape($userInfo['username']) . ' as a contact</a></b></li>';
     }
     
     if (is_array($contactInfo['reverse'])) {
-        echo "<li>" . $this->escape($userInfo['alias']) . " counts <b>you</b> as a contact.</li>";
+        echo "<li>" . $this->escape($userInfo['username']) . " counts <b>you</b> as a contact.</li>";
     }
 }
 ?>
@@ -76,7 +76,7 @@ if ($auth->hasIdentity() && $auth->getIdentity() != $userInfo['id'] &&
 (! isset($ignoreStatus) || ! is_array($ignoreStatus))):
 ?>
 <p class="longbreak"><small><a href="<?php
-echo $this->url(array("username" => $userInfo['alias']), "contact_relationship_ignore");
+echo $this->url(array("username" => $userInfo['username']), "contact_relationship_ignore");
 ?>" rel="nofollow">Block this user?</a></small></p>
 <?php endif;?>
 </div>

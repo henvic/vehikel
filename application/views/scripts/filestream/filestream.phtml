@@ -14,7 +14,7 @@ if ($userInfo['id'] == $auth->getIdentity()) {
 $this->headTitle($this->escape($shareOf), "PREPEND");
 
 $this->headLink()
-->appendAlternate($this->url(array("username" => $userInfo['alias']),
+->appendAlternate($this->url(array("username" => $userInfo['username']),
 "userfeed"), "application/rss+xml", $shareOf." RSS feed");
 
 $shares = $this->paginator->getCurrentItems()->toArray();
@@ -43,7 +43,7 @@ $date = new Zend_Date();
 $date->set($share['uploadedTime'], Zend_Date::ISO_8601);
 ?>
 <dt><a href="<?php
-echo $this->url(array("username" => $userInfo['alias'], "share_id" => $share['id']),
+echo $this->url(array("username" => $userInfo['username'], "share_id" => $share['id']),
 "sharepage_1stpage");
 ?>" title="Details about <?php
 echo $this->escape($share['title']);
@@ -64,4 +64,4 @@ echo $this->escape($share['title']);
 </dl>
 <?php echo $this->paginator; ?>
 <?php endif; ?>
-<a href="<?php echo $this->url(array("username" => $userInfo['alias']), "userfeed")?>" title="Files of <?php echo $this->escape($userInfo['name']) ?>" class="rssicon">rss feed</a>
+<a href="<?php echo $this->url(array("username" => $userInfo['username']), "userfeed")?>" title="Files of <?php echo $this->escape($userInfo['name']) ?>" class="rssicon">rss feed</a>

@@ -62,7 +62,7 @@ class SharesController extends Zend_Controller_Action
             }
             
             $this->_redirect($router->assemble(array("username" =>
-            $signedUserInfo['alias'], "share_id" => $shareInfo['id']),
+            $signedUserInfo['username'], "share_id" => $shareInfo['id']),
             "sharepage_1stpage"), array("exit"));
         }
         
@@ -88,13 +88,13 @@ class SharesController extends Zend_Controller_Action
             $forget = $form->getValue("forget");
             if (! empty($forget)) {
                 $this->_redirect($router->assemble(array("username"
-                => $signedUserInfo['alias']), 
+                => $signedUserInfo['username']),
                 "filestream_1stpage"), array("exit"));
             }
             
             $share->deleteShare($shareInfo, $signedUserInfo);
             $this->_redirect($router->assemble(array("username" =>
-            $signedUserInfo['alias']),
+            $signedUserInfo['username']),
             "filestream_1stpage") . "?share-erased=true", array("exit"));
         }
          

@@ -38,7 +38,7 @@ class Ml_Resource_Redirector
                 
                 $link =
                 "http://" . $config['webhost'] . "/" .
-                 urlencode($userInfo['alias']) . "/" . $shareInfo['id'];
+                 urlencode($userInfo['username']) . "/" . $shareInfo['id'];
                 
                 header("HTTP/1.1 301 Moved Permanently");
                 header("Location: " . $link);

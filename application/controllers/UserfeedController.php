@@ -52,7 +52,7 @@ class UserfeedController extends Zend_Controller_Action
         
         $userLink = "http://" . $config['webhost'] .
          $router->assemble(array("username" =>
-          $userInfo['alias']),
+          $userInfo['username']),
          "filestream_1stpage");
         
         /*Instead of...
@@ -105,7 +105,7 @@ class UserfeedController extends Zend_Controller_Action
         $atomLink->appendChild($doc->newTextAttribute("href",
          "http://" . $config['webhost'] .
          $router->assemble(array("username" =>
-          $userInfo['alias']), "userfeed")));
+          $userInfo['username']), "userfeed")));
          
         $atomLink->appendChild($doc->newTextAttribute("rel", "self"));
         $atomLink->appendChild($doc->newTextAttribute("type", "application/rss+xml"));
@@ -121,7 +121,7 @@ class UserfeedController extends Zend_Controller_Action
             }
             
             $link = "http://" . $config['webhost'] .
-             $router->assemble(array("username" => $userInfo['alias'],
+             $router->assemble(array("username" => $userInfo['username'],
               "share_id" => $share['id']), "sharepage_1stpage");
             
             $shareDate = new Zend_Date($share['uploadedTime'], Zend_Date::ISO_8601);

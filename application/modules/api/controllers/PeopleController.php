@@ -66,7 +66,7 @@ class PeopleController extends Zend_Controller_Action
         ->appendChild($doc->newTextAttribute('iconsecret', $iconSecret));
         
         $userData = array(
-            "username" => $userInfo['alias'],
+            "username" => $userInfo['username'],
             "realname" => $userInfo['name'],
         );
         
@@ -77,7 +77,7 @@ class PeopleController extends Zend_Controller_Action
         $userData["location"] = $profileInfo['location'];
         
         $userData["url"] = "http://" . $config['webhost'] .
-         $router->assemble(array("username" => $userInfo['alias']),
+         $router->assemble(array("username" => $userInfo['username']),
          "filestream_1stpage");
         
         foreach ($userData as $field => $data) {

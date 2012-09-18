@@ -21,11 +21,11 @@ if ($this->paginator->getCurrentPageNumber() != 1) {
 </div>
 <div class="comments">
 <p class="somehtml">
-<?php if ($comment['people_deleted.alias']): ?>
+<?php if ($comment['people_deleted.username']): ?>
 <?php echo $comment['people_deleted.name']?> (deleted) <b>said: </b>
 <?php else: ?>
 <a href="<?php
-echo $this->url(array("username" => $comment['people.alias']), "filestream_1stpage");
+echo $this->url(array("username" => $comment['people.username']), "filestream_1stpage");
 ?>"><?php echo $comment['people.name']?></a> <b>said: </b>
 <?php endif; ?>
 <br />
@@ -42,7 +42,7 @@ if ($createdDate != $modifiedDate):
 endif;
 ?>
 <a href="<?php
-echo $this->url(array("username" => $userInfo['alias'],
+echo $this->url(array("username" => $userInfo['username'],
 "share_id" => $shareInfo['id'],
 "comment_id" => $comment['id']), "commentpermalink");
 ?>" rel="nofollow">permalink</a>
@@ -50,7 +50,7 @@ echo $this->url(array("username" => $userInfo['alias'],
 if ($auth->getIdentity() == $comment['uid'] ||
  $auth->getIdentity() == $comment['byUid']): 
  ?> | <a href="<?php
- echo $this->url(array("username" => $userInfo['alias'],
+ echo $this->url(array("username" => $userInfo['username'],
  "share_id" => $shareInfo['id'],
  "comment_id" => $comment['id']), "deletecomment");
  ?>" rel="nofollow">delete</a>
@@ -58,7 +58,7 @@ if ($auth->getIdentity() == $comment['uid'] ||
  endif;
  if ($auth->getIdentity() == $comment['uid']): 
  ?> | <a href="<?php
- echo $this->url(array("username" => $userInfo['alias'],
+ echo $this->url(array("username" => $userInfo['username'],
  "share_id" => $shareInfo['id'],
  "comment_id" => $comment['id']), "editcomment");
  ?>" rel="nofollow">edit</a>

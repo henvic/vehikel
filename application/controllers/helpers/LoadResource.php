@@ -18,10 +18,11 @@ class Zend_Controller_Action_Helper_LoadResource extends Zend_Controller_Action_
          ! $registry->isRegistered("userInfo")) {
             //avoid calling the DB again for nothing
             if (isset($registry['signedUserInfo']) &&
-            $registry['signedUserInfo']['alias'] == $request->getUserParam('username')) {
+            $registry['signedUserInfo']['username'] == $request->getUserParam('username')) {
                 $userInfo = $registry['signedUserInfo'];
             } else {
-                $people = Ml_Model_People::getInstance();
+                $people =  $registry->get("sc")->get("people");
+                /** @var $people \Ml_Model_People() */
                 
                 $userInfo = $people
                  ->getByUsername($request->getUserParam('username'));

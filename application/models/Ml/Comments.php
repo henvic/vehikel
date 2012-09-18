@@ -122,7 +122,7 @@ class Ml_Model_Comments extends Ml_Model_AccessSingleton
          ".share AND DATE_ADD(comments.lastModified, INTERVAL 3 DAY) > CURRENT_TIMESTAMP AND share.id = (SELECT MAX(s2.id) FROM share s2 WHERE s2.byUid = share.byUid)",
          array("share.id as share.id", "share.title as share.title", "share.fileSize as share.fileSize", "share.short as share.short", "share.views as share.views"));
          
-        /* (?) I need to care about people_deleted also: $select->joinRight("people", "people.id = ".$comments->getTableName().".uid", array("people.id as people.id", "people.alias as people.alias", "people.name as people.name", "people.avatarInfo as people.avatarInfo"));*/
+        /* (?) I need to care about people_deleted also: $select->joinRight("people", "people.id = ".$comments->getTableName().".uid", array("people.id as people.id", "people.username as people.username", "people.name as people.name", "people.avatarInfo as people.avatarInfo"));*/
          
         $select->order("comments.lastModified DESC");
         
@@ -151,13 +151,13 @@ class Ml_Model_Comments extends Ml_Model_AccessSingleton
             $shareInfo = $registry->get('shareInfo');
             
             if ($registry->isRegistered('commentInfo')) {
-                $action = $router->assemble(array("username" => $userInfo['alias'],
+                $action = $router->assemble(array("username" => $userInfo['username'],
                  "share_id" => $shareInfo['id'],
                  "comment_id" => $registry['commentInfo']['id']),
                  "editcomment");
             
             } else {
-                $action = $router->assemble(array("username" => $userInfo['alias'], "share_id" => $shareInfo['id']), "sharepage_1stpage");
+                $action = $router->assemble(array("username" => $userInfo['username'], "share_id" => $shareInfo['id']), "sharepage_1stpage");
             }
             
             //we use #previewComment here because if it is not for publishment, we
@@ -184,7 +184,7 @@ class Ml_Model_Comments extends Ml_Model_AccessSingleton
             
             $form = new Ml_Form_DeleteComment(array(
                 'action' => $router->assemble(array("username" =>
-                 $userInfo['alias'],
+                 $userInfo['username'],
                  "share_id" => $shareInfo['id'],
                  "comment_id" => $commentId),
                  "deletecomment"),

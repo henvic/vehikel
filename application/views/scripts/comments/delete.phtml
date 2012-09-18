@@ -7,7 +7,7 @@ $commentInfo = $registry->get("commentInfo");
 $this->headTitle("Delete comment");
 ?>
 <h2><a href="<?php
-echo $this->url(array("username" => $userInfo['alias'],
+echo $this->url(array("username" => $userInfo['username'],
 "share_id" => $shareInfo['id'], "comment_id" => $commentInfo['id']),
 "commentpermalink");
 ?>">Comment on <?php echo $this->escape($shareInfo['title']) ?></a></h2>
