@@ -122,7 +122,7 @@ class Ml_Model_Comments extends Ml_Model_AccessSingleton
          ".share AND DATE_ADD(comments.lastModified, INTERVAL 3 DAY) > CURRENT_TIMESTAMP AND share.id = (SELECT MAX(s2.id) FROM share s2 WHERE s2.byUid = share.byUid)",
          array("share.id as share.id", "share.title as share.title", "share.fileSize as share.fileSize", "share.short as share.short", "share.views as share.views"));
          
-        /* (?) I need to care about people_deleted also: $select->joinRight("people", "people.id = ".$comments->getTableName().".uid", array("people.id as people.id", "people.username as people.username", "people.name as people.name", "people.avatarInfo as people.avatarInfo"));*/
+        /* (?) I need to care about people_deleted also: $select->joinRight("people", "people.id = ".$comments->getTableName().".uid", array("people.id as people.id", "people.username as people.username", "people.name as people.name", "people.avatar_info as people.avatar_info"));*/
          
         $select->order("comments.lastModified DESC");
         

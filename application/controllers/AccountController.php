@@ -133,7 +133,7 @@ class AccountController extends Ml_Controller_Action
 
         $this->view->submitPictureForm = $form;
 
-        $pictureInfo = $signedUserInfo["avatarInfo"];
+        $pictureInfo = $signedUserInfo["avatar_info"];
 
         if ($pictureInfo) {
             $this->view->pictureLink = $picture->getImageLink($pictureInfo["prefix"], $pictureInfo["secret"], "small.jpg");
@@ -144,8 +144,8 @@ class AccountController extends Ml_Controller_Action
         }
 
         if ($form->getValue("delete")) {
-            $people->update($signedUserInfo["id"], array("avatarInfo" => false));
-            $oldPicturesInfo = $signedUserInfo["avatarInfo"];
+            $people->update($signedUserInfo["id"], array("avatar_info" => false));
+            $oldPicturesInfo = $signedUserInfo["avatar_info"];
             $picture->delete($oldPicturesInfo);
             $this->_redirect($this->_router->assemble(array(), "account_picture"), array("exit"));
         } else if ($form->Image->isUploaded()) {
@@ -153,8 +153,8 @@ class AccountController extends Ml_Controller_Action
             $picturesInfo = $picture->create($fileInfo['Image']['tmp_name'], $signedUserInfo['id']);
 
             if ($picturesInfo) {
-                $people->update($signedUserInfo['id'], array("avatarInfo" => json_encode($picturesInfo)));
-                $oldPicturesInfo = $signedUserInfo["avatarInfo"];
+                $people->update($signedUserInfo['id'], array("avatar_info" => json_encode($picturesInfo)));
+                $oldPicturesInfo = $signedUserInfo["avatar_info"];
                 if (is_array($oldPicturesInfo) && isset($oldPicturesInfo["secret"])) {
                     $picture->delete($oldPicturesInfo);
                 }

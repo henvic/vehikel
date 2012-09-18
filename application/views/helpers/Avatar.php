@@ -16,7 +16,7 @@ class Ml_View_Helper_Avatar extends Zend_View_Helper_Abstract
         $picture =  $registry->get("sc")->get("picture");
         /** @var $picture \Ml_Model_Picture() */
 
-        $pictureInfo = $userInfo["avatarInfo"];
+        $pictureInfo = $userInfo["avatar_info"];
 
         if ($pictureInfo) {
             $pictureLink = $picture->getImageLink($pictureInfo["prefix"], $pictureInfo["secret"], "square.jpg");

@@ -82,7 +82,7 @@ class UserfeedController extends Zend_Controller_Action
                 $channelElement->appendChild($doc->newTextElement($field, $value));
         }
         
-        $avatarInfo = unserialize($userInfo['avatarInfo']);
+        $avatarInfo = unserialize($userInfo['avatar_info']);
         
         if (isset($avatarInfo['secret'])) {
             $iconSecret = $avatarInfo['secret'];

@@ -54,7 +54,7 @@ class PeopleController extends Zend_Controller_Action
         $rootElement
         ->appendChild($doc->newTextAttribute('id', $userInfo['id']));
         
-        $avatarInfo = unserialize($userInfo['avatarInfo']);
+        $avatarInfo = unserialize($userInfo['avatar_info']);
         
         if (isset($avatarInfo['secret'])) {
             $iconSecret = $avatarInfo['secret'];
