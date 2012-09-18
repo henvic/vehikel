@@ -20,6 +20,7 @@ services:
         arguments: [@config]
     profile:
         class: Ml_Model_Profile
+        arguments: [null, @memCache]
     credential:
         class: Ml_Model_Credential
     recover:
