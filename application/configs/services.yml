@@ -1,5 +1,4 @@
 parameters:
-
     logger.adapter.mongo.collection: log
     logger.adapter.mongo.db: vehikel
 services:
