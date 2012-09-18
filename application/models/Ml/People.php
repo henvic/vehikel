@@ -1,10 +1,13 @@
 <?php
 class Ml_Model_People
 {
-    const CACHE_LIFETIME = 60;
+    use Ml_Model_Db_Table_History;
+    use Ml_Model_Db_CachePeople;
 
-    // this number should increase after relevant changes
-    const CACHE_OBJECT_VERSION = 0;
+    protected $_cacheLifetime = 60;
+
+    // this number should change after relevant changes
+    protected $_cacheObjectVersion = 1;
 
     protected $_dbTableName = "people";
     protected $_dbHistoryTableName = "people_history";
@@ -25,8 +28,8 @@ class Ml_Model_People
     public function getByUsername($username, $useCache = true)
     {
         if ($useCache) {
-            $cached = $this->_cache->load($this->_cacheUsernamePrefix . $username);
-            if ($cached && $cached["cache"] == self::CACHE_OBJECT_VERSION) {
+            $cached = $this->getCacheByUsername($username);
+            if ($cached) {
                 return $cached;
             }
         }
@@ -57,28 +60,28 @@ class Ml_Model_People
         return $this->getByEmail($value);
     }
 
-    public function getById($uid, $useCache = true)
+    public function getById($id, $useCache = true)
     {
         if ($useCache) {
-            $cached = $this->_cache->load($this->_cachePrefix . $uid);
-            if ($cached && $cached["cache"] == self::CACHE_OBJECT_VERSION) {
+            $cached = $this->getCache($id);
+            if ($cached) {
                 return $cached;
             }
         }
 
-        $select = $this->_dbTable->select()->where("binary `id` = ?", $uid);
+        $select = $this->_dbTable->select()->where("binary `id` = ?", $id);
 
         return $this->getDbResult($select);
     }
 
-    public function update($uid, $data)
+    public function update($id, $data)
     {
-        $update = $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $uid));
+        $update = $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $id));
 
         if ($update) {
-            $this->saveHistorySnapshot($uid);
+            $this->saveHistorySnapshot($id);
             //retrieves fresh data renewing the cached values in the process
-            $this->getById($uid, false);
+            $this->getById($id, false);
             return true;
         }
 
@@ -89,15 +92,15 @@ class Ml_Model_People
     {
         $this->_dbAdapter->beginTransaction();
         try {
-            $this->_dbTable->insert(array("alias" => $username, "username" => $username, "name" => $name, "email" => $email));
+            $this->_dbTable->insert(array("username" => $username, "name" => $name, "email" => $email));
 
-            $uid = $this->_dbAdapter->lastInsertId();
+            $id = $this->_dbAdapter->lastInsertId();
 
-            if (! $uid) {
+            if (! $id) {
                 return false;
             }
 
-            $this->saveHistorySnapshot($uid);
+            $this->saveHistorySnapshot($id);
 
             $this->_dbAdapter->commit();
         } catch (Exception $e) {
@@ -105,7 +108,7 @@ class Ml_Model_People
             throw $e;
         }
 
-        return $uid;
+        return $id;
     }
 
     protected function getDbResult(Zend_Db_Select $sql)
@@ -122,44 +125,5 @@ class Ml_Model_People
         }
 
         return false;
-    }
-
-    /**
-     * Sets two caches: one with ID and another with username as keys
-     *
-     * @param $userInfo
-     */
-    protected function setCache($userInfo)
-    {
-        $userInfo["cache"] = self::CACHE_OBJECT_VERSION;
-
-        $this->_cache->save($userInfo, $this->_cachePrefix . $userInfo["id"], array(), self::CACHE_LIFETIME);
-
-        $this->_cache->save(
-            $userInfo,
-            $this->_cacheUsernamePrefix . $userInfo["username"],
-            array(),
-            self::CACHE_LIFETIME
-        );
-    }
-
-    protected function deleteCache($id, $username)
-    {
-        $this->_cache->remove($this->_cachePrefix . $id);
-        $this->_cache->remove($this->_cacheUsernamePrefix . $username);
-    }
-
-    protected function saveHistorySnapshot($id)
-    {
-        //the history is built using a best effort, non-transational way
-        $historySql = "INSERT INTO "
-            . $this->_dbAdapter->quoteTableAs($this->_dbHistoryTableName)
-            . "SELECT UUID() as history_id, "
-            . $this->_dbAdapter->quoteTableAs($this->_dbTableName)
-            . ".*, CURRENT_TIMESTAMP as change_time FROM "
-            . $this->_dbAdapter->quoteTableAs($this->_dbTableName)
-            . "WHERE id = :id";
-
-        $this->_dbAdapter->query($historySql, array("id" => $id));
     }
 }
