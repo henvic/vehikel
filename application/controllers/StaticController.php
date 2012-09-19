@@ -35,7 +35,7 @@ class StaticController extends Ml_Controller_Action
         
         //If not found dispatch to a method which doesn't exists
         if (! isset($found)) {
-            $this->_forward("notstatic");
+            return $this->_forward("not-found", "error", "default", array("error" => "page-not-found"));
         }
     }
 }
