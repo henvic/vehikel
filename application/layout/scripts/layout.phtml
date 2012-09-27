@@ -136,11 +136,6 @@ $this->headMeta() , PHP_EOL;
     </div>
   </div>
 </div><!-- end of navbar -->
-<?php
-if ($registry->isRegistered("userInfo")) {
-    echo $this->render("usermenu.phtml");
-}
-?>
 <?php echo $this->layout()->content; ?>
 <footer>
 <div class="container">
