@@ -7,62 +7,41 @@
  *
  * @todo ajax response error handling
  */
-class ErrorController extends Zend_Controller_Action
+class ErrorController extends Ml_Controller_Action
 {
-    public function errorAction() 
+    public function notFoundAction()
     {
-        $registry = Zend_Registry::getInstance();
-        
-        $request = $this->getRequest();
-        
-        $params = $request->getParams();
-        
+        return $this->_forward("error");
+    }
+
+    public function errorAction()
+    {
+        $params = $this->_request->getParams();
+
         // Ensure the default view suffix is used
         // so we always return the error in the right view type
         $this->_helper->viewRenderer->setViewSuffix('phtml');
 
-        // Grab the error object from the request
-        $errors = $this->_getParam('error_handler');
-        
-        switch ($errors->type) { 
-            case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER: 
-            case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION: 
-                // 404 error -- controller or action not found
-                $this->getResponse()->setHttpResponseCode(404);
-                
-                if (isset($params['ajax']) && APPLICATION_ENV != 'development') {
-                    exit();
-                }
-                
-                $this->view->statusCode = 404; 
-                $this->view->message = 'Page not found'; 
-                break; 
-            default: 
-                // application error
-                if ($registry->isRegistered("notfound")) {
-                    $this->getResponse()->setHttpResponseCode(404);
-                    if (isset($params['ajax']) && APPLICATION_ENV != 'development') {
-                        exit();
-                    }
-                    $this->view->statusCode = 404;
-                    $this->view->message = 'Page not found';
-                } else {
-                    $this->getResponse()->setHttpResponseCode(500);
-                    if (isset($params['ajax']) &&
-                     APPLICATION_ENV != 'development') {
-                        exit();
-                    }
-                    $this->view->statusCode = 500;
-                    $this->view->message = 'Application error';
-                }
-                
-                break; 
+        // If it is a Ajax rquest, let's just send the headers and no content at all
+        if($this->_request->isXmlHttpRequest()) {
+            $this->_helper->layout()->disableLayout();
+            $this->_helper->viewRenderer->setNoRender(true);
         }
-        
-        // pass the actual exception object to the view
-        $this->view->exception = $errors->exception; 
-        
-        // pass the request to the view
-        $this->view->request   = $errors->request; 
-    } 
+
+        $errors = $this->_getParam('error_handler');
+
+        // check if the system failed due to a exception or a user error / broken link
+        if (! $this->_getParam('error_handler')) {
+            $this->getResponse()->setHttpResponseCode(404);
+            $this->view->statusCode = 404;
+            $this->view->params = $this->_request->getUserParams();
+            return;
+        } else {
+            // pass the actual exception object to the view
+            $this->view->exception = $errors->exception;
+            $this->getResponse()->setHttpResponseCode(500);
+            $this->view->statusCode = 500;
+            $this->view->params = $errors->request->getUserParams();
+        }
+    }
 }
