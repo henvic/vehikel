@@ -78,16 +78,6 @@ class Ml_Form_AccountSettings extends Twitter_Bootstrap_Form_Horizontal
                 )
         ));
 
-        $this->addElement('text', 'location', array(
-            'label'      => 'Localidade',
-            'required'   => false,
-            'filters'    => array('StringTrim'),
-            'validators' => array(
-                array('validator' =>
-                    'StringLength', 'options' => array(1, 40)),
-                )
-        ));
-
         $this->addElement('textarea', 'about', array(
             'label'      => 'Sobre',
             'description' =>
