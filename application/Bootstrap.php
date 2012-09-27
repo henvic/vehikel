@@ -22,7 +22,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->_sysCache = $sysCache;
         Zend_Date::setOptions(array('cache' => $sysCache));
         Zend_Locale::setCache($sysCache);
-        Zend_Translate::setCache($sysCache);
+        // @todo enable Zend_Translate caching if / when appropriate
+        //Zend_Translate::setCache($sysCache);
 
         $configArray = $this->getOptions();
         
