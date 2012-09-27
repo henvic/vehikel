@@ -118,6 +118,7 @@ class Ml_Model_People
         if (is_array($userInfo)) {
             $userInfo["cache"] = false;
             $userInfo["avatar_info"] = json_decode($userInfo["avatar_info"], true);
+            $userInfo["address"] = json_decode($userInfo["address"], true);
 
             $this->setCache($userInfo);
 
