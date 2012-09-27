@@ -110,7 +110,7 @@ class PasswordController extends Ml_Controller_Action
         $params = $this->_request->getParams();
 
         if (! $this->_auth->hasIdentity()) {
-            $this->_frontController->registerPlugin(new Ml_Plugins_LoginRedirect());
+            return $this->_forward("redirect", "login");
         }
 
         $userInfo = $this->_registry->get("signedUserInfo");
