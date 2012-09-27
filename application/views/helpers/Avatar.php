@@ -9,7 +9,7 @@
  */
 class Ml_View_Helper_Avatar extends Zend_View_Helper_Abstract
 {
-    public function avatar($userInfo)
+    public function avatar($userInfo, $format = "square.jpg", $width = false, $height = false)
     {
         $registry = Zend_Registry::getInstance();
         $config = $registry->get("config");
@@ -19,10 +19,24 @@ class Ml_View_Helper_Avatar extends Zend_View_Helper_Abstract
         $pictureInfo = $userInfo["avatar_info"];
 
         if ($pictureInfo) {
-            $pictureLink = $picture->getImageLink($pictureInfo["prefix"], $pictureInfo["secret"], "square.jpg");
+            $pictureLink = $picture->getImageLink($pictureInfo["prefix"], $pictureInfo["secret"], $format);
         } else {
-            $pictureLink = $config["cdn"] . "images/happy-face-s.png";
+            $pictureLink = $config["cdn"] . "images/user-image-placeholder/" . $format;
         }
-        return '<img src="' . $this->view->escape($pictureLink) . '" width="20" height="20" />';
+        $img = '<img src="' . $this->view->escape($pictureLink);
+
+        $img .= '"';
+
+        if ($width) {
+            $img .= ' width="' . (int) $width . '"';
+        }
+
+        if ($height) {
+            $img .= ' height="' . (int) $height . '"';
+        }
+
+        $img .= ' />';
+
+        return $img;
      }
 }
