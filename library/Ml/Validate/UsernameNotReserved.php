@@ -1,27 +1,20 @@
 <?php
-//require_once 'Zend/Validate/Abstract.php';
 
-class Ml_Validate_UsernameNewUser extends Zend_Validate_Abstract
+class Ml_Validate_UsernameNotReserved extends Zend_Validate_Abstract
 {
+    const INVALID = 'valueInvalid';
     const MSG_USERNAME_RESERVED = 'usernameReserved';
-    const MSG_USERNAME_INVALID = 'usernameInvalid';
-    const MSG_USERNAME_EXISTS = 'usernameAlreadyExists';
 
     protected $_messageTemplates = array(
+        self::INVALID => "Invalid type given. String expected",
         self::MSG_USERNAME_RESERVED =>
         "This username is reserved and can not be registered",
-        self::MSG_USERNAME_INVALID =>
-        "This username is invalid. You can only use a-z, 0-9, _ and - for your username",
-        self::MSG_USERNAME_EXISTS => "This username is already in use",
     );
-
-    protected $_people;
 
     protected $_reservedUsernamesFile;
 
-    public function __construct(Ml_Model_People $people, $reservedUsernamesFile)
+    public function __construct($reservedUsernamesFile)
     {
-        $this->_people = $people;
         $this->_reservedUsernamesFile = $reservedUsernamesFile;
     }
 
@@ -29,10 +22,8 @@ class Ml_Validate_UsernameNewUser extends Zend_Validate_Abstract
     {
         $this->_setValue($value);
 
-        $value = (string) $value;
-
-        if (preg_match('#([^a-z0-9_-]+)#is', $value) || $value == '0') {
-            $this->_error(self::MSG_USERNAME_INVALID);
+        if (! is_string($value)) {
+            $this->_error(self::INVALID);
             return false;
         }
 
@@ -53,12 +44,6 @@ class Ml_Validate_UsernameNewUser extends Zend_Validate_Abstract
             return false;
         }
 
-        $userInfo = $this->_people->getByUsername($value);
-
-        if (! is_array($userInfo)) {
-            $this->_error(self::MSG_USERNAME_EXISTS);
-            return false;
-        }
         return true;
     }
 }
