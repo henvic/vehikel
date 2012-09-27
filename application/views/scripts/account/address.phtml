@@ -1,0 +1,17 @@
+<?php
+$this->headTitle("Endereço e telefones");
+/** @var $form \Ml_Form_Address() */
+$form = $this->addressForm;
+?>
+<div class="container">
+    <div class="row">
+        <?= $this->render("/account/menu.phtml"); ?>
+        <div class="span6">
+            <h1>Endereço e telefones</h1>
+            <p><span class="label label-info">Dica</span> verifique com o
+                <a href="https://maps.google.com/" rel="external">Google Maps</a>
+                se o endereço digitado está correto.</p>
+            <?= $this->addressForm; ?>
+        </div>
+    </div>
+</div>
