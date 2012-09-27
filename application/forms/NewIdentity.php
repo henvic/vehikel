@@ -69,9 +69,14 @@ class Ml_Form_NewIdentity extends Twitter_Bootstrap_Form_Horizontal
 
         $this->getElement('newusername')->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 15)), true);
         $this->getElement('newusername')->addValidator(
-            new Ml_Validate_UsernameNewUser(
-                $this->_people,
+            new Ml_Validate_UsernameNotReserved(
                 APPLICATION_PATH . "/configs/reserved-usernames.json"
+            ),
+            true
+        );
+        $this->getElement('newusername')->addValidator(
+            new Ml_Validate_UsernameAvailable(
+                $this->_people
             ),
             true
         );
