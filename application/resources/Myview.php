@@ -17,8 +17,8 @@ class Ml_Resource_Myview extends Zend_Application_Resource_ResourceAbstract
         
         $viewRenderer->setView($view);
         
-        $view->addHelperPath(APPLICATION_PATH.'/views/helpers', 'Ml_View_Helper');
-        
+        $view->addHelperPath(APPLICATION_PATH . '/views/helpers', 'Ml_View_Helper');
+
         $view->headTitle()->append($config['applicationname']);
         
         // Return it, so that it can be stored by the bootstrap
