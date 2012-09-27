@@ -2,11 +2,13 @@
 
 class Ml_Validate_Username extends Zend_Validate_Abstract
 {
+    const INVALID = 'valueInvalid';
     const MSG_USERNAME_NOT_FOUND = 'usernameNotFound';
     const MSG_EMAIL_NOT_FOUND = 'emailNotFound';
     const MSG_USER_NOT_ACTIVE = 'userNotActive';
 
     protected $_messageTemplates = array(
+        self::INVALID => "Invalid type given. String expected",
         self::MSG_USERNAME_NOT_FOUND => "User not found",
         self::MSG_EMAIL_NOT_FOUND => "Email not found",
         self::MSG_USER_NOT_ACTIVE => "Inactive user"
@@ -25,7 +27,10 @@ class Ml_Validate_Username extends Zend_Validate_Abstract
     {
         $this->_setValue($value);
 
-        $value = (string) $value;
+        if (! is_string($value)) {
+            $this->_error(self::INVALID);
+            return false;
+        }
 
         if (strpos($value, '@') === false) {
             if (preg_match('#([^a-z0-9_-]+)#is', $value) || $value == '0') {

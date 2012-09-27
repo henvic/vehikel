@@ -5,9 +5,11 @@
  */
 class Ml_Validate_NewPassword extends Zend_Validate_Abstract
 {
+    const INVALID = 'valueInvalid';
     const MSG_SAME_PASSWORD = 'samePassword';
 
     protected $_messageTemplates = array(
+        self::INVALID => "Invalid type given. String expected",
         self::MSG_SAME_PASSWORD => "This is the current password",
     );
 
@@ -26,7 +28,10 @@ class Ml_Validate_NewPassword extends Zend_Validate_Abstract
     {
         $this->_setValue($value);
 
-        $value = (string) $value;
+        if (! is_string($value)) {
+            $this->_error(self::INVALID);
+            return false;
+        }
 
         $adapter = $this->_credential->getAuthAdapter($this->_uid, $value);
         $resp = $adapter->authenticate();

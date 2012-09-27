@@ -8,6 +8,7 @@
 
 class Ml_Validate_MagicCookies extends Zend_Validate_Abstract
 {
+    const INVALID = 'valueInvalid';
     const MSG_MAGIC_COOKIE_INVALID = 'invalidMagicCookie';
     const MSG_MAGIC_COOKIE_INVALID_FORMAT = "invalidFormatMagicCookie";
     const MSG_MAGIC_COOKIE_INVALID_SIZE = 'invalidSizeMagicCookie';
@@ -15,6 +16,7 @@ class Ml_Validate_MagicCookies extends Zend_Validate_Abstract
     const MSG_REFERER_HOST_INVALID = 'invalidRefererHost';
  
     protected $_messageTemplates = array(
+        self::INVALID => "Invalid type given. String expected",
         self::MSG_MAGIC_COOKIE_INVALID => "Please send your form again",
         self::MSG_MAGIC_COOKIE_INVALID_FORMAT => "Invalid hash format",
         self::MSG_MAGIC_COOKIE_INVALID_SIZE => "Invalid hash size",
@@ -39,6 +41,11 @@ class Ml_Validate_MagicCookies extends Zend_Validate_Abstract
         filter_input(INPUT_POST,
          Ml_Model_MagicCookies::hash_name, 
          FILTER_UNSAFE_RAW);
+
+        if (! is_string($value)) {
+            $this->_error(self::INVALID);
+            return false;
+        }
         
         if (isset($_SERVER['HTTP_REFERER']) &&
         ! empty($_SERVER['HTTP_REFERER'])) {

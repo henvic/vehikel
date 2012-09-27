@@ -2,9 +2,11 @@
 
 class Ml_Validate_NewEmail extends Zend_Validate_Abstract
 {
+    const INVALID = 'valueInvalid';
     const MSG_EMAIL_EXISTS = 'emailAlreadyExists';
 
     protected $_messageTemplates = array(
+        self::INVALID => "Invalid type given. String expected",
         self::MSG_EMAIL_EXISTS =>
         "There is already another account with this e-mail address.",
     );
@@ -22,7 +24,10 @@ class Ml_Validate_NewEmail extends Zend_Validate_Abstract
     {
         $this->_setValue($value);
 
-        $value = (string) $value;
+        if (! is_string($value)) {
+            $this->_error(self::INVALID);
+            return false;
+        }
 
         if (in_array($value, $this->_ignoreEmails)) {
             return true;

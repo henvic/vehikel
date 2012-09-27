@@ -3,9 +3,11 @@
 
 class Ml_Validate_HardPassword extends Zend_Validate_Abstract
 {
+    const INVALID = 'valueInvalid';
     const MSG_PASSWORD_NOT_HARD = 'passwordNotHard';
 
     protected $_messageTemplates = array(
+        self::INVALID => "Invalid type given. String expected",
         self::MSG_PASSWORD_NOT_HARD => "Por favor use uma senha mais segura",
     );
 
@@ -13,7 +15,10 @@ class Ml_Validate_HardPassword extends Zend_Validate_Abstract
     {
         $this->_setValue($value);
 
-        $value = (string) $value;
+        if (! is_string($value)) {
+            $this->_error(self::INVALID);
+            return false;
+        }
 
         $others = $context;
 
