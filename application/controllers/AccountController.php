@@ -2,10 +2,10 @@
 
 class AccountController extends Ml_Controller_Action
 {
-    public function init()
+    public function preDispatch()
     {
         if (! $this->_auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
+            return $this->_forward("redirect", "login");
         }
     }
 

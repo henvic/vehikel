@@ -136,7 +136,7 @@ class JoinController extends Ml_Controller_Action
     public function welcomeAction()
     {
         if (! $this->_auth->hasIdentity()) {
-            $this->getFrontController()->registerPlugin(new Ml_Plugins_LoginRedirect());
+            return $this->_forward("redirect", "login");
         }
 
         $this->view->joined = true;
