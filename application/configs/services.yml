@@ -15,8 +15,8 @@ services:
     people:
         class: Ml_Model_People
         arguments: [null, @memCache]
-    vehicles:
-        class: Ml_Model_Vehicles
+    posts:
+        class: Ml_Model_Posts
         arguments: [null, @memCache]
     picture:
         class: Ml_Model_Picture
