@@ -1,16 +1,14 @@
 <hr class="lighten" />
-<div class="row">
-<div class="span14">
-<div class="pagination">
+<div class="pagination pagination-centered">
 <ul>
 <?php
 if (isset($this->previous)) {
 ?>
-<li><a href="<?= $this->paginatorLink($this->previous); ?>">&larr; Previous</a></li>
+<li><a href="<?= $this->paginatorLink($this->previous); ?>">&larr;</a></li>
 <?php
 } else {
 ?>
-<li class="prev disabled"><a href="<?= $this->paginatorLink($this->previous); ?>">&larr; Previous</a></li>
+<li class="prev disabled"><a href="<?= $this->paginatorLink($this->previous); ?>">&larr;</a></li>
 <?php
 }
 
@@ -35,11 +33,11 @@ while (current($pages)) {
 }
 if (isset($this->next)) {
 ?>
-<li><a href="<?= $this->paginatorLink($this->next); ?>">Next &rarr;</a></li>
+<li><a href="<?= $this->paginatorLink($this->next); ?>">&rarr;</a></li>
 <?php
 } else {
 ?>
-<li class="next disabled"><a href="<?= $this->paginatorLink($this->next); ?>">Next &rarr;</a></li>
+<li class="next disabled"><a href="<?= $this->paginatorLink($this->next); ?>">&rarr;</a></li>
 <?php
 }
 ?>
@@ -48,8 +46,3 @@ if (isset($this->next)) {
 <?php
 reset($pages);
 ?>
-</div>
-<div class="span1 pagination-total-item-count">
-<span class="label"><?php echo $this->totalItemCount; ?> items</span>
-</div>
-</div>
