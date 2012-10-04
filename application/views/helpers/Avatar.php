@@ -35,7 +35,7 @@ class Ml_View_Helper_Avatar extends Zend_View_Helper_Abstract
             $img .= ' height="' . (int) $height . '"';
         }
 
-        $img .= ' />';
+        $img .= ' alt="" />';
 
         return $img;
      }
