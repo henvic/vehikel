@@ -57,7 +57,7 @@ $this->headMeta() , PHP_EOL;
 <body id="body">
 <div class="site-logotype" id="site-logotype">
 <a href="<?php echo $this->url(array(), "index"); ?>">
-<img src="<?php echo $this->staticVersion("/images/logotype.png"); ?>" width="551" height="65" /></a>
+<img src="<?php echo $this->staticVersion("/images/logotype.png"); ?>" width="551" height="65" alt="<?= $this->escape($config["applicationname"]); ?>" /></a>
 </div>
 <div id="sticky-anchor"></div>
 <div class="navbar navbar-inverse navbar-fixed-top navbar-fixed-top-override" id="navbar">
