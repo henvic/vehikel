@@ -34,6 +34,19 @@ class Ml_Form_AccountSettings extends Twitter_Bootstrap_Form_Horizontal
             ),
         ));
 
+        $this->addElement(
+            'radio',
+            'account_type',
+            array(
+                'required' => true,
+                'label'    => 'Tipo de conta',
+                'multiOptions' => array(
+                    "private" => "Particular",
+                    "retail" => "Loja"
+                )
+            )
+        );
+
         $this->addElement('text', 'username', array(
             'label'      => 'Seu nome de usuário',
             'required'   => true,
