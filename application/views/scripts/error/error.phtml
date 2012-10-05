@@ -1,56 +1,48 @@
-<?php // application/views/scripts/error/error.phtml
-
-$registry = Zend_Registry::getInstance();
+<?php
 
 switch ($this->statusCode) {
     case "403" :
-        $headtitle = "403 Forbidden";
+        $headTitle = "403 Forbidden";
         break;
     case "404" :
-        $headtitle = "Page not found";
+        $headTitle = "Page not found";
         break;
     default :
-        $headtitle = "Application error";
+        $headTitle = "Application error";
         break;
 }
 
-$this->headTitle($headtitle);
-
-if ($this->statusCode == 404 && isset($_SERVER['REQUEST_URI'])) {
-    $params = $this->request->getParams();
-    
-    if ($registry->isRegistered("userInfo")) {
-        $userInfo = $registry->get("userInfo");
-    }
-}
-
+$this->headTitle($headTitle);
 ?>
-<h2><?php echo $headtitle; ?></h2>
-<?php if ($this->statusCode == 404): ?>
-<p>The page you tried to access does not exists.</p>
-<?php if (isset($userInfo) && is_array($userInfo)): ?>
-<p><strong>Do you want to browser <a href="<?php
-echo $this->url(array("username" => $userInfo['alias']), "filestream_1stpage");
-?>" title="<?php
-echo $this->escape($userInfo['name']);?> files"><?php
-echo $this->escape($userInfo['name']); ?></a>'s contents?</strong></p>
-<?php endif; ?>
-<?php else: ?>
-<p>There was an application error.</p>
-<?php
-endif;
-if ('development' == APPLICATION_ENV): ?>
-<div class="row">
-<div class="span9">
-<h3>Exception information:</h3>
-<p><b>Message:</b> <?php echo $this->escape($this->exception->getMessage()); ?> 
-</p>
-</div>
-<div class="span6">
-<h3>Request Parameters:</h3>
-<pre class="prettyprint"><?php echo var_export($this->request->getParams(), true); ?></pre>
-</div>
-</div>
-<h3>Stack trace:</h3>
-<pre class="prettyprint"><?php echo str_replace(array(": ", "#"), array(":<br />   ", "<br />#"), $this->escape($this->exception->getTraceAsString())); ?></pre>
-<?php endif; ?>
+&nbsp;
+<div class="container">
+    <div class="row">
+        <div class="span4">
+            <h1><?php echo $this->escape($headTitle); ?></h1>
+            <?php
+                if ("development" == APPLICATION_ENV) {
+            ?>
+            <h2>Request Parameters:</h2>
+            <pre class="prettyprint"><?php echo var_export($this->params, true); ?></pre>
+                <?php
+                    if ($this->exception) {
+                ?>
+                <h2>Exception information:</h2>
+                <p><b>Message:</b> <?php echo $this->escape($this->exception->getMessage()); ?></p>
+            <?php
+                    }
+                }
+            ?>
+        </div>
+        <div class="span8">
+            <?php
+            if ("development" == APPLICATION_ENV && $this->exception) {
+                ?>
+                <h2>Stack trace:</h2>
+                <pre class="prettyprint"><?php echo str_replace(array(": ", "#"), array(":<br />   ", "<br />#"), $this->escape($this->exception->getTraceAsString())); ?></pre>
+                <?php
+            }
+            ?>
+        </div>
+    </div><!-- end of .row -->
+</div><!-- end of .container -->
