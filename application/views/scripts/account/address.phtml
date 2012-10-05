@@ -11,6 +11,20 @@ $form = $this->addressForm;
             <p><span class="label label-info">Dica</span> verifique com o
                 <a href="https://maps.google.com/" rel="external">Google Maps</a>
                 se o endereço digitado está correto.</p>
+            <?php
+            if ($this->signedUserInfo["account_type"] == "retail") {
+            ?>
+            <p><span class="label label-warning">Importante</span> a sua conta é do tipo Loja e,
+                portanto, seu endereço está disponível publicamente em algumas áreas desse site.</p>
+            <?php
+            } else {
+            ?>
+            <p><span class="label label-inverse">Importante</span> a sua conta é do tipo <em>Particular</em> e,
+                portanto, seu endereço é confidêncial, não sendo mostrado publicamente no site. Apenas os telefones são
+                disponibilizados publicamente.</p>
+            <?php
+            }
+            ?>
             <?= $this->addressForm; ?>
         </div>
     </div>
