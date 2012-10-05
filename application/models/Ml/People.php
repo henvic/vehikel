@@ -4,7 +4,7 @@ class Ml_Model_People
     use Ml_Model_Db_Table_History;
     use Ml_Model_Db_CachePeople;
 
-    protected $_cacheLifetime = 60;
+    protected $_cacheLifetime = 10;
 
     // this number should change after relevant changes
     protected $_cacheObjectVersion = 1;
