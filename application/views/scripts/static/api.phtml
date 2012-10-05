@@ -19,7 +19,7 @@ $this->headTitle("API | Documentation");
 
 <h3>Avatar images</h3>
 <p>The link for the avatar images are constructed in the following way:<br />
-<code><?php echo $config['services']['S3']['headshotsBucketAddress']; ?><strong>(user id)</strong>-<strong>(icon secret)</strong><strong>(size end)</strong>.jpg</code></p>
+<code><?php echo $config['services']['S3']['picturesBucketAddress']; ?><strong>(user id)</strong>-<strong>(icon secret)</strong><strong>(size end)</strong>.jpg</code></p>
 <p>The icon secret can be retrieve by means of the /people/info method. By "size end" we mean the URI termination for the wanted size. They are: "-t" for thumbnail, "-s" for square, "-m" for small, "" (nothing) for medium and "-b" for large.
 </p>
 
