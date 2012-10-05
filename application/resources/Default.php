@@ -10,8 +10,8 @@ class Ml_Resource_Default extends Zend_Application_Resource_ResourceAbstract
         
         $cacheFiles = new Ml_Cache_Files($sysCache);
         
-        Zend_Controller_Action_HelperBroker::addPath(APPLICATION_PATH . '/controllers/helpers');
-        
+        Zend_Controller_Action_HelperBroker::addPrefix('Ml_Controller_Action_Helper');
+
         $frontController = $this->getBootstrap()->getResource('FrontController');
         
         $dispatcher = $frontController->getDispatcher();
