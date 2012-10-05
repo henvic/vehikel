@@ -1,0 +1,117 @@
+<?php
+
+$translatePosts = $this->translatePosts;
+/** @var $translatePosts \Zend_Translate_Adapter() */
+
+$userInfo = $this->userInfo;
+
+$this->headTitle($userInfo['name'], "PREPEND");
+
+$paginator =  $this->posts;
+/** @var $paginator \Zend_Paginator() */
+
+$escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_stream_1stpage");
+$address = $userInfo["address"];
+?>
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <address class="vcard car-seller-address">
+                <div class="span1">
+                    <a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo); ?></a>
+                </div>
+                <div class="span4">
+                    <h1 class="fn"><?= $this->escape($userInfo['name']); ?></h1>
+                    <?php
+                    if (! $paginator->getTotalItemCount()) {
+                    ?>
+                    <p>Nenhum veículo foi encontrado.</p>
+                    <?php
+                    } else {
+                    ?>
+                    <p>Veículos
+                        <?php
+                        $defaultPostsPerPage = $paginator->getDefaultItemCountPerPage();
+                        $page = $paginator->getCurrentPageNumber();
+                        $postsInThisPage = $paginator->getCurrentItemCount();
+                        $totalPosts = $paginator->getTotalItemCount();
+
+                        $firstShowedPostItem = (($page - 1) * $defaultPostsPerPage) + 1;
+                        $lastShowedPostItem = $firstShowedPostItem + $postsInThisPage - 1;
+
+                        echo $firstShowedPostItem;
+                        echo '-';
+                        echo $lastShowedPostItem;
+
+
+                        ?>
+                        de <b><?= $this->escape($totalPosts); ?></b>.
+                    </p>
+                    <?php
+                    }
+                    ?>
+                </div>
+                <div class="span3">
+                    <?php
+                    if ($userInfo["account_type"] == "retail") {
+                    ?>
+                    <span class="street-address"><?= $this->escape($address["street_address"]); ?></span> -
+                    <span class="neighborhood"><?= $this->escape($address["neighborhood"]); ?></span><br />
+                    <?php
+                    }
+                    ?>
+                    <span class="locality"><?= $this->escape($address["locality"]); ?></span> -
+                    <span class="region"><?= $this->escape($address["region"]); ?></span>
+                    <?php
+                    if ($userInfo["account_type"] == "retail") {
+                    ?>
+                    ,
+                    <span class="postal-code"><?= $this->escape($address["postal_code"]); ?></span>,
+                    <span class="country-name"><?= $this->escape($address["country_name"]); ?></span><br />
+                    <a href="<?= $this->addressMapLink($address); ?>" class="btn map-link"><i class="icon-map-marker"></i>&nbsp;como chegar</a>
+                    <?php
+                    }
+                    ?>
+                </div>
+                <div class="span3">
+                    <?= $this->addressPhoneList($address["phones"]); ?>
+                </div><!-- end of span3 -->
+            </address>
+        </div><!-- end of span12 -->
+    </div><!-- end of row -->
+    <div class="row">
+        <div class="span12">
+            <div class="btn-group" data-toggle="buttons-radio">
+            <?php
+            if ($paginator->getTotalItemCount()) {
+                if (! $this->postsViewStyleIsTable) {
+                    echo '<button id="posts_view_style_thumbnail" class="btn active"><i class="icon-th"></i></button>
+                    <button id="posts_view_style_table" class="btn"><i class="icon-th-list"></i></button>';
+                } else {
+                    echo '<button id="posts_view_style_thumbnail" class="btn"><i class="icon-th"></i></button>
+                    <button id="posts_view_style_table" class="btn active"><i class="icon-th-list"></i></button>';
+                }
+            ?>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            &nbsp;
+            <div id="user-stream-posts">
+            <?php
+
+                if ($this->postsViewStyleIsTable) {
+                    echo $this->postTableView($paginator->getCurrentItems(), $userInfo);
+                } else {
+                    echo $this->postThumbnailView($paginator->getCurrentItems(), $userInfo);
+                }
+            ?>
+            </div>
+            <?php
+                echo $paginator;
+            }
+            ?>
+        </div>
+    </div><!-- end of row -->
+</div><!-- end of container -->
