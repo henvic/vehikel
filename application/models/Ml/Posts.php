@@ -110,9 +110,15 @@ class Ml_Model_Posts
 
         $select->order("creation DESC");
 
-        $paginator = Zend_Paginator::factory($select);
+        $paginator = new Zend_Paginator(
+            new Ml_Paginator_Adapter_DbTableSelectWithJsonFields($select, [
+                "pictures",
+                "equipment"
+            ])
+        );
+
         $paginator->setCurrentPageNumber($page);
-        $paginator->setItemCountPerPage($perPage);
+        $paginator->setDefaultItemCountPerPage($perPage);
 
         return $paginator;
     }
