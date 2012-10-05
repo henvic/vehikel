@@ -1,6 +1,6 @@
 <?php
 
-class ApiController extends Zend_Controller_Action
+class ApiController extends Ml_Controller_Action
 {
     public function init()
     {
@@ -18,9 +18,9 @@ class ApiController extends Zend_Controller_Action
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
         $request = $this->getRequest();
-        
-        if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
+
+        if (! $this->_auth->hasIdentity()) {
+            return $this->_forward("redirect", "login");
         }
         
         $this->_helper->loadOauthstore->preloadServer();
@@ -56,9 +56,9 @@ class ApiController extends Zend_Controller_Action
     {
         $store = OAuthStore::instance();
         $auth = Zend_Auth::getInstance();
-        
-        if (! Zend_Auth::getInstance()->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
+
+        if (! $this->_auth->hasIdentity()) {
+            return $this->_forward("redirect", "login");
         }
         
         $listConsumers = $store->listConsumers($auth->getIdentity());
@@ -73,9 +73,9 @@ class ApiController extends Zend_Controller_Action
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
         $store = OAuthStore::instance();
-        
-        if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
+
+        if (! $this->_auth->hasIdentity()) {
+            return $this->_forward("redirect", "login");
         }
         
         $request = $this->getRequest();
@@ -109,9 +109,9 @@ class ApiController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         
         $store = OAuthStore::instance();
-        
-        if (! Zend_Auth::getInstance()->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
+
+        if (! $this->_auth->hasIdentity()) {
+            return $this->_forward("redirect", "login");
         }
         
         $request = $this->getRequest();
@@ -153,9 +153,9 @@ class ApiController extends Zend_Controller_Action
         $router = Zend_Controller_Front::getInstance()->getRouter();
         
         $store = OAuthStore::instance();
-        
-        if (! $auth->hasIdentity()) {
-            Zend_Controller_Front::getInstance()->registerPlugin(new Ml_Plugins_LoginRedirect());
+
+        if (! $this->_auth->hasIdentity()) {
+            return $this->_forward("redirect", "login");
         }
         
         $request = $this->getRequest();
