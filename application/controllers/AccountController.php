@@ -26,6 +26,7 @@ class AccountController extends Ml_Controller_Action
         //only data that can be changed can be here
         $editableData = array(
             "name" => $signedUserInfo['name'],
+            "account_type" => $signedUserInfo['account_type'],
             "email" => $signedUserInfo['email'],
             "private_email" => $signedUserInfo['private_email'],
             "about" => $profileInfo['about'],
@@ -75,7 +76,7 @@ class AccountController extends Ml_Controller_Action
             $profile->addInfo($signedUserInfo['id'], $profileDataChanges);
         }
 
-        $userInfoDataFields = array("name", "private_email");
+        $userInfoDataFields = array("name", "account_type", "private_email");
 
         $userInfoDataChanges = array();
         foreach ($userInfoDataFields as $field) {
@@ -213,6 +214,8 @@ class AccountController extends Ml_Controller_Action
         /** @var $people \Ml_Model_People() */
 
         $form = new Ml_Form_Address();
+
+        $this->view->signedUserInfo = $signedUserInfo;
 
         $this->view->addressForm = $form;
 
