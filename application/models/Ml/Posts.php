@@ -4,7 +4,7 @@ class Ml_Model_Posts
     use Ml_Model_Db_Table_History;
     use Ml_Model_Db_Cache;
 
-    protected $_cacheLifetime = 1;//temporary for development...
+    protected $_cacheLifetime = 10;
 
     // this number should change after relevant changes
     protected $_cacheObjectVersion = 1;
