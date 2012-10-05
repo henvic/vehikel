@@ -25,4 +25,9 @@ abstract class Ml_Controller_Action extends Zend_Controller_Action
 
         return parent::__construct($request, $response, $invokeArgs);
     }
+
+    public function init()
+    {
+        $this->view->config = $this->_config;
+    }
 }
