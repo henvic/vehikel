@@ -12,7 +12,7 @@ $this->headMeta()->appendName('description', $config['description']);
 
 $this->headTitle()->setSeparator(' – ');
 
-$this->addJsVar("webroot", $config['webroot']);
+$this->addJsParam("webroot", $config['webroot']);
 
 $this->headLink()
 ->appendStylesheet($this->staticVersion("/vendor/bootstrap/css/bootstrap.css"))
@@ -21,7 +21,7 @@ $this->headLink()
 ;
 
 if ($auth->hasIdentity()) {
-    $this->addJsVar("uid", $auth->getIdentity());
+    $this->addJsParam("uid", $auth->getIdentity());
 }
 
 if ($registry->isRegistered("signedUserInfo")) {
@@ -29,10 +29,10 @@ if ($registry->isRegistered("signedUserInfo")) {
 }
 
 if ($registry->isRegistered("globalHash")) {
-    $this->addJsVar("global_auth_hash", $registry->get("globalHash"));
+    $this->addJsParam("global_auth_hash", $registry->get("globalHash"));
 }
 
-$this->headScript()->prependScript($this->getJsVarsText());
+$this->headScript()->prependScript($this->getJsParams());
 
 ?>
 <!DOCTYPE html>

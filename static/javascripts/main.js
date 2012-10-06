@@ -1,4 +1,4 @@
-/*global Router, require, uid */
+/*global Router, require, AppParams, Modernizr */
 /*jshint indent:4 */
 var config = (function () {
     "use strict";
@@ -50,7 +50,7 @@ var config = (function () {
 
     require(["jquery", "backbone", "routers/router", "twitter.bootstrap", "common", "jquery.fn.autoResize"],
         function ($, Backbone, Router) {
-            if (typeof uid !== 'undefined') {
+            if (typeof AppParams.uid !== 'undefined') {
                 require(["authenticated"], function () {
                 });
             }

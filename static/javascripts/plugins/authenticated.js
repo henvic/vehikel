@@ -1,4 +1,4 @@
-/*global define, window, global_auth_hash */
+/*global define, window, AppParams */
 /*jshint indent:4 */
 
 define(["jquery", "backbone"], function ($, Backbone) {
@@ -16,7 +16,7 @@ define(["jquery", "backbone"], function ($, Backbone) {
         logoutAnchor.click(function (e) {
             e.preventDefault();
 
-            var params = { "hash" : global_auth_hash, "signout" : "true" };
+            var params = { "hash" : AppParams.global_auth_hash, "signout" : "true" };
             var form = document.createElement("form");
             document.body.appendChild(form);
             form.setAttribute("method", "POST");
