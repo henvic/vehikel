@@ -1,0 +1,274 @@
+<?php
+
+$translatePosts = $this->translatePosts;
+/** @var $translatePosts \Zend_Translate_Adapter() */
+
+$userInfo = $this->userInfo;
+$post = $this->post;
+
+$escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_stream_1stpage");
+$address = $userInfo["address"];
+?>
+<?php
+$this->headTitle($post["name"]);
+?>
+&nbsp;
+<div class="container">
+<div class="row">
+<div class="span3 hidden-phone">
+    <aside class="aside-similar-offers">
+        <dl>
+            <dt><?= $this->escape($translatePosts->translate("make")); ?></dt>
+            <dd>
+                <ul>
+                    <li><a href="#">Hyundai</a> (4)</li>
+                    <li><a href="#">Fiat</a> (12)</li>
+                    <li><a href="#">Mitsubish</a> (43)</li>
+                    <li><a href="#">BMW</a> (22)</li>
+                    <li><a href="#">Ford</a> (33)</li>
+                    <li><a href="#">Honda</a> (22)</li>
+                    <li><a href="#">Toyota</a> (122)</li>
+                    <li><a href="#">more</a> (4222)</li>
+                </ul>
+            </dd>
+        </dl>
+        <dl>
+            <dt><?= $this->escape($translatePosts->translate("model")); ?></dt>
+            <dd>
+                <ul>
+                    <li><a href="#">Azera</a> (54)</li>
+                    <li><a href="#">Linea</a> (12)</li>
+                    <li><a href="#">Lancer</a> (2)</li>
+                    <li><a href="#">Sonata</a> (55)</li>
+                    <li><a href="#">i30</a> (13)</li>
+                    <li><a href="#">Corolla</a> (552)</li>
+                    <li><a href="#">Fusion</a> (24)</li>
+                    <li><a href="#">Serie 5</a> (3)</li>
+                    <li><a href="#">more</a> (232)</li>
+                </ul>
+            </dd>
+        </dl>
+        <dl>
+            <dt>Localização</dt>
+            <dd>
+                <ul>
+                    <li><a href="#">São Paulo</a> (544)</li>
+                    <li><a href="#">Distrito Federal</a> (565)</li>
+                    <li><a href="#">Minas Gerais</a> (133)</li>
+                    <li><a href="#">Paraná</a> (55)</li>
+                    <li><a href="#">Rio de Janeiro</a> (555)</li>
+                    <li><a href="#">Alagoas</a> (17)</li>
+                    <li><a href="#">Goiás</a> (60)</li>
+                    <li><a href="#">Pernambuco</a> (666)</li>
+                    <li><a href="#">more</a> (1000)</li>
+                </ul>
+            </dd>
+        </dl>
+    </aside>
+</div>
+<div class="span9">
+<?php
+$searchLink = $this->url(array(), "search");
+
+echo $this->postBreadCrumb(array(
+    array(
+        "name" => $translatePosts->translate($post["type"] . "_plural"),
+        "link" => $searchLink .
+            "?type=" . urlencode($post["type"])
+    ),
+    array(
+        "name" => $post["make"],
+        "link" => $searchLink .
+            "?type=" . urlencode($post["type"]) .
+            "&amp;make=" . urlencode($post["make"])
+    ),
+    array(
+        "name" => $post["model"],
+        "link" => $searchLink .
+            "?type=" . urlencode($post["type"]) .
+            "&amp;make=" . urlencode($post["make"]) .
+            "&amp;model=" . urlencode($post["model"])
+    ),
+    array(
+        "name" => $post["name"]
+    )
+));
+
+?>
+    <h1><?= $this->escape($post["name"]); ?></h1>
+    <p><?php
+        if ($post["armor"]) {
+            echo '<span class="label label-important">veículo blindado</span> ';
+        }
+
+        if ($post["build_year"] <= date("Y") - 30) {
+            echo '<span class="label label-inverse">antiguidade</span> ';
+        }
+
+        if ($post["transmission"] == 'automatic') {
+            echo '<span class="label label-info">câmbio automático</span> ';
+        }
+
+        if ($post["traction"] == '4x4') {
+            echo '<span class="label label-warning">4x4</span> ';
+        }
+        ?></p>
+    <div id="myCarousel" class="carousel slide">
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+            <?php
+
+            $amountOfPictures = sizeof($post["pictures"]);
+
+            for ($positionOfPicture = 0; $positionOfPicture < $amountOfPictures; $positionOfPicture++) {
+                if ($positionOfPicture == 0) {
+                    echo '<div class="active item">';
+                } else {
+                    echo '<div class="item">';
+                }
+
+                $picture = $post["pictures"][$positionOfPicture];
+
+                echo '<a href="',
+                    $this->pictureLink($userInfo["id"] . "-p-" . $picture["id"], $picture["secret"], "large.jpg"),
+                '" rel="external">',
+                $this->picture($userInfo["id"] . "-p-" . $picture["id"], $picture["secret"]),
+                '</a></div>';
+            }
+            ?>
+        </div>
+        <!-- Carousel nav -->
+        <div class="carousel-hover-controls">
+            <!-- <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a> -->
+            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+        </div>
+    </div><!-- end of myCarousel -->
+    <address class="vcard vehicle-seller-address">
+        <div class="row">
+            <div class="span1">
+                <a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo); ?></a>
+            </div>
+            <div class="span3">
+                <strong class="fn"><a href="<?= $escapedUserLink; ?>"><?= $this->escape($userInfo["name"]); ?></a></strong><br />
+                <?php
+                if ($userInfo["account_type"] == "retail") {
+                ?>
+                <span class="street-address"><?= $this->escape($address["street_address"]); ?></span> -
+                <span class="neighborhood"><?= $this->escape($address["neighborhood"]); ?></span><br />
+                <?php
+                }
+                ?>
+                <span class="locality"><?= $this->escape($address["locality"]); ?></span> -
+                <span class="region"><?= $this->escape($address["region"]); ?></span>
+                <?php
+                if ($userInfo["account_type"] == "retail") {
+                ?>,
+                <span class="postal-code"><?= $this->escape($address["postal_code"]); ?></span>,
+                <span class="country-name"><?= $this->escape($address["country_name"]); ?></span><br />
+                <a href="<?= $this->addressMapLink($address); ?>" class="btn map-link"><i class="icon-map-marker"></i>&nbsp;como chegar</a>
+                <a href="<?= $escapedUserLink; ?>" class="btn btn-primary">estoque</a>
+                <?php
+                }
+                ?>
+            </div>
+            <div class="span3">
+                <?= $this->addressPhoneList($address["phones"]); ?>
+            </div><!-- end of span3 -->
+        </div>
+    </address>
+    <ul class="nav nav-tabs" id="post-info-tabs">
+        <li class="active"><a href="#post-description">Descrição</a></li>
+        <li><a href="#post-contact"><i class="icon-envelope icon-white"></i> Enviar proposta</a></li>
+    </ul>
+    <div class="row">
+        <div class="span5">
+            <div class="tab-content">
+                <div class="tab-pane active" id="post-description">
+                    <p><?= $post["description_html_escaped"]; ?></p>
+                </div>
+                <div class="tab-pane post-contact" id="post-contact">
+                    <?= $this->contactCarDealerForm; ?>
+                </div>
+            </div><!-- end of tab-content -->
+        </div>
+        <div class="span4">
+            <?php
+            $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
+            $price->setValue($this->escape($post["price"] / 100));
+            ?>
+            <h2><?= $price; ?></h2>
+            <table class="table table-bordered table-striped table-condensed">
+                <tbody>
+                <tr>
+                    <td><?= $this->escape($translatePosts->translate("year")); ?>:</td>
+                    <td>
+                        <?php
+                        if ($post["build_year"] == $post["model_year"]) {
+                            echo $this->escape($post["model_year"]);
+                        } else {
+                            echo $this->escape($post["build_year"] . " / " . $post["model_year"]);
+                        }
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td><?= $this->escape($translatePosts->translate("engine")); ?>:</td>
+                    <td><?= $this->escape($post["engine"]); ?></td>
+                </tr>
+                <tr>
+                    <td><?= $this->escape($translatePosts->translate("fuel")); ?>:</td>
+                    <td><?= $this->escape($translatePosts->translate($post["fuel"])); ?></td>
+                </tr>
+                <tr>
+                    <td><?= $this->escape($translatePosts->translate("km")); ?>:</td>
+                    <td><?= $this->escape($post["km"]); ?> km</td>
+                </tr>
+                <tr>
+                    <td><?= $this->escape($translatePosts->translate("transmission")); ?>:</td>
+                    <td><?= $this->escape($translatePosts->translate($post["transmission"])); ?></td>
+                </tr>
+                </tbody>
+            </table>
+            <?php
+
+            $equipment = [
+                "ac", "digital_ac",
+                "electronic_power_steering", "hydraulic_power_steering",
+                "electric_windows", "sunroof",
+                "power_door_locks", "alarm", "remote_keyless_entry_system",
+                "leather_seats", "power_seats",
+                "airbag", "power_mirrors", "abs", "xenon_headlamps", "fog_lamps",
+                "alloy_wheels", "trip_computer", "cruise_control",
+                "cd_player", "navigation_system", "parking_sensor"
+            ];
+
+            $equipment = $post["equipment"];
+
+            ?>
+            <table class="table table-bordered table-striped table-condensed">
+                <caption><?= $this->escape($translatePosts->translate("main_equipment")); ?></caption>
+                <tbody>
+                <?php
+                $amountOfEquipments = sizeof($post["equipment"]);
+
+                for ($positionOfEquipment = 0; $positionOfEquipment < $amountOfEquipments; $positionOfEquipment++) {
+                    if (($positionOfEquipment + 1) % 2) {
+                        echo "<tr>";
+                    }
+
+                    echo "<td>",
+                    $this->escape($translatePosts->translate("equipment_" . $post["equipment"][$positionOfEquipment])),
+                    "</td>";
+
+                    if ($positionOfEquipment % 2 || $positionOfEquipment == $amountOfEquipments - 1) {
+                        echo "</tr>";
+                    }
+                }
+                ?>
+                </tbody>
+            </table>
+        </div><!-- end of details sidebar -->
+    </div>
+</div><!-- end of span9 -->
+</div><!-- end of row -->
+</div><!-- end of container -->
