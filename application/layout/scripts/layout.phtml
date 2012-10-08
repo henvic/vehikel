@@ -3,6 +3,7 @@
 $registry = Zend_Registry::getInstance();
 $auth = Zend_Auth::getInstance();
 $request = Zend_Controller_Front::getInstance()->getRequest();
+
 $config = $registry->get('config');
 
 $this->headScript()->setAllowArbitraryAttributes(true);
