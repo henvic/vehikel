@@ -6,6 +6,8 @@ class UserStreamController extends Ml_Controller_Action
 
     public function indexAction()
     {
+        $this->view->addJsParam("route", "user/stream");
+
         $postsViewStyleNamespace = new Zend_Session_Namespace("posts-view-style");
 
         $params = $this->getRequest()->getParams();
