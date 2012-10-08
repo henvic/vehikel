@@ -129,6 +129,8 @@ class AccountController extends Ml_Controller_Action
         $people =  $this->_sc->get("people");
         /** @var $people \Ml_Model_People() */
 
+        $this->view->addJsParam("route", "account/picture");
+
         $form = new Ml_Form_Picture();
 
         $this->view->submitPictureForm = $form;
