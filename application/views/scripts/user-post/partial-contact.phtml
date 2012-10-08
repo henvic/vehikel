@@ -1,0 +1,13 @@
+<?php
+if ($this->proposalSent) {
+?>
+<div class="alert alert-success">
+    <a href="#" class="close" data-dismiss="alert">×</a>
+    <p>Proposta enviada. Aguarde o contato do anunciante.</p>
+</div>
+&nbsp;
+<?php
+} else {
+    echo $this->contactSellerForm;
+}
+?>

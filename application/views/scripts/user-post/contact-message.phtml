@@ -1,0 +1,32 @@
+<?php
+$config = Zend_Registry::getInstance()->get('config');
+$userInfo = $this->userInfo;
+$post = $this->post;
+$contact = $this->contact;
+?>
+Olá <?= $this->escape($userInfo['name']); ?>!
+
+Você recebeu uma mensagem em:
+<?php
+    echo $this->escape($post["name"]), "\n", $this->escape($config['webhost']),
+    $this->url(array("username" => $userInfo["username"], "post_id" => $post["id"]), "user_post");
+?>
+
+
+Autor: <?= $this->escape($contact["name"]); ?> <<?= $this->escape($contact["email"]); ?>>
+
+Telefone: <?= $this->escape($contact["phone"]); ?>
+
+
+<?= $this->escape($contact["message"]); ?>
+
+
+-
+
+Política de privacidade - http://<?= $this->escape($config['webhost']) . $this->staticUrl("/privacy"); ?>
+
+
+-
+<?php
+    echo $this->escape($config['applicationname']) , "\n" , $this->escape($config['webhost']);
+?>
