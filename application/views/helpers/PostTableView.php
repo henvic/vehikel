@@ -67,7 +67,7 @@ class Ml_View_Helper_PostTableView extends Zend_View_Helper_Abstract
 
             $content .= '</div>'
                 . '</td>'
-                . '<td class="vehicle-listing-price">'
+                . '<td class="post-listing-price">'
                 . $price
                 . '</td>'
                 . '</tr>'

@@ -18,7 +18,7 @@ class Ml_View_Helper_PostThumbnailView extends Zend_View_Helper_Abstract
             $price->setValue($this->view->escape($post["price"] / 100));
 
             $content .= '<li class="span3">'
-                . '<a href="' . $escapedPostLink . '" class="thumbnail vehicle-thumbnail">';
+                . '<a href="' . $escapedPostLink . '" class="thumbnail post-thumbnail">';
 
             $content .= $this->view->picture($userInfo["id"] . "-p-" . $picture["id"], $picture["secret"], "small.jpg");
 
@@ -26,8 +26,8 @@ class Ml_View_Helper_PostThumbnailView extends Zend_View_Helper_Abstract
 
             $content .= $this->view->escape($post["name"])
                 . '<br />'
-                . '<span class="vehicle-listing-price">' . $price .  '</span><br />'
-                . '<span class="vehicle-listing-details">';
+                . '<span class="post-listing-price">' . $price .  '</span><br />'
+                . '<span class="post-listing-details">';
 
             if ($post["build_year"] == $post["model_year"]) {
                 $content .= $this->view->escape($post["model_year"]);
