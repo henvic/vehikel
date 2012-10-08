@@ -1,15 +1,23 @@
 <?php
-class Ml_Form_ContactCarDealer extends Twitter_Bootstrap_Form_Horizontal
+class Ml_Form_ContactSeller extends Twitter_Bootstrap_Form_Horizontal
 {
-    public function __construct($options = null)
+    protected $_username;
+    protected $_postId;
+
+    public function __construct($options = null, $username, $postId)
     {
+        $this->_username = $username;
+        $this->_postId = $postId;
+
         return parent::__construct($options);
     }
 
     public function init()
     {
         $this->setMethod('post');
-        $this->setAction($this->getView()->url(array(), "account"));
+        $this->setAction($this->getView()->url(
+            array("username" => $this->_username, "post_id" => $this->_postId), "user_post")
+        );
 
         $this->addElementPrefixPath('Ml_Validate', 'Ml/Validate/',
             Zend_Form_Element::VALIDATE);
@@ -37,7 +45,7 @@ class Ml_Form_ContactCarDealer extends Twitter_Bootstrap_Form_Horizontal
             'class' => 'input-medium'
         ));
 
-        $this->addElement("tel", 'telephone', array(
+        $this->addElement("tel", 'phone', array(
             'placeholder'      => 'Telefone',
             'required'   => true,
             'filters'    => array('StringTrim', 'TelephoneBr'),
@@ -45,20 +53,20 @@ class Ml_Form_ContactCarDealer extends Twitter_Bootstrap_Form_Horizontal
             'class' => 'input-medium'
         ));
 
-        $this->getElement("telephone")
+        $this->getElement("phone")
             ->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 16)), true)
             ->addValidator(new Ml_Validate_TelephoneBr());
 
         $this->getElement('email')->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 60)), true);
         $this->getElement('email')->addValidator(new Zend_Validate_EmailAddress(), true);
 
-        $this->addElement('textarea', 'contact_message', array(
+        $this->addElement('textarea', 'message', array(
             'placeholder'      => 'Proposta',
-            'required'   => false,
+            'required'   => true,
             'filters'    => array('StringTrim'),
             'validators' => array(
                 array('validator' =>
-                'StringLength', 'options' => array(0, 4096)),
+                'StringLength', 'options' => array(0, 1000)),
             ),
             'class' => 'fix-sized-textarea',
             'rows' => 5
