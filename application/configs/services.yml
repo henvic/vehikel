@@ -29,6 +29,9 @@ services:
     recover:
         class: Ml_Model_Recover
         arguments: [@memCache]
+    contactSeller:
+        class: Ml_Model_ContactSeller
+        arguments: [null]
     loggerAdapterMongo:
         class: Ml_Logger_Adapter_Mongo
         arguments: [%logger.adapter.mongo.collection%, %logger.adapter.mongo.db%, @Mongo, @zendAuth]
