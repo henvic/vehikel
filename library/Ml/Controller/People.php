@@ -56,7 +56,7 @@ trait Ml_Controller_People
                 return $this->_forward("not-found", "error", "default", array("error" => "post-and-user-mismatch"));
             }
 
-            if (! $post["active"]) {
+            if (! $post["active"] && $userInfo["id"] != $this->_auth->getIdentity()) {
                 return $this->_forward("not-found", "error", "default", array("error" => "post-is-no-longer-active"));
             }
 

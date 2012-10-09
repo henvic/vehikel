@@ -96,6 +96,13 @@ echo $this->postBreadCrumb(array(
 
 ?>
     <h1><?= $this->escape($post["name"]); ?></h1>
+<?php
+if (! $post["active"]) {
+?>
+    <p class="alert">Este anúncio que você está vendo já foi finalizado e só continua acessível através de sua conta.</p>
+<?php
+}
+?>
     <p><?php
         if ($post["armor"]) {
             echo '<span class="label label-important">veículo blindado</span> ';
