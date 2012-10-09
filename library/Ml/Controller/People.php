@@ -33,6 +33,10 @@ trait Ml_Controller_People
             return $this->_forward("not-found", "error", "default", array("error" => "user-not-found"));
         }
 
+        if (! $userInfo["active"]) {
+            return $this->_forward("not-found", "error", "default", array("error" => "user-is-no-longer-active"));
+        }
+
         $this->_userInfo = $userInfo;
         $this->view->userInfo = $userInfo;
 
