@@ -23,7 +23,7 @@ define(['jquery'], function($) {
                 userStreamPostsElement.html(data);
             }
         });
-    }
+    };
 
     postsViewStyleTableRadio.on("click", function() {
         changeViewStyle("table");
