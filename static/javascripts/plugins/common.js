@@ -1,7 +1,7 @@
-/*global define, window, global_auth_hash */
+/*global define, window */
 /*jshint indent:4 */
 
-define(["jquery", "backbone"], function ($, Backbone) {
+define(["jquery", "twitter.bootstrap", "jquery.fn.autoResize"], function ($) {
     "use strict";
 
     $(window).ready(function () {
