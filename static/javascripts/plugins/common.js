@@ -5,6 +5,19 @@ define(["jquery", "twitter.bootstrap", "jquery.fn.autoResize"], function ($) {
     "use strict";
 
     $(window).ready(function () {
+        var tooltipClosure = (function () {
+            var tooltip = $("[rel=tooltip]");
+            var likeTooltip = $("[data-rel=tooltip]");
+
+            if (tooltip.length) {
+                tooltip.tooltip();
+            }
+
+            if (likeTooltip.length) {
+                likeTooltip.tooltip();
+            }
+        } ());
+
         var NavbarClosure = (function () {
             var windowObj = $(window);
             var stickAnchor = $("#sticky-anchor");
