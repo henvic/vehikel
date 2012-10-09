@@ -1,7 +1,7 @@
 /*global define, window, AppParams */
 /*jshint indent:4 */
 
-define(["jquery", "backbone"], function ($, Backbone) {
+define(["jquery"], function ($) {
     "use strict";
 
     /**
