@@ -1,4 +1,4 @@
-/*global Router, require, AppParams, Modernizr */
+/*global require, AppParams, Modernizr */
 /*jshint indent:4 */
 var config = (function () {
     "use strict";
@@ -10,7 +10,6 @@ var config = (function () {
             // modernizr shall be called just after CSS, so it is not here
             jquery: "../vendor/jquery-1.8.0/jquery",
             underscore: "../vendor/underscore-1.3.3/underscore",
-            backbone: "../vendor/backbone-0.9.2/backbone",
             "twitter.bootstrap": "../vendor/bootstrap-2.1.0/js/bootstrap",
             "jquery.tablesorter": "../vendor/jquery-tablesorter-2.0.5b/jquery.tablesorter",
             "jquery.fn.autoResize": "../vendor/jquery-fn-autoResize-1.14/jquery.autoresize",
@@ -29,10 +28,6 @@ var config = (function () {
             "underscore": {
                 exports: "_"
             },
-            "backbone": {
-                deps: ["underscore", "jquery"],
-                exports: "Backbone"  //attaches "Backbone" to the window object
-            },
             "twitter.bootstrap": {
                 deps: ["jquery"]
             },
@@ -42,14 +37,18 @@ var config = (function () {
             "jquery.fn.autoResize": {
                 deps: ["jquery"]
             }
-
-
         } // end Shim Configuration
 
     });
 
-    require(["jquery", "backbone", "routers/router", "twitter.bootstrap", "common", "jquery.fn.autoResize"],
-        function ($, Backbone, Router) {
+    require(["jquery", "twitter.bootstrap", "common", "jquery.fn.autoResize"],
+        function ($) {
+            if (typeof AppParams.route !== 'undefined') {
+                //require...
+                require(["views/" + AppParams.route], function () {
+                });
+            }
+
             if (typeof AppParams.uid !== 'undefined') {
                 require(["authenticated"], function () {
                 });
@@ -57,4 +56,3 @@ var config = (function () {
         });
 
 } ());
-
