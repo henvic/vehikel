@@ -142,33 +142,9 @@ CREATE TABLE `profile_history` (
 
 
 
-# Dump of table share
 # ------------------------------------------------------------
 
-CREATE TABLE `share` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `byUid` bigint(20) unsigned NOT NULL,
-  `secret` bigint(20) unsigned NOT NULL,
-  `download_secret` bigint(20) unsigned NOT NULL,
-  `uploadedTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `lastChange` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `privacy` set('me','friend','family','coworker') DEFAULT NULL,
-  `title` varchar(100) NOT NULL,
-  `filename` varchar(60) NOT NULL,
-  `type` varchar(50) NOT NULL,
-  `fileSize` bigint(20) unsigned NOT NULL,
-  `md5` char(32) NOT NULL,
-  `description` text NOT NULL,
-  `description_filtered` text NOT NULL,
-  `short` varchar(120) NOT NULL,
-  `views` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `byUid` (`byUid`),
-  KEY `filename` (`filename`),
-  KEY `title` (`title`),
-  KEY `tweet` (`short`),
-  CONSTRAINT `share_ibfk_2` FOREIGN KEY (`byUid`) REFERENCES `people` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='share';
 
 
 
