@@ -98,12 +98,14 @@ CREATE TABLE `people_history` (
   `id` bigint(20) unsigned NOT NULL,
   `username` char(15) NOT NULL,
   `email` char(60) DEFAULT '',
-  `membership` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `membership` timestamp NULL DEFAULT NULL,
   `name` char(50) NOT NULL,
-  `avatar_info` varchar(600) NOT NULL DEFAULT 'a:0:{}',
+  `avatar_info` varchar(600) NOT NULL DEFAULT '',
   `private_email` tinyint(1) NOT NULL DEFAULT '1',
   `active` tinyint(1) NOT NULL DEFAULT '1',
+  `address` varchar(600) DEFAULT NULL,
   `change_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `account_type` set('retail','private') NOT NULL DEFAULT 'private',
   PRIMARY KEY (`history_id`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
