@@ -41,7 +41,6 @@ For performance you want to strip the require_once's from the Zend framework cod
 [jQuery.fn.autoResize](https://github.com/padolsey/jQuery.fn.autoResize)
 [Tablesorter](http://tablesorter.com/)
 [RequireJS](http://requirejs.org)
-[Backbone.js](http://backbonejs.org)
 
 
 ### Services
