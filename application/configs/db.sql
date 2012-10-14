@@ -35,10 +35,16 @@ CREATE TABLE `antiattack` (
 
 
 
+# Dump of table contact_seller
 # ------------------------------------------------------------
 
+CREATE TABLE `contact_seller` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uid` bigint(20) unsigned NOT NULL,
+  `data` text NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
