@@ -154,10 +154,8 @@ CREATE TABLE `posts` (
 CREATE TABLE `profile` (
   `id` bigint(20) unsigned NOT NULL COMMENT 'uid (people.id)',
   `website` varchar(100) DEFAULT '',
-  `location` varchar(40) DEFAULT '',
   `about` text COMMENT 'RAW user input',
   `about_filtered` text COMMENT 'filtered about',
-  `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`id`) REFERENCES `people` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
