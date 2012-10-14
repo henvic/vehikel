@@ -108,6 +108,42 @@ CREATE TABLE `people_history` (
 
 
 
+# Dump of table posts
+# ------------------------------------------------------------
+
+CREATE TABLE `posts` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) unsigned NOT NULL,
+  `creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `type` set('car','motorcycle') NOT NULL DEFAULT '',
+  `make` char(30) DEFAULT NULL,
+  `model` char(30) DEFAULT NULL,
+  `price` bigint(11) DEFAULT NULL,
+  `model_year` int(11) DEFAULT NULL,
+  `build_year` int(11) DEFAULT NULL,
+  `engine` char(20) DEFAULT NULL,
+  `transmission` set('automatic','manual','other') DEFAULT NULL,
+  `fuel` set('gasoline','ethanol','diesel','other') DEFAULT NULL,
+  `km` int(11) DEFAULT NULL,
+  `armor` int(1) DEFAULT NULL,
+  `pictures` varchar(600) DEFAULT NULL,
+  `equipment` varchar(600) DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `traction` set('2x2','4x4') NOT NULL DEFAULT '2x2',
+  `description` text NOT NULL,
+  `description_html_escaped` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `type` (`type`),
+  KEY `price` (`price`),
+  KEY `model_year` (`model_year`),
+  KEY `transmission` (`transmission`),
+  KEY `active` (`active`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 # Dump of table profile
 # ------------------------------------------------------------
 
