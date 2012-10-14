@@ -35,25 +35,10 @@ CREATE TABLE `antiattack` (
 
 
 
-# Dump of table comments
 # ------------------------------------------------------------
 
-CREATE TABLE `comments` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uid` bigint(20) unsigned NOT NULL,
-  `share` bigint(20) unsigned NOT NULL,
-  `byUid` bigint(20) unsigned NOT NULL,
-  `timestamp` datetime NOT NULL,
-  `lastModified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `comments` text NOT NULL,
-  `comments_filtered` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `share` (`share`,`byUid`),
-  KEY `uid` (`uid`),
-  KEY `byUid` (`byUid`),
-  CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`share`) REFERENCES `share` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `comments_ibfk_3` FOREIGN KEY (`byUid`) REFERENCES `people` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
