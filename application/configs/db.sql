@@ -69,6 +69,20 @@ CREATE TABLE `credentials` (
 
 
 
+# Dump of table list_of_models
+# ------------------------------------------------------------
+
+CREATE TABLE `list_of_models` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `make` varchar(30) NOT NULL DEFAULT '',
+  `model` varchar(30) DEFAULT NULL,
+  `type` set('car','motorcycle') NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `make` (`make`,`model`,`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 # Dump of table people
 # ------------------------------------------------------------
 
@@ -178,9 +192,18 @@ CREATE TABLE `profile_history` (
 
 
 
+# Dump of table list_of_makes
 # ------------------------------------------------------------
 
+CREATE TABLE `list_of_makes` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `make` varchar(30) NOT NULL DEFAULT '',
+  `car` tinyint(1) NOT NULL,
+  `boat` tinyint(1) NOT NULL,
+  `motorcycle` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `make` (`make`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
