@@ -81,6 +81,8 @@ CREATE TABLE `people` (
   `avatar_info` varchar(600) NOT NULL DEFAULT '',
   `private_email` tinyint(1) NOT NULL DEFAULT '1',
   `active` tinyint(1) NOT NULL DEFAULT '1',
+  `address` varchar(600) DEFAULT NULL,
+  `account_type` set('retail','private') NOT NULL DEFAULT 'private',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `email` (`email`)
