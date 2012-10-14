@@ -171,11 +171,9 @@ CREATE TABLE `profile_history` (
   `history_id` char(36) NOT NULL,
   `id` bigint(20) unsigned NOT NULL COMMENT 'uid (people.id)',
   `website` varchar(100) DEFAULT '',
-  `location` varchar(40) DEFAULT '',
   `about` text COMMENT 'RAW user input',
   `about_filtered` text COMMENT 'filtered about',
-  `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `change_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `change_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`history_id`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
