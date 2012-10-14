@@ -1,5 +1,5 @@
 /*global define, _ */
-define(['jquery', 'backbone'], function($, Backbone){
+define(['jquery'], function($) {
     "use strict";
 
     //jQuery doesn't copy e.dataTransfer natively
