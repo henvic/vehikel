@@ -78,7 +78,7 @@ CREATE TABLE `people` (
   `email` char(60) DEFAULT '',
   `membership` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `name` char(50) NOT NULL,
-  `avatar_info` varchar(600) NOT NULL DEFAULT 'a:0:{}',
+  `avatar_info` varchar(600) NOT NULL DEFAULT '',
   `private_email` tinyint(1) NOT NULL DEFAULT '1',
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
