@@ -14,6 +14,7 @@
         "twitter.bootstrap": "../vendor/bootstrap-2.1.0/js/bootstrap",
         "jquery.tablesorter": "../vendor/jquery-tablesorter-2.0.5b/jquery.tablesorter",
         "jquery.fn.autoResize": "../vendor/jquery-fn-autoResize-1.14/jquery.autoresize",
+        "jquery.maskMoney": "../vendor/plentz-jquery-maskmoney-5f9dadd/jquery.maskMoney",
 
         // Require.js Plugins
         text: "../vendor/require-2.0.5/text-2.0.3",
