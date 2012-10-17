@@ -122,4 +122,15 @@ class Ml_Model_Posts
 
         return $paginator;
     }
+
+    public function getAvailableEquipment($category)
+    {
+        $contents = file_get_contents(APPLICATION_PATH . "/configs/available-equipment.json");
+
+        $allEquipments = json_decode($contents, true);
+
+        $equipments = $allEquipments[$category];
+
+        return $equipments;
+    }
 }
