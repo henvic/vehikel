@@ -96,9 +96,18 @@ echo $this->postBreadCrumb(array(
 ?>
     <h1 id="h1-test"><?= $this->escape($post["make"] . " " . $post["model"] . " " . $post["name"]); ?></h1>
 <?php
-if (! $post["active"]) {
+if ($post["status"] == Ml_Model_Posts::STATUS_END) {
 ?>
-    <p class="alert">Este anúncio que você está vendo já foi finalizado e só continua acessível através de sua conta.</p>
+    <p class="alert alert-success">Este anúncio que você está vendo já foi finalizado e não está acessível publicamente.</p>
+<?php
+} else if ($post["status"] == Ml_Model_Posts::STATUS_INACTIVE) {
+?>
+    <p class="alert alert-danger">Este anúncio que você está vendo está inativo (escondido).</p>
+<?php
+} else if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
+?>
+    <p class="alert alert-block"><strong>Preview</strong><br />
+        Adicione fotos do veículo, confira como vai ficar o anúncio e aperte o botão publicar quando estiver pronto.</p>
 <?php
 }
 ?>
