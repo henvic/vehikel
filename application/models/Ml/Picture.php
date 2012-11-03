@@ -115,17 +115,13 @@ class Ml_Model_Picture
         return array("id" => $id, "secret" => $secret, "sizes" => $files);
     }
 
-    public function delete($picturesInfo)
+    public function delete($id, $secret)
     {
-        if (! is_array($picturesInfo)) {
-            return;
-        }
-
         foreach ($this->_sizes as $sizeInfo) {
-            $this->_s3->removeObject($this->getImagePath($picturesInfo['id'], $picturesInfo['secret'], $sizeInfo[1]));
+            $this->_s3->removeObject($this->getImagePath($id, $secret, $sizeInfo[1]));
         }
 
-        $this->_s3->removeObject($this->getImagePath($picturesInfo['id'], $picturesInfo['secret'], "original"));
+        $this->_s3->removeObject($this->getImagePath($id, $secret, "original"));
     }
 
     public function getImagePath($id, $secret, $size)
