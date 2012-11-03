@@ -44,15 +44,30 @@ class Ml_Model_Posts
         return $this->getDbResult($select, $setCache);
     }
 
-    public function addInfo($id, $data)
+    public function create($uid, $data)
     {
-        $tryUpdate = $this->update($id, $data);
+        $data["uid"] = $uid;
 
-        if ($tryUpdate) {
-            return true;
+        $data["equipment"] = json_encode($data["equipment"]);
+
+        $data["status"] = self::STATUS_STAGING;
+
+        try {
+            $this->_dbTable->insert($data);
+
+            $id = $this->_dbAdapter->lastInsertId();
+
+            $this->saveHistorySnapshot($id);
+
+            $this->_dbAdapter->commit();
+        } catch (Exception $e) {
+            $this->_dbAdapter->rollBack();
+            throw $e;
         }
 
-        $data['id'] = $id;
+        return $id;
+    }
+
 
         $this->_dbTable->insert($data);
 
