@@ -11,14 +11,16 @@ class Ml_Form_PicturePostDelete extends Zend_Form
         $this->setAttrib('enctype', 'multipart/form-data');
         $this->setMethod('post');
 
-        $this->addElement('text', 'picture_id', array(
-            'label'      => 'Picture Id',
-            'required'   => true,
-            'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(1, 20)),
-                array('validator' => 'Digits')
-            )
-        ));
+        $pictureElement = new Zend_Form_Element_Text('picture_id');
+
+        $pictureElement
+            ->setRequired(true)
+            ->setLabel("Picture ID")
+            ->addValidator(new Ml_Validate_StringLength(["min" => 1, "max" => 20]))
+            ->addValidator(new Zend_Validate_Regex("/^[\w\-]+$/"))
+        ;
+
+        $this->addElement($pictureElement);
 
         $this->addElement(Ml_Model_MagicCookies::formElement());
     }
