@@ -48,7 +48,6 @@ var config = (function () {
     require(["jquery", "twitter.bootstrap", "common", "jquery.fn.autoResize"],
         function ($) {
             if (typeof AppParams.route !== 'undefined') {
-                //require...
                 require(["views/" + AppParams.route], function () {
                 });
             }
