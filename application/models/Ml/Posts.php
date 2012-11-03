@@ -4,6 +4,12 @@ class Ml_Model_Posts
     use Ml_Model_Db_Table_History;
     use Ml_Model_Db_Cache;
 
+    const STATUS_STAGING = -1;
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+    const STATUS_END = 2;
+    const STATUS_NO_FILTER = false;
+
     protected $_cacheLifetime = 10;
 
     // this number should change after relevant changes
@@ -95,17 +101,17 @@ class Ml_Model_Posts
      * @param $uid
      * @param $perPage int items per page
      * @param $page
-     * @param $onlyActive bool only show active items
+     * @param $statusFilter
      * @return Zend_Paginator
      */
-    public function getUserStreamPage($uid, $perPage, $page, $onlyActive = true)
+    public function getUserStreamPage($uid, $perPage, $page, $statusFilter = self::STATUS_NO_FILTER)
     {
         $select = $this->_dbTable->select();
 
         $select->where("uid = ?", $uid);
 
-        if ($onlyActive) {
-            $select->where("active = 1");
+        if ($statusFilter) {
+            $select->where("status = ?", $statusFilter);
         }
 
         $select->order("creation DESC");
