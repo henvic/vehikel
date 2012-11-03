@@ -18,7 +18,7 @@ class UserPostController extends Ml_Controller_Action
 
         $form = new Ml_Form_ContactSeller(null, $this->_userInfo["username"], $this->_post["id"]);
 
-        $this->view->contactSellerForm = $form;
+        $this->view->assign("contactSellerForm", $form);
 
         if ($this->getRequest()->isPost()) {
             if ($form->isValid($this->getRequest()->getPost())) {
@@ -35,7 +35,7 @@ class UserPostController extends Ml_Controller_Action
                     $values["message"]
                 );
 
-                $this->view->contact = $values;
+                $this->view->assign("contact", $values);
 
                 $mail = new Zend_Mail('UTF-8');
 
@@ -45,7 +45,7 @@ class UserPostController extends Ml_Controller_Action
                     ->setReplyTo($values["email"])
                     ->send();
 
-                $this->view->proposalSent = true;
+                $this->view->assign("proposalSent", true);
             }
         }
 
