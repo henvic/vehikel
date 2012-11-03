@@ -16,7 +16,7 @@ define(["jquery"], function ($) {
         logoutAnchor.click(function (e) {
             e.preventDefault();
 
-            var params = { "hash" : AppParams.global_auth_hash, "signout" : "true" };
+            var params = { "hash" : AppParams.globalAuthHash, "signout" : "true" };
             var form = document.createElement("form");
             document.body.appendChild(form);
             form.setAttribute("method", "POST");

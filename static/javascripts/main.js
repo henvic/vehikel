@@ -53,7 +53,7 @@ var config = (function () {
                 });
             }
 
-            if (typeof AppParams.uid !== 'undefined') {
+            if (typeof AppParams.selfUid !== 'undefined') {
                 require(["authenticated"], function () {
                 });
             }

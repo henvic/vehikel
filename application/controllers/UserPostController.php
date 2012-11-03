@@ -12,6 +12,9 @@ class UserPostController extends Ml_Controller_Action
 
         $people =  $this->_registry->get("sc")->get("people");
         /** @var $people \Ml_Model_People() */
+        $this->view->addJsParam("postId", $post["id"]);
+        $this->view->addJsParam("postUid", $userInfo["id"]);
+        $this->view->addJsParam("postUsername", $userInfo["username"]);
 
         $form = new Ml_Form_ContactSeller(null, $this->_userInfo["username"], $this->_post["id"]);
 

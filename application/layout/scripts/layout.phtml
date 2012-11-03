@@ -22,7 +22,7 @@ $this->headLink()
 ;
 
 if ($auth->hasIdentity()) {
-    $this->addJsParam("uid", $auth->getIdentity());
+    $this->addJsParam("selfUid", $auth->getIdentity());
 }
 
 if ($registry->isRegistered("signedUserInfo")) {
@@ -30,7 +30,7 @@ if ($registry->isRegistered("signedUserInfo")) {
 }
 
 if ($registry->isRegistered("globalHash")) {
-    $this->addJsParam("global_auth_hash", $registry->get("globalHash"));
+    $this->addJsParam("globalAuthHash", $registry->get("globalHash"));
 }
 
 $this->headScript()->prependScript($this->getJsParams());
