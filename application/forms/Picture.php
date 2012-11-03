@@ -15,7 +15,7 @@ class Ml_Form_Picture extends Twitter_Bootstrap_Form_Horizontal
         Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('Ml_Filter', 'Ml/Filter/', 
         Zend_Form_Element::FILTER);
-        
+
         $file = new Zend_Form_Element_File('Image');
         $file->setLabel('Escolha uma imagem:');
         $file->addValidator('Count', false, 1);
