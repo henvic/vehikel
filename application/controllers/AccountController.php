@@ -154,7 +154,7 @@ class AccountController extends Ml_Controller_Action
             $fileInfo = $form->Image->getFileInfo();
             $picturesInfo = $picture->create($fileInfo['Image']['tmp_name'], $signedUserInfo['id']);
 
-            if ($picturesInfo) {
+            if (is_array($picturesInfo)) {
                 $people->update($signedUserInfo['id'], array("avatar_info" => json_encode($picturesInfo)));
                 $oldPicturesInfo = $signedUserInfo["avatar_info"];
                 if (is_array($oldPicturesInfo) && isset($oldPicturesInfo["secret"])) {
