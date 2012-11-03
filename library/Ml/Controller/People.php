@@ -6,8 +6,23 @@ trait Ml_Controller_People
 
     protected $_post;
 
+    protected $_translatePosts;
+
     public function preDispatch()
     {
+        $translatePosts = new Zend_Translate(
+            array(
+                "adapter" => "array",
+                "content" => APPLICATION_PATH . "/languages/pt_BR/Posts.php",
+                "locale" => "pt_BR",
+                "tag" => "vehicle"
+            )
+        );
+
+        $this->_translatePosts = $translatePosts;
+
+        $this->view->assign("translatePosts", $translatePosts->getAdapter());
+
         $people =  $this->_registry->get("sc")->get("people");
         /** @var $people \Ml_Model_People() */
 
@@ -63,16 +78,5 @@ trait Ml_Controller_People
             $this->_post = $post;
             $this->view->post = $post;
         }
-
-        $translatePosts = new Zend_Translate(
-            array(
-                "adapter" => "array",
-                "content" => APPLICATION_PATH . "/languages/pt_BR/Posts.php",
-                "locale" => "pt_BR",
-                "tag" => "vehicle"
-            )
-        );
-
-        $this->view->translatePosts = $translatePosts->getAdapter();
     }
 }
