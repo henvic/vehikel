@@ -7,6 +7,7 @@ class UserPostController extends Ml_Controller_Action
     public function indexAction()
     {
         $userInfo = $this->_userInfo;
+        $post = $this->_post;
 
         $this->view->addJsParam("route", "user/post");
 
