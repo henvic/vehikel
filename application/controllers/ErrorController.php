@@ -37,11 +37,28 @@ class ErrorController extends Ml_Controller_Action
             $this->view->params = $this->_request->getUserParams();
             return;
         } else {
-            // pass the actual exception object to the view
+            // pass the actual exception object to the view or send it back if ajax
             $this->view->exception = $errors->exception;
             $this->getResponse()->setHttpResponseCode(500);
             $this->view->statusCode = 500;
             $this->view->params = $errors->request->getUserParams();
+
+            if($this->_request->isXmlHttpRequest()) {
+                $errorInfo = ["error" => "application-error"];
+
+                if ("development" == APPLICATION_ENV) {
+                    $errorInfo["debug"] = [
+                        "params" => $errors->request->getUserParams(),
+                        "message" => $errors->exception->getMessage(),
+                        "trace" =>
+                        str_replace(array(": ", "#"), array(":<br />   ", "<br />#"),
+                            $errors->exception->getTraceAsString()
+                        )
+                    ];
+                }
+                $this->_helper->json($errorInfo);
+                return;
+            }
         }
     }
 }
