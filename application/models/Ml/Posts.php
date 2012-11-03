@@ -68,27 +68,39 @@ class Ml_Model_Posts
         return $id;
     }
 
+    public function update($id, $data)
+    {
+        if (isset($data["pictures"])) {
+            $data["pictures"] = json_encode($data["pictures"]);
+        }
 
-        $this->_dbTable->insert($data);
+        if (isset($data["equipment"])) {
+            $data["equipment"] = json_encode($data["equipment"]);
+        }
 
-        $tryInsert = $this->_dbAdapter->lastInsertId();
+        try {
+            $this->_dbAdapter->beginTransaction();
 
-        if ($tryInsert) {
-            return true;
+            $update = $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $id));
+
+            if ($update) {
+                $this->saveHistorySnapshot($id);
+                //retrieves fresh data renewing the cached values in the process
+                $this->getById($id, false);
+                return true;
+            }
+
+            $this->_dbAdapter->commit();
+        } catch (Exception $e) {
+            $this->_dbAdapter->rollBack();
+            throw $e;
         }
 
         return false;
     }
 
-    protected function update($id, $data)
     {
-        $update = $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $id));
 
-        if ($update) {
-            $this->saveHistorySnapshot($id);
-            //retrieves fresh data renewing the cached values in the process
-            $this->getById($id, false);
-            return true;
         }
 
         return false;
