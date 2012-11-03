@@ -53,4 +53,38 @@ class UserPostManagerController extends Ml_Controller_Action
         }
     }
 
+    public function pictureDeleteAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        $posts =  $this->_registry->get("sc")->get("posts");
+        /** @var $posts \Ml_Model_Posts() */
+
+        $picture =  $this->_sc->get("picture");
+        /** @var $picture \Ml_Model_Picture() */
+
+        $post = $this->_post;
+
+        $form = new Ml_Form_PicturePostDelete();
+
+        if (! $this->getRequest()->isPost() || ! $form->isValid($this->getRequest()->getPost())) {
+            $this->getResponse()->setHttpResponseCode(403);
+            var_dump($form->getErrors());
+            return;
+        }
+
+        $pictureId = $form->getValue("picture_id");
+
+        foreach ($post["pictures"] as $position => $eachPicture) {
+            if ($eachPicture["id"] == $pictureId) {
+                $posts->deletePicture($this->_post["id"], $pictureId);
+                $picture->delete($eachPicture["id"], $eachPicture["secret"]);
+                break;
+            }
+        }
+
+        $this->_helper->json(["pictureRemoved" => $pictureId]);
+        return;
+    }
 }
