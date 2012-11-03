@@ -16,9 +16,9 @@ class Ml_View_Helper_Picture extends Zend_View_Helper_Abstract
         $this->_picture = $picture;
     }
 
-    public function picture($prefix, $secret, $format = "medium.jpg", $alt = 'picture')
+    public function picture($id, $secret, $format = "medium.jpg", $alt = 'picture')
     {
-        $pictureLink = $this->_picture->getImageLink($prefix, $secret, $format);
+        $pictureLink = $this->_picture->getImageLink($id, $secret, $format);
 
         $img = '<img src="' . $this->view->escape($pictureLink) . '" alt="' . $this->view->escape($alt) . '" />';
 

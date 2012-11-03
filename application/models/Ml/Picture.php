@@ -31,11 +31,11 @@ class Ml_Model_Picture
     );
 
     /**
-     * @param $source path to a image
-     * @param $prefix image prefix that should be used
-     * @return array with picture data in success, false otherwise
+     * @param $source string path to a image
+     * @param $id string image id that should be used
+     * @return array with picture data in success, -1 if the image could not be loaded, false otherwise
      */
-    public function create($source, $prefix)
+    public function create($source, $id)
     {
         $originalIm = new Imagick($source);
 
@@ -56,7 +56,7 @@ class Ml_Model_Picture
         foreach ($this->_sizes as $partialPath => $maxDim) {
             $im = $originalIm->getImage();
 
-            $tmpFile = tempnam(sys_get_temp_dir(), 'IMAGE-' . $prefix . '-' . mt_rand() . '-');
+            $tmpFile = tempnam(sys_get_temp_dir(), 'IMAGE-' . md5(openssl_random_pseudo_bytes(12)));
 
             if ($partialPath == "square.jpg" || $partialPath == "square@2x.jpg") {
                 if ($originalDimension['height'] < $originalDimension['width']) {
@@ -89,7 +89,7 @@ class Ml_Model_Picture
         foreach ($files as $partialPath => &$info) {
             $this->_s3->putFile(
                 $info["path"],
-                $this->getImagePath($prefix, $secret, $partialPath),
+                $this->getImagePath($id, $secret, $partialPath),
                 array(
                     Zend_Service_Amazon_S3::S3_ACL_HEADER => Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ,
                     "Content-Type" => "image/jpeg",
@@ -104,11 +104,11 @@ class Ml_Model_Picture
 
         $this->_s3->putFile(
             $source,
-            $this->getImagePath($prefix, $secret, "original"),
+            $this->getImagePath($id, $secret, "original"),
             array(Zend_Service_Amazon_S3::S3_ACL_HEADER => Zend_Service_Amazon_S3::S3_ACL_PRIVATE)
         );
 
-        return array("prefix" => $prefix, "secret" => $secret, "sizes" => $files);
+        return array("id" => $id, "secret" => $secret, "sizes" => $files);
     }
 
     public function delete($picturesInfo)
@@ -118,22 +118,22 @@ class Ml_Model_Picture
         }
 
         foreach ($this->_sizes as $sizeInfo) {
-            $this->_s3->removeObject($this->getImagePath($picturesInfo['prefix'], $picturesInfo['secret'], $sizeInfo[1]));
+            $this->_s3->removeObject($this->getImagePath($picturesInfo['id'], $picturesInfo['secret'], $sizeInfo[1]));
         }
 
-        $this->_s3->removeObject($this->getImagePath($picturesInfo['prefix'], $picturesInfo['secret'], "original"));
+        $this->_s3->removeObject($this->getImagePath($picturesInfo['id'], $picturesInfo['secret'], "original"));
     }
 
-    public function getImagePath($prefix, $secret, $size)
+    public function getImagePath($id, $secret, $size)
     {
-        $picturePath = $this->_s3config["picturesBucket"] . "/" . $prefix . "-" . $secret . "-" . $size;
+        $picturePath = $this->_s3config["picturesBucket"] . "/" . $id . "-" . $secret . "-" . $size;
 
         return $picturePath;
     }
 
-    public function getImageLink($prefix, $secret, $size)
+    public function getImageLink($id, $secret, $size)
     {
-        $pictureLink = $this->_s3config["picturesBucketAddress"] . $prefix . "-" . $secret . "-" . $size;
+        $pictureLink = $this->_s3config["picturesBucketAddress"] . $id . "-" . $secret . "-" . $size;
 
         return $pictureLink;
     }

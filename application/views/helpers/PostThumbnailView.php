@@ -20,7 +20,7 @@ class Ml_View_Helper_PostThumbnailView extends Zend_View_Helper_Abstract
             $content .= '<li class="span3">'
                 . '<a href="' . $escapedPostLink . '" class="thumbnail post-thumbnail">';
 
-            $content .= $this->view->picture($userInfo["id"] . "-p-" . $picture["id"], $picture["secret"], "small.jpg");
+            $content .= $this->view->picture($picture["id"], $picture["secret"], "small.jpg");
 
             $content .= '<p>';
 

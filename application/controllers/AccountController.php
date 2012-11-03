@@ -138,7 +138,7 @@ class AccountController extends Ml_Controller_Action
         $pictureInfo = $signedUserInfo["avatar_info"];
 
         if ($pictureInfo) {
-            $this->view->pictureLink = $picture->getImageLink($pictureInfo["prefix"], $pictureInfo["secret"], "small.jpg");
+            $this->view->pictureLink = $picture->getImageLink($pictureInfo["id"], $pictureInfo["secret"], "small.jpg");
         }
 
         if (! $this->_request->isPost() || ! $form->isValid($this->_request->getPost())) {

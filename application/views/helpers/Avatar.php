@@ -19,7 +19,7 @@ class Ml_View_Helper_Avatar extends Zend_View_Helper_Abstract
         $pictureInfo = $userInfo["avatar_info"];
 
         if ($pictureInfo) {
-            $pictureLink = $picture->getImageLink($pictureInfo["prefix"], $pictureInfo["secret"], $format);
+            $pictureLink = $picture->getImageLink($pictureInfo["id"], $pictureInfo["secret"], $format);
         } else {
             $pictureLink = $config["cdn"] . "images/user-image-placeholder/" . $format;
         }

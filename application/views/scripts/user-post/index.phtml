@@ -137,9 +137,9 @@ if (! $post["active"]) {
                 $picture = $post["pictures"][$positionOfPicture];
 
                 echo '<a href="',
-                    $this->pictureLink($userInfo["id"] . "-p-" . $picture["id"], $picture["secret"], "large.jpg"),
+                    $this->pictureLink($picture["id"], $picture["secret"], "large.jpg"),
                 '" rel="external">',
-                $this->picture($userInfo["id"] . "-p-" . $picture["id"], $picture["secret"]),
+                $this->picture($picture["id"], $picture["secret"]),
                 '</a></div>';
             }
             ?>

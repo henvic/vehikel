@@ -20,7 +20,7 @@ class Ml_View_Helper_PostTableView extends Zend_View_Helper_Abstract
             $content .= '<tr>'
                 . '<td class="span1">';
 
-            $content .= $this->view->picture($userInfo["id"] . "-p-" . $picture["id"], $picture["secret"], "square.jpg");
+            $content .= $this->view->picture($picture["id"], $picture["secret"], "square.jpg");
 
             $content .= '</td>'
                 . '<td>'
