@@ -137,6 +137,43 @@ class Ml_Model_Posts
         return false;
     }
 
+    public function deletePicture($postId, $pictureId)
+    {
+        try {
+            $this->_dbAdapter->beginTransaction();
+
+            $post = $this->getById($postId, false, false);
+
+            $found = false;
+
+            foreach ($post["pictures"] as $position => $eachPicture) {
+                if ($eachPicture["id"] == $pictureId) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if ($found) {
+                unset($post["pictures"][$position]);
+
+                $data = ["pictures" => json_encode(array_values($post["pictures"]))];
+
+                $update = $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $postId));
+
+                if ($update) {
+                    $this->saveHistorySnapshot($postId);
+                    //retrieves fresh data renewing the cached values in the process
+                    $this->getById($postId, false);
+                    $this->_dbAdapter->commit();
+                    return true;
+                }
+            }
+        } catch (Exception $e) {
+            $this->_dbAdapter->rollBack();
+            throw $e;
+        }
+    }
+
     protected function getDbResult(Zend_Db_Select $sql, $setCache = true)
     {
         $data = $this->_dbAdapter->fetchRow($sql);
