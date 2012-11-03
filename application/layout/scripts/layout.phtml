@@ -73,7 +73,17 @@ $this->headMeta() , PHP_EOL;
       <div class="nav-collapse">
         <ul class="nav">
             <li class="divider-vertical"></li>
-            <li><a href="<?= $this->url(array(), "ad_new"); ?>"><i class="icon-pencil icon-white"></i> Anunciar</a></li>
+            <li class="dropdown">
+                <a href="<?= $this->url(array(), "user_post_new"); ?>" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-pencil icon-white"></i> Anunciar
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="<?= $this->url(array(), "user_post_new_car"); ?>">Carro</a></li>
+                    <li><a href="<?= $this->url(array(), "user_post_new_motorcycle"); ?>">Moto</a></li>
+                    <li><a href="<?= $this->url(array(), "user_post_new_boat"); ?>">Embarcação</a></li>
+                </ul>
+            </li>
             <li class="divider-vertical"></li>
         </ul>
         <form class="navbar-search form-inline pull-left" action="http://www.google.com/search" method="get">
