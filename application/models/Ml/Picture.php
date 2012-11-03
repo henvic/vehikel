@@ -37,7 +37,11 @@ class Ml_Model_Picture
      */
     public function create($source, $id)
     {
-        $originalIm = new Imagick($source);
+        try {
+            $originalIm = new Imagick($source);
+        } catch (Exception $e) {
+            return -1;
+        }
 
         $originalDimension = $originalIm->getimagegeometry();
 
