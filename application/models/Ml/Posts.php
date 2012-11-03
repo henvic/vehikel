@@ -30,7 +30,7 @@ class Ml_Model_Posts
         $this->_dbAdapter = $this->_dbTable->getAdapter();
     }
 
-    public function getById($id, $useCache = true)
+    public function getById($id, $useCache = true, $setCache = true)
     {
         if ($useCache) {
             $cached = $this->getCache($id);
@@ -41,7 +41,7 @@ class Ml_Model_Posts
 
         $select = $this->_dbTable->select()->where("binary `id` = ?", $id);
 
-        return $this->getDbResult($select);
+        return $this->getDbResult($select, $setCache);
     }
 
     public function addInfo($id, $data)
@@ -79,7 +79,7 @@ class Ml_Model_Posts
         return false;
     }
 
-    protected function getDbResult(Zend_Db_Select $sql)
+    protected function getDbResult(Zend_Db_Select $sql, $setCache = true)
     {
         $data = $this->_dbAdapter->fetchRow($sql);
 
@@ -89,7 +89,9 @@ class Ml_Model_Posts
 
             $data["cache"] = false;
 
-            $this->setCache($data["id"], $data);
+            if ($setCache) {
+                $this->setCache($data["id"], $data);
+            }
 
             return $data;
         }
