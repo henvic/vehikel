@@ -9,6 +9,11 @@ class UserPostController extends Ml_Controller_Action
         $userInfo = $this->_userInfo;
         $post = $this->_post;
 
+        $posts =  $this->_registry->get("sc")->get("posts");
+        /** @var $posts \Ml_Model_Posts() */
+
+        $this->view->assign("maxPicturesLimit", $posts->getMaxPicturesLimit());
+
         $this->view->addJsParam("route", "user/post");
         $this->view->addJsParam("postId", $post["id"]);
         $this->view->addJsParam("postUid", $userInfo["id"]);
