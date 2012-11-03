@@ -8,9 +8,8 @@ $post = $this->post;
 
 $escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_stream_1stpage");
 $address = $userInfo["address"];
-?>
-<?php
-$this->headTitle($post["name"]);
+
+$this->headTitle($post["make"] . " " . $post["model"] . " " . $post["name"]);
 ?>
 &nbsp;
 <div class="container">
@@ -95,7 +94,7 @@ echo $this->postBreadCrumb(array(
 ));
 
 ?>
-    <h1><?= $this->escape($post["name"]); ?></h1>
+    <h1 id="h1-test"><?= $this->escape($post["make"] . " " . $post["model"] . " " . $post["name"]); ?></h1>
 <?php
 if (! $post["active"]) {
 ?>
