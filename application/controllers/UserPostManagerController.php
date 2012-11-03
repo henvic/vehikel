@@ -42,7 +42,7 @@ class UserPostManagerController extends Ml_Controller_Action
             $pictureInfo = $picture->create($fileInfo['Filedata']['tmp_name'], $id);
 
             if (is_array($pictureInfo)) {
-                $z = $posts->addPicture($pictureInfo, $post["id"]);
+                $posts->addPicture($pictureInfo, $post["id"]);
 
                 $this->_helper->json($pictureInfo);
             } else {
