@@ -10,6 +10,8 @@ class Ml_Model_Posts
     const STATUS_END = 2;
     const STATUS_NO_FILTER = false;
 
+    protected $_maxPictures = 12;
+
     protected $_cacheLifetime = 10;
 
     // this number should change after relevant changes
@@ -200,5 +202,10 @@ class Ml_Model_Posts
         }
 
         return $equipments;
+    }
+
+    public function getMaxPicturesLimit()
+    {
+        return $this->_maxPictures;
     }
 }
