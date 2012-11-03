@@ -99,8 +99,37 @@ class Ml_Model_Posts
         return false;
     }
 
+    public function addPicture($pictureInfo, $postId)
     {
+        try {
+            $this->_dbAdapter->beginTransaction();
 
+            $originalData = $this->getById($postId, false, false);
+
+            if (! $originalData) {
+                return false;
+            }
+
+            $pictures = $originalData["pictures"];
+
+            $pictures[] = ["id" => $pictureInfo["id"], "secret" => $pictureInfo["secret"]];
+
+            $pictures = json_encode(array_values($pictures));
+
+            $update = $this->_dbTable->update(["pictures" => $pictures], $this->_dbAdapter->quoteInto("id = ?", $postId));
+
+            if ($update) {
+                $this->saveHistorySnapshot($postId);
+
+                //retrieves fresh data renewing the cached values in the process
+                $this->getById($postId, false);
+
+                $this->_dbAdapter->commit();
+                return true;
+            }
+        } catch (Exception $e) {
+            $this->_dbAdapter->rollBack();
+            throw $e;
         }
 
         return false;
