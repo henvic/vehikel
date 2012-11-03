@@ -193,7 +193,11 @@ class Ml_Model_Posts
 
         $allEquipments = json_decode($contents, true);
 
-        $equipments = $allEquipments[$category];
+        if (isset($allEquipments[$category])) {
+            $equipments = $allEquipments[$category];
+        } else {
+            $equipments = array();
+        }
 
         return $equipments;
     }
