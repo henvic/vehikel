@@ -201,3 +201,35 @@ input.no-spin-button::-webkit-inner-spin-button {
         text-decoration: none;
     }
 }
+
+.post-pictures-thumbnails-manager li {
+    &.post-upload {
+        cursor: pointer;
+    }
+    &.post-picture {
+        cursor: move;
+        &:hover {
+        }
+    }
+}
+
+.thumbnail-remove-picture {
+    position: relative;
+    z-index: 0;
+    float: right;
+    padding: 0 5px;
+    padding-top: -8px;
+    margin-top: -20px;
+    font-weight: bold;
+    color: #fff;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+}
+
+.post-picture:hover .thumbnail-remove-picture {
+    color: #fff;
+    background: #bd362f;
+}
