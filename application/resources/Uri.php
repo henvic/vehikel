@@ -102,7 +102,7 @@ class Ml_Resource_Uri extends Zend_Application_Resource_ResourceAbstract
         }
         
         // is it the last character in the resource part of the URI a slash?
-        if (mb_substr($resource, - 1) == '/') {
+        if ($resource != '/' && mb_substr($resource, - 1) == '/') {
             $resource = mb_substr($resource, 0, -1);
         }
         
@@ -112,7 +112,7 @@ class Ml_Resource_Uri extends Zend_Application_Resource_ResourceAbstract
             }
         } else {
             if ($this->_originalUri != $resource . "?" . $queryString) {
-                $this->_redirect($resource . $queryString, $this->_https);
+                $this->_redirect($resource . "?" . $queryString, $this->_https);
             }
         }
         
