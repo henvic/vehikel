@@ -23,6 +23,8 @@ trait Ml_Controller_People
 
         $this->view->assign("translatePosts", $translatePosts->getAdapter());
 
+        $route = Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName();
+
         $people =  $this->_registry->get("sc")->get("people");
         /** @var $people \Ml_Model_People() */
 
@@ -69,6 +71,18 @@ trait Ml_Controller_People
 
             if ($post["uid"] != $userInfo["id"]) {
                 return $this->_forward("not-found", "error", "default", array("error" => "post-and-user-mismatch"));
+            }
+
+            switch ($route) {
+                case "user_post_edit" :
+                case "user_post_delete" :
+                case "user_post_picture_add" :
+                case "user_post_picture_delete" :
+                case "user_post_picture_sort" :
+                if ($this->_auth->getIdentity() != $post["uid"]) {
+                    $this->getResponse()->setHttpResponseCode(403);
+                    return $this->_forward("not-found", "error", "default", array("error" => "post-is-no-longer-active"));
+                }
             }
 
             if (! $post["status"] && $userInfo["id"] != $this->_auth->getIdentity()) {
