@@ -173,6 +173,9 @@ class Ml_Model_Posts
             throw $e;
         }
 
+        return false;
+    }
+
     /**
      * @param $postId
      * @param $newPicturesIdsSortingOrder array of picture ids in the new sorting order
