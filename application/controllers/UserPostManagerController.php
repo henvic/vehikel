@@ -70,7 +70,7 @@ class UserPostManagerController extends Ml_Controller_Action
 
         if (! $this->getRequest()->isPost() || ! $form->isValid($this->getRequest()->getPost())) {
             $this->getResponse()->setHttpResponseCode(403);
-            var_dump($form->getErrors());
+            $this->_helper->json(["error" => ["validate" => $form->getErrors()]]);
             return;
         }
 
