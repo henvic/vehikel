@@ -75,6 +75,15 @@ trait Ml_Controller_People
                 return $this->_forward("not-found", "error", "default", array("error" => "post-is-no-longer-active"));
             }
 
+            if ($this->_auth->getIdentity() == $post["uid"]) {
+                $editable = true;
+            } else {
+                $editable = false;
+            }
+
+            $this->view->editable = $editable;
+            $this->view->addJsParam("postEditable", $editable);
+
             $this->_post = $post;
             $this->view->post = $post;
         }
