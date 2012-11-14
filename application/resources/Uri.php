@@ -7,6 +7,10 @@ class Ml_Resource_Uri extends Zend_Application_Resource_ResourceAbstract
     protected $_webhost = '';
     
     protected $_webhostssl = '';
+
+    protected $_webroot;
+
+    protected $_forceLowerCase;
     
     protected $_originalUri = '';
     
