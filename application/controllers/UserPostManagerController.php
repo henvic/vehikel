@@ -76,11 +76,13 @@ class UserPostManagerController extends Ml_Controller_Action
 
         $pictureId = $form->getValue("picture_id");
 
-        foreach ($post["pictures"] as $position => $eachPicture) {
-            if ($eachPicture["id"] == $pictureId) {
-                $posts->deletePicture($this->_post["id"], $pictureId);
-                $picture->delete($eachPicture["id"], $eachPicture["secret"]);
-                break;
+        if (is_array($post["pictures"])) {
+            foreach ($post["pictures"] as $position => $eachPicture) {
+                if ($eachPicture["id"] == $pictureId) {
+                    $posts->deletePicture($this->_post["id"], $pictureId);
+                    $picture->delete($eachPicture["id"], $eachPicture["secret"]);
+                    break;
+                }
             }
         }
 
