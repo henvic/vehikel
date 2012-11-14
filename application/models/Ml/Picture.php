@@ -88,7 +88,7 @@ class Ml_Model_Picture
             );
         }
 
-        $secret = md5(openssl_random_pseudo_bytes(20) . mt_rand());
+        $secret = mb_substr(md5(openssl_random_pseudo_bytes(20) . mt_rand()), 0, 8);
 
         foreach ($files as $partialPath => &$info) {
             $this->_s3->putFile(
