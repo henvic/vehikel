@@ -172,6 +172,60 @@ class Ml_Model_Posts
             $this->_dbAdapter->rollBack();
             throw $e;
         }
+
+    /**
+     * @param $postId
+     * @param $newPicturesIdsSortingOrder array of picture ids in the new sorting order
+     * @return picturesInfo array on success, false in failure
+     * @throws Exception
+     */
+    public function sortPictures($postId, $newPicturesIdsSortingOrder)
+    {
+        try {
+            $this->_dbAdapter->beginTransaction();
+
+            $originalData = $this->getById($postId, false, false);
+
+            if (! $originalData) {
+                return false;
+            }
+
+            $originalPictures = $originalData["pictures"];
+
+            $newPictures = [];
+
+            foreach ($newPicturesIdsSortingOrder as $eachPictureId) {
+                foreach ($originalPictures as $pos => $originalPicture) {
+                    if ($originalPicture["id"] == $eachPictureId) {
+                        $newPictures[] = $originalPicture;
+                        unset($originalPictures[$pos]);
+                    }
+                }
+            }
+
+            $newPictures = array_merge($newPictures, $originalPictures);
+
+            $newPicturesValues = array_values($newPictures);
+
+            $pictures = json_encode($newPicturesValues);
+
+            $update = $this->_dbTable->update(["pictures" => $pictures], $this->_dbAdapter->quoteInto("id = ?", $postId));
+
+            if ($update) {
+                $this->saveHistorySnapshot($postId);
+
+                //retrieves fresh data renewing the cached values in the process
+                $this->getById($postId, false);
+
+                $this->_dbAdapter->commit();
+                return $newPicturesValues;
+            }
+        } catch (Exception $e) {
+            $this->_dbAdapter->rollBack();
+            throw $e;
+        }
+
+        return false;
     }
 
     protected function getDbResult(Zend_Db_Select $sql, $setCache = true)

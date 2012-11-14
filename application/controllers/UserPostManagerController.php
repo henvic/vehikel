@@ -87,4 +87,48 @@ class UserPostManagerController extends Ml_Controller_Action
         $this->_helper->json(["pictureRemoved" => $pictureId]);
         return;
     }
+
+    public function pictureSortAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        $posts =  $this->_registry->get("sc")->get("posts");
+        /** @var $posts \Ml_Model_Posts() */
+
+        $picture =  $this->_sc->get("picture");
+        /** @var $picture \Ml_Model_Picture() */
+
+        $post = $this->_post;
+
+        $form = new Ml_Form_Hash();
+
+        if (! $this->getRequest()->isPost() || ! $form->isValid($this->getRequest()->getPost())) {
+            $this->getResponse()->setHttpResponseCode(403);
+            $this->_helper->json(["error" => ["validate" => $form->getErrors()]]);
+            return;
+        }
+
+        $unsafePostData = $this->getRequest()->getPost();
+
+        if (isset($unsafePostData["picture_id"]) && is_array($unsafePostData["picture_id"])) {
+            $safePictureIds = [];
+
+            $stringLengthValidator = new Ml_Validate_StringLength(["min" => 1, "max" => 20]);
+            $regexValidator = new Zend_Validate_Regex("/^[\w\-]+$/");
+            foreach ($unsafePostData["picture_id"] as $pictureId) {
+                if (
+                    $stringLengthValidator->isValid($pictureId) &&
+                    $regexValidator->isValid($pictureId)
+                ) {
+                    $safePictureIds[] = $pictureId;
+                }
+            }
+
+            $picturesInfo = $posts->sortPictures($post["id"], $safePictureIds);
+            $this->_helper->json($picturesInfo);
+            return;
+        }
+
+        $this->getResponse()->setHttpResponseCode(404);
+    }
 }
