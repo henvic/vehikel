@@ -32,8 +32,14 @@ class ErrorController extends Ml_Controller_Action
 
         // check if the system failed due to a exception or a user error / broken link
         if (! $this->_getParam('error_handler')) {
-            $this->getResponse()->setHttpResponseCode(404);
-            $this->view->statusCode = 404;
+            if ($this->getResponse()->getHttpResponseCode() != 200) {
+                $responseCode = $this->getResponse()->getHttpResponseCode();
+            } else {
+                $responseCode = 404;
+            }
+
+            $this->getResponse()->setHttpResponseCode($responseCode);
+            $this->view->statusCode = $responseCode;
             $this->view->params = $this->_request->getUserParams();
             return;
         } else {
