@@ -6,13 +6,15 @@ if ($registry->isRegistered("signedUserInfo")) {
 
 $flashMessenger = $this->flashMessenger();
 
-if (! empty($flashMessenger) || ! $signedUserInfo["avatar_info"] || ! $signedUserInfo["address"]) {
+if (! empty($flashMessenger) ||
+    (isset($signedUserInfo) && (! $signedUserInfo["avatar_info"] || ! $signedUserInfo["address"])
+    )) {
 ?>
 <div class="container">
     <div class="row">
         <div class="span12">
             <?php
-            if (! $signedUserInfo["avatar_info"] || ! $signedUserInfo["address"]) {
+            if (isset($signedUserInfo) && (! $signedUserInfo["avatar_info"] || ! $signedUserInfo["address"])) {
             ?>
                 &nbsp;
                 <div class="alert alert-block alert-info">
