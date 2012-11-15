@@ -26,7 +26,9 @@ $signedUserInfo = $registry->get("signedUserInfo");
                 if ($signedUserInfo["avatar_info"] && $signedUserInfo["address"]) {
             ?>
             &nbsp;&nbsp;&nbsp;
-                <a class="btn btn-large" href="<?= $this->url(array(), "ad_new"); ?>">
+                <a class="btn btn-large
+                <?= (! $signedUserInfo["avatar_info"] || ! $signedUserInfo["address"]) ? "disabled" : ""; ?>
+                " href="<?= $this->url(array(), "user_post_new"); ?>">
                     <i class="icon-arrow-right"></i> Anunciar
                 </a>
             <?php
