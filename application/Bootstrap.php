@@ -93,16 +93,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 ->registerPluginResource("Ml_Resource_Default");
                 break;
             }
-            
-            case "api" : {
-                $this
-                ->registerPluginResource("Ml_Resource_Api")
-                ->unregisterPluginResource("session")
-                ->unregisterPluginResource("view")
-                ->unregisterPluginResource("layout");
-                break;
-            }
-            
+
             case "services" : {
                 $this
                 ->registerPluginResource("Ml_Resource_Services")

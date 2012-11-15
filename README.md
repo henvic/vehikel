@@ -83,7 +83,7 @@ MySQL tables have to be built. The DB scheme is at *[application/configs/db.sql]
 The following CouchDB databases have to be created: *web_access_log, and actions_log*.
 
 ### Points of entry
-There are three modules: default, services and api. And also a simple redirector system.
+There are two modules: default and services. And also a simple redirector system.
 
 #### The services module
 There is a CLI based services module.
@@ -91,7 +91,6 @@ Point of entry: *bin/services*
 
 #### Web based points of entry
 * *public/index.php* for the default
-* *public-api/index.php* for the API
 * *public-redirector/index.php* for the redirector system
 
 You have to set up your web server configurations with regard to these. Use virtual hosts.
