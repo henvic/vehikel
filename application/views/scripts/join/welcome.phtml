@@ -19,30 +19,6 @@ $signedUserInfo = $registry->get("signedUserInfo");
                 $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"), '</a>';
                 ?>
             </p>
-            <?php
-            if (! $signedUserInfo["avatar_info"] || ! $signedUserInfo["address"]) {
-            ?>
-            <div class="alert alert-info">
-                <p>Para poder anunciar está faltando você:
-                <ul>
-                <?php
-                if (! $signedUserInfo["avatar_info"]) {
-                ?>
-                    <li><a href="<?= $this->url(array(), "account_picture"); ?>">Colocar uma imagem de perfil</a></li>
-                <?php
-                }
-                if (! $signedUserInfo["address"]) {
-                ?>
-                    <li><a href="<?= $this->url(array(), "account_address"); ?>">Configurar o seu endereço</a></li>
-                <?php
-                }
-                ?>
-                </ul>
-                </p>
-            </div>
-            <?php
-            }
-            ?>
             <p><a class="btn btn-large" href="<?= $this->url(array(), "account"); ?>">
                 <i class="icon-arrow-right"></i> Configurar a sua conta
             </a>
