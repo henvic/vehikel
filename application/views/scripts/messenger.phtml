@@ -1,0 +1,47 @@
+<?php
+$registry = Zend_Registry::getInstance();
+if ($registry->isRegistered("signedUserInfo")) {
+    $signedUserInfo = $registry->get("signedUserInfo");
+}
+
+$flashMessenger = $this->flashMessenger();
+
+if (! empty($flashMessenger)) {
+?>
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <?php
+            foreach ($flashMessenger as $flashMessage) {
+                $alertType = "";
+
+                if (is_array($flashMessage)) {
+                    switch ($flashMessage[0]) {
+                        case "danger" :
+                        case "error" :
+                        case "info" :
+                        case "success" :
+                            $alertType = "alert-" . $flashMessage[0];
+                    }
+
+                    $message = $flashMessage[1];
+                } else {
+                    $message = $flashMessage;
+                }
+                ?>
+                &nbsp;
+                <div class="alert<?= $this->escape(" " . $alertType); ?>">
+                    <a class="close" data-dismiss="alert" href="#">&times;</a>
+                    <?php
+                    echo $message;
+                    ?>
+                </div>
+                <?php
+            }
+            ?>
+        </div>
+    </div>
+</div>
+<?php
+}
+?>
