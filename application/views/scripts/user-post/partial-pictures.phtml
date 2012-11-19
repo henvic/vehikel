@@ -1,0 +1,63 @@
+<?php
+$maxPicturesLimit = $this->maxPicturesLimit;
+$post = $this->post;
+
+$amountOfPictures = sizeof($post["pictures"]);
+$canUploadAmountOfPictures = $maxPicturesLimit - $amountOfPictures;
+?>
+<div id="post-pictures-carousel" class="post-pictures-carousel carousel slide span8">
+    <!-- Carousel items -->
+    <div id="post-pictures-carousel-inner" class="carousel-inner">
+        <?php
+        if ($amountOfPictures == 0) {
+        ?>
+        <div id="post-picture-placeholder" class="active item">
+            <img src="<?= $this->staticVersion("/images/chevrolet-impala-icon.png"); ?>" alt="picture placeholder">
+        </div>
+        <?php
+        } else {
+            for ($positionOfPicture = 0; $positionOfPicture < $amountOfPictures; $positionOfPicture++) {
+                $picture = $post["pictures"][$positionOfPicture];
+        ?>
+        <div class="<?= ($positionOfPicture == 0) ? "active " : "" ?>item"
+             id="post-picture-id-<?= $this->escape($picture["id"]); ?>">
+        <?php
+            echo '<a href="', $this->pictureLink($picture["id"], $picture["secret"], "large.jpg"), '" rel="external">',
+            $this->picture($picture["id"], $picture["secret"]), '</a></div>';
+            }
+        }
+        ?>
+    </div>
+    <!-- Carousel nav -->
+</div><!-- end of post-pictures-carousel -->
+<ul id="post-pictures-thumbnails" class="post-pictures-thumbnails">
+    <?php
+    for ($positionOfPicture = 0; $positionOfPicture < $amountOfPictures; $positionOfPicture++) {
+        $picture = $post["pictures"][$positionOfPicture];
+        ?>
+        <li class="post-picture<?= ($this->editable) ? " post-picture-move" : ""; ?>"
+            id="post-thumbnail-picture-id-<?= $this->escape($picture["id"]); ?>"
+            data-picture-id="<?= $this->escape($picture["id"]); ?>">
+            <?php
+            echo $this->picture($picture["id"], $picture["secret"], "square.jpg");
+            if ($this->editable) {
+                ?>
+                <small class="thumbnail-remove-picture thumbnail-info-picture">×</small>
+                <?php
+            }
+            ?>
+        </li>
+        <?php
+    }
+
+    if ($this->editable) {
+        for ($positionOfPicture = 0; $positionOfPicture < $canUploadAmountOfPictures; $positionOfPicture++) {
+            ?>
+            <li class="post-upload post-upload-free-slot">
+                <img src="<?= $this->staticVersion("/images/post-upload-image.png"); ?>" alt="Upload de imagem" />
+            </li>
+            <?php
+        }
+    }
+    ?>
+</ul>
