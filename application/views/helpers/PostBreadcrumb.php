@@ -8,7 +8,7 @@ class Ml_View_Helper_PostBreadcrumb extends Zend_View_Helper_Abstract
      */
     public function PostBreadCrumb($paths)
     {
-        $content = '<ul class="breadcrumb">';
+        $content = '<ul class="post-breadcrumb breadcrumb">';
 
         $breadCrumbSize = count($paths);
 
