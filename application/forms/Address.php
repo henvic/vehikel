@@ -87,7 +87,7 @@ class Ml_Form_Address extends Twitter_Bootstrap_Form_Horizontal
             'required'   => true,
             'filters'    => array('StringTrim', 'Cep'),
             'class'      => "no-spin-button",
-            'pattern'    => "[0-9]*"
+            'pattern'    => "[0-9-]*"
         ));
 
         $this->getElement("postal_code")->addValidator(new Ml_Validate_Cep(), true);
