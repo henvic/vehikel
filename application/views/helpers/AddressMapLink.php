@@ -21,7 +21,7 @@ class Ml_View_Helper_AddressMapLink extends Zend_View_Helper_Abstract
                 . " - " . $address["region"]
                 . ", " . $address["postal_code"]
         )
-            . "&t=m";
+            . "&amp;t=m";
 
         return $mapLink;
     }
