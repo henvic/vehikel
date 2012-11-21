@@ -6,8 +6,7 @@
 @formOptional: #5d5d5d;
 @formError: #CC3333;
 
-@footerText: #888888;
-@footerLinks: @redT;
+@footerLinks: #fcfcfc;
 
 @import "../vendor/elements/elements.less";
 
@@ -144,19 +143,28 @@ body
     display: none !important;
 }
 
-footer {
-    padding-top: 30px;
-	.bw-gradient(#f5f5f5, 235, 255);
-	p {
-	    color: @footerText;
+.footer {
+    font-size: 75%;
+    padding-top: 20px;
+    img {
+        background: #fff;
+        padding: 4px;
+        .rounded(3px)
     }
-    a {
-        &, &:link, &:visited, &:active, &:hover {
-            color: @footerLinks;
+	a {
+        color: @footerLinks;
+        &:active, &:hover {
+            color: #777;
         }
     }
-	ul {
-	  list-style-type: none;
+    background: @redT;
+}
+
+@media (max-width : 767px) {
+    .footer {
+        width: 100%;
+        margin-left: -20px;
+        padding-right: 40px;
     }
 }
 

@@ -152,30 +152,24 @@ $this->headMeta() , PHP_EOL;
 </div><!-- end of navbar -->
 <?= $this->render("messenger.phtml"); ?>
 <?php echo $this->layout()->content; ?>
-<footer>
+<footer class="footer">
 <div class="container">
   <div class="row">
-    <div class="span6 visible-desktop">
-      <p>Anuncie o seu carro no trazqueeupago.com você também.<br />
-      <a href="http://www.twitter.com/<?php
+    <div class="span3 hidden-phone">
+      <p><a href="http://www.twitter.com/<?php
       echo $this->escape($config['services']['twitter']['username']); ?>" class="new-window"><img src="<?php
 echo $this->staticVersion("/images/follow_bird_us-b.png");
 ?>" alt="Follow us on Twitter" /></a></p>
     </div><!-- end of div -->
-    <div class="span3">
-      <ul>
-        <li><a href="<?php echo $this->url(array(), "index"); ?>">Página inicial</a></li>
-        <li><a href="<?php echo $this->url(array(), "account"); ?>">Sua conta</a></li>
-        <li><a href="<?php echo $this->staticUrl("/about") ?>">Sobre</a></li>
-      </ul>
-    </div>
-    <div class="span3">
-      <ul>
-        <li><a href="<?php echo $this->staticUrl("/tos") ?>">Termos de Serviço</a></li>
-        <li><a href="<?php echo $this->staticUrl("/privacy") ?>">Política de Privacidade</a></li>
-        <li><a href="<?php echo $this->staticUrl("/api") ?>">API</a></li>
-        <li><a href="<?php echo $this->staticUrl("/help") ?>">Suporte</a></li>
-      </ul>
+    <div class="span9">
+        <ul class="nav nav-pills">
+            <li><a href="<?php echo $this->url(array(), "index"); ?>">Página inicial</a></li>
+            <li><a href="<?php echo $this->staticUrl("/about") ?>">Sobre</a></li>
+            <li><a href="<?php echo $this->url(array(), "account"); ?>">Sua conta</a></li>
+            <li><a href="<?php echo $this->staticUrl("/help") ?>">Suporte</a></li>
+            <li><a href="<?php echo $this->staticUrl("/tos") ?>">Termos de Serviço</a></li>
+            <li><a href="<?php echo $this->staticUrl("/privacy") ?>">Política de Privacidade</a></li>
+        </ul>
     </div>
   </div><!-- end of div.row -->
 </div>
