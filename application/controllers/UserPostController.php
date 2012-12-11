@@ -6,6 +6,8 @@ class UserPostController extends Ml_Controller_Action
 
     public function indexAction()
     {
+        $params = $this->getRequest()->getParams();
+
         $userInfo = $this->_userInfo;
         $post = $this->_post;
 
@@ -18,6 +20,26 @@ class UserPostController extends Ml_Controller_Action
         $this->view->addJsParam("postId", $post["id"]);
         $this->view->addJsParam("postUid", $userInfo["id"]);
         $this->view->addJsParam("postUsername", $userInfo["username"]);
+
+        if ($this->_editable) {
+            $availableEquipment = $posts->getAvailableEquipment($post["type"]);
+
+            $form = new Ml_Form_UserPostEdit(
+                null,
+                $this->_translatePosts,
+                $availableEquipment,
+                $params["username"],
+                $params["post_id"]
+            );
+
+            $postForm = $post;
+
+            // divide by 100 because of the cents
+            $postForm["price"] = $postForm["price"] / 100;
+
+            $form->setDefaults($postForm);
+            $this->view->postForm = $form;
+        }
 
         $form = new Ml_Form_ContactSeller(null, $this->_userInfo["username"], $this->_post["id"]);
 
