@@ -22,5 +22,11 @@
         "cd_player",
         "navigation_system",
         "parking_sensor"
+    ],
+    "motorcycle" : [
+        "alloy_wheels"
+    ],
+    "boat" : [
+        "alarm"
     ]
 }
