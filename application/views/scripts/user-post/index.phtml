@@ -9,7 +9,9 @@ $post = $this->post;
 $escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_stream_1stpage");
 $address = $userInfo["address"];
 
-$this->headTitle($post["make"] . " " . $post["model"] . " " . $post["name"]);
+$escapedTitle = $this->escape($post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"]);
+
+$this->headTitle($escapedTitle);
 ?>
 &nbsp;
 <div class="container">
