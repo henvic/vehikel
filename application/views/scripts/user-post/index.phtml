@@ -77,19 +77,21 @@ if ($this->editable) {
 
 $searchLink = $this->url(array(), "search");
 
-echo $this->postBreadCrumb(array(
+$breadCrumb = $this->postBreadCrumb(array(
     array(
+        "id" => "post-breadcrumb-type",
         "name" => $translatePosts->translate($post["type"] . "_plural"),
-        "link" => $searchLink .
-            "?type=" . urlencode($post["type"])
+        "link" => $searchLink . "?type=" . urlencode($post["type"])
     ),
     array(
+        "id" => "post-breadcrumb-make",
         "name" => $post["make"],
         "link" => $searchLink .
             "?type=" . urlencode($post["type"]) .
             "&amp;make=" . urlencode($post["make"])
     ),
     array(
+        "id" => "post-breadcrumb-model",
         "name" => $post["model"],
         "link" => $searchLink .
             "?type=" . urlencode($post["type"]) .
@@ -276,6 +278,7 @@ if ($post["status"] == Ml_Model_Posts::STATUS_END) {
             </table>
         </div><!-- end of details sidebar -->
     </div>
+<?= $breadCrumb; ?>
 </div><!-- end of span9 -->
 </div><!-- end of row -->
 </div><!-- end of container -->
