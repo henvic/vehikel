@@ -5,6 +5,8 @@ $post = $this->post;
 $amountOfPictures = sizeof($post["pictures"]);
 $canUploadAmountOfPictures = $maxPicturesLimit - $amountOfPictures;
 ?>
+<div class="row">
+<div class="span9">
 <div id="post-pictures-carousel" class="post-pictures-carousel carousel slide span8">
     <!-- Carousel items -->
     <div id="post-pictures-carousel-inner" class="carousel-inner">
@@ -30,6 +32,8 @@ $canUploadAmountOfPictures = $maxPicturesLimit - $amountOfPictures;
     </div>
     <!-- Carousel nav -->
 </div><!-- end of post-pictures-carousel -->
+</div><!-- end of .span9 -->
+</div><!-- end of .row -->
 <ul id="post-pictures-thumbnails" class="post-pictures-thumbnails">
     <?php
     for ($positionOfPicture = 0; $positionOfPicture < $amountOfPictures; $positionOfPicture++) {
