@@ -8,6 +8,9 @@
 
 @footerLinks: #fcfcfc;
 
+@postEditableBackground: #ffffff;
+@postEditingBackground: #fffcf0;
+
 @import "../vendor/elements/elements.less";
 
 form {
@@ -94,6 +97,7 @@ body
 }
 
 .post-seller-address {
+    margin-bottom: 0;
     ul {
         margin-left: 0;
         list-style-type: none;
@@ -200,39 +204,94 @@ input.no-spin-button::-webkit-inner-spin-button {
     resize: none;
 }
 
+.vcard-image {
+    margin-right: 5px;
+}
+
 .post-contact {
     padding-left: 10px;
 }
 
+.post-product-name {
+    margin-bottom: 0;
+}
+
+@media (max-width : 480px) {
+    .post-product-name {
+        font-size: 115%;
+    }
+
+    .post-product-price-edit {
+        max-width: 107px;
+    }
 
     .post-breadcrumb {
         padding: 2px 5px;
         font-size: 70%;
     }
+
+    .vcard img {
+        zoom: 0.7;
+    }
+}
+
+@media (min-width : 481px) {
+    .post-breadcrumb {
+        margin-top: 19px;
+    }
+}
+
 .post-thumbnail {
     &:active, &:hover {
         text-decoration: none;
     }
 }
 
-.post-pictures-thumbnails-manager li {
+.post-pictures-thumbnails {
+    height: 58px;
+    overflow: scroll;
+    //display: table-cell;
+    margin: 0;
+    //height: 478px;
+    overflow: scroll;
+}
+
+.post-pictures-thumbnails li {
+    //display: inline-table;
+    //dispaly: inline;
+    float: left;
+    list-style-type: none;
+    margin: 0;
     &.post-upload {
         cursor: pointer;
     }
     &.post-picture {
+        cursor: pointer;
+    }
+    &.post-picture-move {
         cursor: move;
-        &:hover {
-        }
     }
 }
 
-.thumbnail-remove-picture {
+.thumbnail-info-picture {
     position: relative;
-    z-index: 0;
-    float: right;
-    padding: 0 5px;
-    padding-top: -8px;
     margin-top: -20px;
+    padding: 0 5px;
+    display: table;
+}
+
+.thumbnail-info-picture-top-large {
+    position: absolute;
+    font-weight: bold;
+    text-align: center;
+    width: 75px;
+    margin-top: -60px;
+    margin-left: auto;
+    margin-right: auto;
+    display: table;
+}
+
+.thumbnail-remove-picture {
     font-weight: bold;
     color: #fff;
     color: rgba(255, 255, 255, 0.5);
@@ -242,7 +301,107 @@ input.no-spin-button::-webkit-inner-spin-button {
     -o-transition: all 0.5s ease-in-out;
 }
 
+.picture-disabled img {
+    opacity: 0.5;
+}
+
 .post-picture:hover .thumbnail-remove-picture {
     color: #fff;
     background: #bd362f;
+}
+
+.post-pictures-carousel {
+    margin: 0;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 2px 2px rgba(240, 240, 240, 1);
+    box-shadow: 0px 0px 2px 2px rgba(240, 240, 240, 1);
+}
+
+.post-product-main-info-parent {
+    @media (min-width : 767px) {
+        float: right;
+    }
+}
+
+//@todo .post-product-equipment-list e .product-equipment-list no partial-product-main-info: mudar nomes
+.post-product-equipment-list {
+    list-style-type: none;
+    margin-left: 0;
+
+    /*li {
+        min-width: 30%;
+        float: left;
+        @media (max-width : 480px) {
+            width: 100%;
+        }
+    }*/
+}
+
+.post-product-info-editing-area .equipment {
+    @media (min-width : 767px) {
+        -moz-column-count: 2;
+        -moz-column-gap: 20px;
+        -o-column-count: 2;
+        -o-column-gap: 20px;
+        -webkit-column-count: 2;
+        -webkit-column-gap: 20px;
+        column-count: 2;
+        column-gap: 20px;
+    }
+}
+
+.post-equipments-list {
+    dd {
+        margin-left: 0;
+    }
+
+    ul {
+        list-style-type: none;
+        margin-left: 0;
+        -moz-column-rule-color:  #f3f3f3;
+        -moz-column-rule-style:  solid;
+        -moz-column-rule-width:  1px;
+        -webkit-column-rule-color:  #f7f7f7;
+        -webkit-column-rule-style: solid;
+        -webkit-column-rule-width:  1px;
+        @media (min-width : 480px) {
+            -moz-column-count: 2;
+            -moz-column-gap: 15px;
+            -o-column-count: 2;
+            -o-column-gap: 20px;
+            -webkit-column-count: 2;
+            -webkit-column-gap: 15px;
+            column-count: 2;
+            column-gap: 15px;
+        }
+    }
+}
+
+.post-editable {
+    background: @postEditableBackground;
+
+    -webkit-transition: background .5s ease-in-out;
+    -moz-transition: background .5s ease-in-out;
+    -o-transition: background .5s ease-in-out;
+    transition: background .5s ease-in-out;
+    &:hover {
+        background: @postEditingBackground;
+        cursor: pointer;
+    }
+}
+
+.post-description-text-edit {
+    background: @postEditingBackground;
+    resize: vertical;
+    width: 95%;
+}
+
+::selection {
+    color: red;
+    background: #353535; /* Safari */
+}
+::-moz-selection {
+    color: red;
+    background: #353535; /* Firefox */
 }
