@@ -85,7 +85,7 @@ trait Ml_Controller_People
                 }
             }
 
-            if (! $post["status"] && $userInfo["id"] != $this->_auth->getIdentity()) {
+            if ($post["status"] != Ml_Model_Posts::STATUS_ACTIVE && $userInfo["id"] != $this->_auth->getIdentity()) {
                 return $this->_forward("not-found", "error", "default", array("error" => "post-is-no-longer-active"));
             }
 
