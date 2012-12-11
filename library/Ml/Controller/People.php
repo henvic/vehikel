@@ -6,6 +6,8 @@ trait Ml_Controller_People
 
     protected $_post;
 
+    protected $_editable;
+
     protected $_translatePosts;
 
     public function preDispatch()
@@ -95,6 +97,7 @@ trait Ml_Controller_People
                 $editable = false;
             }
 
+            $this->_editable = $editable;
             $this->view->editable = $editable;
             $this->view->addJsParam("postEditable", $editable);
 
