@@ -1,0 +1,102 @@
+<?php
+$translatePosts = $this->translatePosts;
+/** @var $translatePosts \Zend_Translate_Adapter() */
+
+$postForm = $this->postForm;
+
+$userInfo = $this->userInfo;
+$post = $this->post;
+
+$editable = $this->editable;
+
+$price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
+$price->setValue($this->escape($post["price"] / 100));
+?>
+<div class="<?= ($editable) ? "post-editable" : ""; ?>" id="post-product-info"
+<?= ($editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?>>
+<h2 id="post-product-price">
+R$&nbsp;<?= $this->escape($price->toCurrency(null, array("display" => Zend_Currency::NO_SYMBOL))); ?>
+</h2>
+<dl class="post-product-equipment-list dl-horizontal">
+<dt><?= $this->escape($translatePosts->translate("year")); ?></dt>
+<dd>
+<?php
+if ($post["build_year"] == $post["model_year"]) {
+    echo $this->escape($post["model_year"]);
+} else {
+    echo $this->escape($post["build_year"] . " / " . $post["model_year"]);
+}
+?>
+</dd>
+<dt><?= $this->escape($translatePosts->translate("fuel")); ?></dt>
+<dd><?= $this->escape($translatePosts->translate($post["fuel"])); ?></dd>
+<dt>km</dt>
+<dd><?= $this->escape($post["km"]); ?></dd>
+<dt><?= $this->escape($translatePosts->translate("transmission")); ?></dt>
+<dd><?= $this->escape($translatePosts->translate($post["transmission"])); ?></dd>
+<dt><?= $this->escape($translatePosts->translate("traction")); ?></dt>
+<dd><?= $this->escape($translatePosts->translate($post["traction"])); ?></dd>
+<?php
+if ($post["armor"]) {
+?>
+<dt></dt>
+<dd>
+<span class="label label-important">Veículo blindado</span>
+</dd>
+<?php
+}
+?>
+</dl>
+<?php
+if (!is_array($post["equipment"]) || empty($post["equipment"])) {
+?>
+&nbsp;
+<?php
+} else {
+?>
+<dl class="post-equipments-list">
+<dt><?= $this->escape($translatePosts->translate("main_equipment")); ?></dt>
+<dd>
+<ul>
+<?php
+    $amountOfEquipments = sizeof($post["equipment"]);
+
+    for ($positionOfEquipment = 0; $positionOfEquipment < $amountOfEquipments; $positionOfEquipment++) {
+        echo '<li>',
+        $this->escape($translatePosts->translate("equipment_" . $post["equipment"][$positionOfEquipment])),
+        "</li>";
+    }
+}
+?>
+</ul>
+</dd>
+</dl>
+</div><!-- end of #post-product-info -->
+<?php
+if ($editable) {
+?>
+<form id="post-product-info-editing-area" class="post-product-info-editing-area form-horizontal hidden" method="post">
+<br />
+<?php
+echo
+$postForm->getElement("price"),
+$postForm->getElement("armor"),
+$postForm->getElement("build_year"),
+$postForm->getElement("model_year"),
+$postForm->getElement("km"),
+$postForm->getElement("fuel"),
+$postForm->getElement("traction"),
+$postForm->getElement("transmission"),
+'<dl class="equipment form-inline">',
+$postForm->getElement("equipment")->setTranslator($this->translatePosts),
+'</dl>'
+;
+?>
+<br />
+<input class="btn btn-primary" type="submit" value="Salvar equipamentos">
+<button class="btn" id="post-product-info-cancel" type="button">Cancelar</button>
+<?= $postForm->getElement("hash"); ?>
+</form><!-- end of #post-product-info-editing-area -->
+<?php
+}
+?>
