@@ -107,7 +107,58 @@ $breadCrumb = $this->postBreadCrumb(array(
 ));
 
 ?>
-    <h1 id="h1-test"><?= $this->escape($post["make"] . " " . $post["model"] . " " . $post["name"]); ?></h1>
+<h1 id="post-product-name" class="post-product-name <?= ($this->editable) ? "post-editable" : ""; ?>"
+<?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?>>
+<?= $escapedTitle; ?></h1>
+<?php
+if ($this->editable) {
+?>
+<form id="post-product-name-editing-area" class="form-inline hidden" method="post">
+<br />
+<select id="post-product-type" class="input-small">
+<optgroup label="Veículo">
+<option value="car" <?= ($post["type"] == "car") ? 'selected="selected" ' : ''; ?>>Carro</option>
+<option value="motorcycle" <?= ($post["type"] == "motorcycle") ? 'selected="selected" ' : ''; ?>>Motocicleta</option>
+<option value="boat" <?= ($post["type"] == "boat") ? 'selected="selected" ' : ''; ?>>Embarcação</option>
+</optgroup>
+</select>
+<select id="post-product-make" class="input-medium">
+<optgroup label="Marca">
+<option value="">-</option>
+<?php
+if (! empty($post["make"])) {
+?>
+<option value="<?= $this->escape($post["make"]); ?>" selected="selected"><?= $this->escape($post["make"]); ?></option>
+<?php
+}
+?>
+</optgroup>
+</select>
+<select id="post-product-model" class="input-medium">
+<optgroup label="Modelo">
+<option value="">-</option>
+<?php
+if (! empty($post["make"])) {
+?>
+<option value="<?= $this->escape($post["model"]); ?>" selected="selected"><?= $this->escape($post["model"]); ?></option>
+<?php
+}
+?>
+</optgroup>
+</select>
+<?php
+$postForm->engine->setDecorators(array('ViewHelper'));
+echo $postForm->engine;
+?>
+
+<input type="text" id="post-product-name-edit" class="post-product-name-edit input-large"
+maxlength="30" placeholder="Título" value="<?= $this->escape($post["name"]); ?>" />
+<input class="btn btn-primary" id="post-product-name-save" type="submit" value="Salvar" />
+<button class="btn" id="post-product-name-cancel" type="button">Cancelar</button>
+</form>
+<?php
+}
+?>
 <?php
 if ($post["status"] == Ml_Model_Posts::STATUS_END) {
 ?>
@@ -124,163 +175,152 @@ if ($post["status"] == Ml_Model_Posts::STATUS_END) {
 <?php
 }
 ?>
-    <p><?php
-        if ($post["armor"]) {
-            echo '<span class="label label-important">veículo blindado</span> ';
-        }
-
-        if ($post["build_year"] <= date("Y") - 30) {
-            echo '<span class="label label-inverse">antiguidade</span> ';
-        }
-
-        if ($post["transmission"] == 'automatic') {
-            echo '<span class="label label-info">câmbio automático</span> ';
-        }
-
-        if ($post["traction"] == '4x4') {
-            echo '<span class="label label-warning">4x4</span> ';
-        }
-        ?></p>
-    <div id="myCarousel" class="carousel slide">
-        <!-- Carousel items -->
-        <div class="carousel-inner">
-            <?php
-
-            $amountOfPictures = sizeof($post["pictures"]);
-
-            for ($positionOfPicture = 0; $positionOfPicture < $amountOfPictures; $positionOfPicture++) {
-                if ($positionOfPicture == 0) {
-                    echo '<div class="active item">';
-                } else {
-                    echo '<div class="item">';
-                }
-
-                $picture = $post["pictures"][$positionOfPicture];
-
-                echo '<a href="',
-                    $this->pictureLink($picture["id"], $picture["secret"], "large.jpg"),
-                '" rel="external">',
-                $this->picture($picture["id"], $picture["secret"]),
-                '</a></div>';
-            }
-            ?>
-        </div>
-        <!-- Carousel nav -->
-        <div class="carousel-hover-controls">
-            <!-- <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a> -->
-            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-        </div>
-    </div><!-- end of myCarousel -->
-    <address class="vcard post-seller-address">
-        <div class="row">
-            <div class="span1">
-                <a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo); ?></a>
-            </div>
-            <div class="span3">
-                <strong class="fn"><a href="<?= $escapedUserLink; ?>"><?= $this->escape($userInfo["name"]); ?></a></strong><br />
-                <?php
-                if ($userInfo["account_type"] == "retail") {
-                ?>
-                <span class="street-address"><?= $this->escape($address["street_address"]); ?></span> -
-                <span class="neighborhood"><?= $this->escape($address["neighborhood"]); ?></span><br />
-                <?php
-                }
-                ?>
-                <span class="locality"><?= $this->escape($address["locality"]); ?></span> -
-                <span class="region"><?= $this->escape($address["region"]); ?></span>
-                <?php
-                if ($userInfo["account_type"] == "retail") {
-                ?>,
-                <span class="postal-code"><?= $this->escape($address["postal_code"]); ?></span>,
-                <span class="country-name"><?= $this->escape($address["country_name"]); ?></span><br />
-                <a href="<?= $this->addressMapLink($address); ?>" class="btn map-link"><i class="icon-map-marker"></i>&nbsp;como chegar</a>
-                <a href="<?= $escapedUserLink; ?>" class="btn btn-primary">estoque</a>
-                <?php
-                }
-                ?>
-            </div>
-            <div class="span3">
-                <?= $this->addressPhoneList($address["phones"]); ?>
-            </div><!-- end of span3 -->
-        </div>
-    </address>
-    <ul class="nav nav-tabs" id="post-info-tabs">
-        <li class="active"><a href="#post-description">Descrição</a></li>
-        <li><a href="#post-contact"><i class="icon-envelope icon-white"></i> Enviar proposta</a></li>
-    </ul>
-    <div class="row">
-        <div class="span5">
-            <div class="tab-content">
-                <div class="tab-pane active" id="post-description">
-                    <p><?= $post["description_html_escaped"]; ?></p>
-                </div>
-                <div class="tab-pane post-contact" id="post-contact">
-                    <?= $this->render("user-post/partial-contact.phtml"); ?>
-                </div>
-            </div><!-- end of tab-content -->
-        </div>
-        <div class="span4">
-            <?php
-            $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
-            $price->setValue($this->escape($post["price"] / 100));
-            ?>
-            <h2><?= $price; ?></h2>
-            <table class="table table-bordered table-striped table-condensed">
-                <tbody>
-                <tr>
-                    <td><?= $this->escape($translatePosts->translate("year")); ?>:</td>
-                    <td>
+<?= $this->render("user-post/partial-pictures.phtml"); ?>
+<div class="row">
+    <div class="span9">
+        <br />
+        <address id="post-address" class="vcard post-seller-address">
+            <div class="row">
+                <div class="span5">
+                    <div class="pull-left vcard-image"><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo); ?></a></div>
+                    <strong class="fn"><a href="<?= $escapedUserLink; ?>"><?= $this->escape($userInfo["name"]); ?></a></strong>
+                    <a href="<?= $escapedUserLink; ?>" class="btn btn-mini">estoque</a><br />
+                    <?php
+                    if ($userInfo["account_type"] == "retail") {
+                        ?>
+                        <span class="street-address"><?= $this->escape($address["street_address"]); ?></span> -
+                        <span class="neighborhood"><?= $this->escape($address["neighborhood"]); ?></span><br />
                         <?php
-                        if ($post["build_year"] == $post["model_year"]) {
-                            echo $this->escape($post["model_year"]);
-                        } else {
-                            echo $this->escape($post["build_year"] . " / " . $post["model_year"]);
+                    }
+                    ?>
+                    <span class="locality"><?= $this->escape($address["locality"]); ?></span> -
+                    <span class="region"><?= $this->escape($address["region"]); ?></span>
+                    <?php
+                    if ($userInfo["account_type"] == "retail") {
+                        ?>,
+                        <span class="postal-code"><?= $this->escape($address["postal_code"]); ?></span><span class="hidden">,
+<span class="country-name"><?= $this->escape($address["country_name"]); ?></span></span>
+                        <?php
+                    }
+                    ?>
+                </div><!-- end of .span4 -->
+                <div class="span4">
+                    <ul>
+                        <?= $this->addressPhoneList($address["phones"]); ?>
+                        <li><small><a href="<?= $this->addressMapLink($address); ?>" class="map-link">
+                            <i class="icon-map-marker"></i>&nbsp;como chegar</a></small>
+                        </li>
+                    </ul>
+                </div><!-- end of .span4 -->
+            </div><!-- end of .row -->
+        </address>
+    </div><!-- end of .span9 -->
+</div><!-- end of .row -->
+<div class="row">
+<div class="span4 post-product-main-info-parent">
+<div id="post-product-main-info">
+<?= $this->render("user-post/partial-product-main-info.phtml"); ?>
+</div>
+</div>
+    <div class="span5">
+        <br />
+        <ul class="nav nav-tabs" id="post-info-tabs">
+            <li class="active"><a href="#post-description">Descrição</a></li>
+            <li><a href="#post-contact"><i class="icon-envelope icon-white"></i> Enviar proposta</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="post-description">
+                <p <?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?> id="post-description-text"
+                                                                                                   class="<?= ($this->editable) ? "post-editable" : ""; ?>">
+                    <?= $post["description_html_escaped"]; ?>
+                </p>
+                <?php
+                if ($this->editable) {
+                    ?>
+                    <div id="post-description-editing-area" class="hidden">
+                        <textarea id="post-description-text-edit" class="post-description-text-edit"
+                                ><?= $this->escape($post["description"]); ?></textarea>
+                        <button class="btn btn-primary" id="post-description-text-save" data-loading-text="salvando…"
+                                type="button">Salvar descrição</button>
+                        <button class="btn" id="post-description-text-cancel" type="button">Cancelar</button>
+                        <button class="btn btn-mini btn-link html-formatting-popover">Formatação HTML</button>
+                    </div><!-- end of #post-description-editing-area -->
+                    <?php
+                }
+                ?>
+                <?php
+                if ($this->editable) {
+                    ?>
+                    &nbsp;
+                    <div id="post-status">
+                        <?php
+                        if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
+                            ?><p class="post-status-info warning"><strong><span class="label label-info">Atenção<span class="hidden">:</span></span>
+                                este anúncio ainda não foi publicado.</strong></p>
+                            <?php
                         }
                         ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td><?= $this->escape($translatePosts->translate("engine")); ?>:</td>
-                    <td><?= $this->escape($post["engine"]); ?></td>
-                </tr>
-                <tr>
-                    <td><?= $this->escape($translatePosts->translate("fuel")); ?>:</td>
-                    <td><?= $this->escape($translatePosts->translate($post["fuel"])); ?></td>
-                </tr>
-                <tr>
-                    <td><?= $this->escape($translatePosts->translate("km")); ?>:</td>
-                    <td><?= $this->escape($post["km"]); ?> km</td>
-                </tr>
-                <tr>
-                    <td><?= $this->escape($translatePosts->translate("transmission")); ?>:</td>
-                    <td><?= $this->escape($translatePosts->translate($post["transmission"])); ?></td>
-                </tr>
-                </tbody>
-            </table>
-            <table class="table table-bordered table-striped table-condensed">
-                <caption><?= $this->escape($translatePosts->translate("main_equipment")); ?></caption>
-                <tbody>
-                <?php
-                $amountOfEquipments = sizeof($post["equipment"]);
+                        <div class="btn-group">
+                            <?php
+                            if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
+                                ?>
+                                <button type="button" class="btn btn-large btn-danger" data-action="end"><strong>Finalizar</strong></button>
+                                <?php
+                            }
 
-                for ($positionOfEquipment = 0; $positionOfEquipment < $amountOfEquipments; $positionOfEquipment++) {
-                    if (($positionOfEquipment + 1) % 2) {
-                        echo "<tr>";
-                    }
+                            if ($post["status"] == Ml_Model_Posts::STATUS_END) {
+                                ?>
+                                <button type="button" class="btn btn-large btn-primary" data-action="publish"><strong>Republicar</strong></button>
+                                <?php
+                            }
 
-                    echo "<td>",
-                    $this->escape($translatePosts->translate("equipment_" . $post["equipment"][$positionOfEquipment])),
-                    "</td>";
-
-                    if ($positionOfEquipment % 2 || $positionOfEquipment == $amountOfEquipments - 1) {
-                        echo "</tr>";
-                    }
+                            if ($post["status"] != Ml_Model_Posts::STATUS_ACTIVE) {
+                                ?>
+                                <button type="button" class="btn btn-large btn-primary" data-action="publish"><strong>Publicar</strong></button>
+                                <?php
+                            }
+                            ?>
+                            <button type="button" class="btn btn-large"><b>
+                                <?php
+                                switch ($post["status"]) {
+                                    case Ml_Model_Posts::STATUS_ACTIVE :
+                                        echo "anúncio publicado";
+                                        break;
+                                    case Ml_Model_Posts::STATUS_END :
+                                        echo "anúncio finalizado";
+                                        break;
+                                    case Ml_Model_Posts::STATUS_INACTIVE :
+                                        echo "anúncio inativo";
+                                        break;
+                                    case Ml_Model_Posts::STATUS_STAGING :
+                                        echo "anúncio não publicado";
+                                        break;
+                                }
+                                ?>
+                            </b></button>
+                            <button type="button" class="btn btn-large" data-rel="tooltip" title="editar" id="edit-post-button">
+                                <i class="icon-edit"></i><span class="hidden">editar</span></button>
+                            <?php
+                            if ($post["status"] != Ml_Model_Posts::STATUS_INACTIVE) {
+                                ?>
+                                <button type="button" class="btn btn-large" data-rel="tooltip" data-action="inactive" title="esconder anúncio"
+                                        ><i class="icon-remove-sign"></i>
+                                    <span class="hidden">esconder anúncio</span></button>
+                                <?php
+                            }
+                            ?>
+                        </div><!-- end of .btn-group -->
+                    </div><!-- end of #post-status -->
+                    <?php
                 }
                 ?>
-                </tbody>
-            </table>
-        </div><!-- end of details sidebar -->
-    </div>
+            </div><!-- end of .tab-content -->
+            <div class="tab-pane post-contact" id="post-contact">
+                <?= $this->render("user-post/partial-contact.phtml"); ?>
+            </div><!-- end of #post-contact -->
+        </div><!-- end of .tab-content -->
+    </div><!-- end of .span5 -->
+</div>
 <?= $breadCrumb; ?>
 </div><!-- end of span9 -->
 </div><!-- end of row -->
