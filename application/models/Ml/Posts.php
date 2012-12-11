@@ -83,25 +83,14 @@ class Ml_Model_Posts
             $data["equipment"] = json_encode($data["equipment"]);
         }
 
-        try {
-            $this->_dbAdapter->beginTransaction();
+        $data['description_html_escaped'] = $this->_purifier->purify($data['description']);
 
-            $update = $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $id));
+        $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $id));
 
-            if ($update) {
-                $this->saveHistorySnapshot($id);
-                //retrieves fresh data renewing the cached values in the process
-                $this->getById($id, false);
-                return true;
-            }
+        $this->saveHistorySnapshot($id);
 
-            $this->_dbAdapter->commit();
-        } catch (Exception $e) {
-            $this->_dbAdapter->rollBack();
-            throw $e;
-        }
-
-        return false;
+        //retrieves fresh data renewing the cached values in the process and return it
+        return $this->getById($id, false);
     }
 
     public function addPicture($pictureInfo, $postId)
