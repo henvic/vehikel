@@ -24,7 +24,8 @@ class Ml_View_Helper_PostThumbnailView extends Zend_View_Helper_Abstract
 
             $content .= '<p>';
 
-            $content .= $this->view->escape($post["name"])
+            $content .= $this->view->escape($post["make"] . " " . $post["model"] . " " .
+                $post["engine"] . " " . $post["name"])
                 . '<br />'
                 . '<span class="post-listing-price">' . $price .  '</span><br />'
                 . '<span class="post-listing-details">';

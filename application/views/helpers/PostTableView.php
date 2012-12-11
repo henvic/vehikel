@@ -26,7 +26,9 @@ class Ml_View_Helper_PostTableView extends Zend_View_Helper_Abstract
                 . '<td>'
                 . '<div class="span5">';
 
-            $content .= '<a href="' . $escapedPostLink . '">' . $this->view->escape($post["name"]) . '</a><br />';
+            $content .= '<a href="' . $escapedPostLink . '">' .
+                $this->view->escape($post["make"] . " " . $post["model"] . " " .
+                    $post["engine"] . " " . $post["name"]) . '</a><br />';
 
             if ($post["build_year"] == $post["model_year"]) {
                 $content .= $this->view->escape($post["model_year"]);
