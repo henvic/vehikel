@@ -27,19 +27,35 @@ if ($post["build_year"] == $post["model_year"]) {
     echo $this->escape($post["build_year"] . " / " . $post["model_year"]);
 }
 ?>
-</dd>
-<dt><?= $this->escape($translatePosts->translate("fuel")); ?></dt>
-<dd><?= $this->escape($translatePosts->translate($post["fuel"])); ?></dd>
-<dt>km</dt>
-<dd><?= $this->escape($post["km"]); ?></dd>
-<dt><?= $this->escape($translatePosts->translate("transmission")); ?></dt>
-<dd><?= $this->escape($translatePosts->translate($post["transmission"])); ?></dd>
-<dt><?= $this->escape($translatePosts->translate("traction")); ?></dt>
-<dd><?= $this->escape($translatePosts->translate($post["traction"])); ?></dd>
+&nbsp;</dd>
 <?php
+if ($post["fuel"]) {
+?>
+<dt><?= $this->escape($translatePosts->translate("fuel")); ?></dt>
+<dd><?= $this->escape($translatePosts->translate($post["fuel"])); ?>&nbsp;</dd>
+<?php
+}
+if ($post["km"]) {
+?>
+<dt>km</dt>
+<dd><?= $this->escape($post["km"]); ?>&nbsp;</dd>
+<?php
+}
+if ($post["transmission"]) {
+?>
+<dt><?= $this->escape($translatePosts->translate("transmission")); ?></dt>
+<dd><?= $this->escape($translatePosts->translate($post["transmission"])); ?>&nbsp;</dd>
+<?php
+}
+if ($post["traction"]) {
+?>
+<dt><?= $this->escape($translatePosts->translate("traction")); ?></dt>
+<dd><?= $this->escape($translatePosts->translate($post["traction"])); ?>&nbsp;</dd>
+<?php
+}
 if ($post["armor"]) {
 ?>
-<dt></dt>
+<dt>&nbsp;</dt>
 <dd>
 <span class="label label-important">Veículo blindado</span>
 </dd>
@@ -54,7 +70,7 @@ if (!is_array($post["equipment"]) || empty($post["equipment"])) {
 <?php
 } else {
 ?>
-<dl class="post-equipments-list">
+<dl class="post-equipments-list clearfix">
 <dt><?= $this->escape($translatePosts->translate("main_equipment")); ?></dt>
 <dd>
 <ul>
