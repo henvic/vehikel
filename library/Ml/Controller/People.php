@@ -83,7 +83,9 @@ trait Ml_Controller_People
                 case "user_post_picture_sort" :
                 if ($this->_auth->getIdentity() != $post["uid"]) {
                     $this->getResponse()->setHttpResponseCode(403);
-                    return $this->_forward("not-found", "error", "default", array("error" => "post-is-no-longer-active"));
+                    return $this->_forward(
+                        "not-found", "error", "default", array("error" => "post-is-no-longer-active")
+                    );
                 }
             }
 
