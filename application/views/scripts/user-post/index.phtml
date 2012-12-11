@@ -67,6 +67,14 @@ $this->headTitle($escapedTitle);
 </div>
 <div class="span9">
 <?php
+if ($this->editable) {
+?>
+<noscript>
+<p class="alert">Você precisa de JavaScript ativo para efetuar algumas ações de edição deste anúncio.</p>
+</noscript>
+<?php
+}
+
 $searchLink = $this->url(array(), "search");
 
 echo $this->postBreadCrumb(array(
