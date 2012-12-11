@@ -25,11 +25,14 @@ class Ml_Model_Posts
     protected $_cache;
     protected $_cachePrefix = "post_";
 
-    public function __construct($config, Zend_Cache_Core $cache)
+    protected $_purifier;
+
+    public function __construct($config, Zend_Cache_Core $cache, Ml_Model_HtmlPurifier $purifier)
     {
         $this->_cache = $cache;
         $this->_dbTable = new Zend_Db_Table($this->_dbTableName, $config);
         $this->_dbAdapter = $this->_dbTable->getAdapter();
+        $this->_purifier = $purifier;
     }
 
     public function getById($id, $useCache = true, $setCache = true)
