@@ -4,7 +4,7 @@ class Ml_View_Helper_AddressPhoneList extends Zend_View_Helper_Abstract
 {
     public function addressPhoneList($phoneList)
     {
-        $content = '<ul>';
+        $content = '';
 
         foreach($phoneList as $phone) {
             $formattedBrPhone = sprintf("%s %s-%s",
@@ -26,7 +26,7 @@ class Ml_View_Helper_AddressPhoneList extends Zend_View_Helper_Abstract
             $content .= '</a></li>';
         }
 
-        $content .= '</ul>';
+        $content .= '';
 
         return $content;
     }
