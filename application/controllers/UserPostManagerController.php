@@ -4,6 +4,104 @@ class UserPostManagerController extends Ml_Controller_Action
 {
     use Ml_Controller_People;
 
+    public function editAction()
+    {
+        $params = $this->getRequest()->getParams();
+
+        $this->view->addJsParam("route", "user/post-manager");
+
+        $posts =  $this->_registry->get("sc")->get("posts");
+        /** @var $posts \Ml_Model_Posts() */
+
+        $validatePost = $this->getRequest()->getPost();
+
+        $post = $this->_post;
+
+        $type = $post["type"];
+
+        if (isset($validatePost["type"])) {
+            switch ($validatePost["type"]) {
+                case "car" :
+                    $type = "car";
+                    break;
+                case "motorcycle" :
+                    $type = "motorcycle";
+                    break;
+                case "boat" :
+                    $type = "boat";
+                    break;
+            }
+        }
+
+        $availableEquipment = $posts->getAvailableEquipment($type);
+
+        $form = new Ml_Form_UserPostEdit(null, $this->_translatePosts, $availableEquipment, $params["username"], $params["post_id"]);
+
+        $form->setDefaults($post);
+
+        $this->view->assign("postForm", $form);
+
+        if ($this->getRequest()->isPost()) {
+            $formKeys = array("make", "model", "name", "price", "build_year", "model_year", "engine", "traction",
+                "transmission", "fuel", "km", "armor", "equipment", "description");
+
+            foreach ($formKeys as $key) {
+                if (! isset($validatePost[$key])) {
+                    if ($key == "price") {
+                        $filterCurrencyBr = new Ml_Filter_CurrencyBr();
+                        $validatePost["price"] = $filterCurrencyBr->filter($post["price"] / 100);
+                    } else {
+                        $validatePost[$key] = $post[$key];
+                    }
+                }
+            }
+
+            // clear the traction, transmission, and equipment on type change
+            if ($type != $post["type"]) {
+                $validatePost["traction"] = "";
+                $validatePost["transmission"] = "";
+                $validatePost["equipment"] = [];
+            }
+
+            if ($form->isValid($validatePost)) {
+                $values = $form->getValues();
+
+                $data = [];
+
+                $data["type"] = $type;
+
+                foreach ($formKeys as $key) {
+                    $data[$key] = $values[$key];
+                }
+
+                $data["price"] = str_replace(array(",", "."), "", $data["price"]);
+
+                $updatedPost = $posts->update($post["id"], $data);
+
+                if (! $updatedPost) {
+                    throw new Exception("Error trying to update post");
+                }
+
+                $post = $updatedPost;
+
+                $this->_post = $post;
+
+                $this->view->assign("post", $post);
+            } else {
+                $this->getResponse()->setHttpResponseCode(404);
+                $this->_helper->json($form->getErrors());
+            }
+        }
+
+        $this->_helper->layout->disableLayout();
+
+        if ($this->getRequest()->getParam("show-partial") == "post-product-info") {
+            $this->render("user-post/partial-product-main-info", null, "user-post");
+        } else {
+            $this->_helper->json($post);
+        }
+    }
+
     public function pictureAddAction()
     {
         $this->_helper->layout->disableLayout();
