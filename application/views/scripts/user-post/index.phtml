@@ -264,19 +264,19 @@ if ($post["status"] == Ml_Model_Posts::STATUS_END) {
                             <?php
                             if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
                                 ?>
-                                <button type="button" class="btn btn-large btn-danger" data-action="end"><strong>Finalizar</strong></button>
+                                <button type="button" class="btn btn-large btn-danger" data-action="end">Finalizar</button>
                                 <?php
                             }
 
                             if ($post["status"] == Ml_Model_Posts::STATUS_END) {
                                 ?>
-                                <button type="button" class="btn btn-large btn-primary" data-action="publish"><strong>Republicar</strong></button>
+                                <button type="button" class="btn btn-large btn-primary" data-action="publish">Republicar</button>
                                 <?php
                             }
 
                             if ($post["status"] != Ml_Model_Posts::STATUS_ACTIVE) {
                                 ?>
-                                <button type="button" class="btn btn-large btn-primary" data-action="publish"><strong>Publicar</strong></button>
+                                <button type="button" class="btn btn-large btn-primary" data-action="publish">Publicar</button>
                                 <?php
                             }
                             ?>
