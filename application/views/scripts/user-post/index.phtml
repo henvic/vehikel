@@ -280,24 +280,6 @@ if ($post["status"] == Ml_Model_Posts::STATUS_END) {
                                 <?php
                             }
                             ?>
-                            <button type="button" class="btn btn-large"><b>
-                                <?php
-                                switch ($post["status"]) {
-                                    case Ml_Model_Posts::STATUS_ACTIVE :
-                                        echo "anúncio publicado";
-                                        break;
-                                    case Ml_Model_Posts::STATUS_END :
-                                        echo "anúncio finalizado";
-                                        break;
-                                    case Ml_Model_Posts::STATUS_INACTIVE :
-                                        echo "anúncio inativo";
-                                        break;
-                                    case Ml_Model_Posts::STATUS_STAGING :
-                                        echo "anúncio não publicado";
-                                        break;
-                                }
-                                ?>
-                            </b></button>
                             <button type="button" class="btn btn-large" data-rel="tooltip" title="editar" id="edit-post-button">
                                 <i class="icon-edit"></i><span class="hidden">editar</span></button>
                             <?php
