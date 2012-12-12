@@ -9,6 +9,8 @@ $post = $this->post;
 
 $editable = $this->editable;
 
+$availableEquipment = $this->availableEquipment;
+
 $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
 $price->setValue($this->escape($post["price"] / 100));
 ?>
@@ -63,25 +65,19 @@ if ($post["armor"]) {
 }
 ?>
 </dl>
-<?php
-if (!is_array($post["equipment"]) || empty($post["equipment"])) {
-?>
-&nbsp;
-<?php
-} else {
-?>
 <dl class="post-equipments-list clearfix">
 <dt><?= $this->escape($translatePosts->translate("main_equipment")); ?></dt>
 <dd>
 <ul>
 <?php
-    $amountOfEquipments = sizeof($post["equipment"]);
-
-    for ($positionOfEquipment = 0; $positionOfEquipment < $amountOfEquipments; $positionOfEquipment++) {
-        echo '<li>',
-        $this->escape($translatePosts->translate("equipment_" . $post["equipment"][$positionOfEquipment])),
-        "</li>";
+foreach ($availableEquipment as $equipment) {
+    echo "<li>";
+    if (in_array($equipment, $post["equipment"])) {
+        echo $this->escape($translatePosts->translate("equipment_" . $equipment));
+    } else {
+        echo '<del class="muted">', $this->escape($translatePosts->translate("equipment_" . $equipment)), "</del>";
     }
+    echo "</li>";
 }
 ?>
 </ul>
