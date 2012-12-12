@@ -96,13 +96,13 @@ if ($editable) {
 <?php
 echo
 $postForm->getElement("price"),
-$postForm->getElement("armor"),
 $postForm->getElement("build_year"),
 $postForm->getElement("model_year"),
 $postForm->getElement("km"),
 $postForm->getElement("fuel"),
-$postForm->getElement("traction"),
 $postForm->getElement("transmission"),
+$postForm->getElement("traction"),
+$postForm->getElement("armor"),
 '<dl class="equipment form-inline">',
 $postForm->getElement("equipment")->setTranslator($this->translatePosts),
 '</dl>'
