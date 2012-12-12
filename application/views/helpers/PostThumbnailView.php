@@ -51,7 +51,7 @@ class Ml_View_Helper_PostThumbnailView extends Zend_View_Helper_Abstract
             }
 
             if ($post["build_year"] <= date("Y") - 30) {
-                $content .= '<span class="label label-inverse">antiguidade</span> ';
+                $content .= '<span class="label label-inverse">colecionador</span> ';
             }
 
             $content .= '</p></a></li>';
