@@ -21,9 +21,11 @@ class UserPostController extends Ml_Controller_Action
         $this->view->addJsParam("postUid", $userInfo["id"]);
         $this->view->addJsParam("postUsername", $userInfo["username"]);
 
-        if ($this->_editable) {
-            $availableEquipment = $posts->getAvailableEquipment($post["type"]);
+        $availableEquipment = $posts->getAvailableEquipment($post["type"]);
 
+        $this->view->assign("availableEquipment", $availableEquipment);
+
+        if ($this->_editable) {
             $form = new Ml_Form_UserPostEdit(
                 null,
                 $this->_translatePosts,
