@@ -35,6 +35,8 @@ class UserPostManagerController extends Ml_Controller_Action
 
         $availableEquipment = $posts->getAvailableEquipment($type);
 
+        $this->view->assign("availableEquipment", $availableEquipment);
+
         $form = new Ml_Form_UserPostEdit(null, $this->_translatePosts, $availableEquipment, $params["username"], $params["post_id"]);
 
         $form->setDefaults($post);
