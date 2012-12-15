@@ -159,62 +159,59 @@ maxlength="30" placeholder="Título" value="<?= $this->escape($post["name"]); ?>
 <?php
 }
 ?>
+<p id="post-status-end" class="alert alert-success
+<?= ($post["status"] != Ml_Model_Posts::STATUS_END) ? " hidden" : ""; ?>
+">Este anúncio que você está vendo já foi finalizado e não está acessível publicamente.</p>
 <?php
-if ($post["status"] == Ml_Model_Posts::STATUS_END) {
+if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
 ?>
-    <p class="alert alert-success">Este anúncio que você está vendo já foi finalizado e não está acessível publicamente.</p>
-<?php
-} else if ($post["status"] == Ml_Model_Posts::STATUS_INACTIVE) {
-?>
-    <p class="alert alert-danger">Este anúncio que você está vendo está inativo (escondido).</p>
-<?php
-} else if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
-?>
-    <p class="alert alert-block"><strong>Preview</strong><br />
-        Adicione fotos do veículo, confira como vai ficar o anúncio e aperte o botão publicar quando estiver pronto.</p>
+<p id="post-status-staging" class="alert alert-block
+<?= ($post["status"] != Ml_Model_Posts::STATUS_STAGING) ? "hidden" : ""; ?>
+"><strong>Preview</strong><br />
+Adicione fotos do veículo, confira como vai ficar o anúncio e aperte o botão publicar quando estiver pronto.</p>
 <?php
 }
 ?>
 <?= $this->render("user-post/partial-pictures.phtml"); ?>
 <div class="row">
-    <div class="span9">
-        <br />
-        <address id="post-address" class="vcard post-seller-address">
-            <div class="row">
-                <div class="span5">
-                    <div class="pull-left vcard-image"><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo); ?></a></div>
-                    <strong class="fn"><a href="<?= $escapedUserLink; ?>"><?= $this->escape($userInfo["name"]); ?></a></strong>
-                    <a href="<?= $escapedUserLink; ?>" class="btn btn-mini">estoque</a><br />
-                    <?php
-                    if ($userInfo["account_type"] == "retail") {
-                        ?>
-                        <span class="street-address"><?= $this->escape($address["street_address"]); ?></span> -
-                        <span class="neighborhood"><?= $this->escape($address["neighborhood"]); ?></span><br />
-                        <?php
-                    }
-                    ?>
-                    <span class="locality"><?= $this->escape($address["locality"]); ?></span> -
-                    <span class="region"><?= $this->escape($address["region"]); ?></span>
-                    <?php
-                    if ($userInfo["account_type"] == "retail") {
-                        ?>,
-                        <span class="postal-code"><?= $this->escape($address["postal_code"]); ?></span><span class="hidden">,
+<div class="span9">
+<br />
+<address id="post-address" class="vcard post-seller-address">
+<div class="row">
+<div class="span5">
+<div class="pull-left vcard-image"><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo); ?></a></div>
+<strong class="fn"><a href="<?= $escapedUserLink; ?>"><?= $this->escape($userInfo["name"]); ?></a></strong>
+<a href="<?= $escapedUserLink; ?>" class="btn btn-mini">estoque</a><br />
+<?php
+if ($userInfo["account_type"] == "retail") {
+?>
+<span class="street-address"><?= $this->escape($address["street_address"]); ?></span> -
+<span class="neighborhood"><?= $this->escape($address["neighborhood"]); ?></span><br />
+<?php
+}
+?>
+<span class="locality"><?= $this->escape($address["locality"]); ?></span> -
+<span class="region"><?= $this->escape($address["region"]); ?></span>
+<?php
+if ($userInfo["account_type"] == "retail") {
+?>,
+<span class="postal-code"><?= $this->escape($address["postal_code"]); ?></span><span class="hidden">,
 <span class="country-name"><?= $this->escape($address["country_name"]); ?></span></span>
-                        <?php
-                    }
-                    ?>
-                </div><!-- end of .span4 -->
-                <div class="span4">
-                    <ul>
-                        <?= $this->addressPhoneList($address["phones"]); ?>
-                        <li><small><a href="<?= $this->addressMapLink($address); ?>" class="map-link">
-                            <i class="icon-map-marker"></i>&nbsp;como chegar</a></small>
-                        </li>
-                    </ul>
-                </div><!-- end of .span4 -->
-            </div><!-- end of .row -->
-        </address>
-    </div><!-- end of .span9 -->
+<?php
+}
+?>
+</div><!-- end of .span4 -->
+<div class="span4">
+<ul>
+<?= $this->addressPhoneList($address["phones"]); ?>
+<li><small><a href="<?= $this->addressMapLink($address); ?>" class="map-link">
+ <i class="icon-map-marker"></i>&nbsp;como chegar</a></small>
+</li>
+</ul>
+</div><!-- end of .span4 -->
+</div><!-- end of .row -->
+</address>
+</div><!-- end of .span9 -->
 </div><!-- end of .row -->
 <div class="row">
 <div class="span4 post-product-main-info-parent">
@@ -262,39 +259,23 @@ if ($this->editable) {
 <div id="post-status">
 <?php
 if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
-?><p class="post-status-info warning"><strong><span class="label label-info">Atenção<span class="hidden">:</span></span>
+?><p id="post-status-info-staging" class="warning"
+><strong><span class="label label-info">Atenção<span class="hidden">:</span></span>
 este anúncio ainda não foi publicado.</strong></p>
 <?php
 }
 ?>
 <div class="btn-group">
-<?php
-if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
-?>
-<button type="button" class="btn btn-large btn-danger" data-action="end">Finalizar</button>
-<?php
-}
-
-if ($post["status"] == Ml_Model_Posts::STATUS_END) {
-?>
-<button type="button" class="btn btn-large btn-primary" data-action="publish">Republicar</button>
-<?php
-}
-
-if ($post["status"] != Ml_Model_Posts::STATUS_ACTIVE) {
-?>
-<button type="button" class="btn btn-large btn-primary" data-action="publish">Publicar</button>
-<?php
-}
-?>
 <button type="button" class="btn btn-large" data-rel="tooltip" title="editar" id="edit-post-button">
 <i class="icon-edit"></i><span class="hidden">editar</span></button>
 <?php
-if ($post["status"] != Ml_Model_Posts::STATUS_INACTIVE) {
+if ($post["status"] != Ml_Model_Posts::STATUS_ACTIVE && $post["status"] != Ml_Model_Posts::STATUS_STAGING) {
 ?>
-<button type="button" class="btn btn-large" data-rel="tooltip" data-action="inactive" title="esconder anúncio"
-><i class="icon-remove-sign"></i>
-<span class="hidden">esconder anúncio</span></button>
+<button type="button" class="btn btn-large btn-danger" data-action="end">Esconder</button>
+<?php
+} else {
+?>
+<button type="button" class="btn btn-large btn-primary" data-action="publish">Publicar</button>
 <?php
 }
 ?>
