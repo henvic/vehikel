@@ -205,6 +205,17 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
 
         $this->getElement('description')->getDecorator('description')->setEscape(false);
 
+        $this->addElement('select', 'status', array(
+                'required' => false,
+                'label'    => 'Status',
+                'multiOptions' => array(
+                    "" => "-",
+                    "active" => "active",
+                    "end" => "end"
+                )
+            )
+        );
+
         $this->addElement('submit', 'submit', array(
             'label'    => 'Salvar',
             'class' => 'btn btn-primary'
