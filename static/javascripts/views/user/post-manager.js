@@ -693,7 +693,7 @@ define(['jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.
                     updatePostProductInfo(result);
                 }
             });
-        }
+        };
 
         var savePostProductInfo = function () {
             var data = $postProductInfoEditingArea.serialize();
