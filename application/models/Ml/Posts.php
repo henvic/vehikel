@@ -4,10 +4,9 @@ class Ml_Model_Posts
     use Ml_Model_Db_Table_History;
     use Ml_Model_Db_Cache;
 
-    const STATUS_STAGING = -1;
-    const STATUS_INACTIVE = 0;
-    const STATUS_ACTIVE = 1;
-    const STATUS_END = 2;
+    const STATUS_STAGING = "staging";
+    const STATUS_ACTIVE = "active";
+    const STATUS_END = "end";
     const STATUS_NO_FILTER = false;
 
     protected $_maxPictures = 12;
