@@ -216,10 +216,10 @@ define(['jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.
                     url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/picture/sort",
                     type: 'POST',
                     dataType: 'json',
-                    data: ({
+                    data: {
                         hash: AppParams.globalAuthHash,
                         picture_id: ids
-                    })
+                    }
                 });
             });
 
