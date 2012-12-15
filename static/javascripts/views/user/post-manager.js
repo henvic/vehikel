@@ -853,18 +853,35 @@ define(['jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.
 
         $postStatus.on("click", 'button', function (e) {
             var $target = $(e.target);
-            var action = $target.closest("button").data("action");
+            var $button = $target.closest("button");
+            var action = $button.data("action");
 
             switch (action) {
-                case "end" :
-                    console.log("end ad");
-                    break;
-                case "publish" :
-                    console.log("publish ad");
-                    break;
-                case "inactive" :
-                    console.log("inactive ad");
-                    break;
+            case "end" :
+                setPostStatus("end", function (success) {
+                    if (success) {
+                        $button.removeClass("btn-danger");
+                        $button.addClass("btn-primary");
+                        $button.html("Publicar");
+                        $button.data("action", "publish");
+                        $postStatusStaging.addClass("hidden");
+                        $postStatusEnd.removeClass("hidden");
+                    }
+                });
+                break;
+            case "publish" :
+                setPostStatus("active", function (success) {
+                    if (success) {
+                        $button.removeClass("btn-primary");
+                        $button.addClass("btn-danger");
+                        $button.html("Esconder");
+                        $button.data("action", "end");
+                        $postStatusStaging.addClass("hidden");
+                        $postStatusEnd.addClass("hidden");
+                        $postStatusInfoStaging.addClass("hidden");
+                    }
+                });
+                break;
             }
         });
     }
