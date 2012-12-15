@@ -834,6 +834,23 @@ define(['jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.
             confirmBeforeExit = true;
         });
 
+        var setPostStatus = function (status, callbackfn) {
+            $.ajax({
+                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    hash: AppParams.globalAuthHash,
+                    status: status
+                },
+                success: function (result, textStatus, jqXHR) {
+                    if (result.status) {
+                        callbackfn(true);
+                    }
+                }
+            });
+        };
+
         $postStatus.on("click", 'button', function (e) {
             var $target = $(e.target);
             var action = $target.closest("button").data("action");
