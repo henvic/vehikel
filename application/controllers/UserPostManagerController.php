@@ -91,7 +91,7 @@ class UserPostManagerController extends Ml_Controller_Action
                 $this->view->assign("post", $post);
             } else {
                 $this->getResponse()->setHttpResponseCode(404);
-                $this->_helper->json($form->getErrors());
+                $this->_helper->json(["errors" => $form->getErrors()]);
             }
         }
 
