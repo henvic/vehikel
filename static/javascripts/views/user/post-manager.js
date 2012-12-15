@@ -366,7 +366,6 @@ define(['jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.
 
         function doConfirmBeforeExit()
         {
-            console.log(confirmBeforeExit);
             if (confirmBeforeExit) {
                 return "Você tem mudanças que ainda não foram salvas";
             }
@@ -846,7 +845,6 @@ define(['jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.
                     console.log("inactive ad");
                     break;
             }
-            console.log($target.closest("button").data("action"));
         });
     }
 );
