@@ -415,6 +415,10 @@ define(['jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.
 
         var $editPostButton = $("#edit-post-button");
 
+        var $postStatusStaging = $("#post-status-staging");
+        var $postStatusEnd = $("#post-status-end");
+        var $postStatusInfoStaging = $("#post-status-info-staging");
+
         $editPostButton.on("click", function (e) {
             openPostProductNameEdit();
             openPostProductInfoEdit();
