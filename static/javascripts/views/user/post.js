@@ -4,7 +4,7 @@
 define(['jquery'], function ($) {
     "use strict";
 
-    if (AppParams.postEditable === true) {
+    if (AppParams.accountEditable === true) {
         require(["views/user/post-manager"], function () {
         });
     }

@@ -101,7 +101,7 @@ trait Ml_Controller_People
 
             $this->_editable = $editable;
             $this->view->editable = $editable;
-            $this->view->addJsParam("postEditable", $editable);
+            $this->view->addJsParam("accountEditable", $editable);
 
             $this->_post = $post;
             $this->view->post = $post;
