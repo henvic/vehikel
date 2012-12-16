@@ -106,7 +106,7 @@ trait Ml_Controller_People
             $this->_post = $post;
             $this->view->post = $post;
         } else {
-            if ($this->_auth->getIdentity() == $userInfo["uid"]) {
+            if ($this->_auth->getIdentity() == $userInfo["id"]) {
                 $editable = true;
             } else {
                 $editable = false;
