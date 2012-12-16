@@ -57,7 +57,7 @@ trait Ml_Controller_People
         }
 
         $this->_userInfo = $userInfo;
-        $this->view->userInfo = $userInfo;
+        $this->view->assign("userInfo", $userInfo);
 
         $postId = $this->_request->getUserParam("post_id");
 
@@ -100,7 +100,7 @@ trait Ml_Controller_People
             }
 
             $this->_editable = $editable;
-            $this->view->editable = $editable;
+            $this->view->assign("editable", $editable);
             $this->view->addJsParam("accountEditable", $editable);
 
             $this->_post = $post;
