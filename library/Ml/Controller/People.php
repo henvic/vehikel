@@ -105,6 +105,16 @@ trait Ml_Controller_People
 
             $this->_post = $post;
             $this->view->post = $post;
+        } else {
+            if ($this->_auth->getIdentity() == $userInfo["uid"]) {
+                $editable = true;
+            } else {
+                $editable = false;
+            }
+
+            $this->_editable = $editable;
+            $this->view->assign("editable", $editable);
+            $this->view->addJsParam("accountEditable", $editable);
         }
     }
 }
