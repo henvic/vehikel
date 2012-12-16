@@ -4,6 +4,11 @@ class Ml_Model_Posts
     use Ml_Model_Db_Table_History;
     use Ml_Model_Db_Cache;
 
+    const TYPE_CAR = "car";
+    const TYPE_MOTORCYCLE = "motorcycle";
+    const TYPE_BOAT = "boat";
+    const TYPE_NO_FILTER = false;
+
     const STATUS_STAGING = "staging";
     const STATUS_ACTIVE = "active";
     const STATUS_END = "end";
@@ -26,12 +31,25 @@ class Ml_Model_Posts
 
     protected $_purifier;
 
+    protected $_types = ["car", "motorcycle", "boat"];
+    protected $_status = ["staging", "active", "end"];
+
     public function __construct($config, Zend_Cache_Core $cache, Ml_Model_HtmlPurifier $purifier)
     {
         $this->_cache = $cache;
         $this->_dbTable = new Zend_Db_Table($this->_dbTableName, $config);
         $this->_dbAdapter = $this->_dbTable->getAdapter();
         $this->_purifier = $purifier;
+    }
+
+    public function getTypes()
+    {
+        return $this->_types;
+    }
+
+    public function getStatuses()
+    {
+        return $this->_status;
     }
 
     public function getById($id, $useCache = true, $setCache = true)
