@@ -72,7 +72,7 @@ if ($post["armor"]) {
 <?php
 foreach ($availableEquipment as $equipment) {
     echo "<li>";
-    if (in_array($equipment, $post["equipment"])) {
+    if (is_array($equipment) && in_array($equipment, $post["equipment"])) {
         echo $this->escape($translatePosts->translate("equipment_" . $equipment));
     } else {
         echo '<del class="muted">', $this->escape($translatePosts->translate("equipment_" . $equipment)), "</del>";
