@@ -264,14 +264,19 @@ class Ml_Model_Posts
      * @param $uid
      * @param $perPage int items per page
      * @param $page
+     * @param $typeFilter
      * @param $statusFilter
      * @return Zend_Paginator
      */
-    public function getUserStreamPage($uid, $perPage, $page, $statusFilter = self::STATUS_NO_FILTER)
+    public function getUserStreamPage($uid, $perPage, $page, $typeFilter = self::TYPE_NO_FILTER, $statusFilter = self::STATUS_NO_FILTER)
     {
         $select = $this->_dbTable->select();
 
         $select->where("uid = ?", $uid);
+
+        if ($typeFilter) {
+            $select->where("type = ?", $typeFilter);
+        }
 
         if ($statusFilter) {
             $select->where("status = ?", $statusFilter);
