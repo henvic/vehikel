@@ -32,4 +32,12 @@ define(['jquery'], function($) {
     postsViewStyleThumbnailRadio.on("click", function() {
         changeViewStyle("thumbnail");
     });
+
+    var $statusTypeMenuDropdown = $("#status-type-menu-dropdown");
+
+    $statusTypeMenuDropdown.on("click", function (e) {
+        if (AppParams.accountEditable === true && e.target.className.match(/type/) !== null) {
+            e.preventDefault();
+        }
+    });
 });
