@@ -269,7 +269,7 @@ este anúncio ainda não foi publicado.</strong></p>
 <button type="button" class="btn btn-large" data-rel="tooltip" title="editar" id="edit-post-button">
 <i class="icon-edit"></i><span class="hidden">editar</span></button>
 <?php
-if ($post["status"] != Ml_Model_Posts::STATUS_ACTIVE && $post["status"] != Ml_Model_Posts::STATUS_STAGING) {
+if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
 ?>
 <button type="button" class="btn btn-large btn-danger" data-action="end">Esconder</button>
 <?php
