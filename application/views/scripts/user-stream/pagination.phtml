@@ -1,0 +1,91 @@
+<hr class="lighten" />
+<?php
+$unfilteredType = filter_input(INPUT_GET, "type");
+$unfilteredStatus = filter_input(INPUT_GET, "status");
+
+switch ($unfilteredType) {
+    case "car":
+        $type = "car";
+        break;
+    case "motorcycle":
+        $type = "motorcycle";
+        break;
+    case "boat":
+        $type = "boat";
+        break;
+    default:
+        $type = "";
+}
+
+switch ($unfilteredStatus) {
+    case "staging":
+        $status = "staging";
+        break;
+    case "end":
+        $status = "end";
+        break;
+    default:
+        $status = "";
+}
+
+$queryParams = "";
+
+if (! empty($type)) {
+    $queryParams .= "?type=" . urlencode($type);
+}
+
+if (! empty($type) && ! empty($status)) {
+    $queryParams .= "&amp;";
+}
+
+if (! empty($status)) {
+    $queryParams .= "status=" . urlencode($status);
+}
+
+?>
+<div class="pagination pagination-centered">
+<ul>
+<?php
+if (isset($this->previous)) {
+?>
+<li><a href="<?= $this->paginatorLink($this->previous) . $queryParams; ?>">&larr;</a></li>
+<?php
+} else {
+?>
+<li class="prev disabled"><a href="<?= $this->paginatorLink($this->previous) . $queryParams; ?>">&larr;</a></li>
+<?php
+}
+
+$pages = $this->paginator($this->current, $this->pageCount);
+
+while (current($pages)) {
+    $page = current($pages);
+        if ($this->current == $page) {
+?>
+<li class="active"><a href="<?= $this->paginatorLink($page) . $queryParams; ?>"><?= $this->escape($page); ?></a></li>
+<?php
+        } else {
+?>
+<li><a href="<?= $this->paginatorLink($page) . $queryParams; ?>"><?= $this->escape($page); ?></a></li>
+<?php
+       }
+       if(current($pages) != next($pages) - 1 && current($pages)) {
+?>
+<li class="disabled"><a>…</a></li>
+<?php
+    }
+}
+if (isset($this->next)) {
+?>
+<li><a href="<?= $this->paginatorLink($this->next) . $queryParams; ?>">&rarr;</a></li>
+<?php
+} else {
+?>
+<li class="next disabled"><a href="<?= $this->paginatorLink($this->next) . $queryParams; ?>">&rarr;</a></li>
+<?php
+}
+?>
+</ul>
+</div><!-- end of .pagination -->
+<?php
+reset($pages);
