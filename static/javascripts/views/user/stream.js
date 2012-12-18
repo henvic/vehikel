@@ -16,8 +16,16 @@ define(['jquery'], function($) {
             return;
         }
 
+        var queryParams;
+
+        if (document.location.search !== "") {
+            queryParams = document.location.search + "&posts_view_style=" + style;
+        } else {
+            queryParams = "?posts_view_style=" + style;
+        }
+
         $.ajax({
-            url: '?posts_view_style=' + style,
+            url: queryParams,
             success: function(data) {
                 streamCache[style] = data;
                 userStreamPostsElement.html(data);
