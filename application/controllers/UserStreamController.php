@@ -8,9 +8,9 @@ class UserStreamController extends Ml_Controller_Action
     {
         $this->view->addJsParam("route", "user/stream");
 
-        $postsViewStyleNamespace = new Zend_Session_Namespace("posts-view-style");
-
         $params = $this->getRequest()->getParams();
+
+        $postsViewStyleNamespace = new Zend_Session_Namespace("posts-view-style");
 
         if (isset($params["posts_view_style"])) {
             if ($params["posts_view_style"] == 'table') {
@@ -25,7 +25,27 @@ class UserStreamController extends Ml_Controller_Action
 
         $page = $this->_request->getUserParam("page");
 
-        $paginator = $posts->getUserStreamPage($this->_userInfo['id'], 10, $page);
+        $types = $posts->getTypes();
+
+        $statuses = $posts->getStatuses();
+
+        if (isset($params["type"]) && in_array($params["type"], $types)) {
+            $type = $params["type"];
+        } else {
+            $type = "";
+        }
+
+        if ($this->_auth->getIdentity() == $this->_userInfo["id"] &&
+            isset($params["status"]) && in_array($params["status"], $statuses)) {
+            $status = $params["status"];
+        } else {
+            $status = Ml_Model_Posts::STATUS_ACTIVE;
+        }
+
+        $this->view->assign("type", $type);
+        $this->view->assign("status", $status);
+
+        $paginator = $posts->getUserStreamPage($this->_userInfo['id'], 10, $page, $type, $status);
 
         //Test if there is enough pages or not
         if (! $this->_helper->pageExists($paginator)) {
@@ -33,9 +53,9 @@ class UserStreamController extends Ml_Controller_Action
             $this->_userInfo['username']), "user_stream_1stpage"), array("exit"));
         }
 
-        $this->view->postsViewStyleIsTable = $postsViewStyleNamespace->table;
+        $this->view->assign("postsViewStyleIsTable", $postsViewStyleNamespace->table);
 
-        $this->view->posts = $paginator;
+        $this->view->assign("posts", $paginator);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             $this->_helper->layout->disableLayout();
