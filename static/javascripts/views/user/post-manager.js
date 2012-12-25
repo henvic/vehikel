@@ -539,7 +539,7 @@ define(['jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.
                 dataType: 'json',
                 data: data,
                 success: function (result, textStatus, jqXHR) {
-                    $postProductName.text(result.make + '  ' + result.model + ' ' + result.name);
+                    $postProductName.text(result.make + '  ' + result.model + ' ' + result.engine + ' ' + result.name);
                     closePostProductNameEdit();
 
                     if (postProductTypeValue !== result.type) {
