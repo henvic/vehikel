@@ -4,6 +4,48 @@ class UserPostManagerController extends Ml_Controller_Action
 {
     use Ml_Controller_People;
 
+    public function newAction()
+    {
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $this->_helper->viewRenderer("new-xhr");
+            $this->_helper->layout->disableLayout();
+        }
+
+        $posts =  $this->_registry->get("sc")->get("posts");
+        /** @var $posts \Ml_Model_Posts() */
+
+        $form = new Ml_Form_UserPostNew(null, $this->_translatePosts);
+        $this->view->assign("postForm", $form);
+
+        if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
+            $values = $form->getValues();
+
+            $data = [];
+
+            $formKeys = array("type", "make", "model", "price", "build_year", "model_year", "engine");
+
+            foreach ($formKeys as $key) {
+                if (! isset($validatePost[$key])) {
+                    if ($key == "price") {
+                        $data["price"] = str_replace(array(",", "."), "", $values["price"]);
+                    } else {
+                        $data[$key] = $values[$key];
+                    }
+                }
+            }
+
+            $id = $posts->create($this->_auth->getIdentity(), $data);
+
+            $username = $this->_registry->get("signedUserInfo")["username"];
+
+            $this->_redirect($router->assemble(
+                    array("username" => $username, "post_id" => $id), "user_post"), array("exit")
+            );
+        }
+    }
+
     public function editAction()
     {
         $params = $this->getRequest()->getParams();
