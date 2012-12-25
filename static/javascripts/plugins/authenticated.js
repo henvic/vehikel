@@ -1,7 +1,7 @@
 /*global define, window, AppParams */
 /*jshint indent:4 */
 
-define(["jquery"], function ($) {
+define(["jquery", "jquery.maskMoney"], function ($) {
     "use strict";
 
     /**
@@ -35,6 +35,203 @@ define(["jquery"], function ($) {
             form.submit();
         });
     } ());
+
+    var postNewAd = (function () {
+        var $postProductTypeNew = $("#post-product-type-new");
+        var $postProductMakeNew = $("#post-product-make-new");
+        var $postProductModelNew = $("#post-product-model-new");
+        var $postProductPriceNew = $("#post-product-price-new");
+
+        $postProductTypeNew.on("change", function (e) {
+            $postProductMakeNew.val("");
+            $postProductMakeNew.attr("disabled", "disabled");
+            $postProductModelNew.val("");
+            $postProductModelNew.attr("disabled", "disabled");
+            loadPostProductMakes($postProductTypeNew.val());
+        });
+
+        var setCustomMake = function () {
+            var make = window.prompt("Marca?");
+
+            if (! make) {
+                return;
+            }
+
+            $postProductMakeNew.val(make);
+            if ($postProductMakeNew.val() === make) {
+                loadPostProductModels($postProductTypeNew.val(), $postProductMakeNew.val());
+                return;
+            }
+
+            var $optGroup = $($postProductMakeNew.find("optgroup")[0]);
+            var $entrySet = $("<select>");
+
+            $entrySet.append($("<option>", { value : make }).text(make));
+
+            $optGroup.append($entrySet.children());
+
+            $postProductMakeNew.val(make);
+
+            $postProductModelNew.removeAttr("disabled", "disabled");
+        };
+
+        var setCustomModel = function () {
+            var model = window.prompt("Modelo?");
+
+            if (! model) {
+                return;
+            }
+
+            $postProductModelNew.val(model);
+            if ($postProductModelNew.val() === model) {
+                return;
+            }
+
+            var $optGroup = $($postProductModelNew.find("optgroup")[0]);
+            var $entrySet = $("<select>");
+
+            $entrySet.append($("<option>", { value : model }).text(model));
+
+            $optGroup.append($entrySet.children());
+
+            $postProductModelNew.val(model);
+        };
+
+        var loadPostProductMakes = function (type, make) {
+            $.ajax({
+                url: AppParams.webroot + "/typeahead",
+                type: "GET",
+                dataType: "json",
+                data: ({
+                    search: "makes",
+                    type: type
+                }),
+                success: function (data, textStatus, jqXHR) {
+                    if (data.values instanceof Array) {
+                        var $optGroup = $($postProductMakeNew.find("optgroup")[0]);
+                        var $entrySet = $("<select>");
+                        $entrySet.append('<option value="">-</option>');
+                        $.each(data.values, function (key, value) {
+                            $entrySet.append($("<option>", { value : value }).text(value));
+                        });
+
+                        $entrySet.append($("<option>", { "data-action" : "other" }).text("Outro"));
+
+                        $postProductMakeNew.removeAttr("disabled");
+                        $optGroup.html($entrySet.children());
+
+                        if (make !== undefined) {
+                            $postProductMakeNew.val(make);
+
+                            if ($postProductMakeNew.val() === make) {
+                                return;
+                            }
+
+                            $optGroup.append($("<option>", { value : make }).text(make));
+                            $postProductMakeNew.val(make);
+                        }
+                    }
+                }
+            });
+        };
+
+        var loadPostProductModels = function (type, make, model) {
+            $.ajax({
+                url: AppParams.webroot + "/typeahead",
+                type: "GET",
+                dataType: "json",
+                data: ({
+                    search: "models",
+                    type: type,
+                    make: make
+                }),
+                success: function (data, textStatus, jqXHR) {
+                    if (data.values instanceof Array) {
+                        $postProductModelNew.html('<optgroup label="Modelo"><option value="">-</option></optgroup>');
+                        var $optGroup = $($postProductModelNew.find("optgroup")[0]);
+                        var $entrySet = $("<select>");
+                        $.each(data.values, function (key, value) {
+                            $entrySet.append($("<option>", { value : value }).text(value));
+                        });
+
+                        $entrySet.append($("<option>", { "data-action" : "other" }).text("Outro"));
+
+                        $postProductModelNew.removeAttr("disabled");
+                        $optGroup.append($entrySet.children());
+
+                        if (model !== undefined) {
+                            $postProductModelNew.val(model);
+
+                            if ($postProductModelNew.val() === model) {
+                                return;
+                            }
+
+                            $optGroup.append($("<option>", { value : model }).text(model));
+                            $postProductModelNew.val(model);
+                        }
+                    }
+                }
+            });
+        };
+
+        loadPostProductMakes($postProductTypeNew.val(), $postProductMakeNew.val());
+        loadPostProductModels($postProductTypeNew.val(), $postProductMakeNew.val(), $postProductModelNew.val());
+
+        $postProductMakeNew.on("change", function (e) {
+            $postProductModelNew.val("");
+            $postProductModelNew.attr("disabled", "disabled");
+
+            if ($(":selected", $postProductMakeNew).data("action") === "other") {
+                setCustomMake();
+            } else {
+                loadPostProductModels($postProductTypeNew.val(), $postProductMakeNew.val());
+            }
+        });
+
+        $postProductModelNew.on("change", function (e) {
+            if ($(":selected", $postProductModelNew).data("action") === "other") {
+                setCustomModel();
+            }
+        });
+
+        $postProductPriceNew.maskMoney(
+            {
+                symbol: 'R$',
+                thousands: '.',
+                decimal: ',',
+                defaultZero: false
+            }
+        );
+    });
+
+    if (window.location.pathname === AppParams.webroot + "/new") {
+        postNewAd();
+    } else {
+        var $postNewAdButton = $("#post-new-ad-button");
+
+        $postNewAdButton.one("click", function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: AppParams.webroot + "/new",
+                type: "GET",
+                success: function (data, textStatus, jqXHR) {
+                    $("body").append($(data));
+                    $("#post-product-new-modal").modal();
+                    postNewAd();
+                    var $postProductNewNext = $("#post-product-new-next");
+                    var $postProductNew = $("#post-product-new");
+
+                    $postProductNewNext.on("click", function () {
+                        $postProductNew.submit();
+                    });
+                    $postNewAdButton.on("click", function (e) {
+                        e.preventDefault();
+                        $("#post-product-new-modal").modal();
+                    });
+                }
+            });
+        });
+    }
 
     return function () {};
 });
