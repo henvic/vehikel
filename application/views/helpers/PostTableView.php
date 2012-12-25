@@ -13,14 +13,18 @@ class Ml_View_Helper_PostTableView extends Zend_View_Helper_Abstract
                 array("username" => $userInfo['username'], "post_id" => $post['id']), "user_post"
             );
 
-            $picture = $post["pictures"][0];
             $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
             $price->setValue($this->view->escape($post["price"] / 100));
 
             $content .= '<tr>'
                 . '<td class="span1">';
 
-            $content .= $this->view->picture($picture["id"], $picture["secret"], "square.jpg");
+            if (is_array($post["pictures"][0])) {
+                $picture = $post["pictures"][0];
+                $content .= $this->view->picture($picture["id"], $picture["secret"], "square.jpg");
+            } else {
+                $content .= '<img src="' . $this->view->staticVersion("/images/chevrolet-impala-icon-square.png") . '" alt="picture placeholder">';
+            }
 
             $content .= '</td>'
                 . '<td>'
@@ -36,9 +40,11 @@ class Ml_View_Helper_PostTableView extends Zend_View_Helper_Abstract
                 $content .= $this->view->escape($post["build_year"] . " / " . $post["model_year"]);
             }
 
-            $content .= '<span class="muted"> | </span>'
-                . $this->view->escape($post["km"]) . ' km'
-                . '</div>'
+            if ($post["km"]) {
+                $content .= '<span class="muted"> | </span>' . $this->view->escape($post["km"]) . ' km';
+            }
+
+            $content .= '</div>'
                 . '<div class="span2 special-items">';
 
 

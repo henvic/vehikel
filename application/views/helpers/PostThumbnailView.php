@@ -13,14 +13,18 @@ class Ml_View_Helper_PostThumbnailView extends Zend_View_Helper_Abstract
                 array("username" => $userInfo['username'], "post_id" => $post['id']), "user_post"
             );
 
-            $picture = $post["pictures"][0];
             $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
             $price->setValue($this->view->escape($post["price"] / 100));
 
             $content .= '<li class="span3">'
                 . '<a href="' . $escapedPostLink . '" class="thumbnail post-thumbnail">';
 
-            $content .= $this->view->picture($picture["id"], $picture["secret"], "small.jpg");
+            if (is_array($post["pictures"][0])) {
+                $picture = $post["pictures"][0];
+                $content .= $this->view->picture($picture["id"], $picture["secret"], "small.jpg");
+            } else {
+                $content .= '<img src="' . $this->view->staticVersion("/images/chevrolet-impala-icon-small.png") . '" alt="picture placeholder">';
+            }
 
             $content .= '<p>';
 
@@ -36,7 +40,11 @@ class Ml_View_Helper_PostThumbnailView extends Zend_View_Helper_Abstract
                 $content .= $this->view->escape($post["build_year"] . " / " . $post["model_year"]);
             }
 
-            $content .= ' ' . '<span class="muted">|</span> ' . $this->view->escape($post["km"]) . ' km</span><br />';
+            if ($post["km"]) {
+                $content .= ' ' . '<span class="muted">|</span> ' . $this->view->escape($post["km"]) . ' km';
+            }
+
+            $content .= '</span><br />';
 
             if ($post["armor"]) {
                 $content .= '<span class="label label-important">veículo blindado</span> ';
