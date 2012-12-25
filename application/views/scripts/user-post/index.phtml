@@ -228,13 +228,15 @@ if ($userInfo["account_type"] == "retail") {
 <div class="tab-content">
 <div class="tab-pane active" id="post-description">
 <p <?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?> id="post-description-text"
-class="<?= ($this->editable) ? "post-editable" : ""; ?>">
+class="<?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? "hidden " : ""; ?>
+<?= ($this->editable) ? "post-editable" : ""; ?>">
 <?= $post["description_html_escaped"]; ?>
 </p>
 <?php
 if ($this->editable) {
 ?>
-<div id="post-description-editing-area" class="hidden">
+<div id="post-description-editing-area"
+class="<?= ($post["status"] != Ml_Model_Posts::STATUS_STAGING) ? "hidden" : ""; ?>">
 <textarea id="post-description-text-edit" class="post-description-text-edit"
 ><?= $this->escape($post["description"]); ?></textarea>
 <button class="btn btn-primary" id="post-description-text-save" data-loading-text="salvando…"
