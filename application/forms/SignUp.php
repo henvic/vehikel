@@ -68,8 +68,6 @@ class Ml_Form_SignUp extends Twitter_Bootstrap_Form_Horizontal
             true
         );
         
-        $this->addElement(Ml_Model_AntiAttack::captchaElement());
-        
         $this->addElement('submit', 'submit', array(
             'label'    => 'Cadastrar',
             'class'    => 'btn btn-primary btn-large',
