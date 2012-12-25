@@ -1,0 +1,62 @@
+<?php
+$postForm = $this->postForm;
+
+$postFormErrors = $postForm->getErrors();
+?>
+<div id="post-product-new-modal" class="modal hide fade" tabindex="-1" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span class="hidden">close </span>×</button>
+        <h3 id="myModalLabel">Publicar novo anúncio</h3>
+    </div>
+    <div class="modal-body">
+        <form id="post-product-new" method="post" action="<?= $this->url(array(), "user_post_new"); ?>">
+            <?php
+            echo $postForm->type;
+            ?>
+            <div class="control-group<?= (!empty($postFormErrors["make"])) ? " error" : "" ?>">
+                <label for="post-product-make-new">Marca</label>
+                <div class="controls">
+                    <select id="post-product-make-new" class="input-medium" name="make">
+                        <optgroup label="Marca">
+                            <option value="">-</option>
+                        </optgroup>
+                    </select>
+                    <?php
+                    if (!empty($postFormErrors["make"])) {
+                        ?>
+                        <span class="help-inline">Value is required and can't be empty</span>
+                        <?php
+                    }
+                    ?>
+                </div>
+            </div>
+            <div class="control-group<?= (!empty($postFormErrors["make"])) ? " error" : "" ?>">
+                <label for="post-product-model-new">Modelo</label>
+                <div class="controls">
+                    <select id="post-product-model-new" class="input-medium" name="model">
+                        <optgroup label="Modelo">
+                            <option value="">-</option>
+                        </optgroup>
+                    </select>
+                    <?php
+                    if (!empty($postFormErrors["make"])) {
+                        ?>
+                        <span class="help-inline">Value is required and can't be empty</span>
+                        <?php
+                    }
+                    ?>
+                </div>
+            </div>
+            <?php
+            $postForm->engine->setDecorators(array('ViewHelper', 'Label'));
+            echo $postForm->engine, $postForm->model_year, $postForm->build_year, $postForm->price, $postForm->hash;
+            ?>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+        <button class="btn btn-primary" type="submit" id="post-product-new-next">
+            <i class="icon-forward icon-white"></i> Prosseguir
+        </button>
+    </div>
+</div>

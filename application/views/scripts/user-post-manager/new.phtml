@@ -1,0 +1,64 @@
+<?php
+$title = "Publicar novo anúncio";
+$this->headTitle($title);
+
+$postForm = $this->postForm;
+
+$postFormErrors = $postForm->getErrors();
+?>
+&nbsp;
+<div class="container">
+<div class="row">
+<div class="span12">
+<h1><?= $this->escape($title); ?></h1>
+<form id="post-new" method="post">
+<?php
+echo $postForm->type;
+?>
+<div class="control-group<?= (!empty($postFormErrors["make"])) ? " error" : "" ?>">
+<label for="post-product-make-new">Marca</label>
+<div class="controls">
+<select id="post-product-make-new" class="input-medium" name="make">
+<optgroup label="Marca">
+<option value="">-</option>
+</optgroup>
+</select>
+<?php
+if (!empty($postFormErrors["make"])) {
+?>
+<span class="help-inline">Value is required and can't be empty</span>
+<?php
+}
+?>
+</div>
+</div>
+<div class="control-group<?= (!empty($postFormErrors["make"])) ? " error" : "" ?>">
+<label for="post-product-model-new">Modelo</label>
+<div class="controls">
+<select id="post-product-model-new" class="input-medium" name="model">
+<optgroup label="Modelo">
+<option value="">-</option>
+</optgroup>
+</select>
+<?php
+if (!empty($postFormErrors["make"])) {
+?>
+<span class="help-inline">Value is required and can't be empty</span>
+<?php
+}
+?>
+</div>
+</div>
+<?php
+$postForm->engine->setDecorators(array('ViewHelper', 'Label'));
+echo $postForm->engine, $postForm->model_year, $postForm->build_year, $postForm->price, $postForm->hash;
+?>
+<div class="form-actions">
+<button class="btn btn-primary btn-large" type="submit">
+<i class="icon-forward icon-white"></i> Prosseguir
+</button>
+</div><!-- end of .form-actions -->
+</form>
+</div><!-- end of .span12 -->
+</div><!-- end of .row -->
+</div><!-- end of .container -->
