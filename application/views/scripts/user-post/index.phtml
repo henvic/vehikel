@@ -238,6 +238,7 @@ if ($this->editable) {
 <div id="post-description-editing-area"
 class="<?= ($post["status"] != Ml_Model_Posts::STATUS_STAGING) ? "hidden" : ""; ?>">
 <textarea id="post-description-text-edit" class="post-description-text-edit"
+placeholder="Escreva a descrição do produto aqui"
 ><?= $this->escape($post["description"]); ?></textarea>
 <button class="btn btn-primary" id="post-description-text-save" data-loading-text="salvando…"
 type="button">Salvar descrição</button>
