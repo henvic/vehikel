@@ -106,7 +106,7 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
 
         $engineCcs = ["" => "-"];
 
-        for ($engineCc = 0.8; $engineCc <= 5.8; $engineCc += 0.1) {
+        for ($engineCc = 0.8; $engineCc <= 6.8; $engineCc += 0.1) {
             $engineCcFormated = number_format($engineCc, 1);
             $engineCcs[$engineCcFormated] = $engineCcFormated;
         }
