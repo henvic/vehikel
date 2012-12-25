@@ -266,9 +266,15 @@ define(['jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.
 
         function doConfirmBeforeExit()
         {
+            var response;
+
             if (confirmBeforeExit) {
-                return "Você tem mudanças que ainda não foram salvas";
+                response = "Você tem mudanças que ainda não foram salvas";
+            } else {
+                response = null;
             }
+
+            return response;
         }
 
         document.onkeyup = function (e) {
