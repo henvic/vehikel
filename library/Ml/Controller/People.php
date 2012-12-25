@@ -27,6 +27,14 @@ trait Ml_Controller_People
 
         $route = Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName();
 
+        if ($route == "user_post_new") {
+            if ($this->_auth->hasIdentity()) {
+                return true;
+            } else {
+                return $this->_forward("redirect", "login");
+            }
+        }
+
         $people =  $this->_registry->get("sc")->get("people");
         /** @var $people \Ml_Model_People() */
 
