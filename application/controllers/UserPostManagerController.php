@@ -72,6 +72,9 @@ class UserPostManagerController extends Ml_Controller_Action
                 case "boat" :
                     $type = "boat";
                     break;
+                default:
+                    $this->getResponse()->setHttpResponseCode(404);
+                    $this->_helper->json(["errors" => array("type" => "invalid")]);
             }
         }
 
