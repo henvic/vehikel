@@ -279,16 +279,10 @@ define(['jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.
 
         document.onkeyup = function (e) {
             // on pressing the esc key
-            if (e.keyCode === 27) {
-                switch (e.target.id) {
-                    case "post-description-text-edit" :
-                        if (! confirmBeforeExit) {
-                            cancelDescriptionEdit();
-                        }
-                        break;
-                    default:
-                        break;
-                }
+            if (e.keyCode === 27 &&
+                e.target.id === "post-description-text-edit" &&
+                ! confirmBeforeExit) {
+                cancelDescriptionEdit();
             }
         };
 
