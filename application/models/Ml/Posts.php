@@ -75,6 +75,8 @@ class Ml_Model_Posts
         $data["status"] = self::STATUS_STAGING;
 
         try {
+            $this->_dbAdapter->beginTransaction();
+
             $this->_dbTable->insert($data);
 
             $id = $this->_dbAdapter->lastInsertId();
