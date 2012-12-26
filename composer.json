@@ -1,6 +1,7 @@
 {
     "name": "henvic/vehikel",
     "description": "car ad website.",
+    "license": "MIT",
     "require": {
         "rych/phpass": "2.1.x-dev"
     },
