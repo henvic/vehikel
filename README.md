@@ -27,20 +27,23 @@ Please note that the default memcached is insecure by design because it's freely
 * [Zend Framework](http://framework.zend.com/)
 * [Symfony](http://symfony.com/) (some components)
 * [HTML Purifier](http://htmlpurifier.org/) (use the standalone version)
-* [phpass](http://www.openwall.com/phpass/)
+* [hphpass](http://www.openwall.com/phpass/) ---- trocar pelo novo rych/phpass
 * [PHP On Couch](https://github.com/dready92/PHP-on-Couch)
 * [oauth-php](http://code.google.com/p/oauth-php/)
 * [Predis](http://pearhub.org/projects/predis)
 * [twitter-async](https://github.com/jmathai/twitter-async)
+PHPUNIT: E aeaeeaeaea? dep.... colocar no vendor/????
 
 For performance you want to strip the require_once's from the Zend framework code, see [How can I optimize my include_path?](http://framework.zend.com/manual/en/performance.classloading.html)
 
 ### Client-side dependencies
-[Bootstrap, from Twitter](http://twitter.github.com/bootstrap/)
-[jQuery](http://jquery.com/)
-[jQuery.fn.autoResize](https://github.com/padolsey/jQuery.fn.autoResize)
-[Tablesorter](http://tablesorter.com/)
-[RequireJS](http://requirejs.org)
+* [Bootstrap, from Twitter](http://twitter.github.com/bootstrap/)
+* [jQuery](http://jquery.com/)
+* [jQuery.fn.autoResize](https://github.com/padolsey/jQuery.fn.autoResize)
+* [YUI 3](http://yuilibrary.com)
+* [Tablesorter](http://tablesorter.com/)
+* [RequireJS](http://requirejs.org)
+* [jQuery-maskMoney](https://github.com/plentz/jquery-maskmoney/)
 
 
 ### Services
@@ -123,22 +126,18 @@ It is useful especially for crafting the templates files with XHR restrictions i
 Some operations might be expensive. For example: if a user removes his account it is not smart to start a batch delete operation of all his files right away (and let him waiting for it, for instance).
 A way to solve this and other similar issues is to make use of a scheduled task to run from time to time and do this heavy work.
 
-
-Right now there are only a few of crontab jobs as you can see on the example below:
-
-```
-20 * * * * /path/to/application/bin/service --action cleanfiles --controller garbage >> /dev/null 2>&1
-20 3 */2 * * /path/to/application/bin/service --action cleanoldnewusers --controller garbage >> /dev/null 2>&1
-30 4 */3 * * /path/to/application/bin/service --action cleanoldrecover --controller garbage >> /dev/null 2>&1
-40 5 */4 * * /path/to/application/bin/service --action cleanoldemailchange --controller garbage >> /dev/null 2>&1
-```
-
 ## Push, open bugs, etc.
 Feel free to push code to this repository. Anything you want, go to the [issue tracker](https://github.com/henvic/vehikel/issues/).
+
+## Code style
+For PHP, [PSR2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) shall be used. The code doesn't use it in a proper way as of now.
 
 ## License
 This software is provided "as is", without warranty.
 The [New BSD License](http://en.wikipedia.org/wiki/New_BSD_license) and the [MIT License](http://en.wikipedia.org/wiki/MIT_License) are the licenses (case you need something legal).
+
+## Third-party content in use
+* [Chevrolet impala Icon](http://www.iconarchive.com/show/classic-cars-icons-by-cemagraphics/chevrolet-impala-icon.html)
 
 ## Author
 Henrique Vicente de Oliveira Pinto ([email](mailto:henriquevicente@gmail.com), [Twitter](https://twitter.com/henriquev), [Flickr](http://www.flickr.com/photos/henriquev), [Linkedin](http://linkedin.com/in/henvic)).
