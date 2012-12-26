@@ -210,6 +210,12 @@ define(["jquery", "jquery.maskMoney"], function ($) {
         var $postNewAdButton = $("#post-new-ad-button");
 
         $postNewAdButton.one("click", function (e) {
+            // if the viewport is too small, don't use modal
+            // we need to check this also in the next times the elements are clicked
+            if (document.documentElement.clientWidth < 820) {
+                return;
+            }
+
             e.preventDefault();
             $.ajax({
                 url: AppParams.webroot + "/new",
@@ -225,6 +231,9 @@ define(["jquery", "jquery.maskMoney"], function ($) {
                         $postProductNew.submit();
                     });
                     $postNewAdButton.on("click", function (e) {
+                        if (document.documentElement.clientWidth < 820) {
+                            return;
+                        }
                         e.preventDefault();
                         $("#post-product-new-modal").modal();
                     });
