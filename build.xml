@@ -48,8 +48,12 @@
  
  <target name="install" description="Install the application with its dependencies and set up its environment">
   <exec executable="php" failonerror="true">
-   <arg path="${basedir}/bin/install" />
+   <arg path="${basedir}/bin/install.php" />
    <arg value="auto" />
+  </exec>
+  <exec executable="sh" failonerror="true">
+    <arg path="${basedir}/bin/install-vendors.sh" />
+    <arg value="auto" />
   </exec>
  </target>
  
