@@ -9,6 +9,7 @@
 
         // Core Libraries
         // modernizr shall be called just after CSS, so it is not here
+        yui: "http://yui.yahooapis.com/3.8.0/build/yui/yui-min",
         jquery: "../vendor/jquery-1.8.0/jquery",
         underscore: "../vendor/underscore-1.3.3/underscore",
         "twitter.bootstrap": "../vendor/bootstrap-2.1.0/js/bootstrap",
