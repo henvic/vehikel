@@ -12,7 +12,6 @@ Unless otherwise referenced to, the versions for the requirements are given by t
 * [PHP](http://php.net/) >= 5.4.x
 * [MySQL](http://www.mysql.com/) >= 5.1
 * [memcached](http://memcached.org/)
-* [Apache CouchDB](http://couchdb.apache.org/)
 * [Redis](http://redis.io/)
 * [MongoDB](http://www.mongodb.org/)
 
@@ -28,7 +27,6 @@ Please note that the default memcached is insecure by design because it's freely
 * [Symfony](http://symfony.com/) (some components)
 * [HTML Purifier](http://htmlpurifier.org/) (use the standalone version)
 * [hphpass](http://www.openwall.com/phpass/) ---- trocar pelo novo rych/phpass
-* [PHP On Couch](https://github.com/dready92/PHP-on-Couch)
 * [oauth-php](http://code.google.com/p/oauth-php/)
 * [Predis](http://pearhub.org/projects/predis)
 * [twitter-async](https://github.com/jmathai/twitter-async)
@@ -82,8 +80,6 @@ echo extension=mongo.so >> /etc/php.ini
 
 ### Create the databases structures
 MySQL tables have to be built. The DB scheme is at *[application/configs/db.sql](https://github.com/henvic/vehikel/blob/master/application/configs/db.sql)*
-
-The following CouchDB databases have to be created: *web_access_log, and actions_log*.
 
 ### Points of entry
 There are two modules: default and services. And also a simple redirector system.

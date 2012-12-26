@@ -120,9 +120,6 @@ install() {
   echo "Beginning to install ./vendor dependencies"
   cd vendor
 
-  echo "Downloading PHP-on-Couch"
-  curl -o PHP-on-Couch.zip -O https://nodeload.github.com/dready92/PHP-on-Couch/zipball/master
-
   echo "Downloading Symfony"
   curl -o symfony-2.0.16.tar.gz -O https://nodeload.github.com/symfony/symfony/tarball/v2.0.16
 
@@ -156,10 +153,6 @@ install() {
   echo "Checksum tests for static/vendor downloads passed."
 
   echo "Uncompressing / Installing some libraries"
-
-  unzip PHP-on-Couch.zip
-  mv dready92-PHP-on-Couch-9ea33ae PHP-on-Couch
-  rm PHP-on-Couch.zip
 
   tar xzf symfony-2.0.16.tar.gz
   mv symfony-symfony-3b696f7/src/Symfony Symfony

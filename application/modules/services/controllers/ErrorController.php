@@ -13,8 +13,7 @@ class ErrorController extends Zend_Controller_Action
             default: 
                 // application error
                 echo "This application threw an exception.\n";
-                
-                //@todo log exceptions using CouchDB
+
                 if (APPLICATION_ENV == "development") {
                     //print_r($this->_getParam('error_handler'));
                     echo "Exception: ".$errors->exception->getMessage()."\n";
