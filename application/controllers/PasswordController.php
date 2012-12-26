@@ -18,7 +18,7 @@ class PasswordController extends Ml_Controller_Action
         $people =  $this->_sc->get("people");
         /** @var $people \Ml_Model_People() */
 
-        $form = new Ml_Form_Recover(null, $people);
+        $form = new Ml_Form_Recover(null, $people, $this->_config);
 
         if (! $this->_request->isPost() || ! $form->isValid($this->_request->getPost())) {
             $this->view->recoverForm = $form;

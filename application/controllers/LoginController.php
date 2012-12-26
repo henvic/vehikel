@@ -51,8 +51,6 @@ class LoginController extends Ml_Controller_Action
     {
         $sessionConfig = $this->_config['resources']['session'];
 
-        Ml_Model_AntiAttack::loadRules();
-
         $people =  $this->_sc->get("people");
         /** @var $people \Ml_Model_People() */
 
@@ -67,12 +65,6 @@ class LoginController extends Ml_Controller_Action
         }
 
         $form = new Ml_Form_Login(null, $this->_auth, $this->_config, $people, $credential);
-
-        if (Ml_Model_AntiAttack::ensureHuman()) {
-            $ensureHuman = true;
-        } else {
-            $ensureHuman = false;
-        }
 
         $this->view->loginform = $form;
 
@@ -107,13 +99,6 @@ class LoginController extends Ml_Controller_Action
                 "username" => $form->getValue("username")));
 
             return $this->_forward("goback");
-        }
-
-        $challenge = $form->getElement("challenge");
-
-        //don't show missing value in the first time that asks for the captcha
-        if (! $ensureHuman && is_object($challenge)) {
-            $challenge->setErrorMessages(array("missingValue" => ''));
         }
     }
 }

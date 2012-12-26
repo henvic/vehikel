@@ -183,7 +183,7 @@ class AccountController extends Ml_Controller_Action
 
         $signedUserInfo = $this->_registry->get("signedUserInfo");
 
-        $form = new Ml_Form_DeleteAccount(null, $credential, $signedUserInfo["id"]);
+        $form = new Ml_Form_DeleteAccount(null, $credential, $signedUserInfo["id"], $this->_config);
 
         $this->view->deleteAccountForm = $form;
 

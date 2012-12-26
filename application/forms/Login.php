@@ -92,10 +92,6 @@ class Ml_Form_Login extends Twitter_Bootstrap_Form_Horizontal
         $this->addElement('checkbox', 'remember_me', array(
             'label'    => 'Relembrar-me'));
 
-        if (Ml_Model_AntiAttack::ensureHuman()) {
-            $this->addElement(Ml_Model_AntiAttack::captchaElement());
-        }
-
         $login = $this->addElement('submit', 'login', array(
             'required' => false,
             'ignore'   => true,
