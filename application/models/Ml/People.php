@@ -25,6 +25,33 @@ class Ml_Model_People
         $this->_dbAdapter = $this->_dbTable->getAdapter();
     }
 
+    /**
+     * Filter out public info about a given user
+     * @param $userInfo
+     * @return array
+     */
+    public function getPublicInfo($userInfo)
+    {
+        $content = [
+            "id" => $userInfo["id"],
+            "username" => $userInfo["username"],
+            "name" => $userInfo["name"]
+        ];
+
+        if (isset($userInfo["avatar_info"]["id"]) && isset($userInfo["avatar_info"]["secret"])) {
+            $content["picture"]["id"] = $userInfo["avatar_info"]["id"];
+            $content["picture"]["secret"] = $userInfo["avatar_info"]["secret"];
+        } else {
+            $content["picture"]["id"] = "";
+            $content["picture"]["secret"] = "";
+        }
+
+        $content["address"] = $userInfo["address"];
+        $content["account_type"] = $userInfo["account_type"];
+
+        return $content;
+    }
+
     public function getByUsername($username, $useCache = true)
     {
         if ($useCache) {
