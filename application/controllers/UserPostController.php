@@ -11,8 +11,18 @@ class UserPostController extends Ml_Controller_Action
         $userInfo = $this->_userInfo;
         $post = $this->_post;
 
+        $people =  $this->_registry->get("sc")->get("people");
+        /** @var $people \Ml_Model_People() */
+
         $posts =  $this->_registry->get("sc")->get("posts");
         /** @var $posts \Ml_Model_Posts() */
+
+        if (isset($params["format"]) && $params["format"] == "json") {
+            $content = $posts->getPublicInfo($post);
+            $content["user"] = $people->getPublicInfo($userInfo);
+
+            $this->_helper->json($content);
+        }
 
         $this->view->assign("maxPicturesLimit", $posts->getMaxPicturesLimit());
 
