@@ -6,11 +6,18 @@ class UserStreamController extends Ml_Controller_Action
 
     public function indexAction()
     {
+        $people =  $this->_sc->get("people");
+        /** @var $people \Ml_Model_People() */
+
         $this->view->addJsParam("route", "user/stream");
 
         $params = $this->getRequest()->getParams();
         
         $userInfo = $this->_userInfo;
+
+        if (isset($params["format"]) && $params["format"] == "json") {
+            $this->_helper->json($people->getPublicInfo($userInfo));
+        }
 
         $postsViewStyleNamespace = new Zend_Session_Namespace("posts-view-style");
 
