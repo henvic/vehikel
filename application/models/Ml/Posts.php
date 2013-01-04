@@ -42,6 +42,34 @@ class Ml_Model_Posts
         $this->_purifier = $purifier;
     }
 
+    public function getPublicInfo($post)
+    {
+        $content = [
+            "id" => $post["id"],
+            "creation" => $post["creation"],
+            "name" => $post["name"],
+            "type" => $post["type"],
+            "make" => $post["make"],
+            "model" => $post["model"],
+            "price" => $post["price"],
+            "model_year" => $post["model_year"],
+            "build_year" => $post["build_year"],
+            "engine" => $post["engine"],
+            "transmission" => $post["transmission"],
+            "fuel" => $post["fuel"],
+            "km" => $post["km"],
+            "armor" => $post["armor"],
+            "pictures" => $post["pictures"],
+            "equipment" => $post["equipment"],
+            "status" => $post["status"],
+            "traction" => $post["traction"],
+            "description" => $post["description"],
+            "description_html_escaped" => $post["description_html_escaped"]
+        ];
+
+        return $content;
+    }
+
     public function getTypes()
     {
         return $this->_types;
