@@ -20,21 +20,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-# Dump of table antiattack
-# ------------------------------------------------------------
-
-CREATE TABLE `antiattack` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `ip` char(40) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `annotations` varchar(150) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `ip` (`ip`),
-  KEY `timestamp` (`timestamp`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 # Dump of table contact_seller
 # ------------------------------------------------------------
 
