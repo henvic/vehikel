@@ -29,16 +29,26 @@ class Ml_Model_Posts
     protected $_cache;
     protected $_cachePrefix = "post_";
 
+    protected $_gearmanClient;
+
     protected $_purifier;
 
     protected $_types = ["car", "motorcycle", "boat"];
     protected $_status = ["staging", "active", "end"];
 
-    public function __construct($config, Zend_Cache_Core $cache, Ml_Model_HtmlPurifier $purifier)
+    public function __construct(
+        $config,
+        Zend_Cache_Core $cache,
+        GearmanClient $gearmanClient,
+        Ml_Model_HtmlPurifier $purifier
+    )
     {
         $this->_cache = $cache;
         $this->_dbTable = new Zend_Db_Table($this->_dbTableName, $config);
         $this->_dbAdapter = $this->_dbTable->getAdapter();
+
+        $this->_gearmanClient = $gearmanClient;
+
         $this->_purifier = $purifier;
     }
 
