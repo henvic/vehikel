@@ -81,18 +81,6 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
 
         $thisYear = gmdate("Y");
         $years = ["" => "-"];
-        for ($yearCount = $thisYear; $yearCount >= $thisYear - 100; $yearCount--) {
-            $years[$yearCount] = $yearCount;
-        }
-
-        $this->addElement('select', 'build_year', array(
-            'label'      => 'Ano de fabricação',
-            'required'   => false,
-            'multiOptions' => $years,
-            'class' => 'input-small'
-        ));
-
-        $years = ["" => "-"];
         for ($yearCount = $thisYear + 1; $yearCount >= $thisYear - 100; $yearCount--) {
             $years[$yearCount] = $yearCount;
         }

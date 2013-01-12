@@ -24,7 +24,7 @@ class UserPostManagerController extends Ml_Controller_Action
 
             $data = [];
 
-            $formKeys = array("type", "make", "model", "price", "build_year", "model_year", "engine");
+            $formKeys = array("type", "make", "model", "price", "model_year", "engine");
 
             foreach ($formKeys as $key) {
                 if (! isset($validatePost[$key])) {
@@ -89,7 +89,7 @@ class UserPostManagerController extends Ml_Controller_Action
         $this->view->assign("postForm", $form);
 
         if ($this->getRequest()->isPost()) {
-            $formKeys = array("make", "model", "name", "price", "build_year", "model_year", "engine", "traction",
+            $formKeys = array("make", "model", "name", "price", "model_year", "engine", "traction",
                 "transmission", "fuel", "km", "armor", "equipment", "description", "status");
 
             foreach ($formKeys as $key) {

@@ -34,11 +34,7 @@ class Ml_View_Helper_PostThumbnailView extends Zend_View_Helper_Abstract
                 . '<span class="post-listing-price">' . $price .  '</span><br />'
                 . '<span class="post-listing-details">';
 
-            if ($post["build_year"] == $post["model_year"]) {
-                $content .= $this->view->escape($post["model_year"]);
-            } else {
-                $content .= $this->view->escape($post["build_year"] . " / " . $post["model_year"]);
-            }
+            $content .= $this->view->escape($post["model_year"]);
 
             if ($post["km"]) {
                 $content .= ' ' . '<span class="muted">|</span> ' . $this->view->escape($post["km"]) . ' km';
@@ -58,7 +54,7 @@ class Ml_View_Helper_PostThumbnailView extends Zend_View_Helper_Abstract
                 $content .= '<span class="label label-warning">4x4</span> ';
             }
 
-            if ($post["build_year"] <= date("Y") - 30) {
+            if ($post["model_year"] <= date("Y") - 30) {
                 $content .= '<span class="label label-inverse">colecionador</span> ';
             }
 

@@ -22,13 +22,7 @@ R$&nbsp;<?= $this->escape($price->toCurrency(null, array("display" => Zend_Curre
 <dl class="post-product-equipment-list dl-horizontal">
 <dt><?= $this->escape($translatePosts->translate("year")); ?></dt>
 <dd>
-<?php
-if ($post["build_year"] == $post["model_year"]) {
-    echo $this->escape($post["model_year"]);
-} else {
-    echo $this->escape($post["build_year"] . " / " . $post["model_year"]);
-}
-?>
+<?= $this->escape($post["model_year"]); ?>
 &nbsp;</dd>
 <?php
 if ($post["fuel"]) {
@@ -92,7 +86,6 @@ if ($editable) {
 <?php
 echo
 $postForm->getElement("price"),
-$postForm->getElement("build_year"),
 $postForm->getElement("model_year"),
 $postForm->getElement("km"),
 $postForm->getElement("fuel"),

@@ -63,7 +63,6 @@ class Ml_Model_Posts
             "model" => $post["model"],
             "price" => $post["price"],
             "model_year" => $post["model_year"],
-            "build_year" => $post["build_year"],
             "engine" => $post["engine"],
             "transmission" => $post["transmission"],
             "fuel" => $post["fuel"],

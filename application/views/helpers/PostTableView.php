@@ -34,11 +34,7 @@ class Ml_View_Helper_PostTableView extends Zend_View_Helper_Abstract
                 $this->view->escape($post["make"] . " " . $post["model"] . " " .
                     $post["engine"] . " " . $post["name"]) . '</a><br />';
 
-            if ($post["build_year"] == $post["model_year"]) {
-                $content .= $this->view->escape($post["model_year"]);
-            } else {
-                $content .= $this->view->escape($post["build_year"] . " / " . $post["model_year"]);
-            }
+            $content .= $this->view->escape($post["model_year"]);
 
             if ($post["km"]) {
                 $content .= '<span class="muted"> | </span>' . $this->view->escape($post["km"]) . ' km';
