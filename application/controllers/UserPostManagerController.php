@@ -61,6 +61,7 @@ class UserPostManagerController extends Ml_Controller_Action
         $validatePost = $this->getRequest()->getPost();
 
         $post = $this->_post;
+        $userInfo = $this->_userInfo;
 
         $type = $post["type"];
 
