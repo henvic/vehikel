@@ -9,7 +9,7 @@ define(['jquery'], function($) {
 
     var streamCache = {};
 
-    var changeViewStyle = function(style) {
+    var changeViewStyle = function (style) {
         // at first tries to retrieve from the cache
         if (streamCache[style]) {
             userStreamPostsElement.html(streamCache[style]);
@@ -26,18 +26,18 @@ define(['jquery'], function($) {
 
         $.ajax({
             url: queryParams,
-            success: function(data) {
+            success: function (data) {
                 streamCache[style] = data;
                 userStreamPostsElement.html(data);
             }
         });
     };
 
-    postsViewStyleTableRadio.on("click", function() {
+    $postsViewStyleTable.on("click", function () {
         changeViewStyle("table");
     });
 
-    postsViewStyleThumbnailRadio.on("click", function() {
+    $postsViewStyleThumbnail.on("click", function () {
         changeViewStyle("thumbnail");
     });
 
