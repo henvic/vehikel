@@ -18,11 +18,13 @@ class Ml_Model_People
     protected $_cachePrefix = "user_";
     protected $_cacheUsernamePrefix = "user_name_";
 
-    public function __construct($config, Zend_Cache_Core $cache)
+    public function __construct($config, Zend_Cache_Core $cache, GearmanClient $gearmanClient)
     {
         $this->_cache = $cache;
         $this->_dbTable = new Zend_Db_Table($this->_dbTableName, $config);
         $this->_dbAdapter = $this->_dbTable->getAdapter();
+
+        $this->_gearmanClient = $gearmanClient;
     }
 
     /**
