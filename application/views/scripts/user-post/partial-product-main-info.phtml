@@ -31,7 +31,7 @@ if ($post["fuel"]) {
 <dd><?= $this->escape($translatePosts->translate($post["fuel"])); ?>&nbsp;</dd>
 <?php
 }
-if ($post["km"]) {
+if ($post["km"] != "") {
 ?>
 <dt>km</dt>
 <dd><?= $this->escape($post["km"]); ?>&nbsp;</dd>
