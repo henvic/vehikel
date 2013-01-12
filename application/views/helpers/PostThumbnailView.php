@@ -36,7 +36,7 @@ class Ml_View_Helper_PostThumbnailView extends Zend_View_Helper_Abstract
 
             $content .= $this->view->escape($post["model_year"]);
 
-            if ($post["km"]) {
+            if ($post["km"] != "") {
                 $content .= ' ' . '<span class="muted">|</span> ' . $this->view->escape($post["km"]) . ' km';
             }
 
