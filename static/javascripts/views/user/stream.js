@@ -1,5 +1,7 @@
 /*global define */
-define(['jquery'], function($) {
+/*jshint indent:4 */
+
+define(['AppParams', 'jquery'], function (AppParams, $) {
     "use strict";
 
     var userStreamPostsElement = $('#user-stream-posts');

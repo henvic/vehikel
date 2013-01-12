@@ -1,7 +1,7 @@
-/*global define, window, AppParams */
+/*global define, window */
 /*jshint indent:4 */
 
-define(["jquery", "jquery.maskMoney"], function ($) {
+define(["AppParams", "jquery", "jquery.maskMoney"], function (AppParams, $) {
     "use strict";
 
     /**

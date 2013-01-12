@@ -1,7 +1,7 @@
-/*global define */
+/*global define, require */
 /*jshint indent:4 */
 
-define(['jquery'], function ($) {
+define(['AppParams', 'jquery'], function (AppParams, $) {
     "use strict";
 
     if (AppParams.accountEditable === true) {

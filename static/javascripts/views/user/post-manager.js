@@ -1,8 +1,8 @@
-/*global define, AppParams */
+/*global define */
 /*jshint indent:4 */
 
-define(['jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.maskMoney' ],
-    function ($, YUI, underscore, htmlTemplate) {
+define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.maskMoney' ],
+    function (AppParams, $, YUI, underscore, htmlTemplate) {
         "use strict";
 
         var addPictureTemplate = '<li class="span1 post-upload post-upload-free-slot">' +

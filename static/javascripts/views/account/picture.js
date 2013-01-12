@@ -1,4 +1,4 @@
-/*global define, _ */
+/*global define */
 define(['jquery'], function($) {
     "use strict";
 
