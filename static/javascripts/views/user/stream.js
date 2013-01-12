@@ -4,8 +4,8 @@ define(['jquery'], function($) {
 
     var userStreamPostsElement = $('#user-stream-posts');
 
-    var postsViewStyleThumbnailRadio = $('#posts_view_style_thumbnail');
-    var postsViewStyleTableRadio = $('#posts_view_style_table');
+    var $postsViewStyleThumbnail = $('#posts-view-style-thumbnail');
+    var $postsViewStyleTable = $('#posts-view-style-table');
 
     var streamCache = {};
 
