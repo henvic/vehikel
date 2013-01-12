@@ -31,7 +31,7 @@ switch ($unfilteredStatus) {
 $queryParams = "";
 
 if (! empty($type)) {
-    $queryParams .= "?type=" . urlencode($type);
+    $queryParams .= "type=" . urlencode($type);
 }
 
 if (! empty($type) && ! empty($status)) {
@@ -41,6 +41,8 @@ if (! empty($type) && ! empty($status)) {
 if (! empty($status)) {
     $queryParams .= "status=" . urlencode($status);
 }
+
+$queryParams = "?" . $queryParams;
 
 ?>
 <div class="pagination pagination-centered">
