@@ -52,6 +52,9 @@ class UserPostManagerController extends Ml_Controller_Action
 
         $this->view->addJsParam("route", "user/post-manager");
 
+        $people =  $this->_registry->get("sc")->get("people");
+        /** @var $people \Ml_Model_People() */
+
         $posts =  $this->_registry->get("sc")->get("posts");
         /** @var $posts \Ml_Model_Posts() */
 
