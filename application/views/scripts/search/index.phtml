@@ -1,0 +1,56 @@
+<?php
+$this->headTitle("Busca");
+?>
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <h1 class="hidden">Busca</h1>
+            <form method="GET" action="/search" id="search-posts-form">
+                <div class="visible-desktop">&nbsp;</div>
+                <div class="row">
+                    <div class="span6">
+                        <input id="search-text" type="text" placeholder="O que você procura?" maxlength="80" class="span6" name="q" />
+                        <div class="row">
+                            <div class="span2 hidden" id="search-prices">
+                                <input type="text" id="search-price-min" placeholder="R$ mínimo" maxlength="16" class="span2" name="price-min" />
+                                <input type="text" id="search-price-max" placeholder="R$ máximo" maxlength="16" class="span2" name="price-max" />
+                            </div>
+                            <div class="span3 hidden" id="search-types">
+                                <label class="checkbox">
+                                    <input type="checkbox" name="type" value="car" /> carro
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="type" value="motorcycle" /> motocicleta
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="type" value="boat" /> embarcação
+                                </label>
+                            </div>
+                            <div class="span1 hidden" id="search-button">
+                                <button type="submit" class="btn pull-right">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span2">
+                        <div class="btn-group" data-toggle="buttons-radio" id="posts-view-style">
+                            <?php
+                            if (! $this->postsViewStyleIsTable) {
+                                echo '<button id="posts-view-style-thumbnail" class="btn active" data-view-style="thumbnail"><i class="icon-th"></i></button>
+<button id="posts-view-style-table" class="btn" data-view-style="table"><i class="icon-th-list"></i></button>';
+                            } else {
+                                echo '<button id="posts-view-style-thumbnail" class="btn" data-view-style="thumbnail"><i class="icon-th"></i></button>
+<button id="posts-view-style-table" class="btn active" data-view-style="table"><i class="icon-th-list"></i></button>';
+                            }
+                            ?>
+                        </div><!-- end of .btn-group -->
+                    </div>
+                </div>
+            </form>
+        </div><!-- end of .span12 -->
+    </div><!-- end of .row -->
+    <div class="row">
+        <div class="span12">
+            <div id="search-results"></div>
+        </div>
+    </div>
+</div><!-- end of .container -->
