@@ -132,7 +132,7 @@ CREATE TABLE `posts` (
   `model_year` int(11) DEFAULT NULL,
   `engine` char(20) DEFAULT NULL,
   `transmission` set('automatic','manual','other') DEFAULT NULL,
-  `fuel` set('gasoline','ethanol','diesel','other') DEFAULT NULL,
+  `fuel` set('gasoline','ethanol','diesel','flex','other') DEFAULT NULL,
   `km` int(11) DEFAULT NULL,
   `armor` int(1) DEFAULT NULL,
   `pictures` varchar(600) DEFAULT NULL,
