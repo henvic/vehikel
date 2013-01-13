@@ -36,7 +36,7 @@ define(["AppParams", "jquery", "jquery.maskMoney"], function (AppParams, $) {
         });
     } ());
 
-    var postNewAd = (function () {
+    var postNewAd = function () {
         var $postProductTypeNew = $("#post-product-type-new");
         var $postProductMakeNew = $("#post-product-make-new");
         var $postProductModelNew = $("#post-product-model-new");
@@ -202,7 +202,7 @@ define(["AppParams", "jquery", "jquery.maskMoney"], function (AppParams, $) {
                 defaultZero: false
             }
         );
-    });
+    };
 
     if (window.location.pathname === AppParams.webroot + "/new") {
         postNewAd();

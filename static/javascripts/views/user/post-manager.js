@@ -205,7 +205,7 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
                 });
 
                 var idsAmount = ids.length;
-                for (var idPosition = 0; idPosition < idsAmount; idPosition++) {
+                for (var idPosition = 0; idPosition < idsAmount; idPosition += 1) {
                     var $pictureElement = $('#post-picture-id-' + ids[idPosition]);
                     $pictureElement.detach();
                     $postPicturesCarouselInner.append($pictureElement);
@@ -262,8 +262,6 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
 
         var confirmBeforeExit = false;
 
-        window.onbeforeunload = doConfirmBeforeExit;
-
         function doConfirmBeforeExit()
         {
             var response;
@@ -276,6 +274,8 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
 
             return response;
         }
+
+        window.onbeforeunload = doConfirmBeforeExit;
 
         document.onkeyup = function (e) {
             // on pressing the esc key
