@@ -56,7 +56,7 @@ class Ml_Form_UserPostNew extends Twitter_Bootstrap_Form_Horizontal
             'filters'    => array('StringTrim'),
             'validators' => array(
                 array('validator' =>
-                'StringLength', 'options' => array(1, 10)),
+                'StringLength', 'options' => array(1, 12)),
             ),
             'class' => 'input-small',
             'maxlength' => 10,
