@@ -134,7 +134,7 @@ CREATE TABLE `posts` (
   `transmission` set('automatic','manual','other') DEFAULT NULL,
   `fuel` set('gasoline','ethanol','diesel','flex','other') DEFAULT NULL,
   `km` int(11) DEFAULT NULL,
-  `armor` int(1) DEFAULT NULL,
+  `armor` tinyint(1) DEFAULT NULL,
   `pictures` varchar(600) DEFAULT NULL,
   `equipment` varchar(600) DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
