@@ -124,7 +124,7 @@ CREATE TABLE `posts` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uid` bigint(20) unsigned NOT NULL,
   `creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `name` varchar(50) NOT NULL DEFAULT '',
+  `name` varchar(30) NOT NULL DEFAULT '',
   `type` set('car','motorcycle') NOT NULL DEFAULT '',
   `make` char(30) DEFAULT NULL,
   `model` char(30) DEFAULT NULL,
