@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.24-0ubuntu0.12.04.1)
 # Database: vehikel
-# Generation Time: 2012-10-14 14:48:03 +0000
+# Generation Time: 2013-01-11 16:05:09 +0000
 # ************************************************************
 
 
@@ -125,7 +125,41 @@ CREATE TABLE `posts` (
   `uid` bigint(20) unsigned NOT NULL,
   `creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `name` varchar(30) NOT NULL DEFAULT '',
+  `type` set('car','motorcycle','boat') NOT NULL DEFAULT '',
+  `make` char(30) NOT NULL DEFAULT '',
+  `model` char(30) NOT NULL DEFAULT '',
+  `price` bigint(11) DEFAULT NULL,
+  `model_year` int(11) DEFAULT NULL,
+  `engine` char(3) NOT NULL DEFAULT '',
+  `transmission` set('automatic','manual','other') NOT NULL DEFAULT '',
+  `fuel` set('gasoline','ethanol','diesel','flex','other') NOT NULL DEFAULT '',
+  `km` int(11) DEFAULT NULL,
+  `armor` tinyint(1) NOT NULL,
+  `pictures` varchar(800) NOT NULL DEFAULT '',
+  `equipment` varchar(600) NOT NULL DEFAULT '',
   `status` set('staging','active','end') NOT NULL DEFAULT 'staging',
+  `traction` set('front','rear','4x4') NOT NULL DEFAULT '',
+  `description` text NOT NULL,
+  `description_html_escaped` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `type` (`type`),
+  KEY `price` (`price`),
+  KEY `model_year` (`model_year`),
+  KEY `transmission` (`transmission`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table posts_history
+# ------------------------------------------------------------
+
+CREATE TABLE `posts_history` (
+  `history_id` char(36) NOT NULL DEFAULT '',
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) unsigned NOT NULL,
+  `creation` timestamp NULL DEFAULT NULL,
+  `name` varchar(30) NOT NULL DEFAULT '',
   `type` set('car','motorcycle') NOT NULL DEFAULT '',
   `make` char(30) DEFAULT NULL,
   `model` char(30) DEFAULT NULL,
@@ -138,16 +172,14 @@ CREATE TABLE `posts` (
   `armor` tinyint(1) DEFAULT NULL,
   `pictures` varchar(600) DEFAULT NULL,
   `equipment` varchar(600) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
   `traction` set('front','rear','4x4') DEFAULT '',
   `description` text NOT NULL,
   `description_html_escaped` text NOT NULL,
-  PRIMARY KEY (`id`),
+  `change_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`history_id`),
   KEY `uid` (`uid`),
-  KEY `type` (`type`),
-  KEY `price` (`price`),
-  KEY `model_year` (`model_year`),
-  KEY `transmission` (`transmission`),
-  KEY `active` (`active`)
+  KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
