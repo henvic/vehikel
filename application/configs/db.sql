@@ -138,7 +138,7 @@ CREATE TABLE `posts` (
   `armor` tinyint(1) DEFAULT NULL,
   `pictures` varchar(600) DEFAULT NULL,
   `equipment` varchar(600) DEFAULT NULL,
-  `traction` set('2x2','4x4') NOT NULL DEFAULT '2x2',
+  `traction` set('front','rear','4x4') DEFAULT '',
   `description` text NOT NULL,
   `description_html_escaped` text NOT NULL,
   PRIMARY KEY (`id`),
