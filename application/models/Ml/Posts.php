@@ -119,9 +119,9 @@ class Ml_Model_Posts
         }
 
         if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
-            $job = $this->deleteSearchIndex($id);
-        } else {
             $job = $this->createSearchIndex($post, $userInfo);
+        } else {
+            $job = $this->deleteSearchIndex($id);
         }
 
         return $job;
@@ -187,12 +187,24 @@ class Ml_Model_Posts
 
         $data['description_html_escaped'] = $this->_purifier->purify($data['description']);
 
+        $this->_dbAdapter->beginTransaction();
+
         $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $id));
 
         $this->saveHistorySnapshot($id);
 
-        //retrieves fresh data renewing the cached values in the process and return it
-        return $this->getById($id, false);
+        $this->_dbAdapter->commit();
+
+        //retrieves fresh data renewing the cached values in the process
+        $updatedPost = $this->getById($id, false);
+
+        if (! is_array($updatedPost)) {
+            return false;
+        }
+
+        $this->syncSearch($id);
+
+        return $updatedPost;
     }
 
     public function addPicture($pictureInfo, $postId)
@@ -216,11 +228,8 @@ class Ml_Model_Posts
 
             if ($update) {
                 $this->saveHistorySnapshot($postId);
-
-                //retrieves fresh data renewing the cached values in the process
-                $this->getById($postId, false);
-
                 $this->_dbAdapter->commit();
+                $this->syncSearch($postId);
                 return true;
             }
         } catch (Exception $e) {
@@ -256,9 +265,8 @@ class Ml_Model_Posts
 
                 if ($update) {
                     $this->saveHistorySnapshot($postId);
-                    //retrieves fresh data renewing the cached values in the process
-                    $this->getById($postId, false);
                     $this->_dbAdapter->commit();
+                    $this->syncSearch($postId);
                     return true;
                 }
             }
@@ -310,11 +318,8 @@ class Ml_Model_Posts
 
             if ($update) {
                 $this->saveHistorySnapshot($postId);
-
-                //retrieves fresh data renewing the cached values in the process
-                $this->getById($postId, false);
-
                 $this->_dbAdapter->commit();
+                $this->syncSearch($postId);
                 return $newPicturesValues;
             }
         } catch (Exception $e) {
