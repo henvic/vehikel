@@ -62,6 +62,7 @@ class Ml_Model_Posts
         $content = [
             "id" => $post["id"],
             "creation" => $post["creation"],
+            "title" => $post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"],
             "name" => $post["name"],
             "type" => $post["type"],
             "make" => $post["make"],
