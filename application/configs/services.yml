@@ -17,7 +17,7 @@ services:
         arguments: [null, @memCache, @gearmanClient]
     posts:
         class: Ml_Model_Posts
-        arguments: [null, @memCache, @gearmanClient, @purifier]
+        arguments: [null, @memCache, @gearmanClient, @people, @purifier]
     picture:
         class: Ml_Model_Picture
         arguments: [@config]

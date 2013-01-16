@@ -31,6 +31,8 @@ class Ml_Model_Posts
 
     protected $_gearmanClient;
 
+    protected $_people;
+
     protected $_purifier;
 
     protected $_types = ["car", "motorcycle", "boat"];
@@ -40,6 +42,7 @@ class Ml_Model_Posts
         $config,
         Zend_Cache_Core $cache,
         GearmanClient $gearmanClient,
+        Ml_Model_People $people,
         Ml_Model_HtmlPurifier $purifier
     )
     {
@@ -48,6 +51,8 @@ class Ml_Model_Posts
         $this->_dbAdapter = $this->_dbTable->getAdapter();
 
         $this->_gearmanClient = $gearmanClient;
+
+        $this->_people = $people;
 
         $this->_purifier = $purifier;
     }
