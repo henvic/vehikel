@@ -109,6 +109,46 @@ class Ml_Model_Posts
         return $this->getDbResult($select, $setCache);
     }
 
+    public function syncSearch($id)
+    {
+        $post = $this->getById($id);
+        $userInfo = $this->_people->getById($post["uid"]);
+
+        if (! is_array($post) || ! is_array($userInfo)) {
+            throw new Exception("Impossible to sync with search database.");
+        }
+
+        if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
+            $job = $this->deleteSearchIndex($id);
+        } else {
+            $job = $this->createSearchIndex($post, $userInfo);
+        }
+
+        return $job;
+    }
+
+    public function createSearchIndex($post, $userInfo)
+    {
+        $publicPost = $this->getPublicInfo($post);
+
+        $publicUserInfo = $this->_people->getPublicInfo($userInfo);
+
+        $publicPost["user"] = $publicUserInfo;
+
+        $data = json_encode($publicPost);
+
+        $job = $this->_gearmanClient->doBackground("searchIndexPost", $data);
+
+        return $job;
+    }
+
+    public function deleteSearchIndex($id)
+    {
+        $job = $this->_gearmanClient->doBackground("searchDeletePost", $id);
+
+        return $job;
+    }
+
     public function create($uid, $data)
     {
         $data["uid"] = $uid;
