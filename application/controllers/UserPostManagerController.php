@@ -214,6 +214,7 @@ class UserPostManagerController extends Ml_Controller_Action
         /** @var $picture \Ml_Model_Picture() */
 
         $post = $this->_post;
+        $userInfo = $this->_userInfo;
 
         $form = new Ml_Form_PicturePostDelete();
 
@@ -250,6 +251,7 @@ class UserPostManagerController extends Ml_Controller_Action
         /** @var $picture \Ml_Model_Picture() */
 
         $post = $this->_post;
+        $userInfo = $this->_userInfo;
 
         $form = new Ml_Form_Hash();
 
