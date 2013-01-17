@@ -14,30 +14,83 @@ class Ml_Model_Posts
     const STATUS_END = "end";
     const STATUS_NO_FILTER = false;
 
+    /**
+     * @var int
+     */
     protected $_maxPictures = 12;
 
+    /**
+     * @var int
+     */
     protected $_cacheLifetime = 10;
 
-    // this number should change after relevant changes
+    /**
+     * this cache versioning number should change at significant updates
+     * @var int
+     */
     protected $_cacheObjectVersion = 1;
 
+    /**
+     * @var string
+     */
     protected $_dbTableName = "posts";
+
+    /**
+     * @var string
+     */
     protected $_dbHistoryTableName = "posts_history";
+
+    /**
+     * @var Zend_Db_Adapter_Abstract
+     */
     protected $_dbAdapter;
+
+    /**
+     * @var Zend_Db_Table
+     */
     protected $_dbTable;
 
+    /**
+     * @var Zend_Cache_Core
+     */
     protected $_cache;
+
+    /**
+     * @var string
+     */
     protected $_cachePrefix = "post_";
 
+    /**
+     * @var GearmanClient
+     */
     protected $_gearmanClient;
 
+    /**
+     * @var Ml_Model_People
+     */
     protected $_people;
 
+    /**
+     * @var Ml_Model_HtmlPurifier
+     */
     protected $_purifier;
 
+    /**
+     * @var array
+     */
     protected $_types = ["car", "motorcycle", "boat"];
+    /**
+     * @var array
+     */
     protected $_status = ["staging", "active", "end"];
 
+    /**
+     * @param $config
+     * @param Zend_Cache_Core $cache
+     * @param GearmanClient $gearmanClient
+     * @param Ml_Model_People $people
+     * @param Ml_Model_HtmlPurifier $purifier
+     */
     public function __construct(
         $config,
         Zend_Cache_Core $cache,
@@ -57,6 +110,10 @@ class Ml_Model_Posts
         $this->_purifier = $purifier;
     }
 
+    /**
+     * @param $post
+     * @return array
+     */
     public function getPublicInfo($post)
     {
         $content = [
@@ -85,16 +142,28 @@ class Ml_Model_Posts
         return $content;
     }
 
+    /**
+     * @return array of available post types
+     */
     public function getTypes()
     {
         return $this->_types;
     }
 
+    /**
+     * @return array of available post statuses
+     */
     public function getStatuses()
     {
         return $this->_status;
     }
 
+    /**
+     * @param $id
+     * @param bool $useCache
+     * @param bool $setCache
+     * @return array|bool|false|mixed
+     */
     public function getById($id, $useCache = true, $setCache = true)
     {
         if ($useCache) {
@@ -109,6 +178,11 @@ class Ml_Model_Posts
         return $this->getDbResult($select, $setCache);
     }
 
+    /**
+     * @param $id
+     * @return string
+     * @throws Exception
+     */
     public function syncSearch($id)
     {
         $post = $this->getById($id);
@@ -127,6 +201,11 @@ class Ml_Model_Posts
         return $job;
     }
 
+    /**
+     * @param $post
+     * @param $userInfo
+     * @return string
+     */
     public function createSearchIndex($post, $userInfo)
     {
         $publicPost = $this->getPublicInfo($post);
@@ -142,6 +221,10 @@ class Ml_Model_Posts
         return $job;
     }
 
+    /**
+     * @param $id
+     * @return string
+     */
     public function deleteSearchIndex($id)
     {
         $job = $this->_gearmanClient->doBackground("searchDeletePost", $id);
@@ -149,6 +232,12 @@ class Ml_Model_Posts
         return $job;
     }
 
+    /**
+     * @param $uid
+     * @param $data
+     * @return string
+     * @throws Exception
+     */
     public function create($uid, $data)
     {
         $data["uid"] = $uid;
@@ -175,6 +264,11 @@ class Ml_Model_Posts
         return $id;
     }
 
+    /**
+     * @param $id
+     * @param $data
+     * @return array|bool
+     */
     public function update($id, $data)
     {
         if (isset($data["pictures"])) {
@@ -207,6 +301,12 @@ class Ml_Model_Posts
         return $updatedPost;
     }
 
+    /**
+     * @param $pictureInfo
+     * @param $postId
+     * @return bool
+     * @throws Exception
+     */
     public function addPicture($pictureInfo, $postId)
     {
         try {
@@ -240,6 +340,12 @@ class Ml_Model_Posts
         return false;
     }
 
+    /**
+     * @param $postId
+     * @param $pictureId
+     * @return bool
+     * @throws Exception
+     */
     public function deletePicture($postId, $pictureId)
     {
         try {
@@ -330,6 +436,11 @@ class Ml_Model_Posts
         return false;
     }
 
+    /**
+     * @param Zend_Db_Select $sql
+     * @param bool $setCache
+     * @return array|bool
+     */
     protected function getDbResult(Zend_Db_Select $sql, $setCache = true)
     {
         $data = $this->_dbAdapter->fetchRow($sql);
@@ -387,6 +498,10 @@ class Ml_Model_Posts
         return $paginator;
     }
 
+    /**
+     * @param $category
+     * @return array
+     */
     public function getAvailableEquipment($category)
     {
         $contents = file_get_contents(APPLICATION_PATH . "/configs/available-equipment.json");
@@ -402,6 +517,9 @@ class Ml_Model_Posts
         return $equipments;
     }
 
+    /**
+     * @return int
+     */
     public function getMaxPicturesLimit()
     {
         return $this->_maxPictures;
