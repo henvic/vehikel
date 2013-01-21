@@ -84,10 +84,9 @@ $this->headMeta() , PHP_EOL;
             </li>
             <li class="divider-vertical"></li>
         </ul>
-        <form class="navbar-search form-inline pull-left" action="http://www.google.com/search" method="get">
+        <form class="navbar-search form-inline pull-left" action="<?= $this->url(array(), "search"); ?>" method="get">
           <label for="search-query"><i class="icon-white icon-search"></i>&nbsp;</label>
           <input type="text" id="search-query" class="search-query" placeholder="Search" name="q" />
-          <input type="hidden" name="as_sitesearch" value="<?php echo $this->escape($config['webhost']); ?>" />
         </form>
         <ul class="nav pull-right">
             <li class="divider-vertical"></li>
