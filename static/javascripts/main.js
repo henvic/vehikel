@@ -13,7 +13,7 @@ var config = (function () {
             yui: "http://yui.yahooapis.com/3.8.0/build/yui/yui-min",
             jquery: "../vendor/jquery-1.8.0/jquery",
             underscore: "../vendor/underscore-1.3.3/underscore",
-            "twitter.bootstrap": "../vendor/bootstrap-2.1.0/js/bootstrap",
+            "twitter.bootstrap": "../vendor/bootstrap-2.2.2/js/bootstrap",
             "jquery.tablesorter": "../vendor/jquery-tablesorter-2.0.5b/jquery.tablesorter",
             "jquery.fn.autoResize": "../vendor/jquery-fn-autoResize-1.14/jquery.autoresize",
             "jquery.maskMoney": "../vendor/plentz-jquery-maskmoney-5f9dadd/jquery.maskMoney",
