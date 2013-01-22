@@ -69,7 +69,7 @@ trait Ml_Controller_People
 
         $postId = $this->_request->getUserParam("post_id");
 
-        if ($postId) {
+        if ($postId != null) {
             $posts =  $this->_registry->get("sc")->get("posts");
             /** @var $posts \Ml_Model_Posts() */
 
