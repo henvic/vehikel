@@ -90,14 +90,22 @@ $this->headMeta() , PHP_EOL;
         </form>
         <ul class="nav pull-right">
             <li class="divider-vertical"></li>
-            <?php
-            if (isset($signedUserInfo)) {
+<?php
+if (isset($signedUserInfo)) {
 ?>
+        <li>
+            <a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>"
+               data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+<?php
+    echo $this->avatar($signedUserInfo, "square.jpg", 20, 20), $this->escape($signedUserInfo['username']);
+?>
+            </a>
+        </li>
+        <li class="divider-vertical"></li>
         <li id="navbar-user" class="dropdown">
-            <a href="<?php
-                echo $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage");
-                ?>" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-                <?php echo $this->avatar($signedUserInfo, "square.jpg", 20, 20); ?> <?php echo $this->escape($signedUserInfo['username']) ?>
+            <a href="<?= $this->url(array(), "account"); ?>"
+               data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-wrench icon-white"></i>
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
