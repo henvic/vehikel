@@ -49,26 +49,4 @@ class Ml_Model_Numbers
         }
         return $decoded;
     }
-    
-    public function isNaturalDbId($val)
-    {
-        if ((! $this->isNatural($val)) || (strval((int) ($val)) != (string) ($val))) {
-            return false;
-        }
-        return true;
-    }
-    
-    public function isNatural($val, $acceptzero = false)
-    {
-        $return = ((string) $val === (string) (int) $val);
-        if ($acceptzero) {
-            $base = 0;
-        } else {
-            $base = 1;
-        }
-        if ($return && intval($val) < $base) {
-            $return = false;
-        }
-        return $return;
-    }
 }
