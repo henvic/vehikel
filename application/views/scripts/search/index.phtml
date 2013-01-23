@@ -9,7 +9,10 @@ $this->headTitle("Busca");
                 <div class="visible-desktop">&nbsp;</div>
                 <div class="row">
                     <div class="span6">
-                        <input id="search-text" type="text" placeholder="O que você procura?" maxlength="80" class="span6" name="q" />
+                        <div class="search-text-area">
+                        <input id="search-text" type="text" placeholder="O que você procura?" maxlength="80" class="search-text span6" name="q" autocomplete="off" />
+                        <input id="search-text-autocomplete" type="text" disabled="disabled" class="search-text-autocomplete span6" />
+                        </div>
                         <div class="row">
                             <div class="span2 hidden" id="search-prices">
                                 <input type="text" id="search-price-min" placeholder="R$ mínimo" maxlength="16" class="span2" name="price-min" />

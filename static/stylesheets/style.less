@@ -44,6 +44,22 @@ body
     overflow-y: scroll;
 }
 
+.search-text-area {
+    position: relative;
+}
+
+.search-text {
+    z-index: 11;
+    position: absolute;
+    background: transparent !important;
+}
+
+.search-text-autocomplete {
+    color: #ccc !important;
+    background: #fff !important;
+    z-index: 10;
+}
+
 @media (min-width : 767px) {
     .navbar {
         .navbar-inner a {
