@@ -16,7 +16,7 @@
     "bugs": {
         "url": "https://github.com/henvic/vehikel/issues"
     },
-    "engines": ["node >= 0.6.15"],
+    "engines": ["node >= 0.8.16"],
     "scripts": {
         "test": "grunt"
     },
