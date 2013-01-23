@@ -21,7 +21,8 @@
         "test": "grunt"
     },
     "dependencies": {
-        "grunt-recess" : "*"
+        "grunt-recess" : "*",
+        "node-gearman" : ">= 0.2.1"
     },
     "devDependencies": {
         "qunit": "*",
