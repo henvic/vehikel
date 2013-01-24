@@ -10,12 +10,12 @@ class Ml_Model_Numbers
     
     public function base58Encode($num)
     {
-        return self::baseEncode($num, self::base58);
+        return $this->baseEncode($num, self::base58);
     }
     
     public function base58Decode($num)
     {
-        return self::baseDecode($num, self::base58);
+        return $this->baseDecode($num, self::base58);
     }
     
     public function baseEncode($num, $alphabet)
