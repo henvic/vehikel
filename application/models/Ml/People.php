@@ -121,6 +121,21 @@ class Ml_Model_People
 
         return $updatedUserInfo;
     }
+
+    /**
+     * @param $userInfo
+     * @return string
+     */
+    public function createSearchIndex($userInfo)
+    {
+        $publicUserInfo = $this->_people->getPublicInfo($userInfo);
+
+        $data = json_encode($publicUserInfo);
+
+        $job = $this->_gearmanClient->doBackground("searchIndexUserInfo", $data);
+
+        return $job;
+    }
     }
 
     public function create($username, $name, $email)
