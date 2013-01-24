@@ -5,6 +5,16 @@ trait Ml_Model_Db_CachePeople
     /** @var $_cache \Zend_Cache_Core() */
     protected $_cache;
 
+    protected function setCache($cache)
+    {
+        $this->_cache = $cache;
+    }
+
+    protected function getCache()
+    {
+        return $this->_cache;
+    }
+
     protected function getCacheById($id)
     {
         return $this->_cache->load($this->getCachePath($id));
@@ -24,9 +34,9 @@ trait Ml_Model_Db_CachePeople
     {
         $userInfo["cache"] = $this->_cacheObjectVersion;
 
-        $this->_cache->save($userInfo, $this->getCachePath($userInfo["id"]), array(), $this->_cacheLifetime);
+        $this->getCache()->save($userInfo, $this->getCachePath($userInfo["id"]), array(), $this->_cacheLifetime);
 
-        $this->_cache->save(
+        $this->getCache()->save(
             $userInfo,
             $this->getUsernameCachePath($userInfo["username"]),
             array(),
@@ -36,8 +46,8 @@ trait Ml_Model_Db_CachePeople
 
     protected function deleteCache($id, $username)
     {
-        $this->_cache->remove($this->getCachePath($id));
-        $this->_cache->remove($this->getUsernameCachePath($username));
+        $this->getCache()->remove($this->getCachePath($id));
+        $this->getCache()->remove($this->getUsernameCachePath($username));
     }
 
     protected function getCachePath($id)
