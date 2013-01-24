@@ -123,6 +123,7 @@ class Ml_Model_People
     }
 
     /**
+    /**
      * @param $userInfo
      * @return string
      */
@@ -136,6 +137,16 @@ class Ml_Model_People
 
         return $job;
     }
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public function deleteSearchIndex($id)
+    {
+        $job = $this->_gearmanClient->doBackground("searchDeleteUserInfo", $id);
+
+        return $job;
     }
 
     public function create($username, $name, $email)
