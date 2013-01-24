@@ -6,6 +6,7 @@ module.exports = function (grunt) {
         pkg: "<json:package.json>",
         lint: {
             files: ["grunt.js",
+                "application/search/**/*.js",
                 "static/javascripts/models/**/*.js",
                 "static/javascripts/plugins/**/*.js",
                 "static/javascripts/routers/**/*.js",
