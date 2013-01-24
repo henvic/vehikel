@@ -1,0 +1,12 @@
+{
+    "port" : 4000,
+    "gearman" : {
+        "hostname" : "localhost",
+        "port" : 4730
+    },
+    "elastic" : {
+        "hostname" : "localhost",
+        "port" : 9200
+    },
+    "env" : "development"
+}
