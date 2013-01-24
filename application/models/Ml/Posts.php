@@ -51,11 +51,6 @@ class Ml_Model_Posts
     protected $_dbTable;
 
     /**
-     * @var Zend_Cache_Core
-     */
-    protected $_cache;
-
-    /**
      * @var string
      */
     protected $_cachePrefix = "post_";
@@ -99,7 +94,7 @@ class Ml_Model_Posts
         Ml_Model_HtmlPurifier $purifier
     )
     {
-        $this->_cache = $cache;
+        $this->setCache($cache);
         $this->_dbTable = new Zend_Db_Table($this->_dbTableName, $config);
         $this->_dbAdapter = $this->_dbTable->getAdapter();
 
