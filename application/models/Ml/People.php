@@ -104,12 +104,23 @@ class Ml_Model_People
 
     public function update($id, $data)
     {
+        $this->_dbAdapter->beginTransaction();
+
         $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $id));
 
         $this->saveHistorySnapshot($id);
 
-        //retrieves fresh data renewing the cached values in the process and return it
-        return $this->getById($id, false);
+        $this->_dbAdapter->commit();
+
+        //retrieves fresh data renewing the cached values in the process
+        $updatedUserInfo = $this->getById($id, false);
+
+        if (! is_array($updatedUserInfo)) {
+            return false;
+        }
+
+        return $updatedUserInfo;
+    }
     }
 
     public function create($username, $name, $email)
