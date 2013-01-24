@@ -123,6 +123,27 @@ class Ml_Model_People
     }
 
     /**
+     * @param $id
+     * @return string
+     * @throws Exception
+     */
+    public function syncSearch($id)
+    {
+        $userInfo = $this->getById($id);
+
+        if (! is_array($userInfo)) {
+            throw new Exception("Impossible to sync with search database.");
+        }
+
+        if ($userInfo["actives"]) {
+            $job = $this->createSearchIndex($userInfo);
+        } else {
+            $job = $this->deleteSearchIndex($id);
+        }
+
+        return $job;
+    }
+
     /**
      * @param $userInfo
      * @return string
