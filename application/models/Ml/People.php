@@ -92,7 +92,7 @@ class Ml_Model_People
     public function getById($id, $useCache = true)
     {
         if ($useCache) {
-            $cached = $this->getCache($id);
+            $cached = $this->getCacheById($id);
             if ($cached) {
                 return $cached;
             }
@@ -145,7 +145,7 @@ class Ml_Model_People
             $userInfo["avatar_info"] = json_decode($userInfo["avatar_info"], true);
             $userInfo["address"] = json_decode($userInfo["address"], true);
 
-            $this->setCache($userInfo);
+            $this->setUserInfoCache($userInfo);
 
             return $userInfo;
         }

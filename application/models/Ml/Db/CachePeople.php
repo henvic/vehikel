@@ -5,7 +5,7 @@ trait Ml_Model_Db_CachePeople
     /** @var $_cache \Zend_Cache_Core() */
     protected $_cache;
 
-    protected function getCache($id)
+    protected function getCacheById($id)
     {
         return $this->_cache->load($this->getCachePath($id));
     }
@@ -20,7 +20,7 @@ trait Ml_Model_Db_CachePeople
      *
      * @param $userInfo
      */
-    protected function setCache($userInfo)
+    protected function setUserInfoCache($userInfo)
     {
         $userInfo["cache"] = $this->_cacheObjectVersion;
 
