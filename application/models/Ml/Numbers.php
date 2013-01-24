@@ -2,6 +2,11 @@
 class Ml_Model_Numbers
 {
     const base58 = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
+
+    /**
+     * baseSimple (base58 - uppercase -a -e -u)
+     */
+    const baseSimple = "123456789BCDFGHJKLMNPQRSTWXYZ";
     
     public function base58Encode($num)
     {
