@@ -119,6 +119,8 @@ class Ml_Model_People
             return false;
         }
 
+        $this->syncSearch($id);
+
         return $updatedUserInfo;
     }
 
@@ -189,6 +191,8 @@ class Ml_Model_People
             $this->_dbAdapter->rollBack();
             throw $e;
         }
+
+        $this->syncSearch($id);
 
         return $id;
     }
