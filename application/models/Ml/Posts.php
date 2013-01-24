@@ -167,7 +167,7 @@ class Ml_Model_Posts
     public function getById($id, $useCache = true, $setCache = true)
     {
         if ($useCache) {
-            $cached = $this->getCache($id);
+            $cached = $this->getCacheById($id);
             if ($cached) {
                 return $cached;
             }

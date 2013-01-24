@@ -5,12 +5,12 @@ trait Ml_Model_Db_Cache
     /** @var $_cache \Zend_Cache_Core() */
     protected $_cache;
 
-    protected function getCache($id)
     {
         return $this->_cache->load($this->getCachePath($id));
     }
 
     protected function setCache($id, array $data)
+    protected function setCacheById($id, array $data)
     {
         $data["cache"] = $this->_cacheObjectVersion;
 
