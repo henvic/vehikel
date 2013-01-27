@@ -48,7 +48,7 @@ module.exports = function (Gearman, elasticManager, settings) {
             return;
         }
 
-        elasticManager.deleteDocument("post", document.type, document.id, function (isSuccess) {
+        elasticManager.deleteDocument(data.index, data.type, data.id, function (isSuccess) {
             if (isSuccess) {
                 worker.end();
             } else {
