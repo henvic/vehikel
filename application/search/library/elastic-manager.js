@@ -18,10 +18,10 @@ module.exports = function (util, events, http, settings) {
         var req = http.request(postRequest, function (res) {
             res.on("end", function() {
                 if (typeof res.statusCode === "number" && res.statusCode >= 200 && res.statusCode <= 299) {
-                    console.info("Document " + postRequest.path + "deleted");
+                    console.info("Document " + postRequest.path + " deleted");
                     successCallback(true);
                 } else {
-                    console.info("Document " + postRequest.path + "not deleted");
+                    console.info("Document " + postRequest.path + " not deleted");
                     successCallback(false);
                 }
             });
