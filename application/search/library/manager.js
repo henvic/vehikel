@@ -13,11 +13,11 @@ module.exports = function (Gearman, elasticManager, settings) {
         settings.gearman.hostname, settings.gearman.port, settings.env
     );
 
-    gearman.registerWorker("searchDeletePost", function (payload, worker) {
-        var document;
+    gearman.registerWorker("searchDelete", function (payload, worker) {
+        var data;
 
         if (! payload) {
-            console.log("Payload not found for the searchDeletePost job");
+            console.log("Payload not found for the searchDelete job");
             worker.error();
             return;
         }
@@ -25,9 +25,25 @@ module.exports = function (Gearman, elasticManager, settings) {
         var input = payload.toString("utf-8");
 
         try {
-            document = JSON.parse(input);
+            data = JSON.parse(input);
+
+            if (! data.index || ! data.type || ! data.id) {
+                console.error("Missing parameters from the JSON response");
+                worker.error();
+                return;
+            }
+
+            if (! (
+                typeof data.index === "string" &&
+                    typeof data.type === "string" &&
+                    typeof data.id === "string"
+                )) {
+                console.error("Wrong parameter(s) type(s) from the JSON response");
+                worker.error();
+                return;
+            }
         } catch (e) {
-            console.error("Error parsing the expected JSON response (searchDeletePost job)");
+            console.error("Error parsing the expected JSON response (searchDelete job)");
             worker.error();
             return;
         }
@@ -41,11 +57,11 @@ module.exports = function (Gearman, elasticManager, settings) {
         });
     });
 
-    gearman.registerWorker("searchIndexPost", function (payload, worker) {
-        var document;
+    gearman.registerWorker("searchIndex", function (payload, worker) {
+        var data;
 
         if (! payload) {
-            console.log("Payload not found for the searchIndexPost job");
+            console.log("Payload not found for the searchIndex job");
             worker.error();
             return;
         }
@@ -53,14 +69,30 @@ module.exports = function (Gearman, elasticManager, settings) {
         var input = payload.toString("utf-8");
 
         try {
-            document = JSON.parse(input);
+            data = JSON.parse(input);
+
+            if (! data.index || ! data.type || ! data.id || ! data.document) {
+                console.error("Missing parameters from the JSON response");
+                worker.error();
+                return;
+            }
+
+            if (! (
+                typeof data.index === "string" &&
+                typeof data.type === "string" &&
+                typeof data.id === "string"
+                )) {
+                console.error("Wrong parameter(s) type(s) from the JSON response");
+                worker.error();
+                return;
+            }
         } catch (e) {
-            console.error("Error parsing the expected JSON response");
+            console.error("Error parsing the expected JSON response (searchIndex job)");
             worker.error();
             return;
         }
 
-        elasticManager.storeDocument("posts", "post", document.id, input, function (isSuccess) {
+        elasticManager.storeDocument(data.index, data.type, data.id, data.document, function (isSuccess) {
             if (isSuccess) {
                 worker.end();
             } else {
