@@ -447,7 +447,7 @@ class Ml_Model_Posts
             $data["cache"] = false;
 
             if ($setCache) {
-                $this->setCache($data["id"], $data);
+                $this->setCacheForId($data["id"], $data);
             }
 
             return $data;
