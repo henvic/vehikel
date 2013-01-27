@@ -209,9 +209,14 @@ class Ml_Model_Posts
 
         $publicPost["user"] = $publicUserInfo;
 
-        $data = json_encode($publicPost);
+        $data = [
+            "index" => "posts",
+            "type" => "post",
+            "id" => $post["id"],
+            "document" => $publicPost
+        ];
 
-        $job = $this->_gearmanClient->doBackground("searchIndexPost", $data);
+        $job = $this->_gearmanClient->doBackground("searchIndex", json_encode($data));
 
         return $job;
     }
@@ -222,7 +227,13 @@ class Ml_Model_Posts
      */
     public function deleteSearchIndex($id)
     {
-        $job = $this->_gearmanClient->doBackground("searchDeletePost", $id);
+        $data = [
+            "index" => "posts",
+            "type" => "post",
+            "id" => $id
+        ];
+
+        $job = $this->_gearmanClient->doBackground("searchDelete", json_encode($data));
 
         return $job;
     }
