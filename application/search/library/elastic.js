@@ -212,8 +212,6 @@ module.exports = function (util, events, http) {
             });
         });
         req.on("error", function (error) {
-            console.log(error);
-            console.log("errorororo");
             that.emit("failure", {
                 error: true,
                 errorCode: "requestError"
