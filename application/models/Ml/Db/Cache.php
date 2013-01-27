@@ -20,7 +20,7 @@ trait Ml_Model_Db_Cache
         return $this->getCache()->load($this->getCachePath($id));
     }
 
-    protected function setCacheById($id, array $data)
+    protected function setCacheForId($id, array $data)
     {
         $data["cache"] = $this->_cacheObjectVersion;
 
