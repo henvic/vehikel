@@ -80,34 +80,6 @@ class Ml_Form_AccountSettings extends Twitter_Bootstrap_Form_Horizontal
             )
         );
 
-        $this->addElement('text', 'website', array(
-            'label'      => 'Seu site',
-            'required'   => false,
-            'filters'    => array('StringTrim', 'UrlFilter'),
-            'validators' => array(
-                array('validator' =>
-                    'StringLength', 'options' => array(1, 100)),
-                array('validator' => 'Url')
-                )
-        ));
-
-        $this->addElement('textarea', 'about', array(
-            'label'      => 'Sobre',
-            'description' =>
-                '<small><a href="' .
-                $this->getView()->staticUrl("/help/html") .
-                '" rel="external">HTML formatting</a></small>',
-            'required'   => false,
-            'filters'    => array('StringTrim'),
-            'validators' => array(
-                array('validator' =>
-                    'StringLength', 'options' => array(0, 4096)),
-                ),
-            'rows' => 5
-        ));
-
-        $this->getElement('about')->getDecorator('description')->setEscape(false);
-
         $this->addElement('submit', 'submit', array(
             'label'    => 'Salvar',
             'class' => 'btn btn-primary'

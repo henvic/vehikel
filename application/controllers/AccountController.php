@@ -14,14 +14,9 @@ class AccountController extends Ml_Controller_Action
         $people =  $this->_sc->get("people");
         /** @var $people \Ml_Model_People() */
 
-        $profile =  $this->_sc->get("profile");
-        /** @var $profile \Ml_Model_Profile() */
-
         $signedUserInfo = $this->_registry->get("signedUserInfo");
 
         $form = new Ml_Form_AccountSettings(null, $people, array($signedUserInfo["email"]));
-
-        $profileInfo = $profile->getById($signedUserInfo['id']);
 
         //only data that can be changed can be here
         $editableData = array(
@@ -29,8 +24,6 @@ class AccountController extends Ml_Controller_Action
             "account_type" => $signedUserInfo['account_type'],
             "email" => $signedUserInfo['email'],
             "private_email" => $signedUserInfo['private_email'],
-            "about" => $profileInfo['about'],
-            "website" => $profileInfo['website'],
         );
 
         $form->setDefaults(array_merge(
@@ -54,26 +47,6 @@ class AccountController extends Ml_Controller_Action
             } else {
                 $changes['private_email'] = false;
             }
-        }
-
-        $profileDataFields = array("website", "about");
-
-        $profileDataChanges = array();
-        foreach ($profileDataFields as $field) {
-            if (isset($changes[$field])) {
-                $profileDataChanges[$field] = $changes[$field];
-            }
-        }
-        unset($field);
-
-        if (! empty($profileDataChanges)) {
-            if (isset($profileDataChanges['about'])) {
-                $purifier =  $this->_sc->get("purifier");
-                /** @var $purifier \Ml_Model_HtmlPurifier() */
-
-                $profileDataChanges['about_filtered'] = $purifier->purify($profileDataChanges['about']);
-            }
-            $profile->addInfo($signedUserInfo['id'], $profileDataChanges);
         }
 
         $userInfoDataFields = array("name", "account_type", "private_email");
