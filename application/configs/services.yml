@@ -21,9 +21,6 @@ services:
     picture:
         class: Ml_Model_Picture
         arguments: [@config]
-    profile:
-        class: Ml_Model_Profile
-        arguments: [null, @memCache]
     typeaheadMakes:
         class: Ml_Model_TypeaheadMakes
         arguments: [null, @memCache]
