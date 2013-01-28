@@ -137,7 +137,7 @@ class Ml_Model_People
             throw new Exception("Impossible to sync with search database.");
         }
 
-        if ($userInfo["actives"]) {
+        if ($userInfo["active"]) {
             $job = $this->createSearchIndex($userInfo);
         } else {
             $job = $this->deleteSearchIndex($id);
