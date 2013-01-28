@@ -28,6 +28,8 @@ abstract class Ml_Controller_Action extends Zend_Controller_Action
 
     public function init()
     {
-        $this->view->config = $this->_config;
+        if ($this->view) {
+            $this->view->config = $this->_config;
+        }
     }
 }
