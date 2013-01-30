@@ -13,7 +13,7 @@ Zend_Controller_Router_Interface
     public function route (Zend_Controller_Request_Abstract $dispatcher)
     {
         try {
-            $opts = new Zend_Console_Getopt(
+            $opts = new Ml_Console_Getopt(
                 array(
                     'help|h' => 'prints this usage information',
                     'action|a=s' => 'action name (default: index)',
@@ -21,6 +21,8 @@ Zend_Controller_Router_Interface
                     'verbose|v' => 'explain what is being done',
                 )
             );
+
+            $opts->setOption(Ml_Console_Getopt::CONFIG_PERMIT_UNKNOWN, true);
             
             $opts->parse();
         } catch (Zend_Console_Getopt_Exception $e) {
