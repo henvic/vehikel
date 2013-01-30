@@ -53,6 +53,21 @@ class Ml_Model_People
         return $content;
     }
 
+    public function getUsersIds()
+    {
+        $select = $this->_dbTable->select();
+
+        $select->from($this->_dbTableName, "id");
+
+        $data = $this->_dbAdapter->fetchAll($select);
+
+        $ids = array_map(function ($row) {
+            return $row["id"];
+        }, $data);
+
+        return $ids;
+    }
+
     public function getByUsername($username, $useCache = true)
     {
         if ($useCache) {
