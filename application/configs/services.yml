@@ -21,6 +21,9 @@ services:
     picture:
         class: Ml_Model_Picture
         arguments: [@config]
+    search:
+        class: Ml_Model_Search
+        arguments: [@people, @posts]
     typeaheadMakes:
         class: Ml_Model_TypeaheadMakes
         arguments: [null, @memCache]
