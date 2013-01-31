@@ -191,7 +191,7 @@ class Ml_Model_Posts
         }
 
         if (! is_array($post) || ! is_array($userInfo)) {
-            throw new Exception("Impossible to sync with search database.");
+            throw new Exception("Impossible to sync with the search database.");
         }
 
         if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
