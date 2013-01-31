@@ -170,7 +170,7 @@ class Ml_Model_People
         $publicUserInfo = $this->getPublicInfo($userInfo);
 
         $data = [
-            "index" => "people",
+            "index" => "posts",
             "type" => "user",
             "id" => $publicUserInfo["id"],
             "document" => $publicUserInfo
@@ -188,7 +188,7 @@ class Ml_Model_People
     public function deleteSearchIndex($id)
     {
         $data = [
-            "index" => "people",
+            "index" => "posts",
             "type" => "user",
             "id" => $id,
         ];
