@@ -134,22 +134,20 @@ class Ml_Model_People
             return false;
         }
 
-        $this->syncSearch($id);
+        $this->syncSearch($updatedUserInfo);
 
         return $updatedUserInfo;
     }
 
     /**
-     * @param $id
+     * @param $userInfo optional userInfo data to avoid getting the userInfo once again
      * @return string
      * @throws Exception
      */
-    public function syncSearch($id)
+    public function syncSearch($userInfo = null)
     {
-        $userInfo = $this->getById($id);
-
         if (! is_array($userInfo)) {
-            throw new Exception("Impossible to sync with search database.");
+            throw new Exception("Impossible to sync with the search database.");
         }
 
         if ($userInfo["active"]) {
@@ -218,7 +216,9 @@ class Ml_Model_People
             throw $e;
         }
 
-        $this->syncSearch($id);
+        $userInfo = $this->getById($id, false);
+
+        $this->syncSearch($userInfo);
 
         return $id;
     }
