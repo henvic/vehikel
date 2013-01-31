@@ -153,6 +153,23 @@ class Ml_Model_Posts
         return $this->_status;
     }
 
+    public function getPostsIdsByUserId($uid)
+    {
+        $select = $this->_dbTable->select();
+
+        $select->from($this->_dbTableName, "id");
+
+        $select->where("binary `uid` = ?", $uid);
+
+        $data = $this->_dbAdapter->fetchAll($select);
+
+        $ids = array_map(function ($row) {
+            return $row["id"];
+        }, $data);
+
+        return $ids;
+    }
+
     /**
      * @param $id
      * @param bool $useCache
