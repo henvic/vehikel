@@ -175,13 +175,20 @@ class Ml_Model_Posts
 
     /**
      * @param $id
+     * @param $userInfo optional userInfo data to avoid getting the userInfo once again
+     * @param $post optional post data to avoid getting the post once again
      * @return string
      * @throws Exception
      */
-    public function syncSearch($id)
+    public function syncSearch($id, $userInfo = null, $post = null)
     {
-        $post = $this->getById($id);
-        $userInfo = $this->_people->getById($post["uid"]);
+        if (! $post) {
+            $post = $this->getById($id);
+        }
+
+        if (! $userInfo) {
+            $userInfo = $this->_people->getById($post["uid"]);
+        }
 
         if (! is_array($post) || ! is_array($userInfo)) {
             throw new Exception("Impossible to sync with search database.");
