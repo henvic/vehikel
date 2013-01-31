@@ -1,13 +1,13 @@
 # ************************************************************
 # Sequel Pro SQL dump
-# Version 3408
+# Version 4004
 #
 # http://www.sequelpro.com/
 # http://code.google.com/p/sequel-pro/
 #
 # Host: 127.0.0.1 (MySQL 5.5.24-0ubuntu0.12.04.1)
 # Database: vehikel
-# Generation Time: 2013-01-11 16:05:09 +0000
+# Generation Time: 2013-01-31 15:32:17 +0000
 # ************************************************************
 
 
@@ -179,36 +179,6 @@ CREATE TABLE `posts_history` (
   `change_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`history_id`),
   KEY `uid` (`uid`),
-  KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table profile
-# ------------------------------------------------------------
-
-CREATE TABLE `profile` (
-  `id` bigint(20) unsigned NOT NULL COMMENT 'uid (people.id)',
-  `website` varchar(100) DEFAULT '',
-  `about` text COMMENT 'RAW user input',
-  `about_filtered` text COMMENT 'filtered about',
-  PRIMARY KEY (`id`),
-  CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`id`) REFERENCES `people` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table profile_history
-# ------------------------------------------------------------
-
-CREATE TABLE `profile_history` (
-  `history_id` char(36) NOT NULL,
-  `id` bigint(20) unsigned NOT NULL COMMENT 'uid (people.id)',
-  `website` varchar(100) DEFAULT '',
-  `about` text COMMENT 'RAW user input',
-  `about_filtered` text COMMENT 'filtered about',
-  `change_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`history_id`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
