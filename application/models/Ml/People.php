@@ -140,11 +140,11 @@ class Ml_Model_People
     }
 
     /**
-     * @param $userInfo optional userInfo data to avoid getting the userInfo once again
+     * @param $userInfo
      * @return string
      * @throws Exception
      */
-    public function syncSearch($userInfo = null)
+    public function syncSearch($userInfo)
     {
         if (! is_array($userInfo)) {
             throw new Exception("Impossible to sync with the search database.");
