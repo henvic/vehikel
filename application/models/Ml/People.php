@@ -139,6 +139,11 @@ class Ml_Model_People
         return $updatedUserInfo;
     }
 
+    public function syncPostsSearch($uid)
+    {
+        return $this->_gearmanClient->doBackground("syncUserData", $uid);
+    }
+
     /**
      * @param $userInfo
      * @return string
