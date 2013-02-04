@@ -158,7 +158,7 @@ class Ml_Model_People
         if ($userInfo["active"]) {
             $job = $this->createSearchIndex($userInfo);
         } else {
-            $job = $this->deleteSearchIndex($id);
+            $job = $this->deleteSearchIndex($userInfo["id"]);
         }
 
         return $job;
