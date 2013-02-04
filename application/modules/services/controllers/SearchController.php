@@ -7,6 +7,7 @@ class SearchController extends Ml_Controller_Action
             'action|a=s' => 'action name (default: index)',
             'controller|c=s' => 'controller name  (default: index)',
             'verbose|v' => 'explain what is being done',
+            'uid=i' => 'User ID',
             'username|u=s'      => 'Username (string)'
         );
 
@@ -19,12 +20,18 @@ class SearchController extends Ml_Controller_Action
 
         $username = $options->getOption("username");
 
-        if (! $username) {
+        $uid = $options->getOption("uid");
+
+        if (! $username && ! $uid) {
             echo $options->getUsageMessage();
             exit(0);
         }
 
-        $postsJobsSynced = $search->syncUserByUsername($username);
+        if ($uid) {
+            $postsJobsSynced = $search->syncUserById($uid);
+        } else {
+            $postsJobsSynced = $search->syncUserByUsername($username);
+        }
 
         if ($postsJobsSynced !== false) {
             echo $postsJobsSynced ,
@@ -32,7 +39,11 @@ class SearchController extends Ml_Controller_Action
                 escapeshellcmd($username), "\n"
             ;
         } else {
-            echo "Failed to snyc posts jobs for ", escapeshellcmd($username), "\n";
+            echo "Failed to snyc posts jobs for ";
+
+            echo ($username) ? escapeshellcmd($username) : escapeshellcmd("uid " . $uid);
+
+            echo "\n";
         }
     }
 
