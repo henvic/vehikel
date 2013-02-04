@@ -56,10 +56,10 @@ class Ml_Form_UserPostNew extends Twitter_Bootstrap_Form_Horizontal
             'filters'    => array('StringTrim'),
             'validators' => array(
                 array('validator' =>
-                'StringLength', 'options' => array(1, 12)),
+                'StringLength', 'options' => array(1, 13)),
             ),
             'class' => 'input-small',
-            'maxlength' => 10,
+            'maxlength' => 13,
             'id' => 'post-product-price-new'
         ));
 
