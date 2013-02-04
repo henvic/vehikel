@@ -94,8 +94,7 @@ $this->headMeta() , PHP_EOL;
 if (isset($signedUserInfo)) {
 ?>
         <li>
-            <a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>"
-               data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>">
 <?php
     echo $this->avatar($signedUserInfo, "square.jpg", 20, 20), $this->escape($signedUserInfo['username']);
 ?>
