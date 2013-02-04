@@ -37,7 +37,7 @@ class Ml_Model_Search {
             return false;
         }
 
-        $syncUserInfoJob = $this->_people->syncSearch($userInfo["id"], $userInfo);
+        $syncUserInfoJob = $this->_people->syncSearch($userInfo);
 
         if (! $syncUserInfoJob) {
             error_log("Could not sync search db for user id " . (int) $userInfo["id"]);
