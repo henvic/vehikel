@@ -10,6 +10,8 @@ module.exports = function () {
 
     console.info("Loading search worker");
 
+    var exec = require("child_process").exec;
+
     var util = require("util");
 
     var events = require("events");
@@ -24,9 +26,11 @@ module.exports = function () {
 
     var elasticManager = require("./library/elastic-manager")(util, events, http, settings);
 
+    var syncUserData = require("./library/sync-user-data")(util, exec);
+
     var manager = require("./library/manager");
 
-    manager(Gearman, elasticManager, settings);
+    manager(syncUserData, Gearman, elasticManager, settings);
 };
 
 module.exports();

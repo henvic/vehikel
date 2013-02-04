@@ -1,7 +1,7 @@
 /*jslint node: true */
 /*global require */
 
-module.exports = function (Gearman, elasticManager, settings) {
+module.exports = function (syncUserData, Gearman, elasticManager, settings) {
     "use strict";
 
     var gearmanSettings = settings.gearman;
@@ -99,5 +99,18 @@ module.exports = function (Gearman, elasticManager, settings) {
                 worker.error();
             }
         });
+    });
+
+    gearman.registerWorker("syncUserData", function (payload, worker) {
+        var input = payload.toString("utf-8");
+        syncUserData.byUserId(input, function (isSuccess) {
+            console.log(isSuccess);
+            if (isSuccess) {
+                worker.end();
+            } else {
+                worker.error();
+            }
+        });
+        worker.end();
     });
 };
