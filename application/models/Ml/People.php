@@ -135,6 +135,7 @@ class Ml_Model_People
         }
 
         $this->syncSearch($updatedUserInfo);
+        $this->syncPostsSearch($updatedUserInfo["id"]);
 
         return $updatedUserInfo;
     }
@@ -224,6 +225,7 @@ class Ml_Model_People
         $userInfo = $this->getById($id, false);
 
         $this->syncSearch($userInfo);
+        $this->syncPostsSearch($userInfo["id"]);
 
         return $id;
     }
