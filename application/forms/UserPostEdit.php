@@ -147,12 +147,11 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
             )
         );
 
-        $this->addElement('number', 'km', array(
+        $this->addElement('text', 'km', array(
             'label'      => 'Quilometragem',
             'required'   => false,
             'class' => 'input-mini no-spin-button',
-            'min' => '0',
-            'max' => '9000000',
+            'pattern' => '[0-9]*',
             'maxlength' => 7,
             'append' => 'km'
         ));
