@@ -648,20 +648,15 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
 
         var postDescriptionTextEditValue = $postDescriptionTextEdit.val();
 
-        var descriptionOnceOpen = false;
+        $postDescriptionTextEdit.autoResize({
+            minHeight: 50,
+            maxHeight: 400,
+            extraSpace: 15
+        });
 
         var openDescriptionEdit = function () {
             $postDescriptionText.addClass("hidden");
             $postDescriptionEditingArea.removeClass("hidden");
-
-            if (! descriptionOnceOpen) {
-                descriptionOnceOpen = true;
-                $postDescriptionTextEdit.autoResize({
-                    minHeight: 50,
-                    maxHeight: 400,
-                    extraSpace: 15
-                });
-            }
 
             $postDescriptionTextEdit.focus();
 
