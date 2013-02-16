@@ -1,8 +1,8 @@
 /*global define */
 /*jshint indent:4 */
 
-define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html', 'jquery.maskMoney'],
-    function (AppParams, $, underscore, resultsTemplate) {
+define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html', 'text!templates/search/facets.html', 'jquery.maskMoney'],
+    function (AppParams, $, underscore, resultsTemplate, facetsTemplate) {
         "use strict";
 
         var $body = $("body");
