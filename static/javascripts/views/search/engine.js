@@ -5,6 +5,26 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
     function (AppParams, $, underscore, resultsTemplate, facetsTemplate) {
         "use strict";
 
+        var parseQueryString = function (queryString) {
+            //from http://www.joezimjs.com/javascript/3-ways-to-parse-a-query-string-in-a-url/
+            var params = {};
+            var queries;
+            var temp;
+            var i;
+            var l;
+
+            // Split into key/value pairs
+            queries = queryString.split("&");
+
+            // Convert the array of strings into an object
+            for (i = 0, l = queries.length; i < l; i++) {
+                temp = queries[i].split('=');
+                params[temp[0]] = temp[1];
+            }
+
+            return params;
+        };
+
         var $body = $("body");
         var $postsViewStyle = $("#posts-view-style");
         var $postsViewStyleThumbnail = $("#posts-view-style-thumbnail");
