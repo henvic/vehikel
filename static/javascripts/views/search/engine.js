@@ -513,10 +513,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             $searchText.focus();
         }
 
-        $searchTypesNames.on("change", function (e) {
-            search();
-        });
-
         $searchText.on("change", function (e) {
             $searchTextAutocomplete.val("");
             search();
