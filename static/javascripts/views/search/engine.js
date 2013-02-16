@@ -36,6 +36,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         var $searchResults = $("#search-results");
         var $searchPriceMin = $("#search-price-min");
         var $searchPriceMax = $("#search-price-max");
+        var $facetsToggle = $("#facets-toggle");
 
         var currentPage;
         var currentSort;
@@ -362,6 +363,14 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
 
         $searchPostsForm.on("submit", function (e) {
             e.preventDefault();
+        });
+        $facetsToggle.on("click", function (e) {
+            var $searchFacets = $(".search-facets", $searchResults);
+            if ($facetsToggle.hasClass("active")) {
+                $searchFacets.addClass("hidden-phone");
+            } else {
+                $searchFacets.removeClass("hidden-phone");
+            }
         });
     }
 );
