@@ -367,7 +367,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                         to = total;
                     }
 
-                    var compiled = underscore.template(resultsTemplate);
+                    var compiledResults = underscore.template(resultsTemplate);
                     var compiledFacets = underscore.template(facetsTemplate);
 
                     var viewStyle = $(".active", $postsViewStyle).data("view-style");
@@ -401,7 +401,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                         window.history.pushState(null, null, address);
                     }
 
-                    $searchResults.html(compiled(
                     var searchParamsTotal = underscore.size(searchParams);
 
                     var facetsHtml = compiledFacets(
@@ -418,6 +417,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                         }
                     );
 
+                    $searchResults.html(compiledResults(
                         {
                             facetsHtml : facetsHtml,
                             pageLink : pageLink,
