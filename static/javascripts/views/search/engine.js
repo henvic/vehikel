@@ -374,28 +374,28 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                     currentPage = page;
                     currentSort = sort;
 
+                    var searchParams = parseQueryString(formSerialized);
+
+                    if (currentPage !== 1) {
+                        searchParams.page = currentPage;
+                    }
+
+                    if (sort) {
+                        searchParams.sort = sort;
+                    }
+
+                    if (searchParams["price-min"]) {
+                        searchParams["price-min"] = decodeURIComponent(searchParams["price-min"]).replace(/[^0-9]/g, '');
+                    }
+
+                    if (searchParams["price-max"]) {
+                        searchParams["price-max"] = decodeURIComponent(searchParams["price-max"]).replace(/[^0-9]/g, '');
+                    }
+
                     if (window.history && window.history.pushState) {
                         var address = AppParams.webroot + "/search";
 
-                        var q = $searchText.val();
-
-                        if (! q) {
-                            if (formSerialized) {
-                                formSerialized = "q=&" + formSerialized;
-                            } else {
-                                formSerialized = "q=";
-                            }
-                        }
-
-                        address = address + "?" + formSerialized;
-
-                        if (currentPage !== 1) {
-                            address = address + "&page=" + currentPage;
-                        }
-
-                        if (sort) {
-                            address = address + "&sort=" + encodeURIComponent(sort);
-                        }
+                        address += "?" + $.param(searchParams).replace(/%2B/g, '+');
 
                         window.history.pushState(null, null, address);
                     }
