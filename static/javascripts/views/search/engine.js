@@ -505,6 +505,29 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         $searchPostsForm.on("submit", function (e) {
             e.preventDefault();
         });
+        $searchResults.on("click", ".search-facets a", function (e) {
+            var target = e.currentTarget;
+
+            e.preventDefault();
+
+            var name = target.getAttribute("data-name");
+            var value = target.getAttribute("data-value");
+
+            var $input = $('[name="' + underscore.escape(name) + '"]', $searchPostsForm);
+
+            if (name === "price") {
+                $searchPriceMin.val(target.getAttribute("data-price-from"));
+                $searchPriceMax.val(target.getAttribute("data-price-to"));
+
+            } else if ($input.attr("type") === "radio") {
+                $input.filter('[value="' + underscore.escape(value) + '"]').attr("checked", true);
+            } else {
+                $input.val(value);
+            }
+
+            search();
+        });
+
         $facetsToggle.on("click", function (e) {
             var $searchFacets = $(".search-facets", $searchResults);
             if ($facetsToggle.hasClass("active")) {
