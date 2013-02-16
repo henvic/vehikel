@@ -146,7 +146,7 @@ module.exports = function (util, events, http) {
             var qSuggestionEscaped = qSuggestion.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
             requestData.facets = {
                 "title_suggestions":{
-                    "terms":{
+                    "terms" : {
                         "field" : "title.suggestions",
                         "regex" : "^" + qSuggestionEscaped.toLowerCase() + ".*",
                         "size" : 10
