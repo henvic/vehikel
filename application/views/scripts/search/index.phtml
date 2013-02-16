@@ -13,28 +13,32 @@ $this->headTitle("Busca");
                         <input id="search-text" type="text" placeholder="O que você procura?" maxlength="80" class="search-text span6" name="q" autocomplete="off" />
                         <input id="search-text-autocomplete" type="text" disabled="disabled" class="search-text-autocomplete span6" />
                         </div>
-                        <div class="row">
-                            <div class="span2 hidden" id="search-prices">
-                                <input type="text" id="search-price-min" placeholder="R$ mínimo" maxlength="16" class="span2" name="price-min" />
+                        <div class="row hidden">
+                            <div class="span5">
                                 <input type="text" id="search-price-max" placeholder="R$ máximo" maxlength="16" class="span2" name="price-max" />
-                            </div>
-                            <div class="span3 hidden" id="search-types">
-                                <label class="checkbox">
-                                    <input type="checkbox" name="type" value="car" /> carro
+                                <input type="text" id="search-price-min" placeholder="R$ mínimo" maxlength="16" class="span2" name="price-min" />
+                                <input type="text" name="make" placeholder="Marca" />
+                                <input type="text" name="model" placeholder="Modelo" />
+                                <input type="text" name="model_year" placeholder="Ano" />
+                                <input type="text" name="where" placeholder="Localização" />
+                                <label class="radio">
+                                    <input type="radio" name="type" value="" checked="checked" /> todo tipo de veículo
                                 </label>
-                                <label class="checkbox">
-                                    <input type="checkbox" name="type" value="motorcycle" /> motocicleta
+                                <label class="radio">
+                                    <input type="radio" name="type" value="car" /> carro
                                 </label>
-                                <label class="checkbox">
-                                    <input type="checkbox" name="type" value="boat" /> embarcação
+                                <label class="radio">
+                                    <input type="radio" name="type" value="motorcycle" /> motocicleta
                                 </label>
-                            </div>
-                            <div class="span1 hidden" id="search-button">
-                                <button type="submit" class="btn pull-right">Buscar</button>
+                                <label class="radio">
+                                    <input type="radio" name="type" value="boat" /> embarcação
+                                </label>
                             </div>
                         </div>
                     </div>
-                    <div class="span2">
+                    <div class="span4">
+                        <button type="submit" class="btn">Buscar</button>
+                        &nbsp;
                         <div class="btn-group" data-toggle="buttons-radio" id="posts-view-style">
                             <?php
                             if (! $this->postsViewStyleIsTable) {
