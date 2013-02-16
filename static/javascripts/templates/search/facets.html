@@ -1,0 +1,47 @@
+<div class="aside-similar-offers search-facets hidden-phone">
+<dl>
+    <dt>Tipo</dt>
+    <dd class="search-types">
+        <ul>
+            <%= termListHtmlElementsType(facets["type"].terms, formSerialized, currentQueryStringParams) %>
+        </ul>
+    </dd>
+    <dt>Marca</dt>
+    <dd>
+        <ul>
+            <%= termListHtmlElements("make", facets["make"].terms, formSerialized, currentQueryStringParams) %>
+        </ul>
+    </dd>
+    <dt>Modelo</dt>
+    <dd>
+        <ul>
+            <%= termListHtmlElements("model", facets["model"].terms, formSerialized, currentQueryStringParams) %>
+        </ul>
+    </dd>
+    <dt>Ano do modelo</dt>
+    <dd>
+        <ul>
+            <%= termListHtmlElements("model_year", facets["model_year"].terms, formSerialized, currentQueryStringParams) %>
+        </ul>
+    </dd>
+    <dt>Preço</dt>
+    <dd>
+        <ul>
+            <%= termListHtmlElementsPrice(facets.price.ranges, formSerialized, currentQueryStringParams) %>
+        </ul>
+    </dd>
+    <dt>Localização</dt>
+    <dd>
+        <ul>
+            <%= termListHtmlElements("where", facets["where"].terms, formSerialized, currentQueryStringParams) %>
+        </ul>
+    </dd>
+</dl>
+<%
+if (searchParamsTotal > 1) {
+%>
+<button class="btn btn-mini remove-filters" type="reset">remover filtros</button>
+<%
+}
+%>
+</div>
