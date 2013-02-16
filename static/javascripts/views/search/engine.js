@@ -368,6 +368,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                     }
 
                     var compiled = underscore.template(resultsTemplate);
+                    var compiledFacets = underscore.template(facetsTemplate);
 
                     var viewStyle = $(".active", $postsViewStyle).data("view-style");
 
@@ -401,7 +402,24 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                     }
 
                     $searchResults.html(compiled(
+                    var searchParamsTotal = underscore.size(searchParams);
+
+                    var facetsHtml = compiledFacets(
                         {
+                            pageLink : pageLink,
+                            formatMoney : formatMoney,
+                            termListHtmlElements : termListHtmlElements,
+                            termListHtmlElementsType : termListHtmlElementsType,
+                            termListHtmlElementsPrice : termListHtmlElementsPrice,
+                            formSerialized : formSerialized,
+                            facets : result.facets,
+                            searchParamsTotal : searchParamsTotal,
+                            currentQueryStringParams : parseQueryString(window.location.search.substr(1).replace(/\+/g, ' '))
+                        }
+                    );
+
+                        {
+                            facetsHtml : facetsHtml,
                             pageLink : pageLink,
                             formatMoney : formatMoney,
                             AppParams : AppParams,
