@@ -32,13 +32,10 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         var $searchPostsForm = $("#search-posts-form");
         var $searchText = $("#search-text");
         var $searchTextAutocomplete = $("#search-text-autocomplete");
-        var $searchTypes = $("#search-types");
-        var $searchTypesNames = $('input[name="type"]', $searchPostsForm);
+        var $searchTypesNames = $('#search-types [name="type"]', $searchPostsForm);
         var $searchResults = $("#search-results");
-        var $searchPrices = $("#search-prices");
         var $searchPriceMin = $("#search-price-min");
         var $searchPriceMax = $("#search-price-max");
-        var $searchButton = $("#search-button");
 
         var currentPage;
         var currentSort;
@@ -57,12 +54,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                     defaultZero: false
                 }
             );
-        };
-
-        var openSearch = function () {
-            $searchPrices.removeClass("hidden");
-            $searchTypes.removeClass("hidden");
-            $searchButton.removeClass("hidden");
         };
 
         var urlParts = (function () {
@@ -339,12 +330,8 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         if (urlParts.q !== undefined) {
             $searchText.val(decodeURIComponent(urlParts.q.replace(/\+/gi, " ")));
             search({page: urlParts.page || 1, sort: urlParts.sort});
-            openSearch();
         } else {
             $searchText.focus();
-            $searchText.one("keyup", function (e) {
-                openSearch();
-            });
         }
 
         $searchTypesNames.on("change", function (e) {
