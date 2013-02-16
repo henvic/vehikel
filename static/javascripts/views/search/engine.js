@@ -224,6 +224,42 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             return content;
         };
 
+        var termListHtmlElements = function (termName, terms, formSerialized, currentQueryStringParams) {
+            var jsonFormSerialized = parseQueryString(formSerialized.replace(/\+/g, ' '));
+            var content = "";
+
+            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos++) {
+                jsonFormSerialized[termName] = underscore.escape(terms[termPos].term);
+
+                var escapedUrl = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+
+                content += "<li>";
+
+                if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
+                    delete jsonFormSerialized[termName];
+                    var escapedUrlRemove = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+
+                    content += '<span class="label label-inverse">' +
+                        underscore.escape(terms[termPos].term) +
+                        " (" + underscore.escape(terms[termPos].count) + ')' +
+                        ' <a href="' + escapedUrlRemove + '" data-name="' +
+                        underscore.escape(termName) + '" ' +
+                        'data-value=""><i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>' +
+                        '</span>';
+                } else {
+                    content += '<a href="' + escapedUrl + '" data-name="' +
+                        underscore.escape(termName) + '" ' +
+                        'data-value="' + underscore.escape(terms[termPos].term) + '">' +
+                        underscore.escape(terms[termPos].term) +
+                        "</a> (" + underscore.escape(terms[termPos].count) + ")";
+                }
+
+                content += "</li>";
+            }
+
+            return content;
+        };
+
         $(document.documentElement).on("keyup", function (e) {
             if (e.target.nodeName.toLowerCase() !== "body") {
                 return;
