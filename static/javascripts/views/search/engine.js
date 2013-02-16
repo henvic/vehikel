@@ -505,6 +505,29 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         $searchPostsForm.on("submit", function (e) {
             e.preventDefault();
         });
+
+        $searchResults.on("click", ".remove-filters", function (e) {
+            var cachedQValue = $searchText.val();
+
+            $searchPostsForm.find(':input').each(function (e) {
+                var type = this.type;
+                var tag = this.tagName.toLowerCase();
+                if (type === 'text' || type === 'password' || tag === 'textarea') {
+                    this.value = '';
+                } else if (type === 'checkbox' || type === 'radio') {
+                    this.checked = false;
+                } else if (tag === 'select') {
+                    this.selectedIndex = -1;
+                }
+            });
+
+            $searchText.val(cachedQValue);
+
+            $('[name="type"][value=""]', $searchPostsForm).attr("checked", "checked");
+
+            search();
+        });
+
         $searchResults.on("click", ".search-facets a", function (e) {
             var target = e.currentTarget;
 
