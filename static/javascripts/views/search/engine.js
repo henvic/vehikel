@@ -59,9 +59,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             );
         };
 
-        maskMoney($searchPriceMin);
-        maskMoney($searchPriceMax);
-
         var openSearch = function () {
             $searchPrices.removeClass("hidden");
             $searchTypes.removeClass("hidden");
