@@ -537,6 +537,8 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
 
         $searchPostsForm.on("submit", function (e) {
             e.preventDefault();
+            removeFilters();
+            search();
         });
 
         $searchResults.on("click", ".remove-filters", function (e) {
