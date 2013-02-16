@@ -318,6 +318,25 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             e.preventDefault();
         });
 
+        var removeFilters = function () {
+            $searchPostsForm.find(':input').each(function (e) {
+                var type = this.type;
+                var tag = this.tagName.toLowerCase();
+
+                if (this.name !== "q") {
+                    if (type === 'text' || type === 'password' || tag === 'textarea') {
+                        this.value = '';
+                    } else if (type === 'checkbox' || type === 'radio') {
+                        this.checked = false;
+                    } else if (tag === 'select') {
+                        this.selectedIndex = -1;
+                    }
+                }
+            });
+
+            $('[name="type"][value=""]', $searchPostsForm).attr("checked", "checked");
+        };
+
         var search = function (data) {
             if (data === undefined) {
                 data = {};
@@ -525,24 +544,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         });
 
         $searchResults.on("click", ".remove-filters", function (e) {
-            var cachedQValue = $searchText.val();
-
-            $searchPostsForm.find(':input').each(function (e) {
-                var type = this.type;
-                var tag = this.tagName.toLowerCase();
-                if (type === 'text' || type === 'password' || tag === 'textarea') {
-                    this.value = '';
-                } else if (type === 'checkbox' || type === 'radio') {
-                    this.checked = false;
-                } else if (tag === 'select') {
-                    this.selectedIndex = -1;
-                }
-            });
-
-            $searchText.val(cachedQValue);
-
-            $('[name="type"][value=""]', $searchPostsForm).attr("checked", "checked");
-
+            removeFilters();
             search();
         });
 
