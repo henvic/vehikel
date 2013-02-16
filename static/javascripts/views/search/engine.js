@@ -464,7 +464,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         }
 
         $searchTypesNames.each(function (pos, element) {
-            if ($.inArray(element.value, urlParts["type"]) !== -1) {
+            if ($.inArray(element.value, urlParts.type) !== -1) {
                 element.checked = true;
             }
         });
