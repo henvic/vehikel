@@ -119,6 +119,46 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             return $foo.val();
         };
 
+        var termListHtmlElementsType = function (terms, formSerialized, currentQueryStringParams) {
+            var jsonFormSerialized = parseQueryString(formSerialized.replace(/\+/g, ' '));
+            var types = {
+                car : "carro",
+                motorcycle : "motocicleta",
+                boat : "embarcação"
+            };
+
+            var content = "";
+
+            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos++) {
+                jsonFormSerialized.type = underscore.escape(terms[termPos].term);
+
+                content += "<li>";
+
+                if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
+                    delete jsonFormSerialized.type;
+                    var escapedUrlRemove = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+
+                    content += '<span class="label label-inverse">' +
+                        underscore.escape(types[terms[termPos].term]) +
+                        " (" + underscore.escape(terms[termPos].count) + ")" +
+                        ' <a href="' + escapedUrlRemove + '" data-name="type" ' +
+                        'data-value=""><i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>' +
+                    "</span>";
+                } else {
+                    var escapedUrl = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+
+                    content += '<a href="' + escapedUrl + '" data-name="type" ' +
+                        'data-value="' + underscore.escape(terms[termPos].term) + '">' +
+                        underscore.escape(types[terms[termPos].term]) +
+                        "</a> (" + underscore.escape(terms[termPos].count) + ")";
+                }
+
+                content += "</li>";
+            }
+
+            return content;
+        };
+
         $(document.documentElement).on("keyup", function (e) {
             if (e.target.nodeName.toLowerCase() !== "body") {
                 return;
