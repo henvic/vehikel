@@ -172,7 +172,7 @@ module.exports = function (util, events, http) {
 
         var postRequest = {
             hostname: "localhost",
-            path: "/_all/_search?size=" + encodeURIComponent(size) + "&from=" + encodeURIComponent(from),
+            path: "/posts/post/_search?size=" + encodeURIComponent(size) + "&from=" + encodeURIComponent(from),
             port: 9200,
             method: "GET",
             headers: {
