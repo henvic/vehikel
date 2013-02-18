@@ -34,7 +34,7 @@ class Ml_Model_People
     public function getPublicInfo($userInfo)
     {
         $content = [
-            "id" => $userInfo["id"],
+            "id" => (int) $userInfo["id"],
             "username" => $userInfo["username"],
             "name" => $userInfo["name"]
         ];
