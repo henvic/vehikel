@@ -47,7 +47,9 @@ class Ml_Model_People
             $content["picture"]["secret"] = "";
         }
 
-        $content["address"] = $userInfo["address"];
+        $address = $userInfo["address"];
+        $content["where"] =  $address["locality"] . " - " . $address["region"];
+        $content["address"] = $address;
         $content["account_type"] = $userInfo["account_type"];
 
         return $content;
