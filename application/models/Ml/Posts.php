@@ -112,7 +112,7 @@ class Ml_Model_Posts
     public function getPublicInfo($post)
     {
         $content = [
-            "id" => $post["id"],
+            "id" => (int) $post["id"],
             "creation" => $post["creation"],
             "title" => $post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"],
             "name" => $post["name"],
@@ -124,8 +124,8 @@ class Ml_Model_Posts
             "engine" => $post["engine"],
             "transmission" => $post["transmission"],
             "fuel" => $post["fuel"],
-            "km" => $post["km"],
-            "armor" => $post["armor"],
+            "km" => (int) $post["km"],
+            "armor" => (bool) $post["armor"],
             "pictures" => $post["pictures"],
             "equipment" => $post["equipment"],
             "status" => $post["status"],
