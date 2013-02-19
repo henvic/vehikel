@@ -192,13 +192,13 @@ module.exports = function (util, events, http) {
                 },
                 "make": {
                     "terms" : {
-                        "field" : "make",
+                        "field" : "make.lowercase",
                         "size" : 10
                     }
                 },
                 "model" : {
                     "terms" : {
-                        "field" : "model",
+                        "field" : "model.lowercase",
                         "size" : 10
                     }
                 },
