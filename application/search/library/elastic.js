@@ -187,9 +187,9 @@ module.exports = function (util, events, http) {
                         ]
                     }
                 },
-                "model_year": {
+                "year": {
                     "terms" : {
-                        "field" : "model_year",
+                        "field" : "year",
                             "size" : 10
                     }
                 },

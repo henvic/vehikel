@@ -120,7 +120,7 @@ class Ml_Model_Posts
             "make" => $post["make"],
             "model" => $post["model"],
             "price" => (int) $post["price"],
-            "model_year" => (int) $post["model_year"],
+            "year" => (int) $post["model_year"],
             "engine" => $post["engine"],
             "transmission" => $post["transmission"],
             "fuel" => $post["fuel"],

@@ -81,7 +81,7 @@ var itemsLength = items.length;
                 }
                 %>
                 </a><br />
-                <%- post.model_year %>
+                <%- post.year %>
                 <%
                 if (post.km !== "") {
                 %>
@@ -165,7 +165,7 @@ for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
             <br />
             <span class="post-listing-price"><%- formatMoney(post.price) %></span><br />
             <span class="post-listing-details">
-                <%- post.model_year %>
+                <%- post.year %>
                 <%
                 if (post.km !== "") {
                 %>
@@ -193,7 +193,7 @@ for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
             <%
             }
 
-            if (post.model_year <= new Date().getFullYear() - 30) {
+            if (post.year <= new Date().getFullYear() - 30) {
             %>
             <span class="label label-inverse">colecionador</span>
             <%
