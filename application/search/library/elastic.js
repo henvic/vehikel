@@ -225,7 +225,7 @@ module.exports = function (util, events, http) {
                 },
                 "where" : {
                     "terms" : {
-                        "script_field" : "_source.user.address.locality + ' - ' + _source.user.address.region",
+                        "field" : "user.where.lowercase",
                         "size" : 10
                     }
                 }
