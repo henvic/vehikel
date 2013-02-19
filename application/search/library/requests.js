@@ -15,6 +15,12 @@ module.exports = function (util, events, http, querystring, url, elastic) {
             body += chunk;
         });
         request.on("end", function () {
+            if (request.url.length > 400) {
+                response.writeHead(403, {"Content-Type": "text/plain"});
+                response.end("Search string is too long.");
+                return;
+            }
+
             var requestUrl = url.parse(request.url, true);
 
             var search = new elastic.search();
