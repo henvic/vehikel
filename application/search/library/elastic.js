@@ -145,6 +145,29 @@ module.exports = function (util, events, http) {
             filter.and.push(filterTypes);
         }
 
+        setFilters(
+            query,
+            filter,
+            [
+                {
+                    name : "make",
+                    field : "make.lowercase"
+                },
+                {
+                    name : "model",
+                    field : "model.lowercase"
+                },
+                {
+                    name : "year",
+                    field : "year"
+                },
+                {
+                    name : "where",
+                    field : "user.where.lowercase"
+                }
+            ]
+        );
+
         if (filter.and.length !== 0) {
             requestData.query.filtered.filter = filter;
         }
