@@ -4,6 +4,26 @@
 module.exports = function (util, events, http) {
     "use strict";
 
+    var setFilters = function (query, filter, filterList) {
+        var filterLength = filterList.length;
+
+        for (var pos = 0; pos < filterLength; pos++) {
+            var field = filterList[pos].field;
+            var fieldName = filterList[pos].name;
+
+            if (query[fieldName] !== undefined) {
+                var fieldValue = getFilterString(query[fieldName]);
+
+                if (fieldValue !== undefined) {
+                    var thisFilter = {};
+                    thisFilter.term = {};
+                    thisFilter.term[field] = fieldValue;
+                    filter.and.push(thisFilter);
+                }
+            }
+        }
+    };
+
     var getFilterTypes = function (input) {
         var type = [];
 
