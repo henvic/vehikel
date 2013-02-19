@@ -24,6 +24,16 @@ module.exports = function (util, events, http) {
         }
     };
 
+    var getFilterString = function (input) {
+        var value;
+
+        if (typeof input === "string") {
+            value = input.toLowerCase();
+        }
+
+        return value;
+    };
+
     var getFilterTypes = function (input) {
         var type = [];
 
