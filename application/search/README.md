@@ -107,7 +107,21 @@ curl -XPUT http://localhost:9200/posts/user/_mapping?pretty=1 -d '
         "type" : "string"
       },
       "where" : {
-        "type" : "string"
+        "type" : "multi_field",
+        "fields" : {
+          "where" : {
+            "type" : "string",
+            "index" : "analyzed"
+          },
+          "untouched" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "lowercase" : {
+            "type" : "string",
+            "analyzer" : "lowercase"
+          }
+        }
       }
     }
   }
@@ -155,12 +169,40 @@ curl -XPUT http://localhost:9200/posts/post/_mapping?pretty=1 -d '
           "type" : "integer"
         },
         "make" : {
-          "type" : "string"
+          "type" : "multi_field",
+          "fields" : {
+            "make" : {
+              "type" : "string",
+              "index" : "analyzed"
+            },
+            "untouched" : {
+              "type" : "string",
+              "index" : "not_analyzed"
+            },
+            "lowercase" : {
+              "type" : "string",
+              "analyzer" : "lowercase"
+            }
+          }
         },
         "model" : {
-          "type" : "string"
-        },
-        "model_year" : {
+                  "type" : "multi_field",
+                  "fields" : {
+                    "model" : {
+                      "type" : "string",
+                      "index" : "analyzed"
+                    },
+                    "untouched" : {
+                      "type" : "string",
+                      "index" : "not_analyzed"
+                    },
+                    "lowercase" : {
+                      "type" : "string",
+                      "analyzer" : "lowercase"
+                    }
+                  }
+                },
+        "year" : {
           "type" : "short"
         },
         "name" : {
@@ -214,7 +256,21 @@ curl -XPUT http://localhost:9200/posts/post/_mapping?pretty=1 -d '
               "type" : "string"
             },
             "where" : {
-                "type" : "string"
+              "type" : "multi_field",
+              "fields" : {
+                "where" : {
+                  "type" : "string",
+                  "index" : "analyzed"
+                },
+                "untouched" : {
+                  "type" : "string",
+                  "index" : "not_analyzed"
+                },
+                "lowercase" : {
+                  "type" : "string",
+                  "analyzer" : "lowercase"
+                  }
+              }
             },
             "address" : {
               "dynamic" : "true",
