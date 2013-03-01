@@ -32,7 +32,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         var $searchPostsForm = $("#search-posts-form");
         var $searchText = $("#search-text");
         var $searchTextAutocomplete = $("#search-text-autocomplete");
-        var $searchTypesNames = $('#search-types [name="type"]', $searchPostsForm);
+        var $searchTypesNames = $('[name="type"]', $searchPostsForm);
         var $searchResults = $("#search-results");
         var $searchPriceMin = $("#search-price-min");
         var $searchPriceMax = $("#search-price-max");
