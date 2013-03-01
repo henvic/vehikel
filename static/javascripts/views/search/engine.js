@@ -36,6 +36,10 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         var $searchResults = $("#search-results");
         var $searchPriceMin = $("#search-price-min");
         var $searchPriceMax = $("#search-price-max");
+        var $searchMake = $("#search-make");
+        var $searchModel = $("#search-model");
+        var $searchYear = $("#search-year");
+        var $searchWhere = $("#search-where");
         var $facetsToggle = $("#facets-toggle");
 
         var currentPage;
@@ -498,6 +502,22 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
 
         if (urlParts.type !== undefined) {
             $searchTypesNames.filter('[value="' + underscore.escape(urlParts.type) + '"]').attr("checked", true);
+        }
+
+        if (urlParts.make !== undefined) {
+            $searchMake.val(decodeURIComponent(urlParts.make).replace(/\+/gi, " "));
+        }
+
+        if (urlParts.model !== undefined) {
+            $searchModel.val(decodeURIComponent(urlParts.model).replace(/\+/gi, " "));
+        }
+
+        if (urlParts.year !== undefined) {
+            $searchYear.val(decodeURIComponent(urlParts.year).replace(/\+/gi, " "));
+        }
+
+        if (urlParts.where !== undefined) {
+            $searchWhere.val(decodeURIComponent(urlParts.where).replace(/\+/gi, " "));
         }
 
         if (urlParts.q !== undefined) {
