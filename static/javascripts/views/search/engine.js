@@ -72,10 +72,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                 }
             });
 
-            if (vars.type !== undefined && typeof vars.type === "string") {
-                vars.type = [vars.type];
-            }
-
             return vars;
         } ());
 
@@ -500,11 +496,9 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             $searchPriceMax.val(decodeURIComponent(urlParts["price-max"].replace(/\+/gi, " ")));
         }
 
-        $searchTypesNames.each(function (pos, element) {
-            if ($.inArray(element.value, urlParts.type) !== -1) {
-                element.checked = true;
-            }
-        });
+        if (urlParts.type !== undefined) {
+            $searchTypesNames.filter('[value="' + underscore.escape(urlParts.type) + '"]').attr("checked", true);
+        }
 
         if (urlParts.q !== undefined) {
             $searchText.val(decodeURIComponent(urlParts.q.replace(/\+/gi, " ")));
