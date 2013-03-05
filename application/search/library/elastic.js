@@ -260,7 +260,7 @@ module.exports = function (util, events, http) {
         var from = 0;
         var size = 10;
 
-        if (query.suggestion !== undefined) {
+        if (query.facets !== undefined || query.suggestion !== undefined) {
             size = 0;
         } else if (query.size !== undefined && ! isNaN(query.size)) {
             size = parseInt(query.size, 10);
