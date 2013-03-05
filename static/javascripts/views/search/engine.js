@@ -65,14 +65,9 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             var vars = {};
             window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
                 if (vars[key] !== undefined) {
-                    if (typeof vars[key] === "string") {
-                        vars[key] = [vars[key]];
-                        vars[key].push(value);
-                    } else {
-                        vars[key].push(value);
-                    }
+                    vars[key].push(value.toLowerCase());
                 } else {
-                    vars[key] = value;
+                    vars[key] = value.toLowerCase();
                 }
             });
 
