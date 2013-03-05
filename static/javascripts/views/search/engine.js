@@ -584,6 +584,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         });
 
         $facetsToggle.on("click", function (e) {
+            e.preventDefault();
             var $searchFacets = $(".search-facets", $searchResults);
             if ($facetsToggle.hasClass("active")) {
                 $searchFacets.addClass("hidden-phone");
