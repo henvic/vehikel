@@ -101,4 +101,8 @@ class Ml_Model_Search {
         }
     }
 
+    public function getFacetsQuery()
+    {
+        return $this->_cache->load(("facets_cache"));
+    }
 }
