@@ -11,10 +11,16 @@ class Ml_Model_Search {
      */
     protected $_posts;
 
-    public function __construct($people, $posts)
+    /**
+     * @var Zend_Cache_Core
+     */
+    protected $_cache;
+
+    public function __construct($people, $posts, $cache)
     {
         $this->_people = $people;
         $this->_posts = $posts;
+        $this->_cache = $cache;
     }
 
     public function syncUserById($id)
