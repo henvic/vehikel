@@ -21,7 +21,7 @@ module.exports = function (util, events, http, querystring, url, elastic) {
                 return;
             }
 
-            var requestUrl = url.parse(request.url, true);
+            var requestUrl = url.parse(request.url.toLowerCase(), true);
 
             var search = new elastic.search();
 
