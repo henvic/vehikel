@@ -16,6 +16,11 @@ class Ml_Model_Search {
      */
     protected $_cache;
 
+    /**
+     * @param Ml_Model_People $people
+     * @param Ml_Model_Posts $posts
+     * @param Zend_Cache_Core $cache
+     */
     public function __construct($people, $posts, $cache)
     {
         $this->_people = $people;
