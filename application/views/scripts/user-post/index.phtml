@@ -13,6 +13,8 @@ $address = $userInfo["address"];
 $escapedTitle = $this->escape($post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"]);
 
 $this->headTitle($escapedTitle);
+
+$searchLink = $this->url(array(), "search");
 ?>
 <div class="container">
 <div class="row">
@@ -77,32 +79,29 @@ if ($this->editable) {
 <?php
 }
 
-$searchLink = $this->url(array(), "search");
+$breadCrumbTypeLink = $searchLink . "?q=*&amp;type=" . urlencode(mb_strtolower($post["type"]));
+$breadCrumbMakeLink = $breadCrumbTypeLink . "&amp;make=" . urlencode(mb_strtolower($post["make"]));
+$breadCrumbModelLink = $breadCrumbMakeLink . "&amp;model=" . urlencode(mb_strtolower($post["model"]));
 
 $breadCrumb = $this->postBreadCrumb(array(
     array(
         "id" => "post-breadcrumb-type",
         "name" => $translatePosts->translate($post["type"] . "_plural"),
-        "link" => $searchLink . "?type=" . urlencode($post["type"])
+        "link" => $breadCrumbTypeLink
     ),
     array(
         "id" => "post-breadcrumb-make",
         "name" => $post["make"],
-        "link" => $searchLink .
-            "?type=" . urlencode($post["type"]) .
-            "&amp;make=" . urlencode($post["make"])
+        "link" => $breadCrumbMakeLink
     ),
     array(
         "id" => "post-breadcrumb-model",
         "name" => $post["model"],
-        "link" => $searchLink .
-            "?type=" . urlencode($post["type"]) .
-            "&amp;make=" . urlencode($post["make"]) .
-            "&amp;model=" . urlencode($post["model"])
+        "link" => $breadCrumbModelLink
     ),
     array(
         "id" => "post-breadcrumb-name",
-        "name" => $post["name"]
+        "name" => $post["make"] . " " . $post["model"] . " " . $post["name"]
     )
 ));
 
