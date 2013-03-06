@@ -26,9 +26,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         };
 
         var $body = $("body");
-        var $postsViewStyle = $("#posts-view-style");
-        var $postsViewStyleThumbnail = $("#posts-view-style-thumbnail");
-        var $postsViewStyleTable = $("#posts-view-style-table");
         var $searchPostsForm = $("#search-posts-form");
         var $searchText = $("#search-text");
         var $searchTextAutocomplete = $("#search-text-autocomplete");
@@ -297,18 +294,20 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
 
             $($(".results-" + style, $searchResults)[0]).removeClass("hidden");
 
+            AppParams.postsViewStyle = style;
+
             $.ajax({
                 url: AppParams.webroot + "/search?posts_view_style=" + style,
                 type: "HEAD"
             });
         };
 
-        $postsViewStyleTable.on("click", function (e) {
+        $searchResults.on("click", ".posts-view-style-table", function (e) {
             changeViewStyle("table");
             e.preventDefault();
         });
 
-        $postsViewStyleThumbnail.on("click", function (e) {
+        $searchResults.on("click", ".posts-view-style-thumbnail", function (e) {
             changeViewStyle("thumbnail");
             e.preventDefault();
         });
@@ -384,7 +383,13 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                     var compiledResults = underscore.template(resultsTemplate);
                     var compiledFacets = underscore.template(facetsTemplate);
 
-                    var viewStyle = $(".active", $postsViewStyle).data("view-style");
+                    var viewStyle;
+
+                    if (AppParams.postsViewStyle === "table") {
+                        viewStyle = "table";
+                    } else {
+                        viewStyle = "thumbnail";
+                    }
 
                     currentPage = page;
                     currentSort = sort;

@@ -14,6 +14,10 @@ Sua busca não encontrou nenhum documento.
 %>
 <%- from %>-<%- to %> de <%- total %> resultados (<%- (result.took / 1000) %><span class="visible-phone">s</span><span class="hidden-phone"> segundos</span>)
 <span class="pull-right">
+    <div class="posts-view-style btn-group" data-toggle="buttons-radio">
+        <button class="posts-view-style-thumbnail btn btn-mini <% if (AppParams.postsViewStyle === 'thumbnail') { print('active'); } %>" data-view-style="thumbnail"><i class="icon-th"></i></button>
+        <button class="posts-view-style-table btn btn-mini <% if (AppParams.postsViewStyle === 'table') { print('active'); } %>" data-view-style="table"><i class="icon-th-list"></i></button>
+    </div><!-- end of .btn-group -->
         <div class="btn-group sortable">
             <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
                 ordenar por

@@ -39,17 +39,6 @@ $this->headTitle("Busca");
                     <div class="span4">
                         <button type="submit" class="btn">Buscar</button>
                         &nbsp;
-                        <div class="btn-group" data-toggle="buttons-radio" id="posts-view-style">
-                            <?php
-                            if (! $this->postsViewStyleIsTable) {
-                                echo '<button id="posts-view-style-thumbnail" class="btn active" data-view-style="thumbnail"><i class="icon-th"></i></button>
-<button id="posts-view-style-table" class="btn" data-view-style="table"><i class="icon-th-list"></i></button>';
-                            } else {
-                                echo '<button id="posts-view-style-thumbnail" class="btn" data-view-style="thumbnail"><i class="icon-th"></i></button>
-<button id="posts-view-style-table" class="btn active" data-view-style="table"><i class="icon-th-list"></i></button>';
-                            }
-                            ?>
-                        </div><!-- end of .btn-group -->
                         <button id="facets-toggle" class="btn visible-phone pull-right" data-toggle="button"><i class="icon-filter"></i><span class="hidden"> Filtros</span></button>
                     </div>
                 </div>

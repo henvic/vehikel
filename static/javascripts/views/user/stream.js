@@ -9,29 +9,21 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
     var $postsViewStyleThumbnail = $('#posts-view-style-thumbnail');
     var $postsViewStyleTable = $('#posts-view-style-table');
 
-    var streamCache = {};
+    var $postsTableView = $("#posts-table-view");
+    var $postsThumbnailView = $("#posts-thumbnail-view");
 
     var changeViewStyle = function (style) {
-        // at first tries to retrieve from the cache
-        if (streamCache[style]) {
-            userStreamPostsElement.html(streamCache[style]);
-            return;
-        }
-
-        var queryParams;
-
-        if (document.location.search !== "") {
-            queryParams = document.location.search + "&posts_view_style=" + style;
+        if (style === "table") {
+            $postsTableView.removeClass("hidden");
+            $postsThumbnailView.addClass("hidden");
         } else {
-            queryParams = "?posts_view_style=" + style;
+            $postsTableView.addClass("hidden");
+            $postsThumbnailView.removeClass("hidden");
         }
 
         $.ajax({
-            url: queryParams,
-            success: function (data) {
-                streamCache[style] = data;
-                userStreamPostsElement.html(data);
-            }
+            url: "?posts_view_style=" + style,
+            type: "HEAD"
         });
     };
 

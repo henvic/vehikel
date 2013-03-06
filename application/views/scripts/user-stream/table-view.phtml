@@ -1,0 +1,85 @@
+<?php
+
+$userInfo = $this->userInfo;
+
+$paginator =  $this->posts;
+/** @var $paginator \Zend_Paginator() */
+
+$posts = $paginator->getCurrentItems();
+?>
+<table id="posts-table-view" class="table table-striped table-hover<?= ($this->postsViewStyle !== "table") ? " hidden" : ""; ?>">
+<?php
+foreach ($posts as $post) {
+    $escapedPostLink = $this->url(
+        array("username" => $userInfo['username'], "post_id" => $post['id']), "user_post"
+    );
+
+    $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
+    $price->setValue($this->escape($post["price"] / 100));
+?>
+<tr>
+<td class="span1">
+<?php
+if (is_array($post["pictures"][0])) {
+$picture = $post["pictures"][0];
+?>
+<?= $this->picture($picture["id"], $picture["secret"], "square.jpg"); ?>
+<?php
+} else {
+?>
+<img src="<?= $this->staticVersion("/images/chevrolet-impala-icon-square.png"); ?>" alt="picture placeholder">
+<?php
+}
+?>
+</td>
+<td>
+<div class="span5">
+<a href="<?= $escapedPostLink; ?>">
+<?= $this->escape($post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"]); ?></a><br />
+<?= $this->escape($post["model_year"]); ?>
+<?php
+if ($post["km"] != "") {
+?><span class="muted"> | </span><?= $this->escape($post["km"]); ?> km
+<?php
+}
+?>
+</div>
+<div class="span2 special-items">
+<?php
+$specialItems = [];
+
+if ($post["armor"]) {
+    $specialItems[] = 'Blindado';
+}
+
+if ($post["transmission"] == 'automatic') {
+    $specialItems[] = 'Automático';
+}
+
+if ($post["traction"] == '4x4') {
+    $specialItems[] = '4x4';
+}
+
+$sizeOfSpecialItems = count($specialItems);
+
+for ($counter = 0; $counter < $sizeOfSpecialItems; $counter++)
+{
+    echo $specialItems[$counter];
+
+    if ($counter != $sizeOfSpecialItems - 1) {
+?>
+<br />
+<?php
+        }
+    }
+?>
+</td>
+<td class="post-listing-price">
+<?= $price; ?>
+</td>
+</tr>
+<?php
+}
+?>
+</div>
+</table>

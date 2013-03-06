@@ -65,7 +65,7 @@ if ($userInfo["account_type"] == "retail") {
 <div class="span2">
 <div class="btn-group" data-toggle="buttons-radio">
 <?php
-if (! $this->postsViewStyleIsTable) {
+if ($this->postsViewStyle === "thumbnail") {
 echo '<button id="posts-view-style-thumbnail" class="btn active"><i class="icon-th"></i></button>
 <button id="posts-view-style-table" class="btn"><i class="icon-th-list"></i></button>';
 } else {
@@ -195,11 +195,8 @@ if ($editable) {
 &nbsp;
 <div id="user-stream-posts">
 <?php
-if ($this->postsViewStyleIsTable) {
-    echo $this->postTableView($paginator->getCurrentItems(), $userInfo);
-} else {
-    echo $this->postThumbnailView($paginator->getCurrentItems(), $userInfo);
-}
+echo $this->render("user-stream/table-view.phtml");
+echo $this->render("user-stream/thumbnail-view.phtml");
 ?>
 </div><!-- end of #user-stream-posts -->
 <?php

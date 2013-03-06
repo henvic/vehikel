@@ -19,15 +19,7 @@ class UserStreamController extends Ml_Controller_Action
             $this->_helper->json($people->getPublicInfo($userInfo));
         }
 
-        $postsViewStyleNamespace = new Zend_Session_Namespace("posts-view-style");
-
-        if (isset($params["posts_view_style"])) {
-            if ($params["posts_view_style"] == 'table') {
-                $postsViewStyleNamespace->table = true;
-            } else {
-                $postsViewStyleNamespace->table = false;
-            }
-        }
+        $this->_helper->viewStyle();
 
         $posts =  $this->_sc->get("posts");
         /** @var $posts \Ml_Model_Posts() */
@@ -62,14 +54,6 @@ class UserStreamController extends Ml_Controller_Action
             $userInfo['username']), "user_stream_1stpage"), array("exit"));
         }
 
-        $this->view->assign("postsViewStyleIsTable", $postsViewStyleNamespace->table);
-
         $this->view->assign("posts", $paginator);
-
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            $this->_helper->layout->disableLayout();
-
-            $this->render("partial");
-        }
     }
 }
