@@ -35,7 +35,7 @@ Sua busca não encontrou nenhum documento.
             <ul class="dropdown-menu">
                 <li><a href="<%- pageLink(formSerialized, 1, 'price-min') %>" data-sort="price-min">menor preço</a></li>
                 <li><a href="<%- pageLink(formSerialized, 1, 'price-max') %>" data-sort="price-max">maior preço</a></li>
-                <li><a href="<%- pageLink(formSerialized, 1) %>" data-sort="">relevância</a></li>
+                <li><a href="<%- pageLink(formSerialized, 1) %>" data-sort="">maior relevância</a></li>
             </ul>
         </div>
 </span>
@@ -43,6 +43,7 @@ Sua busca não encontrou nenhum documento.
 }
 %>
 </span>
+<div class="display-mobile">&nbsp;</div>
 <%
 var items = result.hits.hits;
 var itemsLength = items.length;
