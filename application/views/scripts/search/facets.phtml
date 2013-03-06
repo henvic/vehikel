@@ -1,5 +1,7 @@
 <?php
-$facets = $this->facets;
+$facetsQuery = $this->facetsQuery;
+
+$facets = (isset($facetsQuery["facets"])) ? $facetsQuery["facets"] : null;
 
 $translatePosts = $this->translatePosts;
 /** @var $translatePosts \Zend_Translate_Adapter() */

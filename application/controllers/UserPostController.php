@@ -17,6 +17,11 @@ class UserPostController extends Ml_Controller_Action
         $posts =  $this->_registry->get("sc")->get("posts");
         /** @var $posts \Ml_Model_Posts() */
 
+        $search =  $this->_sc->get("search");
+        /** @var $search \Ml_Model_Search() */
+
+        $this->view->assign("facetsQuery", $search->getFacetsQuery());
+
         if (isset($params["format"]) && $params["format"] == "json") {
             $content = $posts->getPublicInfo($post);
             $content["user"] = $people->getPublicInfo($userInfo);
