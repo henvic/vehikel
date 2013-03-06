@@ -65,6 +65,25 @@ $searchLink = $this->url(array(), "search");
                 ?>
             </ul>
         </dd>
+        <dt>Localização</dt>
+        <dd>
+            <ul>
+                <?php
+                if (isset($facets["where"]["terms"])) {
+                    foreach ($facets["where"]["terms"] as $term) {
+                        if (! isset($term["term"]) || ! is_string($term["term"]) || ! isset($term["count"]) || ! is_int($term["count"])) {
+                            continue;
+                        }
+                        ?>
+                        <li><a href="<?= $searchLink ?>?q=*&amp;where=<?= urlencode($term["term"]); ?>"><?= $this->escape($term["term"]); ?></a> (<?= $this->escape($term["count"]); ?>)</li>
+                        <?php
+                    }
+                    ?>
+                    <?php
+                }
+                ?>
+            </ul>
+        </dd>
         <dt>Ano do modelo</dt>
         <dd>
             <ul>
@@ -130,25 +149,6 @@ $searchLink = $this->url(array(), "search");
                         unset($priceMax);
                         unset($priceMin);
                         unset($priceStringEscaped);
-                    }
-                    ?>
-                    <?php
-                }
-                ?>
-            </ul>
-        </dd>
-        <dt>Localização</dt>
-        <dd>
-            <ul>
-                <?php
-                if (isset($facets["where"]["terms"])) {
-                    foreach ($facets["where"]["terms"] as $term) {
-                        if (! isset($term["term"]) || ! is_string($term["term"]) || ! isset($term["count"]) || ! is_int($term["count"])) {
-                            continue;
-                        }
-                        ?>
-                        <li><a href="<?= $searchLink ?>?q=*&amp;where=<?= urlencode($term["term"]); ?>"><?= $this->escape($term["term"]); ?></a> (<?= $this->escape($term["count"]); ?>)</li>
-                        <?php
                     }
                     ?>
                     <?php

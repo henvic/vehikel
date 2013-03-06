@@ -18,6 +18,12 @@
             <%= termListHtmlElements("model", facets["model"].terms, formSerialized, currentQueryStringParams) %>
         </ul>
     </dd>
+    <dt>Localização</dt>
+    <dd>
+        <ul>
+            <%= termListHtmlElements("where", facets["where"].terms, formSerialized, currentQueryStringParams) %>
+        </ul>
+    </dd>
     <dt>Ano do modelo</dt>
     <dd>
         <ul>
@@ -28,12 +34,6 @@
     <dd>
         <ul>
             <%= termListHtmlElementsPrice(facets.price.ranges, formSerialized, currentQueryStringParams) %>
-        </ul>
-    </dd>
-    <dt>Localização</dt>
-    <dd>
-        <ul>
-            <%= termListHtmlElements("where", facets["where"].terms, formSerialized, currentQueryStringParams) %>
         </ul>
     </dd>
 </dl>
