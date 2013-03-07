@@ -46,5 +46,17 @@ define(["jquery", "twitter.bootstrap", "jquery.fn.autoResize"], function ($) {
             });
     });
 
+    var $searchResults = $("#search-results");
+
+    $searchResults.on("click", ".posts-table-view tr", function (e) {
+        var link = e.currentTarget.getAttribute("data-link");
+
+        if (e.target.tagName.toLowerCase() !== "a") {
+            e.preventDefault();
+            window.location = link;
+        }
+    });
+
+
     return function () {};
 });

@@ -7,7 +7,7 @@ $paginator =  $this->posts;
 
 $posts = $paginator->getCurrentItems();
 ?>
-<table id="posts-table-view" class="table table-striped table-hover<?= ($this->postsViewStyle !== "table") ? " hidden" : ""; ?>">
+<table id="posts-table-view" class="posts-table-view table table-striped table-hover<?= ($this->postsViewStyle !== "table") ? " hidden" : ""; ?>">
 <?php
 foreach ($posts as $post) {
     $escapedPostLink = $this->url(
@@ -17,7 +17,7 @@ foreach ($posts as $post) {
     $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
     $price->setValue($this->escape($post["price"] / 100));
 ?>
-<tr>
+<tr data-link="<?= $escapedPostLink; ?>">
 <td class="span1">
 <?php
 if (is_array($post["pictures"][0])) {

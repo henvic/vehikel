@@ -47,7 +47,7 @@ Sua busca não encontrou nenhum documento.
 var items = result.hits.hits;
 var itemsLength = items.length;
 %>
-<table class="table table-striped table-hover results-table<%= (viewStyle !== 'table') ? ' hidden' : '' %>">
+<table class="posts-table-view table table-striped table-hover results-table<%= (viewStyle !== 'table') ? ' hidden' : '' %>">
     <%
     for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
     var postSearch = items[itemPos];
@@ -55,7 +55,7 @@ var itemsLength = items.length;
     var escapedPostLink = AppParams.webroot + "/" + encodeURIComponent(post.user.username) + "/" + post.id;
     var price = post.price;
     %>
-    <tr>
+    <tr data-link="<%= escapedPostLink %>">
         <td class="span1">
             <%
             if (post.pictures !== undefined && post.pictures !== null && post.pictures[0] !== undefined) {

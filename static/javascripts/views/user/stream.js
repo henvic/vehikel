@@ -4,8 +4,6 @@
 define(['AppParams', 'jquery'], function (AppParams, $) {
     "use strict";
 
-    var userStreamPostsElement = $('#user-stream-posts');
-
     var $postsViewStyleThumbnail = $('#posts-view-style-thumbnail');
     var $postsViewStyleTable = $('#posts-view-style-table');
 
