@@ -67,7 +67,7 @@ CREATE TABLE `list_of_models` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `make` varchar(30) NOT NULL DEFAULT '',
   `model` varchar(30) DEFAULT NULL,
-  `type` set('car','motorcycle') NOT NULL DEFAULT '',
+  `type` set('car','motorcycle','boat') NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `make` (`make`,`model`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
