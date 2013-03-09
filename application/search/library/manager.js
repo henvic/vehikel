@@ -36,7 +36,7 @@ module.exports = function (syncUserData, Gearman, elasticManager, settings) {
             if (! (
                 typeof data.index === "string" &&
                     typeof data.type === "string" &&
-                    typeof data.id === "string"
+                    (typeof data.id === "string" || typeof data.id === "number")
                 )) {
                 console.error("Wrong parameter(s) type(s) from the JSON response");
                 worker.error();
@@ -80,7 +80,7 @@ module.exports = function (syncUserData, Gearman, elasticManager, settings) {
             if (! (
                 typeof data.index === "string" &&
                 typeof data.type === "string" &&
-                typeof data.id === "string"
+                (typeof data.id === "string" || typeof data.id === "number")
                 )) {
                 console.error("Wrong parameter(s) type(s) from the JSON response");
                 worker.error();
