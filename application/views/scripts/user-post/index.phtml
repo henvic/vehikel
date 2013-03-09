@@ -61,7 +61,7 @@ $breadCrumb = $this->postBreadCrumb(array(
 <h1 id="post-product-name" class="post-product-name <?= ($this->editable) ? "post-editable" : ""; ?>"
 <?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?>>
 <?= $escapedTitle; ?>
- <span class="post-product-name-id">#<?= $this->escape($post["id"]); ?></span>
+ <span class="post-product-name-id">#<?= $this->escape($post["universal_id"]); ?></span>
 </h1>
 <?php
 if ($this->editable) {

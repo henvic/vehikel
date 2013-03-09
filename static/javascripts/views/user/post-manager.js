@@ -540,7 +540,7 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
                 data: data,
                 success: function (result, textStatus, jqXHR) {
                     var $postProductNameId = $('<span class="post-product-name-id"></span>');
-                    $postProductNameId.text("#" + result.id);
+                    $postProductNameId.text("#" + result.universal_id);
                     $postProductName
                         .text(result.make + '  ' + result.model + ' ' + result.engine + ' ' + result.name + ' ')
                         .append($postProductNameId)
