@@ -131,6 +131,7 @@ class Ml_Model_Posts
     {
         $content = [
             "id" => (int) $post["id"],
+            "universal_id" => $post["universal_id"],
             "creation" => $post["creation"],
             "title" => $post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"],
             "name" => $post["name"],
