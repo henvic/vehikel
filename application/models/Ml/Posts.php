@@ -71,6 +71,11 @@ class Ml_Model_Posts
     protected $_purifier;
 
     /**
+     * @var Ml_Model_Numbers
+     */
+    protected $_numbers;
+
+    /**
      * @var array
      */
     protected $_types = ["car", "motorcycle", "boat"];
@@ -85,13 +90,15 @@ class Ml_Model_Posts
      * @param GearmanClient $gearmanClient
      * @param Ml_Model_People $people
      * @param Ml_Model_HtmlPurifier $purifier
+     * @param Ml_Model_Numbers $numbers
      */
     public function __construct(
         $config,
         Zend_Cache_Core $cache,
         GearmanClient $gearmanClient,
         Ml_Model_People $people,
-        Ml_Model_HtmlPurifier $purifier
+        Ml_Model_HtmlPurifier $purifier,
+        Ml_Model_Numbers $numbers
     )
     {
         $this->setCache($cache);
@@ -103,6 +110,8 @@ class Ml_Model_Posts
         $this->_people = $people;
 
         $this->_purifier = $purifier;
+
+        $this->_numbers = $numbers;
     }
 
     /**

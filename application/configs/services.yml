@@ -4,6 +4,8 @@ parameters:
 services:
     mongo:
         class: Mongo
+    numbers:
+        class: Ml_Model_Numbers
     purifier:
         class: Ml_Model_HtmlPurifier
     signup:
@@ -17,7 +19,7 @@ services:
         arguments: [null, @memCache, @gearmanClient]
     posts:
         class: Ml_Model_Posts
-        arguments: [null, @memCache, @gearmanClient, @people, @purifier]
+        arguments: [null, @memCache, @gearmanClient, @people, @purifier, @numbers]
     picture:
         class: Ml_Model_Picture
         arguments: [@config]
