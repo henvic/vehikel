@@ -301,6 +301,10 @@ class Ml_Model_Posts
 
             $id = $this->_dbAdapter->lastInsertId();
 
+            $universalIdData = ["universal_id" => $this->getUniversalId($uid, $id)];
+
+            $this->_dbTable->update($universalIdData, $this->_dbAdapter->quoteInto("id = ?", $id));
+
             $this->saveHistorySnapshot($id);
 
             $this->_dbAdapter->commit();
