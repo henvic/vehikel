@@ -114,6 +114,15 @@ class Ml_Model_Posts
         $this->_numbers = $numbers;
     }
 
+    public function getUniversalId($uid, $postId)
+    {
+        return mb_strtoupper(
+            $this->_numbers->base58Encode($uid) .
+                "-" .
+                $this->_numbers->base58Encode($postId)
+        );
+    }
+
     /**
      * @param $post
      * @return array
