@@ -178,7 +178,7 @@ class Ml_Model_People
         $data = [
             "index" => "posts",
             "type" => "user",
-            "id" => $publicUserInfo["id"],
+            "id" => $userInfo["id"],
             "document" => $publicUserInfo
         ];
 
