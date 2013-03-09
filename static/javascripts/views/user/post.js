@@ -67,4 +67,8 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
             $postPicturesCarousel.carousel($closestLi.index());
         }
     });
+
+    $postPicturesThumbnails.on("hover", "li", function (e) {
+        e.currentTarget.click();
+    });
 });
