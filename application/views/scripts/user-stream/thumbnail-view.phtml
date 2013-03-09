@@ -31,7 +31,8 @@ foreach ($posts as $post) {
 ?>
 <p>
 <?= $this->escape($post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"]); ?>
-<br /><span class="post-listing-price"><?= $price; ?></span><br />
+<br /><span class="post-listing-price"><?= $price; ?></span>
+ <span class="muted">#<?= $this->escape($post["universal_id"]); ?></span><br />
 <span class="post-listing-details">
 <?= $this->escape($post["model_year"]); ?>
 <?php
