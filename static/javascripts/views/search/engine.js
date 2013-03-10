@@ -152,71 +152,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             return content;
         };
 
-        var termListHtmlElementsPrice = function (terms, formSerialized, currentQueryStringParams) {
-            var jsonFormSerialized = parseQueryString(formSerialized.replace(/\+/g, ' '));
-            var content = "";
-
-            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos++) {
-                var price = terms[termPos];
-                var from = price.from || '';
-                var to = price.to || '';
-
-                if (from) {
-                    jsonFormSerialized["price-min"] = from.toString();
-                } else {
-                    delete jsonFormSerialized["price-min"];
-                }
-
-                if (to) {
-                    jsonFormSerialized["price-max"] = to.toString();
-                } else {
-                    delete jsonFormSerialized["price-max"];
-                }
-
-                if (price.count) {
-                    var escapedUrl = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
-
-                    var pricing = "";
-
-                    if (! from) {
-                        pricing += "até " + underscore.escape(formatMoney(to));
-                    } else if (!to) {
-                        pricing += underscore.escape(formatMoney(from)) + " +";
-                    } else {
-                        pricing += underscore.escape(formatMoney(from)) + " a " +
-                            underscore.escape(formatMoney(to));
-                    }
-
-                    content += "<li>";
-
-                    if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
-                        delete jsonFormSerialized["price-min"];
-                        delete jsonFormSerialized["price-max"];
-                        var escapedUrlRemove = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
-
-                        content += '<span class="label label-inverse">' +
-                            pricing + ' (' + underscore.escape(price.count) + ')' +
-                            ' <a href="' + escapedUrlRemove + '" ' +
-                            'data-name="price" data-price-from="" data-price-to="">' +
-                            '<i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>';
-
-                        content += '</span>';
-                    } else {
-                        content += '<a ' +
-                            'href="' + escapedUrl + '" data-name="price"' +
-                            'data-price-from="' + underscore.escape(from) + '"' +
-                            'data-price-to="' + underscore.escape(to) + '">' +
-                            pricing +
-                            "</a> (" + underscore.escape(price.count) + ")";
-                    }
-
-                    content += "</li>";
-                }
-            }
-
-            return content;
-        };
-
         var termListHtmlElements = function (termName, terms, formSerialized, currentQueryStringParams) {
             var jsonFormSerialized = parseQueryString(formSerialized.replace(/\+/g, ' '));
             var content = "";
@@ -429,7 +364,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                             formatMoney : formatMoney,
                             termListHtmlElements : termListHtmlElements,
                             termListHtmlElementsType : termListHtmlElementsType,
-                            termListHtmlElementsPrice : termListHtmlElementsPrice,
                             formSerialized : formSerialized,
                             facets : result.facets,
                             searchParamsTotal : searchParamsTotal,
