@@ -389,6 +389,28 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                             pages : pages
                         }
                     ));
+
+                    var $priceInputs = $(".price-inputs", $searchResults);
+                    var $priceMinInput = $(".price-min-input", $searchResults);
+                    var $priceMaxInput = $(".price-max-input", $searchResults);
+
+                    $priceMinInput.val(formatMoney($searchPriceMin.val()));
+                    $priceMaxInput.val(formatMoney($searchPriceMax.val()));
+
+                    $priceInputs.tooltip();
+
+                    maskMoney($priceMinInput);
+                    maskMoney($priceMaxInput);
+
+                    $priceInputs.on("keyup", function (e) {
+                        if (e.keyCode === 13) {
+                            var priceMin = $priceMinInput.val().replace(/[^\d]/g, "");
+                            var priceMax = $priceMaxInput.val().replace(/[^\d]/g, "");
+                            $searchPriceMin.val(priceMin);
+                            $searchPriceMax.val(priceMax);
+                            search();
+                        }
+                    });
                 }
             });
         };
