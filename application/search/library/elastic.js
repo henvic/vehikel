@@ -229,21 +229,6 @@ module.exports = function (util, events, http) {
                         "size" : 10
                     }
                 },
-                "price" : {
-                    "range" : {
-                        "price" : [
-                            { "from" : 0, "to" : 999999 },
-                            { "from" : 1000000, "to" : 1999999 },
-                            { "from" : 2000000, "to" : 2999999 },
-                            { "from" : 3000000, "to" : 3999999 },
-                            { "from" : 4000000, "to" : 4999999 },
-                            { "from" : 5000000, "to" : 7999999 },
-                            { "from" : 8000000, "to" : 8999999 },
-                            { "from" : 9000000, "to" : 9999999 },
-                            { "from" : 10000000 }
-                        ]
-                    }
-                },
                 "year": {
                     "terms" : {
                         "field" : "year",
