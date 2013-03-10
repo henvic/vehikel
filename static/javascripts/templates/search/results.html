@@ -84,6 +84,7 @@ var itemsLength = items.length;
                 <%
                 }
                 %>
+                <span class="muted">#<%= post.universal_id %></span>
                 </a><br />
                 <%- post.year %>
                 <%
@@ -167,7 +168,7 @@ for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
             }
             %>
             <br />
-            <span class="post-listing-price"><%- formatMoney(post.price) %></span><br />
+            <span class="post-listing-price"><%- formatMoney(post.price) %></span> <span class="muted">#<%= post.universal_id %></span><br />
             <span class="post-listing-details">
                 <%- post.year %>
                 <%
