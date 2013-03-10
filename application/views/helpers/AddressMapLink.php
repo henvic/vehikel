@@ -25,4 +25,12 @@ class Ml_View_Helper_AddressMapLink extends Zend_View_Helper_Abstract
 
         return $mapLink;
     }
+
+    public function getQuery($address)
+    {
+        return $address["street_address"]
+            . " " . $address["locality"]
+            . " - " . $address["region"]
+            . ", " . $address["postal_code"];
+    }
 }
