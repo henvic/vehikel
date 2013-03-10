@@ -351,7 +351,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                     if (window.history && window.history.pushState) {
                         var address = AppParams.webroot + "/search";
 
-                        address += "?" + $.param(searchParams).replace(/%2B/g, '+');
+                        address += "?" + decodeURIComponent($.param(searchParams)).replace(/%2B/g, '+');
 
                         window.history.pushState(null, null, address);
                     }
