@@ -157,10 +157,12 @@ if ($userInfo["account_type"] == "retail") {
 <div class="span4">
 <ul>
 <?= $this->addressPhoneList($address["phones"]); ?>
-<li><small><a href="<?= $this->addressMapLink($address); ?>" class="map-link">
+<li><small><a href="<?= $this->addressMapLink($address); ?>" id="map-link" class="map-link"
+data-address="<?= $this->escape($this->addressMapLink($address, true)); ?>">
  <i class="icon-map-marker"></i>&nbsp;como chegar</a></small>
 </li>
 </ul>
+<div id="map-modal"></div>
 </div><!-- end of .span4 -->
 </div><!-- end of .row -->
 </address>

@@ -1,13 +1,57 @@
 /*global define, require */
 /*jshint indent:4 */
 
-define(['AppParams', 'jquery'], function (AppParams, $) {
+define(['AppParams', 'jquery', 'underscore', 'text!templates/posts/map-modal.html'],
+function (AppParams, $, underscore, mapModalTemplate) {
     "use strict";
 
     if (AppParams.accountEditable === true) {
         require(["views/user/post-manager"], function () {
         });
     }
+
+    var $mapLink = $("#map-link");
+    var $mapModal = $("#map-modal");
+    var $mapModalInner;
+
+    var loadMapModal = function () {
+        var mapLink = $mapLink.attr("href");
+        var address = $mapLink.data("address");
+
+        var compiledMapModal = underscore.template(mapModalTemplate);
+        var mapModalHtml = compiledMapModal(
+            {
+                mapLink : mapLink,
+                mapIframe : "https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=" +
+                    encodeURIComponent(address) + "&ie=UTF8&z=15&t=m&iwloc=addr&output=embed"
+            }
+        );
+
+        $mapModal.html(mapModalHtml);
+
+        $mapModalInner = $("#map-modal-inner");
+
+        $mapModalInner.modal({
+            "backdrop" : false,
+            "show" : false
+        });
+    };
+
+    $mapLink.on("click", function (e) {
+        var displayMapBool = (window.innerWidth >= 608);
+
+        if (! displayMapBool) {
+            return;
+        }
+
+        e.preventDefault();
+
+        if (! $mapModalInner) {
+            loadMapModal();
+        }
+
+        $mapModalInner.modal("show");
+    });
 
     var $postInfoTabsLinks = $('#post-info-tabs a');
 
