@@ -37,6 +37,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         var $searchModel = $("#search-model");
         var $searchYear = $("#search-year");
         var $searchWhere = $("#search-where");
+        var $searchUser = $("#search-user");
         var $facetsToggle = $("#facets-toggle");
 
         var currentPage;
@@ -518,6 +519,10 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
 
         if (urlParts.where !== undefined) {
             $searchWhere.val(decodeURIComponent(urlParts.where).replace(/\+/gi, " "));
+        }
+
+        if (urlParts.u !== undefined) {
+            $searchUser.val(decodeURIComponent(urlParts.u).replace(/\+/gi, " "));
         }
 
         if (urlParts.q !== undefined) {

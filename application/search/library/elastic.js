@@ -164,6 +164,10 @@ module.exports = function (util, events, http) {
                 {
                     name : "where",
                     field : "user.where.lowercase"
+                },
+                {
+                    name : "u",
+                    field : "user.username.lowercase"
                 }
             ]
         );
@@ -249,6 +253,12 @@ module.exports = function (util, events, http) {
                 "where" : {
                     "terms" : {
                         "field" : "user.where.lowercase",
+                        "size" : 10
+                    }
+                },
+                "u" : {
+                    "terms" : {
+                        "field" : "user.username.lowercase",
                         "size" : 10
                     }
                 }

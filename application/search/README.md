@@ -327,7 +327,21 @@ curl -XPUT http://localhost:9200/posts/post/_mapping?pretty=1 -d '
               }
             },
             "username" : {
-              "type" : "string"
+              "type" : "multi_field",
+              "fields" : {
+                "username" : {
+                  "type" : "string",
+                  "index" : "analyzed"
+                },
+                "untouched" : {
+                  "type" : "string",
+                  "index" : "not_analyzed"
+                },
+                "lowercase" : {
+                  "type" : "string",
+                  "analyzer" : "lowercase"
+                }
+              }
             }
           }
         }

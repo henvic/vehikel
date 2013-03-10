@@ -1,5 +1,11 @@
 <div class="aside-similar-offers search-facets hidden-phone">
 <dl>
+    <dt>Usuário</dt>
+    <dd class="search-users">
+        <ul>
+            <%= termListHtmlElements("u", facets["u"].terms, formSerialized, currentQueryStringParams) %>
+        </ul>
+    </dd>
     <dt>Tipo</dt>
     <dd class="search-types">
         <ul>
