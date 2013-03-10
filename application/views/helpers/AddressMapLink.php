@@ -2,8 +2,12 @@
 
 class Ml_View_Helper_AddressMapLink extends Zend_View_Helper_Abstract
 {
-    public function addressMapLink($address)
+    public function addressMapLink($address, $onlyQuery = false)
     {
+        if ($onlyQuery) {
+            return $this->getQuery($address);
+        }
+
         /** @var $userAgent \Zend_View_Helper_UserAgent() */
         $userAgent = $this->view->userAgent()->getUserAgent();
 
@@ -15,13 +19,7 @@ class Ml_View_Helper_AddressMapLink extends Zend_View_Helper_Abstract
             $mapProvider = "http://maps.google.com/maps?q=";
         }
 
-        $mapLink = $mapProvider . urlencode(
-            $address["street_address"]
-                . " " . $address["locality"]
-                . " - " . $address["region"]
-                . ", " . $address["postal_code"]
-        )
-            . "&amp;t=m";
+        $mapLink = $mapProvider . urlencode($this->getQuery($address)) . "&amp;t=m";
 
         return $mapLink;
     }
