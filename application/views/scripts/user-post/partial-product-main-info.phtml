@@ -57,6 +57,15 @@ if ($post["armor"]) {
 </dd>
 <?php
 }
+
+if ($post["handicapped"]) {
+?>
+<dt>&nbsp;</dt>
+<dd>
+<span class="label label-info">Veículo adaptado <i class="icon-user icon-white"></i></span>
+</dd>
+<?php
+}
 ?>
 </dl>
 <dl class="post-equipments-list clearfix">
@@ -92,6 +101,7 @@ $postForm->getElement("fuel"),
 $postForm->getElement("transmission"),
 $postForm->getElement("traction"),
 $postForm->getElement("armor"),
+$postForm->getElement("handicapped"),
 '<dl class="equipment form-inline">',
 $postForm->getElement("equipment")->setTranslator($this->translatePosts),
 '</dl>'

@@ -168,6 +168,14 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
             )
         );
 
+        $this->addElement(
+            'checkbox',
+            'handicapped',
+            array(
+                'label' => 'Adaptado para deficiente',
+            )
+        );
+
         $equipment = new Zend_Form_Element_MultiCheckbox('equipment');
         $equipment->setLabel('Acessórios principais');
 

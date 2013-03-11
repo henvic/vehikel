@@ -94,7 +94,7 @@ class UserPostManagerController extends Ml_Controller_Action
 
         if ($this->getRequest()->isPost()) {
             $formKeys = array("make", "model", "name", "price", "model_year", "engine", "traction",
-                "transmission", "fuel", "km", "armor", "equipment", "description", "status");
+                "transmission", "fuel", "km", "armor", "handicapped", "equipment", "description", "status");
 
             foreach ($formKeys as $key) {
                 if (! isset($validatePost[$key])) {

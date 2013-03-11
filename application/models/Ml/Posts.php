@@ -145,6 +145,7 @@ class Ml_Model_Posts
             "fuel" => $post["fuel"],
             "km" => (int) $post["km"],
             "armor" => (bool) $post["armor"],
+            "handicapped" => (bool) $post["handicapped"],
             "pictures" => $post["pictures"],
             "equipment" => $post["equipment"],
             "status" => $post["status"],

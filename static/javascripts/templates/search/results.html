@@ -104,6 +104,10 @@ var itemsLength = items.length;
                     specialItems.push("Blindado");
                 }
 
+                if (post.handicapped) {
+                    specialItems.push("Adaptado");
+                }
+
                 if (post.transmission == 'automatic') {
                     specialItems.push("Automático");
                 }
@@ -183,6 +187,12 @@ for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
             if (post.armor) {
             %>
             <span class="label label-important">veículo blindado</span>
+            <%
+            }
+
+            if (post.handicapped) {
+            %>
+            <span class="label label-important">veículo adaptado</span>
             <%
             }
 

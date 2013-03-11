@@ -144,6 +144,9 @@ curl -XPUT http://localhost:9200/posts/post/_mapping?pretty=1 -d '
         "armor" : {
           "type" : "boolean"
         },
+        "handicapped" : {
+          "type" : "boolean"
+        },
         "creation" : {
           "type" : "string"
         },
