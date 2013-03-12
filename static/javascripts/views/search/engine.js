@@ -38,6 +38,9 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         var $searchYear = $("#search-year");
         var $searchWhere = $("#search-where");
         var $searchUser = $("#search-user");
+        var $searchTransmission = $("#search-transmission");
+        var $searchTraction = $("#search-traction");
+        var $searchHandicapped = $("#search-handicapped");
         var $facetsToggle = $("#facets-toggle");
 
         var currentPage;
@@ -449,37 +452,27 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             items : 3
         });
 
-        if (urlParts["price-min"] !== undefined) {
-            $searchPriceMin.val(decodeURIComponent(urlParts["price-min"].replace(/\+/gi, " ")));
-        }
+        var changeSearchTermByUrl = function ($termObject, name) {
+            if (urlParts[name] !== undefined) {
+                $termObject.val(decodeURIComponent(urlParts[name].replace(/\+/gi, " ")));
+            }
+        };
 
-        if (urlParts["price-max"] !== undefined) {
-            $searchPriceMax.val(decodeURIComponent(urlParts["price-max"].replace(/\+/gi, " ")));
-        }
+        changeSearchTermByUrl($searchPriceMin, "price-min");
+        changeSearchTermByUrl($searchPriceMax, "price-max");
 
         if (urlParts.type !== undefined) {
             $searchTypesNames.filter('[value="' + underscore.escape(urlParts.type) + '"]').attr("checked", true);
         }
 
-        if (urlParts.make !== undefined) {
-            $searchMake.val(decodeURIComponent(urlParts.make).replace(/\+/gi, " "));
-        }
-
-        if (urlParts.model !== undefined) {
-            $searchModel.val(decodeURIComponent(urlParts.model).replace(/\+/gi, " "));
-        }
-
-        if (urlParts.year !== undefined) {
-            $searchYear.val(decodeURIComponent(urlParts.year).replace(/\+/gi, " "));
-        }
-
-        if (urlParts.where !== undefined) {
-            $searchWhere.val(decodeURIComponent(urlParts.where).replace(/\+/gi, " "));
-        }
-
-        if (urlParts.u !== undefined) {
-            $searchUser.val(decodeURIComponent(urlParts.u).replace(/\+/gi, " "));
-        }
+        changeSearchTermByUrl($searchMake, "make");
+        changeSearchTermByUrl($searchModel, "model");
+        changeSearchTermByUrl($searchYear, "year");
+        changeSearchTermByUrl($searchWhere, "where");
+        changeSearchTermByUrl($searchUser, "u");
+        changeSearchTermByUrl($searchTransmission, "transmission");
+        changeSearchTermByUrl($searchTraction, "traction");
+        changeSearchTermByUrl($searchHandicapped, "handicapped");
 
         if (urlParts.q !== undefined) {
             $searchText.val(decodeURIComponent(urlParts.q.replace(/\+/gi, " ")));
