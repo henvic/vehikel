@@ -247,13 +247,16 @@ curl -XPUT http://localhost:9200/posts/post/_mapping?pretty=1 -d '
           }
         },
         "traction" : {
-          "type" : "string"
+          "type" : "string",
+          "analyzer" : "lowercase"
         },
         "transmission" : {
-          "type" : "string"
+          "type" : "string",
+          "analyzer" : "lowercase"
         },
         "type" : {
-          "type" : "string"
+          "type" : "string",
+          "analyzer" : "lowercase"
         },
         "user" : {
           "dynamic" : "true",
