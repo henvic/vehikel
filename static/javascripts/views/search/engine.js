@@ -41,6 +41,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         var $searchTransmission = $("#search-transmission");
         var $searchTraction = $("#search-traction");
         var $searchHandicapped = $("#search-handicapped");
+        var $searchArmor = $("#search-armor");
         var $facetsToggle = $("#facets-toggle");
 
         var currentPage;
@@ -155,7 +156,13 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             return content;
         };
 
-        var termListHtmlElements = function (termName, terms, formSerialized, currentQueryStringParams) {
+        var termListHtmlElements = function (
+            termName,
+            terms,
+            formSerialized,
+            currentQueryStringParams,
+            translationObject
+        ) {
             var jsonFormSerialized = parseQueryString(formSerialized.replace(/\+/g, ' '));
             var content = "";
 
@@ -166,12 +173,18 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
 
                 content += "<li>";
 
+                var value = terms[termPos].term;
+
+                if (translationObject !== undefined && translationObject[value] !== undefined) {
+                    value = translationObject[value];
+                }
+
                 if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
                     delete jsonFormSerialized[termName];
                     var escapedUrlRemove = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
 
                     content += '<span class="label label-inverse">' +
-                        underscore.escape(terms[termPos].term) +
+                        underscore.escape(value) +
                         " (" + underscore.escape(terms[termPos].count) + ')' +
                         ' <a href="' + escapedUrlRemove + '" data-name="' +
                         underscore.escape(termName) + '" ' +
@@ -181,7 +194,53 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                     content += '<a href="' + escapedUrl + '" data-name="' +
                         underscore.escape(termName) + '" ' +
                         'data-value="' + underscore.escape(terms[termPos].term) + '">' +
-                        underscore.escape(terms[termPos].term) +
+                        underscore.escape(value) +
+                        "</a> (" + underscore.escape(terms[termPos].count) + ")";
+                }
+
+                content += "</li>";
+            }
+
+            return content;
+        };
+
+        var termListHtmlElementsBool = function (
+            termName,
+            terms,
+            formSerialized,
+            currentQueryStringParams,
+            value
+            ) {
+            var jsonFormSerialized = parseQueryString(formSerialized.replace(/\+/g, ' '));
+            var content = "";
+
+            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos++) {
+                jsonFormSerialized[termName] = "1";
+
+                var escapedUrl = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+
+                if (terms[termPos].term !== "T") {
+                    continue;
+                }
+
+                content += "<li>";
+
+                if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
+                    delete jsonFormSerialized[termName];
+                    var escapedUrlRemove = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+
+                    content += '<span class="label label-inverse">' +
+                        underscore.escape(value) +
+                        " (" + underscore.escape(terms[termPos].count) + ')' +
+                        ' <a href="' + escapedUrlRemove + '" data-name="' +
+                        underscore.escape(termName) + '" ' +
+                        'data-value=""><i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>' +
+                        '</span>';
+                } else {
+                    content += '<a href="' + escapedUrl + '" data-name="' +
+                        underscore.escape(termName) + '" ' +
+                        'data-value="1">' +
+                        underscore.escape(value) +
                         "</a> (" + underscore.escape(terms[termPos].count) + ")";
                 }
 
@@ -379,7 +438,10 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                             formatMoney : formatMoney,
                             termListHtmlElements : termListHtmlElements,
                             termListHtmlElementsType : termListHtmlElementsType,
+                            termListHtmlElementsBool : termListHtmlElementsBool,
                             formSerialized : formSerialized,
+                            transmissionTranslation : transmissionTranslation,
+                            tractionTranslation : tractionTranslation,
                             facets : result.facets,
                             searchParamsTotal : searchParamsTotal,
                             currentQueryStringParams : parseQueryString(window.location.search.substr(1).replace(/\+/g, ' '))
@@ -485,6 +547,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         changeSearchTermByUrl($searchTransmission, "transmission");
         changeSearchTermByUrl($searchTraction, "traction");
         changeSearchTermByUrl($searchHandicapped, "handicapped");
+        changeSearchTermByUrl($searchArmor, "armor");
 
         if (urlParts.q !== undefined) {
             $searchText.val(decodeURIComponent(urlParts.q.replace(/\+/gi, " ")));
