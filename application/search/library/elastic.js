@@ -168,6 +168,22 @@ module.exports = function (util, events, http) {
                 {
                     name : "u",
                     field : "user.username.lowercase"
+                },
+                {
+                    name : "transmission",
+                    field : "transmission"
+                },
+                {
+                    name : "traction",
+                    field : "traction"
+                },
+                {
+                    name : "armor",
+                    field : "armor"
+                },
+                {
+                    name : "handicapped",
+                    field : "handicapped"
                 }
             ]
         );
@@ -246,6 +262,26 @@ module.exports = function (util, events, http) {
                     "terms" : {
                         "field" : "user.username.lowercase",
                         "size" : 10
+                    }
+                },
+                "transmission" : {
+                    "terms" : {
+                        "field" : "transmission"
+                    }
+                },
+                "traction" : {
+                    "terms" : {
+                        "field" : "traction"
+                    }
+                },
+                "armor" : {
+                    "terms" : {
+                        "field" : "armor"
+                    }
+                },
+                "handicapped" : {
+                    "terms" : {
+                        "field" : "handicapped"
                     }
                 }
             };
