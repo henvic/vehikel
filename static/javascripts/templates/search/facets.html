@@ -44,6 +44,27 @@
         <input type="text" class="input-small price-inputs price-max-input"
         placeholder="R$ max" title="digite e pressione enter" />
     </dd>
+    <dt>Transmissão</dt>
+    <dd>
+        <ul>
+            <%= termListHtmlElements("transmission", facets["transmission"].terms, formSerialized, currentQueryStringParams, transmissionTranslation) %>
+        </ul>
+    </dd>
+    <dt>Tração</dt>
+    <dd>
+        <ul>
+            <%= termListHtmlElements("traction", facets["traction"].terms, formSerialized, currentQueryStringParams, tractionTranslation) %>
+        </ul>
+    </dd>
+    <dt>
+        Especiais
+    </dt>
+    <dd>
+        <ul>
+            <%= termListHtmlElementsBool("armor", facets["armor"].terms, formSerialized, currentQueryStringParams, "blindado") %>
+            <%= termListHtmlElementsBool("handicapped", facets["handicapped"].terms, formSerialized, currentQueryStringParams, "deficiente físico") %>
+        </ul>
+    </dd>
 </dl>
 <%
 if (searchParamsTotal > 1) {
