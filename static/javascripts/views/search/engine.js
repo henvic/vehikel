@@ -270,6 +270,18 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             $('[name="type"][value=""]', $searchPostsForm).attr("checked", "checked");
         };
 
+        var transmissionTranslation = {
+            "manual" : "manual",
+            "automatic" : "automático",
+            "other" : "outra"
+        };
+
+        var tractionTranslation = {
+            "front" : "frontal",
+            "rear" : "traseira",
+            "4x4" : "4x4"
+        };
+
         var search = function (data) {
             if (data === undefined) {
                 data = {};
