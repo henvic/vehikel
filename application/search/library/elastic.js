@@ -206,7 +206,8 @@ module.exports = function (util, events, http) {
                     "terms" : {
                         "field" : "title.suggestions",
                         "regex" : "^" + qSuggestionEscaped.toLowerCase() + ".*",
-                        "size" : 10
+                        "size" : 10,
+                        "order" : "term"
                     }
                 }
             };
