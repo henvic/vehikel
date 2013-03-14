@@ -26,12 +26,10 @@ define(["jquery", "twitter.bootstrap", "jquery.fn.autoResize"], function ($) {
                 var hasClass = navbar.hasClass("navbar-fixed-top-override");
                 if (windowObj.scrollTop() > stickAnchor.offset().top) {
                     if (hasClass) {
-                        navbar.removeClass("navbar-fixed-top-override");
-                        navbar.addClass("navbar-fixed-top-override2");
+                        navbar.removeClass("navbar-fixed-top-override").addClass("navbar-fixed-top-override2");
                     }
                 } else if (! hasClass) {
-                    navbar.addClass("navbar-fixed-top-override");
-                    navbar.removeClass("navbar-fixed-top-override2");
+                    navbar.addClass("navbar-fixed-top-override").removeClass("navbar-fixed-top-override2");
                 }
             }
 
