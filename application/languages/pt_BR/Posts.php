@@ -21,6 +21,7 @@ return array(
     "gasoline" => "Gasolina",
     "ethanol" => "Etanol",
     "diesel" => "Diesel",
+    "flex" => "Flexível",
     "other" => "Outro",
     "km" => "Quilometragem",
     "transmission" => "Câmbio",
