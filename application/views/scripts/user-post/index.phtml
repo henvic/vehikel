@@ -123,12 +123,10 @@ Adicione fotos do veículo, confira como vai ficar o anúncio e aperte o botão 
 }
 ?>
 <?= $this->render("user-post/partial-pictures.phtml"); ?>
-<div class="row">
-<div class="span9">
 <br />
 <address id="post-address" class="vcard post-seller-address">
 <div class="row">
-<div class="span5">
+<div class="span6">
 <div class="pull-left vcard-image"><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo); ?></a></div>
 <strong class="fn"><a href="<?= $escapedUserLink; ?>"><?= $this->escape($userInfo["name"]); ?></a></strong>
 <a href="<?= $escapedUserLink; ?>" class="btn btn-mini">estoque</a><br />
@@ -150,8 +148,8 @@ if ($userInfo["account_type"] == "retail") {
 <?php
 }
 ?>
-</div><!-- end of .span4 -->
-<div class="span4">
+</div><!-- end of .span6 -->
+<div class="span6">
 <ul>
 <?= $this->addressPhoneList($address["phones"]); ?>
 <li><small><a href="<?= $this->addressMapLink($address); ?>" id="map-link" class="btn btn-small map-link"
@@ -160,27 +158,26 @@ data-address="<?= $this->escape($this->addressMapLink($address, true)); ?>">
 </li>
 </ul>
 <div id="map-modal"></div>
-</div><!-- end of .span4 -->
+</div><!-- end of .span6 -->
 </div><!-- end of .row -->
 </address>
-</div><!-- end of .span9 -->
-</div><!-- end of .row -->
+<!--<hr />-->
 <div class="row">
-<div class="span4 post-product-main-info-parent">
+<div class="span6 post-product-main-info-parent">
 <div id="post-product-main-info">
 <?= $this->render("user-post/partial-product-main-info.phtml"); ?>
 </div>
 </div>
-<div class="span5">
+<div class="span6">
 <br />
-<ul class="nav nav-tabs" id="post-info-tabs">
+<ul class="nav nav-tabs post-info-tabs" id="post-info-tabs">
 <li class="active"><a href="#post-description">Descrição</a></li>
 <li><a href="#post-contact"><i class="icon-envelope"></i> Enviar proposta</a></li>
 </ul>
 <div class="tab-content">
-<div class="tab-pane active" id="post-description">
+<div class="tab-pane active post-product-tab" id="post-description">
 <p <?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?> id="post-description-text"
-class="<?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? "hidden " : ""; ?>
+class="post-description-text <?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? "hidden " : ""; ?>
 <?= ($this->editable) ? "post-editable" : ""; ?>">
 <?= $post["description_html_escaped"]; ?>
 </p>
@@ -201,7 +198,7 @@ type="button">Salvar descrição</button>
 }
 ?>
 </div><!-- end of .tab-content -->
-<div class="tab-pane post-contact" id="post-contact">
+<div class="tab-pane post-product-tab post-contact" id="post-contact">
 <?= $this->render("user-post/partial-contact.phtml"); ?>
 </div><!-- end of #post-contact -->
 </div><!-- end of .tab-content -->
@@ -241,6 +238,9 @@ if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
 </div><!-- end of .row -->
 <?php
 }?>
+<div class="visible-mobile">
+&nbsp;
+</div>
 <?= $breadCrumb; ?>
 </div><!-- end of .span9 -->
 </div><!-- end of .row -->
