@@ -1,6 +1,8 @@
 <?php
 
 return array(
+    "location" => "Localização",
+    "type" => "Tipo",
     "make" => "Marca",
     "model" => "Modelo",
     "main_equipment" => "Acessórios principais",
