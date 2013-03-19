@@ -1,32 +1,44 @@
 {
-    "car" : [
-        "ac",
-        "digital_ac",
-        "electronic_power_steering",
-        "hydraulic_power_steering",
-        "electric_windows",
-        "sunroof",
-        "power_door_locks",
-        "alarm",
-        "remote_keyless_entry_system",
-        "leather_seats",
-        "power_seats",
-        "airbag",
-        "power_mirrors",
-        "abs",
-        "xenon_headlamps",
-        "fog_lamps",
-        "alloy_wheels",
-        "trip_computer",
-        "cruise_control",
-        "cd_player",
-        "navigation_system",
-        "parking_sensor"
-    ],
-    "motorcycle" : [
-        "alloy_wheels"
-    ],
-    "boat" : [
-        "alarm"
-    ]
+    "car" : {
+        "comfort" : [
+            "ac",
+            "digital_ac",
+            "leather_seats",
+            "power_seats",
+            "electronic_power_steering",
+            "hydraulic_power_steering",
+            "electric_windows",
+            "sunroof"
+        ],
+        "security" : [
+            "power_door_locks",
+            "alarm",
+            "remote_keyless_entry_system",
+            "airbag",
+            "power_mirrors",
+            "abs"
+        ],
+        "ride" : [
+            "xenon_headlamps",
+            "fog_lamps",
+            "alloy_wheels",
+            "trip_computer",
+            "cruise_control",
+            "parking_sensor"
+        ],
+        "entertainment" : [
+            "cd_player",
+            "navigation_system"
+        ]
+    },
+    "motorcycle" : {
+        "ride" : [
+            "alloy_wheels"
+        ]
+    },
+    "boat" : {
+        "security" : [
+            "alarm"
+        ]
+    }
 }
