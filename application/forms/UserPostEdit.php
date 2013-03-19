@@ -5,13 +5,15 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
 
     protected $_username;
     protected $_postId;
+    protected $_type;
 
-    public function __construct($options = null, Zend_Translate $translate, array $equipment, $username, $postId)
+    public function __construct($options = null, Zend_Translate $translate, array $equipment, $username, $postId, $type)
     {
         $this->_equipment = $equipment;
 
         $this->_username = $username;
         $this->_postId = $postId;
+        $this->_type = $type;
 
         $this->setTranslator($translate);
 
@@ -179,8 +181,13 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
         $equipment = new Zend_Form_Element_MultiCheckbox('equipment');
         $equipment->setLabel('Acessórios principais');
 
-        foreach ($this->_equipment as $eachEquipment) {
-            $equipment->addMultiOption($eachEquipment, "equipment_" . $eachEquipment);
+        foreach ($this->_equipment as $equipmentGroupKey => $equipmentGroup) {
+            foreach ($equipmentGroup as $eachEquipment) {
+                $equipment->addMultiOption(
+                    "equipment_" . $this->_type . "_" . $equipmentGroupKey . "_" . $eachEquipment,
+                    "equipment_" . $this->_type . "_" . $equipmentGroupKey . "_" . $eachEquipment
+                );
+            }
         }
 
         $this->addElement($equipment);

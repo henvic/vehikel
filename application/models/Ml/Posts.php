@@ -553,6 +553,7 @@ class Ml_Model_Posts
     }
 
     /**
+     * * Get a list of equipments available for a given category
      * @param $category
      * @return array
      */
