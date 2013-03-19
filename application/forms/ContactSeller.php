@@ -34,7 +34,7 @@ class Ml_Form_ContactSeller extends Twitter_Bootstrap_Form_Horizontal
                 'StringLength', 'options' => array(1, 50))
             ),
             'prepend' => '<i class="icon-user"></i>',
-            'class' => 'input-medium'
+            'class' => 'input-xlarge'
         ));
 
         $this->addElement('text', 'email', array(
@@ -42,7 +42,7 @@ class Ml_Form_ContactSeller extends Twitter_Bootstrap_Form_Horizontal
             'required'   => true,
             'filters'    => array('StringTrim', 'StringToLower'),
             'prepend' => '<i class="icon-envelope"></i>',
-            'class' => 'input-medium'
+            'class' => 'input-xlarge'
         ));
 
         $this->addElement("tel", 'phone', array(
@@ -50,7 +50,7 @@ class Ml_Form_ContactSeller extends Twitter_Bootstrap_Form_Horizontal
             'required'   => true,
             'filters'    => array('StringTrim', 'TelephoneBr'),
             'prepend' => '☎',
-            'class' => 'input-medium'
+            'class' => 'input-xlarge'
         ));
 
         $this->getElement("phone")
@@ -68,16 +68,18 @@ class Ml_Form_ContactSeller extends Twitter_Bootstrap_Form_Horizontal
                 array('validator' =>
                 'StringLength', 'options' => array(0, 1000)),
             ),
-            'class' => 'fix-sized-textarea',
+            'class' => 'proposal-textarea input-xlarge',
             'rows' => 5
         ));
 
         $this->addElement('submit', 'submit', array(
             'label'    => 'Enviar proposta',
-            'class' => 'btn btn-primary'
+            'class' => 'btn btn-success'
         ));
 
         $this->addElement(Ml_Model_MagicCookies::formElement());
+
+        $this->getElement("hash")->removeDecorator("DtDdWrapper");
 
         $this->addDisplayGroup(
             array('submit', 'reset'),
