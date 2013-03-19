@@ -55,17 +55,19 @@ var config = (function () {
 
     });
 
-    require(["jquery", "twitter.bootstrap", "common", "jquery.fn.autoResize"],
+    require(["jquery", "twitter.bootstrap", "jquery.fn.autoResize"],
         function ($) {
-            if (typeof AppParams.route !== 'undefined') {
-                require(["views/" + AppParams.route], function () {
-                });
-            }
+            require(["common"], function () {
+                if (typeof AppParams.route !== 'undefined') {
+                    require(["views/" + AppParams.route], function () {
+                    });
+                }
 
-            if (typeof AppParams.selfUid !== 'undefined') {
-                require(["authenticated"], function () {
-                });
-            }
+                if (typeof AppParams.selfUid !== 'undefined') {
+                    require(["authenticated"], function () {
+                    });
+                }
+            });
         });
 
 } ());
