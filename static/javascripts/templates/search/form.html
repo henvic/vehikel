@@ -1,0 +1,33 @@
+<form method="get" action="/search" class="navbar-search form-inline" id="search-posts-form">
+    <div class="search-text-area">
+        <label for="search-text"><i class="icon-white icon-search"></i>&nbsp;</label>
+        <input id="search-text" type="text" placeholder="O que você procura?" maxlength="80" class="search-text search-query" name="q" autocomplete="off" />
+        <input id="search-text-autocomplete" type="text" disabled="disabled" class="search-text-autocomplete search-query" />
+        <button id="facets-toggle" class="btn visible-phone pull-right" data-toggle="button"><i class="icon-filter"></i><span class="hidden"> Filtros</span></button>
+    </div>
+    <div class="hidden">
+        <input type="text" id="search-price-max" placeholder="R$ máximo" maxlength="16" class="span2" name="price-max" />
+        <input type="text" id="search-price-min" placeholder="R$ mínimo" maxlength="16" class="span2" name="price-min" />
+        <input type="text" id="search-make" name="make" placeholder="Marca" />
+        <input type="text" id="search-model" name="model" placeholder="Modelo" />
+        <input type="text" id="search-year" name="year" placeholder="Ano" />
+        <input type="text" id="search-where" name="where" placeholder="Localização" />
+        <input type="text" id="search-user" name="u" placeholder="Usuário" />
+        <input type="text" id="search-transmission" name="transmission" placeholder="Transmissão" />
+        <input type="text" id="search-traction" name="traction" placeholder="Tração" />
+        <input type="text" id="search-handicapped" name="handicapped" placeholder="Deficiente" />
+        <input type="text" id="search-armor" name="armor" placeholder="Deficiente" />
+        <label class="radio">
+            <input type="radio" name="type" value="" checked="checked" /> todo tipo de veículo
+        </label>
+        <label class="radio">
+            <input type="radio" name="type" value="car" /> carro
+        </label>
+        <label class="radio">
+            <input type="radio" name="type" value="motorcycle" /> motocicleta
+        </label>
+        <label class="radio">
+            <input type="radio" name="type" value="boat" /> embarcação
+        </label>
+    </div>
+</form>
