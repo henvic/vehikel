@@ -112,7 +112,7 @@ function (AppParams, $, underscore, mapModalTemplate) {
         }
     });
 
-    $postPicturesThumbnails.on("hover", "li", function (e) {
+    $postPicturesThumbnails.on("mouseenter", "li", function (e) {
         e.currentTarget.click();
     });
 });
