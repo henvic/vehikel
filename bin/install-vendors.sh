@@ -36,9 +36,9 @@ install() {
 
   # Download jQuery
   echo "Downloading jQuery"
-  mkdir jquery-1.8.0
-  cd jquery-1.8.0
-  curl -o jquery.js -O http://code.jquery.com/jquery-1.8.0.js
+  mkdir jquery-1.9.1
+  cd jquery-1.9.1
+  curl -o jquery.js -O http://code.jquery.com/jquery-1.9.1.js
   cd ..
 
   # Download jQuery.fn.autoResize-1.14
