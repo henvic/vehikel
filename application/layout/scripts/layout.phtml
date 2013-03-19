@@ -75,19 +75,16 @@ $this->headMeta() , PHP_EOL;
       </a>
       <a class="brand" href="<?php echo $this->url(array(), "index"); ?>"><?php echo $this->escape($config['applicationname']); ?></a>
       <div class="nav-collapse">
-        <ul class="nav">
-            <li class="divider-vertical"></li>
-            <li>
-                <a href="<?= $this->url(array(), "user_post_new"); ?>" id="post-new-ad-button">
-                    <i class="icon-pencil icon-white"></i> Anunciar
-                </a>
-            </li>
-            <li class="divider-vertical"></li>
-        </ul>
-        <form class="navbar-search form-inline pull-left" action="<?= $this->url(array(), "search"); ?>" method="get">
-          <label for="search-query"><i class="icon-white icon-search"></i>&nbsp;</label>
-          <input type="text" id="search-query" class="search-query" placeholder="O que você procura?" name="q" />
-        </form>
+          <ul class="nav">
+              <li class="divider-vertical"></li>
+              <li>
+                  <a href="<?= $this->url(array(), "user_post_new"); ?>" id="post-new-ad-button">
+                      <i class="icon-pencil icon-white"></i> Anunciar
+                  </a>
+              </li>
+              <li class="divider-vertical"></li>
+          </ul>
+          <div id="search-navbar"></div>
         <ul class="nav pull-right">
             <li class="divider-vertical"></li>
 <?php
