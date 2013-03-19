@@ -46,7 +46,8 @@ class UserPostController extends Ml_Controller_Action
                 $this->_translatePosts,
                 $availableEquipment,
                 $params["username"],
-                $params["post_id"]
+                $params["post_id"],
+                $post["type"]
             );
 
             $postForm = $post;
