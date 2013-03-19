@@ -115,4 +115,13 @@ function (AppParams, $, underscore, mapModalTemplate) {
     $postPicturesThumbnails.on("mouseenter", "li", function (e) {
         e.currentTarget.click();
     });
+
+    var $postProductMainInfo = $("#post-product-main-info");
+
+    // don't let a non-editor user change the checked state of the equipment list
+    if (! AppParams.accountEditable) {
+        $postProductMainInfo.on("click", '.post-equipments-list [type="checkbox"]', function (e) {
+            e.preventDefault();
+        });
+    }
 });
