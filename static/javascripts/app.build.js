@@ -12,7 +12,7 @@
         // @todo find a way to remove the AppParams / foo.js hack
         AppParams: "foo",
         yui: "http://yui.yahooapis.com/3.8.0/build/yui/yui-min",
-        jquery: "../vendor/jquery-1.8.0/jquery",
+        jquery: "../vendor/jquery-1.9.1/jquery",
         underscore: "../vendor/underscore-1.3.3/underscore",
         "twitter.bootstrap": "../vendor/bootstrap-2.3.1/js/bootstrap",
         "jquery.tablesorter": "../vendor/jquery-tablesorter-2.0.5b/jquery.tablesorter",
