@@ -273,6 +273,10 @@ input.no-spin-button::-webkit-inner-spin-button {
     border: none;
 }
 
+.post-product-name-editing-area {
+    margin-bottom: 5px;
+}
+
 .post-product-name {
     margin-bottom: 0;
 }
@@ -363,7 +367,7 @@ input.no-spin-button::-webkit-inner-spin-button {
     position: absolute;
     font-weight: bold;
     color: #fff;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(240, 248, 255, 0.5);
     cursor: pointer;
     -webkit-transition: all 0.5s ease-in-out;
     -moz-transition: all 0.5s ease-in-out;
@@ -434,16 +438,31 @@ input.no-spin-button::-webkit-inner-spin-button {
         -webkit-column-rule-color:  #f7f7f7;
         -webkit-column-rule-style: solid;
         -webkit-column-rule-width:  1px;
-        @media (min-width : 480px) {
+        @media (min-width : 400px) {
             -moz-column-count: 2;
-            -moz-column-gap: 15px;
+            -moz-column-gap: 20px;
             -o-column-count: 2;
             -o-column-gap: 20px;
             -webkit-column-count: 2;
-            -webkit-column-gap: 15px;
+            -webkit-column-gap: 20px;
             column-count: 2;
-            column-gap: 15px;
+            column-gap: 20px;
         }
+
+        @media (min-width : 1200px) {
+            -moz-column-count: 3;
+            -moz-column-gap: 20px;
+            -o-column-count: 3;
+            -o-column-gap: 20px;
+            -webkit-column-count: 3;
+            -webkit-column-gap: 20px;
+            column-count: 3;
+            column-gap: 20px;
+        }
+    }
+
+    li {
+        padding-left: 5px;
     }
 
     .muted {
@@ -477,13 +496,20 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .post-description-text {
+    margin-top: 5px;
     padding: 5px 7px;
 }
 
 .post-description-text-edit {
     background: @postEditingBackground;
     resize: vertical;
-    width: 97%;
+    width: 95%;
+    margin-top: 5px;
+}
+
+.proposal-textarea {
+    resize: vertical;
+    width: 95%;
 }
 
 .posts-table-view {
