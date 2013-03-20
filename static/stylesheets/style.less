@@ -425,6 +425,23 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .post-equipments-list {
+    .has {
+        color: #6a6a6a;
+    }
+    .has-not {
+        color: #c7c7c7;
+    }
+
+    &.uneditable {
+        input {
+            cursor: default;
+        }
+
+        label {
+            cursor: text;
+        }
+    }
+
     dd {
         margin-left: 0;
     }
