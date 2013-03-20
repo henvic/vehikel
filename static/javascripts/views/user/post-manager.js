@@ -321,6 +321,22 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
         var $postStatusEnd = $("#post-status-end");
         var $postStatusInfoStaging = $("#post-status-info-staging");
 
+        var updatePostItem = function (name, value) {
+            var data =
+                encodeURIComponent(name) + "=" + encodeURIComponent(value) +
+                    "&hash=" +
+                    encodeURIComponent(AppParams.globalAuthHash)
+                ;
+
+            // @todo add success and failure handling
+            $.ajax({
+                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
+                type: 'POST',
+                dataType: 'json',
+                data: data
+            });
+        };
+
 
         var updatePostEquipments = function () {
             var equipment = $('.post-equipments-list [name="equipment[]"]', $postProductMainInfo).serialize();
