@@ -335,6 +335,20 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
                 data: data
             });
         };
+
+        $postProductMainInfo.on("click", '.post-equipments-list [type="checkbox"]', function (e) {
+            var isChecked = e.target.checked;
+            var $labelTarget = $(e.target.parentNode);
+
+            if (isChecked) {
+                $labelTarget.removeClass("has-not").addClass("has");
+            } else {
+                $labelTarget.removeClass("not").addClass("has-not");
+            }
+
+            updatePostEquipments();
+        });
+
         $editPostButton.on("click", function (e) {
             openPostProductNameEdit();
             openPostProductInfoEdit();
