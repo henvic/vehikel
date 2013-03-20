@@ -5,53 +5,6 @@ $this->headTitle("Busca");
     <div class="row">
         <div class="span12">
             <h1 class="hidden">Busca</h1>
-            <form method="GET" action="/search" id="search-posts-form">
-                <div class="visible-desktop">&nbsp;</div>
-                <div class="row">
-                    <div class="span6">
-                        <div class="search-text-area">
-                        <input id="search-text" type="text" placeholder="O que você procura?" maxlength="80" class="search-text span6" name="q" autocomplete="off" />
-                        <input id="search-text-autocomplete" type="text" disabled="disabled" class="search-text-autocomplete span6" />
-                        </div>
-                        <div class="row hidden">
-                            <div class="span5">
-                                <input type="text" id="search-price-max" placeholder="R$ máximo" maxlength="16" class="span2" name="price-max" />
-                                <input type="text" id="search-price-min" placeholder="R$ mínimo" maxlength="16" class="span2" name="price-min" />
-                                <input type="text" id="search-make" name="make" placeholder="Marca" />
-                                <input type="text" id="search-model" name="model" placeholder="Modelo" />
-                                <input type="text" id="search-year" name="year" placeholder="Ano" />
-                                <input type="text" id="search-where" name="where" placeholder="Localização" />
-                                <input type="text" id="search-user" name="u" placeholder="Usuário" />
-                                <input type="text" id="search-transmission" name="transmission" placeholder="Transmissão" />
-                                <input type="text" id="search-traction" name="traction" placeholder="Tração" />
-                                <input type="text" id="search-handicapped" name="handicapped" placeholder="Deficiente" />
-                                <input type="text" id="search-armor" name="armor" placeholder="Deficiente" />
-                                <label class="radio">
-                                    <input type="radio" name="type" value="" checked="checked" /> todo tipo de veículo
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="type" value="car" /> carro
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="type" value="motorcycle" /> motocicleta
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="type" value="boat" /> embarcação
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="span4">
-                        <button type="submit" class="btn">Buscar</button>
-                        &nbsp;
-                        <button id="facets-toggle" class="btn visible-phone pull-right" data-toggle="button"><i class="icon-filter"></i><span class="hidden"> Filtros</span></button>
-                    </div>
-                </div>
-            </form>
-        </div><!-- end of .span12 -->
-    </div><!-- end of .row -->
-    <div class="row">
-        <div class="span12">
             <div id="search-results"></div>
         </div>
     </div>
