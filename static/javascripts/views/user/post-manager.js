@@ -725,7 +725,7 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
             if ($postDescriptionTextEdit.val() !== postDescriptionTextEditValue) {
                 confirmBeforeExit = true;
             } else {
-                confirmBeforeExit = true;
+                confirmBeforeExit = false;
             }
         });
 
