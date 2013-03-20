@@ -730,8 +730,11 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
         });
 
         $postDescriptionTextEdit.on("paste", function (e) {
-            //@todo improve
-            confirmBeforeExit = true;
+            if ($postDescriptionTextEdit.val() !== postDescriptionTextEditValue) {
+                confirmBeforeExit = true;
+            } else {
+                confirmBeforeExit = false;
+            }
         });
 
         var setPostStatus = function (status, callbackfn) {
