@@ -618,6 +618,7 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
         var openPostProductInfoEdit = function () {
             $postProductInfo.addClass("hidden");
             $postProductInfoEditingArea.removeClass("hidden");
+            $('[name="price"]', $postProductInfoEditingArea).focus();
         };
 
         var closePostProductInfoEdit = function () {
