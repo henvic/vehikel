@@ -298,6 +298,8 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
 
         var $postProductInfo = $('#post-product-info');
         var $postProductInfoEditingArea = $('#post-product-info-editing-area');
+        var $postProductMainInfo = $("#post-product-main-info");
+        var $postProductInfoOthers = $("#post-product-info-others");
 
         var $postDescriptionText = $('#post-description-text');
         var $postDescriptionTextEdit = $('#post-description-text-edit');
@@ -632,6 +634,8 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
             $postProductInfo.html($("#post-product-info", $result).html());
             $postProductInfoEditingArea.html($("#post-product-info-editing-area", $result).html());
             postProductInfoEditingAreaOriginal = $postProductInfoEditingArea.html();
+
+            $postProductInfoOthers.html($("#post-product-info-others", $result).html());
 
             loadPostProductInfoEditingAreaElements();
             closePostProductInfoEdit();
