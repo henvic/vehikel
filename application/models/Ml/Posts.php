@@ -333,7 +333,9 @@ class Ml_Model_Posts
             $data["equipment"] = json_encode($data["equipment"]);
         }
 
-        $data['description_html_escaped'] = $this->_purifier->purify($data['description']);
+        if (isset($data["description"])) {
+            $data['description_html_escaped'] = $this->_purifier->purify($data['description']);
+        }
 
         $this->_dbAdapter->beginTransaction();
 
