@@ -14,104 +14,169 @@ $availableEquipment = $this->availableEquipment;
 $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
 $price->setValue($this->escape($post["price"] / 100));
 ?>
-<div class="<?= ($editable) ? "post-editable" : ""; ?>" id="post-product-info"
-<?= ($editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?>>
-<h2 id="post-product-price">
-R$&nbsp;<?= $this->escape($price->toCurrency(null, array("display" => Zend_Currency::NO_SYMBOL))); ?>
-</h2>
-<dl class="post-product-equipment-list dl-horizontal">
-<dt><?= $this->escape($translatePosts->translate("year")); ?></dt>
-<dd>
-<?= $this->escape($post["model_year"]); ?>
-&nbsp;</dd>
+<div class="post-product-info <?= ($editable) ? "post-editable" : ""; ?>" id="post-product-info"
+    <?= ($editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?>>
+    <h2 id="post-product-price" class="post-product-info-price">
+        R$&nbsp;<?= $this->escape($price->toCurrency(null, array("display" => Zend_Currency::NO_SYMBOL))); ?>
+    </h2>
+    <h3 class="hidden">Detalhes técnicos</h3>
+    <h4><span class="hidden"><?= $this->escape($translatePosts->translate("year")); ?></span>
+        <?= $this->escape($post["model_year"]); ?>
+        <span> &nbsp; </span>
+<?php
+if ($post["km"] != "") {
+?>
+<?= $this->escape(number_format($post["km"], 0, ".", ".")); ?>km
+<?php
+}
+?>
+    </h4>
+    <h4>
 <?php
 if ($post["fuel"]) {
 ?>
-<dt><?= $this->escape($translatePosts->translate("fuel")); ?></dt>
-<dd><?= $this->escape($translatePosts->translate($post["fuel"])); ?>&nbsp;</dd>
+<?= $this->escape($translatePosts->translate("fuel")); ?>
+<?= $this->escape($translatePosts->translate($post["fuel"] . "_lowercase")); ?>
 <?php
 }
-if ($post["km"] != "") {
-?>
-<dt>km</dt>
-<dd><?= $this->escape($post["km"]); ?>&nbsp;</dd>
+?></h4>
 <?php
-}
 if ($post["transmission"]) {
 ?>
-<dt><?= $this->escape($translatePosts->translate("transmission")); ?></dt>
-<dd><?= $this->escape($translatePosts->translate($post["transmission"])); ?>&nbsp;</dd>
+<h4><?= $this->escape($translatePosts->translate("transmission")); ?>
+<?= $this->escape($translatePosts->translate($post["transmission"], "_lowercase")); ?>&nbsp;</h4>
 <?php
 }
 if ($post["traction"]) {
 ?>
-<dt><?= $this->escape($translatePosts->translate("traction")); ?></dt>
-<dd><?= $this->escape($translatePosts->translate($post["traction"])); ?>&nbsp;</dd>
+<h4>
 <?php
-}
-if ($post["armor"]) {
+echo $this->escape($translatePosts->translate("traction"), " ", $translatePosts->translate($post["traction"]));
 ?>
-<dt>&nbsp;</dt>
-<dd>
-<span class="label label-important">Veículo blindado</span>
-</dd>
-<?php
-}
-
-if ($post["handicapped"]) {
-?>
-<dt>&nbsp;</dt>
-<dd>
-<span class="label label-info">Veículo adaptado <i class="icon-user icon-white"></i></span>
-</dd>
+</h4>
 <?php
 }
 ?>
-</dl>
-<dl class="post-equipments-list clearfix">
-<dt><?= $this->escape($translatePosts->translate("main_equipment")); ?></dt>
-<dd>
-<ul>
-<?php
-foreach ($availableEquipment as $equipment) {
-    echo "<li>";
-    if (is_array($post["equipment"]) && in_array($equipment, $post["equipment"])) {
-        echo $this->escape($translatePosts->translate("equipment_" . $equipment));
-    } else {
-        echo '<del class="muted">', $this->escape($translatePosts->translate("equipment_" . $equipment)), "</del>";
-    }
-    echo "</li>";
-}
-?>
-</ul>
-</dd>
-</dl>
 </div><!-- end of #post-product-info -->
 <?php
 if ($editable) {
 ?>
-<form id="post-product-info-editing-area" class="post-product-info-editing-area form-horizontal hidden" method="post">
-<br />
+<form id="post-product-info-editing-area" class="post-product-info-editing-area hidden" method="post">
+<div class="price-input">
 <?php
-echo
-$postForm->getElement("price"),
-$postForm->getElement("model_year"),
-$postForm->getElement("km"),
-$postForm->getElement("fuel"),
-$postForm->getElement("transmission"),
-$postForm->getElement("traction"),
-$postForm->getElement("armor"),
-$postForm->getElement("handicapped"),
-'<dl class="equipment form-inline">',
-$postForm->getElement("equipment")->setTranslator($this->translatePosts),
-'</dl>'
+echo $postForm->getElement("price")
+    ->removeDecorator("wrapper")
+    ->removeDecorator("label")
+    ->removeDecorator("htmltag")
+    ->removeDecorator("description")
+;
+?>
+</div>
+<div class="year-km-inputs">
+<?php
+echo $postForm->getElement("model_year")
+    ->removeDecorator("wrapper")
+    ->removeDecorator("label")
+    ->removeDecorator("htmltag")
+    ->removeDecorator("description"), " ",
+$postForm->getElement("km")
+    ->removeDecorator("wrapper")
+    ->removeDecorator("label")
+    ->removeDecorator("htmltag")
+    ->removeDecorator("description")
+;
+?>
+</div>
+<?php
+echo $postForm->getElement("fuel")
+    ->removeDecorator("wrapper")
+    ->removeDecorator("htmltag")
+    ->removeDecorator("description"), " ",
+$postForm->getElement("transmission")
+    ->removeDecorator("wrapper")
+    ->removeDecorator("htmltag")
+    ->removeDecorator("description"), " ",
+$postForm->getElement("traction")
+    ->removeDecorator("wrapper")
+    ->removeDecorator("htmltag")
+    ->removeDecorator("description")
 ;
 ?>
 <br />
-<input class="btn btn-primary" type="submit" value="Salvar equipamentos">
+<input class="btn btn-primary" type="submit" value="Salvar">
 <button class="btn" id="post-product-info-cancel" type="button">Cancelar</button>
-<?= $postForm->getElement("hash"); ?>
+<?= $postForm->getElement("hash")->removeDecorator('DtDdWrapper'); ?>
 </form><!-- end of #post-product-info-editing-area -->
 <?php
 }
 ?>
+<div class="post-product-info-others" id="post-product-info-others">
+<?php
+if ($post["armor"] || $editable) {
+?>
+<?= ($editable) ? '<label class="label-checkbox-armor label-checkbox">' : "" ?>
+<span class="label label-important<?= ($post["armor"]) ? ' has' : ' has-not' ?>">
+<?php
+if ($editable) {
+?>
+<input name="armor" type="checkbox"<?= ($post["armor"]) ? ' checked="checked"' : ''; ?> />
+<?php
+}
+?>
+Veículo blindado
+</span>
+<?= ($editable) ? "</label>" : "" ?>
+<?php
+}
+
+if ($post["handicapped"] || $editable) {
+?>
+<?= ($editable) ? '<label class="label-checkbox-handicapped label-checkbox">' : "" ?>
+<span class="label label-info<?= ($post["handicapped"]) ? ' has' : ' has-not' ?>"
+data-rel="tooltip" data-placement="bottom" title="para deficientes físicos">
+<?php
+if ($editable) {
+?>
+<input name="handicapped" type="checkbox"<?= ($post["handicapped"]) ? ' checked="checked"' : ''; ?> />
+<?php
+}
+?>
+<i class="icon-user icon-white"></i> Veículo adaptado
+</span>
+<?= ($editable) ? "</label>" : "" ?>
+<?php
+}
+?>
+<dl class="post-equipments-list clearfix <?= ($editable) ? 'editable' : 'uneditable' ?>">
+<?php
+foreach ($availableEquipment as $equipmentGroupKey => $equipmentGroup) {
+?>
+<dt><?= $this->escape($translatePosts->translate($equipmentGroupKey)); ?></dt>
+<dd>
+<ul>
+<?php
+    foreach ($equipmentGroup as $eachEquipment) {
+        $equipmentKey = "equipment_" . $post["type"] . "_" . $equipmentGroupKey . "_" . $eachEquipment;
+        $hasEquipment = (is_array($post["equipment"]) && in_array($equipmentKey, $post["equipment"]));
+?>
+<li>
+<label class="checkbox <?= ($hasEquipment) ? "has" : "has-not"; ?>">
+<input type="checkbox"
+<?= ($hasEquipment) ? ' checked="checked"' : '' ?>
+name="equipment[]"
+value="<?= $this->escape($equipmentKey); ?>"
+>
+<small><?= $this->escape($translatePosts->translate($equipmentKey)) ?></small>
+</label>
+</li>
+<?php
+    }
+?>
+</ul>
+</dd>
+<?php
+}
+unset($hasEquipment);
+?>
+</dl>
+</div>
