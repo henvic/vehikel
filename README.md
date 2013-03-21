@@ -13,13 +13,11 @@ Unless otherwise referenced to, the versions for the requirements are given by t
 * [MySQL](http://www.mysql.com/) >= 5.1
 * [memcached](http://memcached.org/)
 * [Redis](http://redis.io/)
-* [MongoDB](http://www.mongodb.org/)
 
 Please note that the default memcached is insecure by design because it's freely accessible from everywhere. You must restrict access to it yourself.
 
 ### Extensions
 * [memcached](http://php.net/memcached)
-* [mongo](http://php.net/mongo)
 * [GeoIP](http://www.maxmind.com/app/php) (you need a MaxMind's database service for that, this library will be changed soon)
 
 ### PHP Libraries
@@ -70,7 +68,7 @@ It will write a *application/configs/Environment.php.dist similar to *[applicati
 If a extension is missing you will know it.
 You can get most of them with [PECL](http://pecl.php.net/) or apt-get on a Debian-based system such as Ubuntu.
 
-For example, if mongo is missing you can use:
+For example, if mongo were missing you could use:
 
 ```
 sudo pecl channel-update pecl.php.net
