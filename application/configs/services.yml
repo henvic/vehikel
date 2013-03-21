@@ -43,6 +43,9 @@ services:
     loggerAdapterMongo:
         class: Ml_Logger_Adapter_Mongo
         arguments: [%logger.adapter.mongo.collection%, %logger.adapter.mongo.db%, @Mongo, @zendAuth]
+    loggerAdapterZendDb:
+        class: Ml_Logger_Adapter_ZendDb
+        arguments: [null]
     logger:
         class: Ml_Logger
         arguments: [@loggerAdapterMongo, @zendAuth]
