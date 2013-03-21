@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.24-0ubuntu0.12.04.1)
 # Database: vehikel
-# Generation Time: 2013-03-09 03:47:58 +0000
+# Generation Time: 2013-03-21 22:58:53 +0000
 # ************************************************************
 
 
@@ -70,6 +70,18 @@ CREATE TABLE `list_of_models` (
   `type` set('car','motorcycle','boat') NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `make` (`make`,`model`,`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table log
+# ------------------------------------------------------------
+
+CREATE TABLE `log` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data` text,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
