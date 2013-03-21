@@ -48,7 +48,7 @@ services:
         arguments: [null]
     logger:
         class: Ml_Logger
-        arguments: [@loggerAdapterMongo, @zendAuth]
+        arguments: [@loggerAdapterZendDb, @zendAuth]
     session:
         class: Ml_Model_Session
         arguments: [@zendAuth , @memCache]
