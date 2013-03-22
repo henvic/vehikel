@@ -7,7 +7,7 @@ module.exports = function (util, events, http) {
     var setFilters = function (query, filter, filterList) {
         var filterLength = filterList.length;
 
-        for (var pos = 0; pos < filterLength; pos++) {
+        for (var pos = 0; pos < filterLength; pos = pos + 1) {
             var field = filterList[pos].field;
             var fieldName = filterList[pos].name;
 

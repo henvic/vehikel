@@ -17,7 +17,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             queries = queryString.split("&");
 
             // Convert the array of strings into an object
-            for (i = 0, l = queries.length; i < l; i++) {
+            for (i = 0, l = queries.length; i < l; i = i + 1) {
                 temp = queries[i].split('=');
                 params[temp[0]] = temp[1];
             }
@@ -126,7 +126,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
 
             var content = "";
 
-            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos++) {
+            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
                 jsonFormSerialized.type = underscore.escape(terms[termPos].term);
 
                 content += "<li>";
@@ -166,7 +166,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             var jsonFormSerialized = parseQueryString(formSerialized.replace(/\+/g, ' '));
             var content = "";
 
-            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos++) {
+            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
                 jsonFormSerialized[termName] = underscore.escape(terms[termPos].term);
 
                 var escapedUrl = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
@@ -214,7 +214,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             var jsonFormSerialized = parseQueryString(formSerialized.replace(/\+/g, ' '));
             var content = "";
 
-            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos++) {
+            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
                 jsonFormSerialized[termName] = "1";
 
                 var escapedUrl = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
