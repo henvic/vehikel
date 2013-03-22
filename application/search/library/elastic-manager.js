@@ -16,6 +16,7 @@ module.exports = function (util, events, http, settings) {
         };
 
         var req = http.request(postRequest, function (res) {
+            res.setEncoding('utf8');
             res.on("end", function() {
                 if (typeof res.statusCode === "number" && res.statusCode >= 200 && res.statusCode <= 299) {
                     console.info("Document " + postRequest.path + " deleted");
@@ -52,6 +53,7 @@ module.exports = function (util, events, http, settings) {
         var buffer = "";
 
         var req = http.request(postRequest, function (res) {
+            res.setEncoding('utf8');
             res.on("data", function (data) {
                 buffer += data;
             });

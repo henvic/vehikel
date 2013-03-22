@@ -315,6 +315,7 @@ module.exports = function (util, events, http) {
         var buffer = "";
 
         var req = http.request(postRequest, function (res) {
+            res.setEncoding('utf8');
             res.on("data", function (data) {
                 buffer += data;
             });
