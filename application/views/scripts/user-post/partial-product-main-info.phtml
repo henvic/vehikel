@@ -36,7 +36,7 @@ if ($post["km"] != "") {
 if ($post["fuel"]) {
 ?>
 <?= $this->escape($translatePosts->translate("fuel")); ?>
-<?= $this->escape($translatePosts->translate($post["fuel"] . "_lowercase")); ?>
+ <?= $this->escape($translatePosts->translate($post["fuel"] . "_lowercase")); ?>
 <?php
 }
 ?></h4>
@@ -44,14 +44,14 @@ if ($post["fuel"]) {
 if ($post["transmission"]) {
 ?>
 <h4><?= $this->escape($translatePosts->translate("transmission")); ?>
-<?= $this->escape($translatePosts->translate($post["transmission"], "_lowercase")); ?>&nbsp;</h4>
+ <?= $this->escape($translatePosts->translate($post["transmission"] . "_lowercase")); ?>&nbsp;</h4>
 <?php
 }
 if ($post["traction"]) {
 ?>
 <h4>
 <?php
-echo $this->escape($translatePosts->translate("traction"), " ", $translatePosts->translate($post["traction"]));
+echo $this->escape($translatePosts->translate("traction") . " " . $translatePosts->translate($post["traction"]));
 ?>
 </h4>
 <?php
