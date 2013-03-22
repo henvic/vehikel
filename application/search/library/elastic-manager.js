@@ -46,7 +46,7 @@ module.exports = function (util, events, http, settings) {
             port: elasticSettings.port,
             method: "PUT",
             headers: {
-                "Content-Length": data.length
+                "Content-Length": Buffer.byteLength(data)
             }
         };
 

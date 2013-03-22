@@ -308,7 +308,7 @@ module.exports = function (util, events, http) {
             port: 9200,
             method: "GET",
             headers: {
-                "Content-Length": sendBuffer.length
+                "Content-Length": Buffer.byteLength(sendBuffer)
             }
         };
 
