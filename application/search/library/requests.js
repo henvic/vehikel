@@ -8,7 +8,6 @@ module.exports = function (util, events, http, querystring, url, elastic) {
 
     var searchRequest = function (request, response) {
         request.setEncoding("utf8");
-        response.setEncoding("utf8");
 
         var body = "";
 
