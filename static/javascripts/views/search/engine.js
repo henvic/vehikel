@@ -356,7 +356,11 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                 }, 500);
             }
 
-            var formSerialized = $(':input[value!=""]', $searchPostsForm).serialize();
+            var formSerialized = $(':input', $searchPostsForm).filter(
+                function () {
+                    return $(this).val();
+                }
+            ).serialize();
 
             var size = 20;
             var from = 1;
