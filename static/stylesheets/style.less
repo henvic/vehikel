@@ -49,6 +49,26 @@ body
     min-height: 400px;
 }
 
+.search-tips {
+    position: absolute;
+    z-index: 2;
+    margin-top: 5px;
+    background: #fafafa;
+    background: rgba(250, 250, 250, 0.97);
+    li {
+        padding: 5px;
+        color: @formOptional;
+        font-weight: bold;
+        cursor: pointer;
+        border: 1px solid #fdfdfd;
+    }
+
+    .active {
+        color: #ffffdd;
+        background: #53a3e1;
+    }
+}
+
 .search-text-area {
     position: relative;
 }
