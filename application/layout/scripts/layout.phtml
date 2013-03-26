@@ -148,7 +148,7 @@ if (isset($signedUserInfo)) {
 </div><!-- end of navbar -->
 <div class="row">
     <div class="span12">
-        <div id="search-box"></div>
+        <?= $this->render("search-form.phtml"); ?>
     </div>
 </div><!-- end of row -->
 <?= $this->render("messenger.phtml"); ?>

@@ -1,8 +1,8 @@
 /*global define, window */
 /*jshint indent:4 */
 
-define(["AppParams", "jquery", "underscore", "text!templates/search/form.html"],
-    function (AppParams, $, underscore, searchFormTemplate) {
+define(["AppParams", "jquery", "underscore"],
+    function (AppParams, $, underscore) {
         "use strict";
 
         var $searchResults = $("#search-results");
@@ -15,10 +15,6 @@ define(["AppParams", "jquery", "underscore", "text!templates/search/form.html"],
                 window.location = link;
             }
         });
-
-        var $searchBox = $("#search-box");
-
-        $searchBox.html(searchFormTemplate);
 
         var $searchText = $("#search-text");
         var $searchTips = $("#search-tips");
