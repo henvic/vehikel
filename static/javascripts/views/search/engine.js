@@ -28,7 +28,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         var $body = $("body");
         var $searchPostsForm = $("#search-posts-form");
         var $searchText = $("#search-text");
-        var $searchTextAutocomplete = $("#search-text-autocomplete");
         var $searchTypesNames = $('[name="type"]', $searchPostsForm);
         var $searchResults = $("#search-results");
         var $searchPriceMin = $("#search-price-min");
@@ -47,8 +46,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         var currentPage;
         var currentSort;
         var pages;
-        var lastSuggestions = [];
-        var allPastSuggestions = [];
 
         var maskMoney = function ($element) {
             $element.maskMoney(
@@ -496,40 +493,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             });
         };
 
-        $searchText.typeahead({
-            source : function (query, process) {
-                var formSerialized = $(':input[value!=""]', $searchPostsForm).serialize();
-                $.ajax({
-                    data: formSerialized,
-                    url: AppParams.webroot + "search-engine?suggestion=true",
-                    type: "GET",
-                    success: function (result) {
-                        lastSuggestions = result;
-                        process(result);
-
-                        //add all the suggestions to a array to cache them
-                        for (var eachSuggestionPosition in lastSuggestions) {
-                            if (allPastSuggestions.indexOf(lastSuggestions[eachSuggestionPosition]) === -1) {
-                                allPastSuggestions.push(lastSuggestions[eachSuggestionPosition]);
-                            }
-                        }
-
-                        if (result[0] !== undefined) {
-                            var q = $searchText.val();
-                            var qAutocomplete = "";
-
-                            if (result[0].indexOf(q.toLowerCase()) !== -1) {
-                                qAutocomplete = q.substr(0, result[0].length) + (result[0]).substr(q.length);
-                            }
-
-                            $searchTextAutocomplete.val(qAutocomplete);
-                        }
-                    }
-                });
-            },
-            items : 3
-        });
-
         var changeSearchTermByUrl = function ($termObject, name) {
             if (urlParts[name] !== undefined) {
                 $termObject.val(decodeURIComponent(urlParts[name].replace(/\+/gi, " ")));
@@ -561,24 +524,16 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         }
 
         $searchText.on("change", function (e) {
-            $searchTextAutocomplete.val("");
             search();
         });
 
         $searchText.on("keyup", function (e) {
             var q = $searchText.val();
-            var qAutocomplete = $searchTextAutocomplete.val();
-
-            if (q === "" || qAutocomplete.indexOf(q) < 0) {
-                $searchTextAutocomplete.val("");
-            }
 
             //only go ahead if the keyCode is a "printable character" or erase / delete
             var key = e.keyCode;
             if ((key >= 48 && key <= 90) || (key >= 188 && key <= 222) || key === 8 || key === 46) {
-                if (allPastSuggestions.indexOf(q.toLowerCase()) !== -1) {
-                    search();
-                }
+                search();
             }
         });
 
