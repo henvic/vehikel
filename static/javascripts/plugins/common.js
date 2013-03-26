@@ -1,7 +1,7 @@
 /*global define, window */
 /*jshint indent:4 */
 
-define(["jquery", "twitter.bootstrap", "jquery.fn.autoResize"], function ($) {
+define(["jquery", "twitter.bootstrap"], function ($) {
     "use strict";
 
     $(window).ready(function () {
