@@ -1,7 +1,8 @@
 /*global define, window */
 /*jshint indent:4 */
 
-define(["jquery", "twitter.bootstrap"], function ($) {
+define(["AppParams", "jquery", "underscore", "text!templates/search/form.html"],
+function (AppParams, $, underscore, searchFormTemplate) {
     "use strict";
 
     $(window).ready(function () {
@@ -54,6 +55,10 @@ define(["jquery", "twitter.bootstrap"], function ($) {
             window.location = link;
         }
     });
+
+    var $searchBox = $("#search-box");
+
+    $searchBox.html(searchFormTemplate);
 
 
     return function () {};
