@@ -529,6 +529,10 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             }, 200);
 
         });
+        $searchText.on("paste", function (e) {
+            setTimeout(function () {
+                search();
+            }, 200);
         });
 
         $searchText.on("keyup", function (e) {
