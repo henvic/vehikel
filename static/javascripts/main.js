@@ -23,6 +23,7 @@ var config = (function () {
 
             // common code
             common: "plugins/common",
+            search:  "plugins/search",
             authenticated: "plugins/authenticated"
 
         },
@@ -57,7 +58,7 @@ var config = (function () {
 
     require(["jquery", "twitter.bootstrap", "jquery.fn.autoResize"],
         function ($) {
-            require(["common"], function () {
+            require(["common", "search"], function () {
                 if (typeof AppParams.route !== 'undefined') {
                     require(["views/" + AppParams.route], function () {
                     });
