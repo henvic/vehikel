@@ -84,7 +84,6 @@ $this->headMeta() , PHP_EOL;
               </li>
               <li class="divider-vertical"></li>
           </ul>
-          <div id="search-navbar"></div>
         <ul class="nav pull-right">
             <li class="divider-vertical"></li>
 <?php
@@ -147,6 +146,11 @@ if (isset($signedUserInfo)) {
     </div>
   </div>
 </div><!-- end of navbar -->
+<div class="row">
+    <div class="span12">
+        <div id="search-box"></div>
+    </div>
+</div><!-- end of row -->
 <?= $this->render("messenger.phtml"); ?>
 <?php echo $this->layout()->content; ?>
 <footer class="footer">
