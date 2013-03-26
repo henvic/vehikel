@@ -326,7 +326,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                 }
             });
 
-            $('[name="type"][value=""]', $searchPostsForm).attr("checked", "checked");
+            $('[name="type"][value=""]', $searchPostsForm).prop("checked", true);
         };
 
         var transmissionTranslation = {
@@ -540,7 +540,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         changeSearchTermByUrl($searchPriceMax, "price-max");
 
         if (urlParts.type !== undefined) {
-            $searchTypesNames.filter('[value="' + underscore.escape(urlParts.type) + '"]').attr("checked", true);
+            $searchTypesNames.filter('[value="' + underscore.escape(urlParts.type) + '"]').prop("checked", true);
         }
 
         changeSearchTermByUrl($searchMake, "make");
@@ -608,7 +608,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                 $searchPriceMax.val(target.getAttribute("data-price-to"));
 
             } else if ($input.attr("type") === "radio") {
-                $input.filter('[value="' + underscore.escape(value) + '"]').attr("checked", true);
+                $input.filter('[value="' + underscore.escape(value) + '"]').prop("checked", true);
             } else {
                 $input.val(value);
             }
