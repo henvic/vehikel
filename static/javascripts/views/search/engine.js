@@ -530,9 +530,9 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         $searchText.on("keyup", function (e) {
             var q = $searchText.val();
 
-            //only go ahead if the keyCode is a "printable character" or erase / delete
+            //only go ahead if the keyCode is a "printable character" or erase / delete, return
             var key = e.keyCode;
-            if ((key >= 48 && key <= 90) || (key >= 188 && key <= 222) || key === 8 || key === 46) {
+            if ((key >= 48 && key <= 90) || (key >= 188 && key <= 222) || key === 8 || key === 46 || key === 13) {
                 search();
             }
         });
