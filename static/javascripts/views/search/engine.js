@@ -379,7 +379,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
 
             $.ajax({
                 data: formSerialized,
-                url: AppParams.webroot + "search-engine?size=" + encodeURIComponent(size) + "&from=" + encodeURIComponent(from) + "&sort=" + encodeURIComponent(sort),
+                url: AppParams.webroot + "/search-engine?size=" + encodeURIComponent(size) + "&from=" + encodeURIComponent(from) + "&sort=" + encodeURIComponent(sort),
                 type: "GET",
                 success: function (result) {
                     total = result.hits.total;
