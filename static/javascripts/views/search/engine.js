@@ -524,7 +524,11 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         }
 
         $searchText.on("change", function (e) {
-            search();
+            setTimeout(function () {
+                search();
+            }, 200);
+
+        });
         });
 
         $searchText.on("keyup", function (e) {
