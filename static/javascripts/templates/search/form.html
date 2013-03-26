@@ -1,6 +1,6 @@
-<form method="get" action="/search" class="navbar-search form-inline" id="search-posts-form">
+<form method="get" action="/search" class="form-inline" id="search-posts-form">
     <div class="search-text-area">
-        <label for="search-text"><i class="icon-white icon-search"></i>&nbsp;</label>
+        <label for="search-text"><i class="icon-search"></i>&nbsp;</label>
         <input id="search-text" type="text" placeholder="O que você procura?" maxlength="80" class="search-text search-query" name="q" autocomplete="off" />
         <button id="facets-toggle" class="btn visible-phone pull-right" data-toggle="button"><i class="icon-filter"></i><span class="hidden"> Filtros</span></button>
     </div>
@@ -29,4 +29,6 @@
             <input type="radio" name="type" value="boat" /> embarcação
         </label>
     </div>
+    <ul id="search-tips" class="search-tips unstyled span3 hidden">
+    </ul>
 </form>
