@@ -143,5 +143,16 @@ define(["AppParams", "jquery", "underscore"],
             }
         });
 
+        $(document.documentElement).on("keyup", function (e) {
+            if (e.target.nodeName.toLowerCase() !== "body") {
+                return;
+            }
+
+            if (e.keyCode === 191) {
+                // focus on search by pressing slash (/)
+                $searchText.focus();
+            }
+        });
+
         return function () {};
     });
