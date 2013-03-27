@@ -70,6 +70,8 @@ define(["AppParams", "jquery", "underscore"],
                 hideSearchTips();
             } else if (key === 13) {
                 loadSearch();
+            } else if (key === 27) {
+                hideSearchTips();
             } else if (key === 38 || key === 40) { //if key is up or down
                 var isUp = (key === 38);
                 var offset;
