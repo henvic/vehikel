@@ -23,6 +23,7 @@ function (AppParams, $) {
             var windowObj = $(window);
             var $stickAnchor = $("#sticky-anchor");
             var $navbar = $("#navbar");
+            var $searchPostsForm = $("#search-posts-form");
 
             var stickAnchorOffsetTop = $stickAnchor.offset().top;
             var isOnTop = null;
@@ -32,11 +33,13 @@ function (AppParams, $) {
                     if (isOnTop !== false) {
                         isOnTop = false;
                         $navbar.removeClass("navbar-fixed-top-override").addClass("navbar-fixed-top-override2");
+                        $searchPostsForm.addClass("search-box-fixed");
                     }
                 } else {
                     if (isOnTop !== true) {
                         isOnTop = true;
                         $navbar.addClass("navbar-fixed-top-override").removeClass("navbar-fixed-top-override2");
+                        $searchPostsForm.removeClass("search-box-fixed");
                     }
                 }
             }
