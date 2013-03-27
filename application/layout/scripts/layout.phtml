@@ -146,11 +146,7 @@ if (isset($signedUserInfo)) {
     </div>
   </div>
 </div><!-- end of navbar -->
-<div class="row">
-    <div class="span12">
-        <?= $this->render("search-form.phtml"); ?>
-    </div>
-</div><!-- end of row -->
+<?= $this->render("search-form.phtml"); ?>
 <?= $this->render("messenger.phtml"); ?>
 <?php echo $this->layout()->content; ?>
 <footer class="footer">
