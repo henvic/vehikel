@@ -21,16 +21,23 @@ function (AppParams, $) {
 
         var NavbarClosure = (function () {
             var windowObj = $(window);
-            var stickAnchor = $("#sticky-anchor");
-            var navbar = $("#navbar");
+            var $stickAnchor = $("#sticky-anchor");
+            var $navbar = $("#navbar");
+
+            var stickAnchorOffsetTop = $stickAnchor.offset().top;
+            var isOnTop = null;
+
             function stickyRelocate() {
-                var hasClass = navbar.hasClass("navbar-fixed-top-override");
-                if (windowObj.scrollTop() > stickAnchor.offset().top) {
-                    if (hasClass) {
-                        navbar.removeClass("navbar-fixed-top-override").addClass("navbar-fixed-top-override2");
+                if (windowObj.scrollTop() > stickAnchorOffsetTop) {
+                    if (isOnTop !== false) {
+                        isOnTop = false;
+                        $navbar.removeClass("navbar-fixed-top-override").addClass("navbar-fixed-top-override2");
                     }
-                } else if (! hasClass) {
-                    navbar.addClass("navbar-fixed-top-override").removeClass("navbar-fixed-top-override2");
+                } else {
+                    if (isOnTop !== true) {
+                        isOnTop = true;
+                        $navbar.addClass("navbar-fixed-top-override").removeClass("navbar-fixed-top-override2");
+                    }
                 }
             }
 
