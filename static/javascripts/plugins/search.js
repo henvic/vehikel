@@ -5,6 +5,7 @@ define(["AppParams", "jquery", "underscore"],
     function (AppParams, $, underscore) {
         "use strict";
 
+        //the #search-results is used both on the search page as well as on the user posts pages
         var $searchResults = $("#search-results");
 
         $searchResults.on("click", ".posts-table-view tr", function (e) {
