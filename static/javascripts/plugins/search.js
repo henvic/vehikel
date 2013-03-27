@@ -55,7 +55,7 @@ define(["AppParams", "jquery", "underscore"],
             setTimeout(hideSearchTips, 300);
         });
 
-// prevent the cursor from moving when the up and down arrows are used
+        // prevent the cursor from moving when the up and down arrows are used
         $searchText.on("keydown", function (e) {
             if (e.keyCode === 38 || e.keyCode === 40) {
                 e.preventDefault();
