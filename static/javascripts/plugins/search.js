@@ -139,7 +139,11 @@ define(["AppParams", "jquery", "underscore"],
                             }
                         }
 
-                        $searchTips.removeClass("hidden").html(html);
+                        if (autoComplete.length > 0) {
+                            $searchTips.removeClass("hidden").html(html);
+                        } else {
+                            hideSearchTips();
+                        }
                     }
                 });
             }
