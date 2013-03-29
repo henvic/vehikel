@@ -624,8 +624,7 @@
 * S-18
 * Tiggo
 
-## BRAND:
-* Chrysler
+## Chrysler
 * 200
 * 300 C
 * 300 M
@@ -660,8 +659,7 @@
 * Tico
 
 
-## BRAND:
-* Daihatsu
+## Daihatsu
 * Applause
 * Charade
 * Cuore
