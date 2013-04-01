@@ -252,7 +252,10 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                 return;
             }
 
-            if (e.keyCode === 37 && typeof currentPage === "number" && currentPage > 1) {
+            if (e.keyCode === 191) {
+                // focus on search by pressing slash (/)
+                $searchText.focus();
+            } else if (e.keyCode === 37 && typeof currentPage === "number" && currentPage > 1) {
                 //pagination with left key
                 search({page: currentPage - 1, sort: currentSort, scroll: true});
             } else if (e.keyCode === 39 && typeof currentPage === "number" && typeof pages === "number" && pages > currentPage) {
