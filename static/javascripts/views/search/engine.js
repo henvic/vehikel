@@ -1,4 +1,4 @@
-/*global define */
+/*global define, require */
 /*jshint indent:4 */
 
 define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html', 'text!templates/search/facets.html', 'jquery.maskMoney'],
@@ -513,9 +513,15 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         changeSearchTermByUrl($searchHandicapped, "handicapped");
         changeSearchTermByUrl($searchArmor, "armor");
 
+        // if the query is defined on the page load, search by it
+        // otherwise, if the search is accessed without a query and not on the index page,
+        // focus it, and if the page is in the index page, load the index js file
         if (urlParts.q !== undefined) {
             $searchText.val(decodeURIComponent(urlParts.q.replace(/\+/gi, " ")));
             search({page: urlParts.page || 1, sort: urlParts.sort});
+        } else if (window.location.pathname === "/") {
+            require(["views/index/index"], function () {
+            });
         } else {
             $searchText.focus();
         }
