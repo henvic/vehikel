@@ -10,24 +10,8 @@
 
 class IndexController extends Zend_Controller_Action
 {
-    public function unsignedAction()
-    {
-        
-    }
-    
-    public function signedAction()
-    {
-        
-    }
-    
     public function indexAction()
     {
-        $auth = Zend_Auth::getInstance();
-        
-        if ($auth->hasIdentity()) {
-            $this->_forward("signed");
-        } else {
-            $this->_forward("unsigned");
-        }
+        $this->_forward("index", "search");
     }
 }
