@@ -30,6 +30,7 @@ class UserPostController extends Ml_Controller_Action
         }
 
         $this->view->assign("maxPicturesLimit", $posts->getMaxPicturesLimit());
+        $this->view->assign("config", $this->_config);
 
         $this->view->addJsParam("route", "user/post");
         $this->view->addJsParam("postId", $post["id"]);
