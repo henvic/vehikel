@@ -637,6 +637,14 @@ define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.ht
                     $breadCrumbModel.attr("href", breadCrumbModelLink);
 
                     $('#post-breadcrumb-name').text(result.name);
+
+                    window.document.title =
+                        result.make + " " +
+                        result.model + " " +
+                        result.engine + " " +
+                        result.name + " – " +
+                        AppParams.applicationname
+                    ;
                 }
             });
         });
