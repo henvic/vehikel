@@ -1,4 +1,6 @@
 <?php
+$config = $this->config;
+
 $translatePosts = $this->translatePosts;
 /** @var $translatePosts \Zend_Translate_Adapter() */
 
@@ -10,9 +12,21 @@ $postForm = $this->postForm;
 $escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_stream_1stpage");
 $address = $userInfo["address"];
 
-$escapedTitle = $this->escape($post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"]);
+$unEscapedTitle = $post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"];
+$escapedTitle = $this->escape($unEscapedTitle);
 
-$this->headTitle($escapedTitle);
+if ($post["price"]) {
+    $priceTitle = new Zend_Currency(array("symbol" => "R$"), "pt_BR");
+    $priceTitle->setValue($this->escape($post["price"] / 100));
+    $this->headTitle($unEscapedTitle . " " . $priceTitle, "PREPEND");
+    $escapedSharingTitle = $this->escape($unEscapedTitle . " " . $priceTitle);
+} else {
+    $this->headTitle($unEscapedTitle, "PREPEND");
+    $escapedSharingTitle = $this->escape($unEscapedTitle);
+}
+
+$escapedPostUriExternal = "http://" . $config["webhost"] . $config["webroot"] .
+    $this->url(["username" => $userInfo["username"], "post_id" => $post["id"]], "user_post");
 
 $searchLink = $this->url(array(), "search");
 ?>
@@ -124,6 +138,19 @@ Adicione fotos do veículo, confira como vai ficar o anúncio e aperte o botão 
 ?>
 <?= $this->render("user-post/partial-pictures.phtml"); ?>
 <br />
+<div class="sharing-no-faces hidden-phone">
+<div class="fb-like" data-href="<?= $escapedPostUriExternal; ?>"
+ data-send="true" data-width="450"></div>
+ <a href="https://twitter.com/share" class="twitter-share-button"
+ data-url="<?= $escapedPostUriExternal; ?>"
+ data-text="<?= $escapedSharingTitle; ?>"
+ data-via="<?= $this->escape($config["services"]["twitter"]["username"]); ?>"
+ data-lang="pt">Tweetar</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];
+if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";
+fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+</script>
+</div><!-- end of .sharing -->
 <address id="post-address" class="vcard post-seller-address">
 <div class="row">
 <div class="span6">
