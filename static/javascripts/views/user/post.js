@@ -10,6 +10,8 @@ function (AppParams, $, underscore, mapModalTemplate) {
         });
     }
 
+    var $postProductMainInfo = $("#post-product-main-info");
+
     var $mapLink = $("#map-link");
     var $mapModal = $("#map-modal");
     var $mapModalInner;
@@ -58,6 +60,12 @@ function (AppParams, $, underscore, mapModalTemplate) {
     $postInfoTabsLinks.click(function (e) {
         e.preventDefault();
         $(this).tab('show');
+
+        if (e.target.getAttribute("href") === "#post-contact") {
+            $postProductMainInfo.addClass("hidden-phone");
+        } else {
+            $postProductMainInfo.removeClass("hidden-phone");
+        }
     });
 
     var $postContact = $('#post-contact');
@@ -115,8 +123,6 @@ function (AppParams, $, underscore, mapModalTemplate) {
     $postPicturesThumbnails.on("mouseenter", "li", function (e) {
         e.currentTarget.click();
     });
-
-    var $postProductMainInfo = $("#post-product-main-info");
 
     // don't let a non-editor user change the checked state of the equipment list
     if (! AppParams.accountEditable) {
