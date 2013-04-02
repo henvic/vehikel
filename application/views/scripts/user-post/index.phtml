@@ -14,16 +14,7 @@ $address = $userInfo["address"];
 
 $unEscapedTitle = $post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"];
 $escapedTitle = $this->escape($unEscapedTitle);
-
-if ($post["price"]) {
-    $priceTitle = new Zend_Currency(array("symbol" => "R$"), "pt_BR");
-    $priceTitle->setValue($this->escape($post["price"] / 100));
-    $this->headTitle($unEscapedTitle . " " . $priceTitle, "PREPEND");
-    $escapedSharingTitle = $this->escape($unEscapedTitle . " " . $priceTitle);
-} else {
-    $this->headTitle($unEscapedTitle, "PREPEND");
-    $escapedSharingTitle = $this->escape($unEscapedTitle);
-}
+$this->headTitle($unEscapedTitle, "PREPEND");
 
 $escapedPostUriExternal = "http://" . $config["webhost"] . $config["webroot"] .
     $this->url(["username" => $userInfo["username"], "post_id" => $post["id"]], "user_post");
