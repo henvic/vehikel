@@ -13,6 +13,8 @@ $this->headMeta()->appendName('description', $config['description']);
 
 $this->headTitle()->setSeparator(' – ');
 
+$this->addJsParam("applicationname", $config['applicationname']);
+
 $this->addJsParam("webroot", $config['webroot']);
 
 $this->addJsParam("cdn", $config['cdn']);
