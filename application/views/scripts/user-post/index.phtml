@@ -23,18 +23,6 @@ $escapedPostUriExternal = "http://" . $config["webhost"] . $config["webroot"] .
     $this->url(["username" => $userInfo["username"], "post_id" => $post["id"]], "user_post");
 
 $searchLink = $this->url(array(), "search");
-?>
-<div class="container">
-<div class="row">
-<div class="span12">
-<?php
-if ($this->editable) {
-?>
-<noscript>
-<p class="alert">Você precisa de JavaScript ativo para efetuar algumas ações de edição deste anúncio.</p>
-</noscript>
-<?php
-}
 
 $breadCrumbTypeLink = $searchLink . "?q=*&amp;type=" . urlencode(mb_strtolower($post["type"]));
 $breadCrumbMakeLink = $breadCrumbTypeLink . "&amp;make=" . urlencode(mb_strtolower($post["make"]));
@@ -61,7 +49,19 @@ $breadCrumb = $this->postBreadCrumb(array(
         "name" => $post["make"] . " " . $post["model"] . " " . $post["name"]
     )
 ));
-
+?>
+<div class="container">
+<div class="row">
+<div class="span12">
+<?= $breadCrumb; ?>
+<?php
+if ($this->editable) {
+?>
+<noscript>
+<p class="alert">Você precisa de JavaScript ativo para efetuar algumas ações de edição deste anúncio.</p>
+</noscript>
+<?php
+}
 ?>
 <h1 id="post-product-name" class="post-product-name <?= ($this->editable) ? "post-editable" : ""; ?>"
 <?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?>>
@@ -266,10 +266,6 @@ if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
 </div><!-- end of .row -->
 <?php
 }?>
-<div class="visible-mobile">
-&nbsp;
-</div>
-<?= $breadCrumb; ?>
 </div><!-- end of .span9 -->
 </div><!-- end of .row -->
 </div><!-- end of .container -->
