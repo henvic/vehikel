@@ -133,6 +133,7 @@ The [New BSD License](http://en.wikipedia.org/wiki/New_BSD_license) and the [MIT
 ## Third-party content in use
 * [Chevrolet impala Icon](http://www.iconarchive.com/show/classic-cars-icons-by-cemagraphics/chevrolet-impala-icon.html)
 * [Magnifying glass Icon](http://commons.wikimedia.org/wiki/File:Magnifying_glass_icon.svg)
+* [Maps Icon](http://www.iconarchive.com/show/mobile-icons-by-webiconset/maps-icon.html)
 
 ## Author
 Henrique Vicente de Oliveira Pinto ([email](mailto:henriquevicente@gmail.com), [Twitter](https://twitter.com/henriquev), [Flickr](http://www.flickr.com/photos/henriquev), [Linkedin](http://linkedin.com/in/henvic)).
