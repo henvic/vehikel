@@ -8,27 +8,29 @@ class Ml_View_Helper_PostBreadcrumb extends Zend_View_Helper_Abstract
      */
     public function PostBreadCrumb($paths)
     {
-        $content = '<ul class="post-breadcrumb breadcrumb">';
+        $content = '<small class="post-breadcrumb">';
 
         $breadCrumbSize = count($paths);
+
+        $content .= '<span class="hidden-phone"><a href="' . $this->view->url(array(), "search") . '?q=*">Carros, motos e outros</a> &gt; </span>';
 
         for ($pos = 0; $pos < $breadCrumbSize; $pos++) {
             $path = $paths[$pos];
 
             if ($pos == $breadCrumbSize - 1) {
-                $content .= '<li id="' . $this->view->escape($path["id"]) . '" class="active">' .
-                    $this->view->escape($path["name"]) . '</li>';
+                $content .= '<span id="' . $this->view->escape($path["id"]) . '" class="active">' .
+                    $this->view->escape($path["name"]) . '</span>';
             } else {
 
-                $content .= '<li id="' . $this->view->escape($path["id"]) . '"><a href="' .
+                $content .= '<span id="' . $this->view->escape($path["id"]) . '"><a href="' .
                     $path["link"] .
                     '">' . $this->view->escape($path["name"]) .
-                    '</a> <span class="divider">&gt;</span></li>'
+                    '</a> <span class="divider">&gt;</span> </span>'
                 ;
             }
         }
 
-        $content .= '</ul>';
+        $content .= '</small>';
 
         return $content;
     }
