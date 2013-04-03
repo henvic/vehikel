@@ -155,9 +155,22 @@ body
 }
 
 .map-link {
-	&, &:link, &visited, &:active, &:hover {
-	    color: @greenT;
-	    text-decoration: none;
+    background: url(../images/maps-icon.png) no-repeat;
+    width: 48px;
+    height: 48px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: block;
+    text-decoration: none;
+}
+
+.external-link-promotion {
+    margin-top: 15px;
+    a {
+        &,&:link, &:visited, &:active, &:hover {
+            color: #333;
+            font-weight: bold;
+        }
     }
 }
 

@@ -10,6 +10,9 @@ $post = $this->post;
 $postForm = $this->postForm;
 
 $escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_stream_1stpage");
+
+$escapedUSerLinkExternal = "http://" . $config["webhost"] . $config["webroot"] . $escapedUserLink;
+
 $address = $userInfo["address"];
 
 $unEscapedTitle = $post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"];
@@ -144,9 +147,11 @@ fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 <address id="post-address" class="vcard post-seller-address">
 <div class="row">
 <div class="span6">
-<div class="pull-left vcard-image"><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo); ?></a></div>
-<strong class="fn"><a href="<?= $escapedUserLink; ?>"><?= $this->escape($userInfo["name"]); ?></a></strong>
-<a href="<?= $escapedUserLink; ?>" class="btn btn-mini">estoque</a><br />
+<table>
+<tr>
+<td><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo); ?></a></td>
+<td>
+<strong class="fn"><a href="<?= $escapedUserLink; ?>"><?= $this->escape($userInfo["name"]); ?></a></strong><br />
 <?php
 if ($userInfo["account_type"] == "retail") {
 ?>
@@ -162,25 +167,30 @@ if ($userInfo["account_type"] == "retail") {
 ?>,
 <span class="postal-code"><?= $this->escape($address["postal_code"]); ?></span><span class="hidden">,
 <span class="country-name"><?= $this->escape($address["country_name"]); ?></span></span>
+</td>
+<td>
+<a href="<?= $this->addressMapLink($address); ?>" id="map-link" class="map-link"
+ data-address="<?= $this->escape($this->addressMapLink($address, true)); ?>"><span class="hidden">mapa</span></a>
 <?php
 }
 ?>
+</td>
+</table>
 </div><!-- end of .span6 -->
 <div class="span6">
 <ul>
 <?= $this->addressPhoneList($address["phones"]); ?>
-<li><small><a href="<?= $this->addressMapLink($address); ?>" id="map-link" class="btn btn-small map-link"
-data-address="<?= $this->escape($this->addressMapLink($address, true)); ?>">
- <i class="icon-map-marker"></i>&nbsp;como chegar / mapa</a></small>
-</li>
 </ul>
-<div id="map-modal"></div>
 </div><!-- end of .span6 -->
 </div><!-- end of .row -->
+<div id="map-modal"></div>
 </address>
-<!--<hr />-->
 <div class="row">
 <div class="span12">
+<p class="text-center external-link-promotion">
+<a href="<?= $escapedUSerLinkExternal; ?>"
+ title="<?= $this->escape($userInfo["username"] . " em " . $config["applicationname"]);
+?>"><?= $escapedUSerLinkExternal; ?></a></p>
 <ul class="nav nav-tabs post-info-tabs" id="post-info-tabs">
 <li class="active"><a href="#post-description">Descrição</a></li>
 <li><a href="#post-contact"><i class="icon-envelope"></i> Enviar proposta</a></li>
