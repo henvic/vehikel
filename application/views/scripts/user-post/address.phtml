@@ -9,7 +9,7 @@ $address = $userInfo["address"];
 <div class="span6">
 <table>
 <tr>
-<td><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo); ?></a></td>
+<td><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo, "square.jpg", 60, 60); ?></a></td>
 <td>
 <strong class="fn"><a href="<?= $escapedUserLink; ?>"><?= $this->escape($userInfo["name"]); ?></a></strong><br />
 <?php
