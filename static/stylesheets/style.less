@@ -383,6 +383,10 @@ input.no-spin-button::-webkit-inner-spin-button {
 .post-product-main-info-parent {
     @media (min-width : 767px) {
         float: right;
+        box-sizing: border-box;
+        padding-left: 5px;
+        border: 1px solid #f4f4f4;
+        border-top: none;
     }
 }
 
@@ -504,7 +508,17 @@ input.no-spin-button::-webkit-inner-spin-button {
     .gradient(#fbfbfb, #fafafa, #f4f4f4);
     padding-top: 8px;
     padding-left: 8px;
-    .border-radius(3px, 0, 0, 3px)
+    .border-radius(3px, 0, 0, 3px);
+
+    li {
+        margin-right: 15px;
+    }
+
+    a {
+        background: rgb(230, 230, 230);
+        background: rgba(255, 255, 255, 0.3);
+        color: #555;
+    }
 }
 
 .post-editable {
