@@ -124,8 +124,8 @@ install() {
   curl -o symfony-2.0.16.tar.gz -O https://nodeload.github.com/symfony/symfony/tarball/v2.0.16
 
   echo "Downloading ZendFramework"
-  curl -o ZendFramework-1.11.12-minimal.tar.gz -O \
-  http://framework.zend.com/releases/ZendFramework-1.11.12/ZendFramework-1.11.12-minimal.tar.gz
+  curl -o ZendFramework-1.12.3-minimal.tar.gz -O \
+  http://framework.zend.com/releases/ZendFramework-1.12.3/ZendFramework-1.12.3-minimal.tar.gz
 
   echo "Downloading zend-form-decorators-bootstrap"
   curl -o twitter.bootstrap.tar.gz -O \
@@ -158,10 +158,10 @@ install() {
   mv symfony-symfony-3b696f7/src/Symfony Symfony
   rm -r symfony-symfony-3b696f7
 
-  tar xzf ZendFramework-1.11.12-minimal.tar.gz
-  mv ZendFramework-1.11.12-minimal/library/Zend .
-  rm -r ZendFramework-1.11.12-minimal
-  rm ZendFramework-1.11.12-minimal.tar.gz
+  tar xzf ZendFramework-1.12.3-minimal.tar.gz
+  mv ZendFramework-1.12.3-minimal/library/Zend .
+  rm -r ZendFramework-1.12.3-minimal
+  rm ZendFramework-1.12.3-minimal.tar.gz
 
   tar xzf twitter.bootstrap.tar.gz
   mv Emagister-zend-form-decorators-bootstrap-78f94a6/Twitter .
