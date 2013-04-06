@@ -132,7 +132,7 @@ Veículo blindado
 if ($post["handicapped"] || $editable) {
 ?>
 <?= ($editable) ? '<label class="label-checkbox-handicapped label-checkbox">' : "" ?>
-<span class="label label-info<?= ($post["handicapped"]) ? ' has' : ' has-not' ?>"
+<span class="label label-handicapped<?= ($post["handicapped"]) ? ' has' : ' has-not' ?>"
 data-rel="tooltip" data-placement="bottom" title="para deficientes físicos">
 <?php
 if ($editable) {
@@ -141,7 +141,7 @@ if ($editable) {
 <?php
 }
 ?>
-<i class="icon-user icon-white"></i> Veículo adaptado
+<i class="icon-vehicle-adapted"></i> Adaptado
 </span>
 <?= ($editable) ? "</label>" : "" ?>
 <?php
