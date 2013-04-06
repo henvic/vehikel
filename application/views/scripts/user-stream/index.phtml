@@ -23,162 +23,167 @@ $escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_
 $escapedUserLinkExternal = "http://" . $config["webhost"] . $config["webroot"] . $escapedUserLink;
 ?>
 <div class="container">
-<?= $this->render("user-post/address.phtml"); ?>
-&nbsp;
 <div class="row">
-<div class="span2">
-<div class="btn-group" data-toggle="buttons-radio">
-<?php
-if ($this->postsViewStyle === "thumbnail") {
-echo '<button id="posts-view-style-thumbnail" class="btn active"><i class="icon-th"></i></button>
+    <?= $this->render("search/facets.phtml"); ?>
+    <div class="span10">
+        <?= $this->render("user-post/address.phtml"); ?>
+        &nbsp;
+        <div class="row">
+            <div class="span2">
+                <div class="btn-group" data-toggle="buttons-radio">
+                    <?php
+                    if ($this->postsViewStyle === "thumbnail") {
+                        echo '<button id="posts-view-style-thumbnail" class="btn active"><i class="icon-th"></i></button>
 <button id="posts-view-style-table" class="btn"><i class="icon-th-list"></i></button>';
-} else {
-echo '<button id="posts-view-style-thumbnail" class="btn"><i class="icon-th"></i></button>
+                    } else {
+                        echo '<button id="posts-view-style-thumbnail" class="btn"><i class="icon-th"></i></button>
 <button id="posts-view-style-table" class="btn active"><i class="icon-th-list"></i></button>';
-}
-?>
-</div><!-- end of .btn-group -->
-<div class="visible-phone">&nbsp;</div>
-</div><!-- end of .span2 -->
-<div class="span10">
-<div class="btn-group dropdown" data-toggle="buttons-radio">
-<a class="btn disabled">
-<?php
-if (! $paginator->getTotalItemCount()) {
-    echo 'Zero';
-} else {
-    $defaultPostsPerPage = $paginator->getDefaultItemCountPerPage();
-    $page = $paginator->getCurrentPageNumber();
-    $postsInThisPage = $paginator->getCurrentItemCount();
-    $totalPosts = $paginator->getTotalItemCount();
+                    }
+                    ?>
+                </div><!-- end of .btn-group -->
+                <div class="visible-phone">&nbsp;</div>
+            </div><!-- end of .span2 -->
+            <div class="span8">
+                <div class="btn-group dropdown" data-toggle="buttons-radio">
+                    <a class="btn disabled">
+                        <?php
+                        if (! $paginator->getTotalItemCount()) {
+                            echo 'Zero';
+                        } else {
+                            $defaultPostsPerPage = $paginator->getDefaultItemCountPerPage();
+                            $page = $paginator->getCurrentPageNumber();
+                            $postsInThisPage = $paginator->getCurrentItemCount();
+                            $totalPosts = $paginator->getTotalItemCount();
 
-    $firstShowedPostItem = (($page - 1) * $defaultPostsPerPage) + 1;
-    $lastShowedPostItem = $firstShowedPostItem + $postsInThisPage - 1;
+                            $firstShowedPostItem = (($page - 1) * $defaultPostsPerPage) + 1;
+                            $lastShowedPostItem = $firstShowedPostItem + $postsInThisPage - 1;
 
-    echo $firstShowedPostItem, '-', $lastShowedPostItem, ' de ', $this->escape($totalPosts);
-}
-?>
-</a>
-<a href="" class="btn dropdown-toggle" data-toggle="dropdown">
-<?php
-switch ($type) {
-    case "" :
-        echo "veículos ";
-        break;
-    case "car" :
-        echo "carros ";
-        break;
-    case "motorcycle" :
-        echo "motos ";
-        break;
-    case "boat" :
-        echo "embarcações ";
-        break;
-}
+                            echo $firstShowedPostItem, '-', $lastShowedPostItem, ' de ', $this->escape($totalPosts);
+                        }
+                        ?>
+                    </a>
+                    <a href="" class="btn dropdown-toggle" data-toggle="dropdown">
+                        <?php
+                        switch ($type) {
+                            case "" :
+                                echo "veículos ";
+                                break;
+                            case "car" :
+                                echo "carros ";
+                                break;
+                            case "motorcycle" :
+                                echo "motos ";
+                                break;
+                            case "boat" :
+                                echo "embarcações ";
+                                break;
+                        }
 
-switch ($status) {
-    case "staging" :
-        echo "em criação";
-        break;
-    case "active" :
-        if ($editable) {
-            echo "em anúncio";
-        }
-        break;
-    case "end" :
-        echo "em término";
-        break;
-}
-?>
- <b class="caret"></b>
-</a>
-<ul class="dropdown-menu" id="status-type-menu-dropdown">
-<li<?= ($editable) ? ' class="dropdown-submenu"' : '' ?>>
-<a href="<?= $escapedUserLink ?>?type=car" class="type">carros</a>
-<?php
-if ($editable) {
-?>
-<ul class="dropdown-menu">
-<li><a href="<?= $escapedUserLink ?>?type=car&amp;status=staging"><i class="icon-lock"></i> em criação</a></li>
-<li><a href="<?= $escapedUserLink ?>?type=car"><i class="icon-globe"></i> em anúncio</a></li>
-<li><a href="<?= $escapedUserLink ?>?type=car&amp;status=end"><i class="icon-lock"></i> em término</a></li>
-</ul>
-<?php
-}
-?>
-</li>
-<li<?= ($editable) ? ' class="dropdown-submenu"' : '' ?>>
-<a href="<?= $escapedUserLink ?>?type=motorcycle" class="type">motos</a>
-<?php
-if ($editable) {
-?>
-<ul class="dropdown-menu">
-<li><a href="<?= $escapedUserLink ?>?type=motorcycle&amp;status=staging"><i class="icon-lock"></i> em criação</a></li>
-<li><a href="<?= $escapedUserLink ?>?type=motorcycle"><i class="icon-globe"></i> em anúncio</a></li>
-<li><a href="<?= $escapedUserLink ?>?type=motorcycle&amp;status=end"><i class="icon-lock"></i> em término</a></li>
-</ul>
-<?php
-}
-?>
-</li>
-<li<?= ($editable) ? ' class="dropdown-submenu"' : '' ?>>
-<a href="<?= $escapedUserLink ?>?type=boat" class="type">embarcações</a>
-<?php
-if ($editable) {
-?>
-<ul class="dropdown-menu">
-<li><a href="<?= $escapedUserLink ?>?type=boat&status=staging"><i class="icon-lock"></i> em criação</a></li>
-<li><a href="<?= $escapedUserLink ?>?type=boat"><i class="icon-globe"></i> em anúncio</a></li>
-<li><a href="<?= $escapedUserLink ?>?type=boat&status=end"><i class="icon-lock"></i> em término</a></li>
-</ul>
-<?php
-}
-?>
-</li>
-<li class="divider"></li>
-<li<?= ($editable) ? ' class="dropdown-submenu"' : '' ?>>
-<a href="<?= $escapedUserLink ?>" class="type">Todos os veículos</a>
-<?php
-if ($editable) {
-?>
-<ul class="dropdown-menu">
-<li><a href="<?= $escapedUserLink ?>?status=staging"><i class="icon-lock"></i> em criação</a></li>
-<li><a href="<?= $escapedUserLink ?>"><i class="icon-globe"></i> em anúncio</a></li>
-<li><a href="<?= $escapedUserLink ?>?status=end"><i class="icon-lock"></i> em término</a></li>
-</ul>
-<?php
-}
-?>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="row">
-<div class="span12">
-&nbsp;
-<div id="search-results">
-<?php
-echo $this->render("user-stream/table-view.phtml");
-echo $this->render("user-stream/thumbnail-view.phtml");
-?>
-</div><!-- end of #user-stream-posts -->
-<div class="sharing hidden-phone">
-<div class="fb-like" data-href="<?= $escapedUserLinkExternal; ?>"
- data-send="true" data-width="450" data-show-faces="true"></div>
-<a href="https://twitter.com/share" class="twitter-share-button"
- data-url="<?= $escapedUserLinkExternal; ?>"
- data-text="<?= $this->escape($userInfo['name']); ?>"
- data-via="<?= $this->escape($config["services"]["twitter"]["username"]); ?>"
- data-lang="pt">Tweetar</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];
-if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";
-fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-</script>
-</div><!-- end of .sharing -->
-<?php
-echo $this->paginationControl($paginator, null, "user-stream/pagination.phtml");
-?>
-</div><!-- end of .span12 -->
+                        switch ($status) {
+                            case "staging" :
+                                echo "em criação";
+                                break;
+                            case "active" :
+                                if ($editable) {
+                                    echo "em anúncio";
+                                }
+                                break;
+                            case "end" :
+                                echo "em término";
+                                break;
+                        }
+                        ?>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu" id="status-type-menu-dropdown">
+                        <li<?= ($editable) ? ' class="dropdown-submenu"' : '' ?>>
+                            <a href="<?= $escapedUserLink ?>?type=car" class="type">carros</a>
+                            <?php
+                            if ($editable) {
+                                ?>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?= $escapedUserLink ?>?type=car&amp;status=staging"><i class="icon-lock"></i> em criação</a></li>
+                                    <li><a href="<?= $escapedUserLink ?>?type=car"><i class="icon-globe"></i> em anúncio</a></li>
+                                    <li><a href="<?= $escapedUserLink ?>?type=car&amp;status=end"><i class="icon-lock"></i> em término</a></li>
+                                </ul>
+                            <?php
+                            }
+                            ?>
+                        </li>
+                        <li<?= ($editable) ? ' class="dropdown-submenu"' : '' ?>>
+                            <a href="<?= $escapedUserLink ?>?type=motorcycle" class="type">motos</a>
+                            <?php
+                            if ($editable) {
+                                ?>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?= $escapedUserLink ?>?type=motorcycle&amp;status=staging"><i class="icon-lock"></i> em criação</a></li>
+                                    <li><a href="<?= $escapedUserLink ?>?type=motorcycle"><i class="icon-globe"></i> em anúncio</a></li>
+                                    <li><a href="<?= $escapedUserLink ?>?type=motorcycle&amp;status=end"><i class="icon-lock"></i> em término</a></li>
+                                </ul>
+                            <?php
+                            }
+                            ?>
+                        </li>
+                        <li<?= ($editable) ? ' class="dropdown-submenu"' : '' ?>>
+                            <a href="<?= $escapedUserLink ?>?type=boat" class="type">embarcações</a>
+                            <?php
+                            if ($editable) {
+                                ?>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?= $escapedUserLink ?>?type=boat&status=staging"><i class="icon-lock"></i> em criação</a></li>
+                                    <li><a href="<?= $escapedUserLink ?>?type=boat"><i class="icon-globe"></i> em anúncio</a></li>
+                                    <li><a href="<?= $escapedUserLink ?>?type=boat&status=end"><i class="icon-lock"></i> em término</a></li>
+                                </ul>
+                            <?php
+                            }
+                            ?>
+                        </li>
+                        <li class="divider"></li>
+                        <li<?= ($editable) ? ' class="dropdown-submenu"' : '' ?>>
+                            <a href="<?= $escapedUserLink ?>" class="type">Todos os veículos</a>
+                            <?php
+                            if ($editable) {
+                                ?>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?= $escapedUserLink ?>?status=staging"><i class="icon-lock"></i> em criação</a></li>
+                                    <li><a href="<?= $escapedUserLink ?>"><i class="icon-globe"></i> em anúncio</a></li>
+                                    <li><a href="<?= $escapedUserLink ?>?status=end"><i class="icon-lock"></i> em término</a></li>
+                                </ul>
+                            <?php
+                            }
+                            ?>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span10">
+                &nbsp;
+                <div id="search-results">
+                    <?php
+                    echo $this->render("user-stream/table-view.phtml");
+                    echo $this->render("user-stream/thumbnail-view.phtml");
+                    ?>
+                </div><!-- end of #user-stream-posts -->
+                <div class="sharing hidden-phone">
+                    <div class="fb-like" data-href="<?= $escapedUserLinkExternal; ?>"
+                         data-send="true" data-width="450" data-show-faces="true"></div>
+                    <a href="https://twitter.com/share" class="twitter-share-button"
+                       data-url="<?= $escapedUserLinkExternal; ?>"
+                       data-text="<?= $this->escape($userInfo['name']); ?>"
+                       data-via="<?= $this->escape($config["services"]["twitter"]["username"]); ?>"
+                       data-lang="pt">Tweetar</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];
+                            if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";
+                                fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+                    </script>
+                </div><!-- end of .sharing -->
+                <?php
+                echo $this->paginationControl($paginator, null, "user-stream/pagination.phtml");
+                ?>
+            </div><!-- end of .span10 -->
+    </div><!-- end of .span10 -->
+</div><!-- end of .row -->
 </div><!-- end of .row -->
 </div><!-- end of .container -->
