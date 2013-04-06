@@ -19,51 +19,12 @@ $paginator =  $this->posts;
 /** @var $paginator \Zend_Paginator() */
 
 $escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_stream_1stpage");
-$address = $userInfo["address"];
 
 $escapedUserLinkExternal = "http://" . $config["webhost"] . $config["webroot"] . $escapedUserLink;
 ?>
 <div class="container">
-<div class="row">
-<div class="span12">
-<address class="vcard post-seller-address">
-<div class="span1">
-<a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo); ?></a>
-</div>
-<div class="span4">
-<h1 class="fn"><?= $this->escape($userInfo['name']); ?></h1>
-</div>
-<div class="span3">
-<?php
-if ($userInfo["account_type"] == "retail") {
-?>
-<span class="street-address"><?= $this->escape($address["street_address"]); ?></span> -
-<span class="neighborhood"><?= $this->escape($address["neighborhood"]); ?></span><br />
-<?php
-}
-?>
-<span class="locality"><?= $this->escape($address["locality"]); ?></span> -
-<span class="region"><?= $this->escape($address["region"]); ?></span>
-<?php
-if ($userInfo["account_type"] == "retail") {
-?>
-,
-<span class="postal-code"><?= $this->escape($address["postal_code"]); ?></span>,
-<span class="country-name"><?= $this->escape($address["country_name"]); ?></span><br />
-<a href="<?= $this->addressMapLink($address); ?>" class="btn map-link"><i class="icon-map-marker"></i>&nbsp;como chegar</a>
-<?php
-}
-?>
-</div>
-<div class="span3">
-<ul>
-<?= $this->addressPhoneList($address["phones"]); ?>
-</ul>
-</div><!-- end of .span3 -->
-</address>
-</div><!-- end of .span12 -->
-</div><!-- end of .row -->
-<div class="hidden-phone">&nbsp;</div>
+<?= $this->render("user-post/address.phtml"); ?>
+&nbsp;
 <div class="row">
 <div class="span2">
 <div class="btn-group" data-toggle="buttons-radio">
