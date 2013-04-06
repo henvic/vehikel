@@ -13,8 +13,6 @@ $escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_
 
 $escapedUSerLinkExternal = "http://" . $config["webhost"] . $config["webroot"] . $escapedUserLink;
 
-$address = $userInfo["address"];
-
 $unEscapedTitle = $post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"];
 $escapedTitle = $this->escape($unEscapedTitle);
 $this->headTitle($unEscapedTitle, "PREPEND");
@@ -144,47 +142,7 @@ if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twit
 fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 </script>
 </div><!-- end of .sharing -->
-<address id="post-address" class="vcard post-seller-address">
-<div class="row">
-<div class="span6">
-<table>
-<tr>
-<td><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo); ?></a></td>
-<td>
-<strong class="fn"><a href="<?= $escapedUserLink; ?>"><?= $this->escape($userInfo["name"]); ?></a></strong><br />
-<?php
-if ($userInfo["account_type"] == "retail") {
-?>
-<span class="street-address"><?= $this->escape($address["street_address"]); ?></span> -
-<span class="neighborhood"><?= $this->escape($address["neighborhood"]); ?></span><br />
-<?php
-}
-?>
-<span class="locality"><?= $this->escape($address["locality"]); ?></span> -
-<span class="region"><?= $this->escape($address["region"]); ?></span>
-<?php
-if ($userInfo["account_type"] == "retail") {
-?>,
-<span class="postal-code"><?= $this->escape($address["postal_code"]); ?></span><span class="hidden">,
-<span class="country-name"><?= $this->escape($address["country_name"]); ?></span></span>
-</td>
-<td>
-<a href="<?= $this->addressMapLink($address); ?>" id="map-link" class="map-link"
- data-address="<?= $this->escape($this->addressMapLink($address, true)); ?>"><span class="hidden">mapa</span></a>
-<?php
-}
-?>
-</td>
-</table>
-</div><!-- end of .span6 -->
-<div class="span6">
-<ul>
-<?= $this->addressPhoneList($address["phones"]); ?>
-</ul>
-</div><!-- end of .span6 -->
-</div><!-- end of .row -->
-<div id="map-modal"></div>
-</address>
+<?= $this->render("user-post/address.phtml"); ?>
 <div class="row">
 <div class="span12">
 <p class="text-center external-link-promotion">
