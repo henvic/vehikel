@@ -6,7 +6,7 @@ $address = $userInfo["address"];
 ?>
 <address id="post-address" class="vcard post-seller-address">
 <div class="row">
-<div class="span6">
+<div class="span4">
 <table>
 <tr>
 <td><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo, "square.jpg", 60, 60); ?></a></td>
@@ -36,12 +36,12 @@ data-address="<?= $this->escape($this->addressMapLink($address, true)); ?>"><spa
 ?>
 </td>
 </table>
-</div><!-- end of .span6 -->
-<div class="span6">
+</div><!-- end of .span4 -->
+<div class="span4">
 <ul>
 <?= $this->addressPhoneList($address["phones"]); ?>
 </ul>
-</div><!-- end of .span6 -->
+</div><!-- end of .span4 -->
 </div><!-- end of .row -->
 <div id="map-modal"></div>
 </address>
