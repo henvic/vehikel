@@ -148,10 +148,6 @@ $breadCrumb = $this->postBreadCrumb(array(
                     <?= $this->render("user-post/address.phtml"); ?>
                     <div class="row">
                         <div class="span10">
-                            <p class="text-center external-link-promotion">
-                                <a href="<?= $escapedUSerLinkExternal; ?>"
-                                   title="<?= $this->escape($userInfo["username"] . " em " . $config["applicationname"]);
-                                   ?>"><?= $escapedUSerLinkExternal; ?></a></p>
                             <ul class="nav nav-tabs post-info-tabs" id="post-info-tabs">
                                 <li class="active"><a href="#post-description">Descrição</a></li>
                                 <li><a href="#post-contact"><i class="icon-envelope"></i> Enviar proposta</a></li>
