@@ -20,43 +20,42 @@ $price->setValue($this->escape($post["price"] / 100));
         R$&nbsp;<?= $this->escape($price->toCurrency(null, array("display" => Zend_Currency::NO_SYMBOL))); ?>
     </h2>
     <h3 class="hidden">Detalhes técnicos</h3>
-    <h4><span class="hidden"><?= $this->escape($translatePosts->translate("year")); ?></span>
-        <?= $this->escape($post["model_year"]); ?>
-        <span> &nbsp; </span>
+    <dl class="dl-horizontal">
+<dt><?= $this->escape($translatePosts->translate("year")); ?>:</dt>
+<dd><?= $this->escape($post["model_year"]); ?></dd>
+<dt>km:</dt>
 <?php
 if ($post["km"] != "") {
 ?>
-<?= $this->escape(number_format($post["km"], 0, ".", ".")); ?>km
+<dd><?= $this->escape(number_format($post["km"], 0, ".", ".")); ?></dd>
 <?php
 }
 ?>
-    </h4>
-    <h4>
+<dt><?= $this->escape($translatePosts->translate("fuel")); ?>:</dt>
 <?php
 if ($post["fuel"]) {
 ?>
-<?= $this->escape($translatePosts->translate("fuel")); ?>
- <?= $this->escape($translatePosts->translate($post["fuel"] . "_lowercase")); ?>
+<dd><?= $this->escape($translatePosts->translate($post["fuel"] . "_lowercase")); ?></dd>
 <?php
 }
-?></h4>
+?>
+<dt><?= $this->escape($translatePosts->translate("transmission")); ?>:</dt>
 <?php
 if ($post["transmission"]) {
 ?>
-<h4><?= $this->escape($translatePosts->translate("transmission")); ?>
- <?= $this->escape($translatePosts->translate($post["transmission"] . "_lowercase")); ?>&nbsp;</h4>
+<dd><?= $this->escape($translatePosts->translate($post["transmission"] . "_lowercase")); ?></dd>
 <?php
 }
+?>
+<dt><?= $this->escape($translatePosts->translate("traction")); ?>:</dt>
+<?php
 if ($post["traction"]) {
 ?>
-<h4>
-<?php
-echo $this->escape($translatePosts->translate("traction") . " " . $translatePosts->translate($post["traction"]));
-?>
-</h4>
+<dd><?= $translatePosts->translate($post["traction"]); ?></dd>
 <?php
 }
 ?>
+</dl>
 </div><!-- end of #post-product-info -->
 <?php
 if ($editable) {
