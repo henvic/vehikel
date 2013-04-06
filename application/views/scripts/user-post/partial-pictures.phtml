@@ -12,7 +12,7 @@ $canUploadAmountOfPictures = $maxPicturesLimit - $amountOfPictures;
         if ($amountOfPictures == 0) {
         ?>
         <div id="post-picture-placeholder" class="active item">
-            <img src="<?= $this->staticVersion("/images/chevrolet-impala-icon.png"); ?>" alt="picture placeholder">
+            <img src="<?= $this->staticVersion("/images/chevrolet-impala-icon.png"); ?>" alt="picture placeholder" width="500" height="">
         </div>
         <?php
         } else {
@@ -23,7 +23,7 @@ $canUploadAmountOfPictures = $maxPicturesLimit - $amountOfPictures;
              id="post-picture-id-<?= $this->escape($picture["id"]); ?>">
         <?php
             echo '<a href="', $this->pictureLink($picture["id"], $picture["secret"], "large.jpg"), '" rel="external">',
-            $this->picture($picture["id"], $picture["secret"]), '</a></div>';
+            $this->picture($picture["id"], $picture["secret"], "medium.jpg", "picture", 500), '</a></div>';
             }
         }
         ?>
