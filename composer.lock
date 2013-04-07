@@ -1,25 +1,125 @@
 {
-    "hash": "b2656432c76bf5c4f69b22b9eeb34c8e",
+    "hash": "43162030be8af7bd7f559cc02968fba3",
     "packages": [
         {
-            "package": "rych/phpass",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "name": "imagine/Imagine",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/avalanche123/Imagine.git",
+                "reference": "990b7bac87b5ac1f47a40e860eef7ca67a6e4396"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/990b7bac87b5ac1f47a40e860eef7ca67a6e4396",
+                "reference": "990b7bac87b5ac1f47a40e860eef7ca67a6e4396",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "sami/sami": "dev-master"
+            },
+            "suggest": {
+                "ext-gd": "to use the GD implementation",
+                "ext-gmagick": "to use the Gmagick implementation",
+                "ext-imagick": "to use the Imagick implementation"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Imagine": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bulat Shakirzyanov",
+                    "email": "mallluhuct@gmail.com",
+                    "homepage": "http://avalanche123.com"
+                }
+            ],
+            "description": "Image processing for PHP 5.3",
+            "homepage": "http://imagine.readthedocs.org/",
+            "keywords": [
+                "drawing",
+                "graphics",
+                "image manipulation",
+                "image processing"
+            ],
+            "time": "2013-02-05 00:59:16"
         },
         {
-            "package": "rych/phpass",
+            "name": "rych/phpass",
             "version": "dev-master",
-            "source-reference": "1174a7a5b1c95ef8d4b7d861f3bc208913803645",
-            "commit-date": "1344141053"
+            "source": {
+                "type": "git",
+                "url": "git://github.com/rchouinard/phpass.git",
+                "reference": "1174a7a5b1c95ef8d4b7d861f3bc208913803645"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/rchouinard/phpass/zipball/1174a7a5b1c95ef8d4b7d861f3bc208913803645",
+                "reference": "1174a7a5b1c95ef8d4b7d861f3bc208913803645",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.7"
+            },
+            "suggest": {
+                "ext-hash": "Some modules and features may require the HASH Message Digest Framework extension in order to work.",
+                "ext-openssl": "The OpenSSL extension is used as a secure source of random data."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Phpass": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ryan Chouinard",
+                    "email": "rchouinard@gmail.com",
+                    "homepage": "http://ryanchouinard.com",
+                    "role": null
+                }
+            ],
+            "description": "PHP Password Library: Easy, secure password management for PHP",
+            "homepage": "https://github.com/rchouinard/phpass",
+            "keywords": [
+                "cryptography",
+                "password"
+            ],
+            "time": "2012-08-05 04:30:53"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "imagine/imagine": 20,
         "rych/phpass": 20
-    }
+    },
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
 }
