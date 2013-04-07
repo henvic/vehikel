@@ -12,7 +12,6 @@ Unless otherwise referenced to, the versions for the requirements are given by t
 * [PHP](http://php.net/) >= 5.4.x
 * [MySQL](http://www.mysql.com/) >= 5.1
 * [memcached](http://memcached.org/)
-* [Redis](http://redis.io/)
 
 Please note that the default memcached is insecure by design because it's freely accessible from everywhere. You must restrict access to it yourself.
 
@@ -26,8 +25,6 @@ Please note that the default memcached is insecure by design because it's freely
 * [HTML Purifier](http://htmlpurifier.org/) (use the standalone version)
 * [hphpass](http://www.openwall.com/phpass/) ---- trocar pelo novo rych/phpass
 * [oauth-php](http://code.google.com/p/oauth-php/)
-* [Predis](http://pearhub.org/projects/predis)
-* [twitter-async](https://github.com/jmathai/twitter-async)
 
 You will need PHPUnit to test the code.
 

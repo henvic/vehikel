@@ -3,7 +3,6 @@
     "description": "car ad website.",
     "license": "MIT",
     "require": {
-        "predis/predis": "v0.7.3",
         "rych/phpass": "2.1.x-dev"
     },
     "authors": [
