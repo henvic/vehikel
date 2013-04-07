@@ -1,7 +1,7 @@
 /*global define, require */
 /*jshint indent:4 */
 
-define(['AppParams', 'jquery'],
+define(['AppParams', 'jquery', 'jquery.zoom'],
 function (AppParams, $) {
     "use strict";
 
@@ -62,6 +62,13 @@ function (AppParams, $) {
 
     var $postPicturesThumbnails = $("#post-pictures-thumbnails");
     var $postPicturesCarousel = $("#post-pictures-carousel");
+
+    $("img", $postPicturesCarousel)
+        .wrap('<span style="display: inline-block"></span>')
+        .css('display', 'block')
+        .parent()
+        .zoom()
+    ;
 
     $postPicturesCarousel.carousel({
         interval: 0
