@@ -3,6 +3,7 @@
     "description": "car ad website.",
     "license": "MIT",
     "require": {
+        "imagine/Imagine" : "dev-develop",
         "rych/phpass": "2.1.0-dev"
     },
     "authors": [

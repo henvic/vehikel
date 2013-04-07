@@ -24,6 +24,7 @@ Please note that the default memcached is insecure by design because it's freely
 * [Symfony](http://symfony.com/) (some components)
 * [HTML Purifier](http://htmlpurifier.org/) (use the standalone version)
 * [PHP Password Library](https://github.com/rchouinard/phpass)
+* [Imagine](https://github.com/avalanche123/Imagine)
 
 You will need PHPUnit to test the code.
 
