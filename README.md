@@ -23,8 +23,7 @@ Please note that the default memcached is insecure by design because it's freely
 * [Zend Framework](http://framework.zend.com/)
 * [Symfony](http://symfony.com/) (some components)
 * [HTML Purifier](http://htmlpurifier.org/) (use the standalone version)
-* [hphpass](http://www.openwall.com/phpass/) ---- trocar pelo novo rych/phpass
-* [oauth-php](http://code.google.com/p/oauth-php/)
+* [PHP Password Library](https://github.com/rchouinard/phpass)
 
 You will need PHPUnit to test the code.
 
