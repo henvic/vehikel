@@ -18,6 +18,7 @@
         "jquery.tablesorter": "../vendor/jquery-tablesorter-2.0.5b/jquery.tablesorter",
         "jquery.fn.autoResize": "../vendor/jquery-fn-autoResize-1.14/jquery.autoresize",
         "jquery.maskMoney": "../vendor/plentz-jquery-maskmoney-5f9dadd/jquery.maskMoney",
+        "jquery.zoom" : "../vendor/zoom-1.7.1/jquery.zoom",
 
         // Require.js Plugins
         text: "../vendor/require-2.0.5/text-2.0.3",
