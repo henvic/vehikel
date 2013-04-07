@@ -28,7 +28,8 @@ Please note that the default memcached is insecure by design because it's freely
 * [oauth-php](http://code.google.com/p/oauth-php/)
 * [Predis](http://pearhub.org/projects/predis)
 * [twitter-async](https://github.com/jmathai/twitter-async)
-PHPUNIT: E aeaeeaeaea? dep.... colocar no vendor/????
+
+You will need PHPUnit to test the code.
 
 For performance you want to strip the require_once's from the Zend framework code, see [How can I optimize my include_path?](http://framework.zend.com/manual/en/performance.classloading.html)
 
