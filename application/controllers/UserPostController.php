@@ -20,6 +20,9 @@ class UserPostController extends Ml_Controller_Action
         $search =  $this->_sc->get("search");
         /** @var $search \Ml_Model_Search() */
 
+        $picture =  $this->_registry->get("sc")->get("picture");
+        /** @var $picture \Ml_Model_Picture() */
+
         $this->view->assign("facetsQuery", $search->getFacetsQuery());
 
         if (isset($params["format"]) && $params["format"] == "json") {
@@ -36,6 +39,31 @@ class UserPostController extends Ml_Controller_Action
         $this->view->addJsParam("postId", $post["id"]);
         $this->view->addJsParam("postUid", $userInfo["id"]);
         $this->view->addJsParam("postUsername", $userInfo["username"]);
+
+        $galleryImages = [];
+        foreach ($post["pictures"] as $postPicture) {
+            $imageThumbnail = $picture->getImageLink($postPicture["id"], $postPicture["secret"], "thumbnail.jpg");
+            $image = $picture->getImageLink($postPicture["id"], $postPicture["secret"], "medium.jpg");
+            $imageLarge = $picture->getImageLink($postPicture["id"], $postPicture["secret"], "large.jpg");
+
+            $galleryImages[] = [
+                "thumb" => $imageThumbnail,
+                "image" => $image,
+                "big" => $imageLarge
+            ];
+        }
+
+        if (! empty($post["youtube_video"])) {
+            $escapedYoutubeVideo = rawurlencode($post["youtube_video"]);
+
+            $video = [
+                "iframe" => "http://www.youtube.com/embed/" . $escapedYoutubeVideo . "?wmode=opaque",
+                "thumb" => "http://img.youtube.com/vi/" . $escapedYoutubeVideo . "/default.jpg"
+            ];
+            $galleryImages[] = $video;
+        }
+
+        $this->view->addJsParam("postGalleryImages", $galleryImages);
 
         $availableEquipment = $posts->getAvailableEquipment($post["type"]);
 

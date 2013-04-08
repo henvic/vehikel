@@ -1,9 +1,32 @@
-/*global define, require */
+/*global define, require, Galleria */
 /*jshint indent:4 */
 
-define(['AppParams', 'jquery'],
+define(['AppParams', 'jquery', 'galleria'],
 function (AppParams, $) {
     "use strict";
+
+    Galleria.loadTheme(AppParams.cdn + 'vendor/galleria-1.2.9/src/themes/classic/galleria.classic.js');
+
+    Galleria.configure({
+        dummy: '/images/noimage.jpg',
+        transition: 'fade'
+    });
+
+    Galleria.on("image",function (e) {
+        var gallery = this;
+
+        $(e.imageTarget).unbind("click").click(function() {
+            gallery.toggleFullscreen();
+        });
+    });
+
+    var updateGalleria = function () {
+        Galleria.run("#galleria", {
+            dataSource: AppParams.postGalleryImages
+        });
+    };
+
+    updateGalleria();
 
     if (AppParams.accountEditable === true) {
         require(["views/user/post-manager"], function () {
