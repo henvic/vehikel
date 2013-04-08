@@ -38,6 +38,7 @@ For performance you want to strip the require_once's from the Zend framework cod
 * [Tablesorter](http://tablesorter.com/)
 * [RequireJS](http://requirejs.org)
 * [jQuery-maskMoney](https://github.com/plentz/jquery-maskmoney/)
+* [jQuery Zoom](http://www.jacklmoore.com/zoom/)
 * [Galleria](http://galleria.io/)
 
 
