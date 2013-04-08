@@ -91,6 +91,12 @@ install() {
   curl -o underscore.js -O https://raw.github.com/documentcloud/underscore/1.3.3/underscore.js
   cd ..
 
+  # Download Galleria
+  echo "Downloading Galleria"
+  curl -o galleria-1.2.9.tar.gz -O https://nodeload.github.com/aino/galleria/tar.gz/1.2.9
+  tar xzf galleria-1.2.9.tar.gz
+  rm galleria-1.2.9.tar.gz
+
   echo "Don't install anything directly here. It will be erased with any new install. Use bin/install for the job instead." >> IMPORTANT.md
 
   md5sum -c files.md5
