@@ -2,7 +2,7 @@
 
 class Ml_Model_Picture
 {
-    protected $_imageQuality = 80;
+    protected $_imageQuality = 70;
 
     protected $_s3config = null;
 
