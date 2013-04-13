@@ -192,6 +192,18 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
 
         $this->addElement($equipment);
 
+        $this->addElement('text', 'youtube_video', array(
+            'label' => 'YouTube',
+            'required' => false,
+            'filters' => array('StringTrim'),
+            'validators' => array(
+                array('validator' =>
+                'StringLength', 'options' => array(1, 20),
+                ),
+                array('validator' => 'Alnum')
+            )
+        ));
+
         $this->addElement('textarea', 'description', array(
             'label'      => 'Descrição',
             'description' =>
