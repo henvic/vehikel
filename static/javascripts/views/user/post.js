@@ -16,7 +16,7 @@ function (AppParams, $) {
         var gallery = this;
 
         $(e.imageTarget).unbind("click").click(function() {
-            gallery.toggleFullscreen();
+            gallery.openLightbox();
         });
     });
 
