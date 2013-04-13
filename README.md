@@ -135,6 +135,7 @@ The [New BSD License](http://en.wikipedia.org/wiki/New_BSD_license) and the [MIT
 * [Magnifying glass Icon](http://commons.wikimedia.org/wiki/File:Magnifying_glass_icon.svg)
 * [Maps Icon](http://www.iconarchive.com/show/mobile-icons-by-webiconset/maps-icon.html)
 * [International Symbol of Access](http://en.wikipedia.org/wiki/File:International_Symbol_of_Access.svg)
+* [YouTube Branding Guidelines](https://developers.google.com/youtube/branding)
 
 ## Author
 Henrique Vicente de Oliveira Pinto ([email](mailto:henriquevicente@gmail.com), [Twitter](https://twitter.com/henriquev), [Flickr](http://www.flickr.com/photos/henriquev), [Linkedin](http://linkedin.com/in/henvic)).
