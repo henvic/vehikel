@@ -657,5 +657,109 @@ define([
                 break;
             }
         });
+
+        YUI({filter:"raw"}).use("uploader", function(Y) {
+
+            if (Y.Uploader.TYPE !== "none" && !Y.UA.ios) {
+                var uploader = new Y.Uploader({width: "250px",
+                    height: "35px",
+                    multipleFiles: true,
+                    swfURL: "http://yui.yahooapis.com/3.9.1/build/uploader/assets/flashuploader.swf?t=" + Math.random(),
+                    uploadURL: AppParams.webroot + "/" + AppParams.postUsername + "/" +
+                        AppParams.postId + "/picture/add",
+                    postVarsPerFile: {hash: AppParams.globalAuthHash},
+                    fileFilters: {
+                        description: "Images",
+                        extensions: "*.jpg;*.jpeg;*.gif;*.png"
+                    },
+                    simLimit: 2,
+                    withCredentials: false
+                });
+
+                var uploadDone = false;
+
+                if (Y.Uploader.TYPE === "html5") {
+                    uploader.set("dragAndDropArea", "body");
+                }
+
+                var foo = document.createElement("div");
+                uploader.render(foo);
+
+                var $uploadFile = $("#upload-file");
+
+                $uploadFile.on("click", function () {
+                    uploader.openFileSelectDialog();
+                });
+
+                uploader.after("fileselect", function (event) {
+
+                    var fileList = event.fileList;
+
+                    var fileTable = Y.one("#file-names tbody");
+
+                    if (uploadDone) {
+                        uploadDone = false;
+                        fileTable.setHTML('');
+                    }
+
+                    Y.each(fileList, function (fileInstance) {
+                        var fileSize = bytesToSize(fileInstance.get("size"), 2);
+
+                        fileTable.append('<tr id="'+ fileInstance.get("id") + "_row" + '"><td><strong>' +
+                            fileInstance.get("name") + '</strong></td>' +
+                            '<td>' + fileSize + '</td>' +
+                            '<td><div class="progress progress-striped active">' +
+                            '<div class="percentdone bar" style="width: 0%"></div>' +
+                            '</div></td>' +
+                            '</tr>');
+                    });
+
+                    if (! uploadDone && uploader.get("fileList").length > 0) {
+                        uploader.uploadAll();
+                        Y.one("#filelist").removeClass("hidden");
+                    }
+                });
+
+                uploader.on("uploadprogress", function (event) {
+                    var fileRow = Y.one("#" + event.file.get("id") + "_row");
+                    fileRow.one(".percentdone").setStyle("width", event.percentLoaded + "%");
+                });
+
+                uploader.on("uploadstart", function (event) {
+                    uploader.set("enabled", false);
+                    $("#upload-file").addClass("disabled").off("click");
+                });
+
+                uploader.on("uploadcomplete", function (event) {
+                    var fileRow = Y.one("#" + event.file.get("id") + "_row");
+                    fileRow.one(".percentdone").setStyle("width", "100%").removeClass("active");
+                });
+
+                uploader.on("alluploadscomplete", function (event) {
+                    uploader.set("enabled", true);
+                    uploader.set("fileList", []);
+
+                    $uploadFile.removeClass("disabled");
+
+                    setTimeout(function () {
+                        var fileTable = Y.one("#file-names tbody");
+                        fileTable.setHTML('');
+                        Y.one("#filelist").addClass("hidden");
+                        reloadImages();
+                    }, 1000);
+
+                    $uploadFile.on("click", function () {
+                        if (! uploadDone && uploader.get("fileList").length > 0) {
+                            uploader.uploadAll();
+                        }
+                    });
+                    uploadDone = true;
+                });
+            }
+            else {
+                Y.one("#uploaderContainer").set("text", "Seu browser não suporta upload de imagens.");
+            }
+        });
+
     }
 );
