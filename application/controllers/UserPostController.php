@@ -25,9 +25,41 @@ class UserPostController extends Ml_Controller_Action
 
         $this->view->assign("facetsQuery", $search->getFacetsQuery());
 
+        $galleryImages = [];
+        foreach ($post["pictures"] as $postPicture) {
+            $imageThumbnail = $picture->getImageLink($postPicture["id"], $postPicture["secret"], "thumbnail.jpg");
+            $image = $picture->getImageLink($postPicture["id"], $postPicture["secret"], "medium.jpg");
+            $imageLarge = $picture->getImageLink($postPicture["id"], $postPicture["secret"], "large.jpg");
+
+            $galleryImages[] = [
+                "id" => $postPicture["id"],
+                "type" => "image",
+                "thumb" => $imageThumbnail,
+                "image" => $image,
+                "big" => $imageLarge
+            ];
+        }
+
+        if (! empty($post["youtube_video"])) {
+            $escapedYoutubeVideo = rawurlencode($post["youtube_video"]);
+
+            $video = [
+                "id" => $post["youtube_video"],
+                "type" => "video",
+                "iframe" => "http://www.youtube.com/embed/" . $escapedYoutubeVideo . "?wmode=opaque",
+                "thumb" => "http://img.youtube.com/vi/" . $escapedYoutubeVideo . "/default.jpg"
+            ];
+            $galleryImages[] = $video;
+        }
+
         if (isset($params["format"]) && $params["format"] == "json") {
             $content = $posts->getPublicInfo($post);
             $content["user"] = $people->getPublicInfo($userInfo);
+
+            //@todo fix this hack, pass the gallery data using a better approach
+            if (isset($params["gallery"])) {
+                $content["gallery"] = $galleryImages;
+            }
 
             $this->_helper->json($content);
         }
@@ -39,30 +71,6 @@ class UserPostController extends Ml_Controller_Action
         $this->view->addJsParam("postId", $post["id"]);
         $this->view->addJsParam("postUid", $userInfo["id"]);
         $this->view->addJsParam("postUsername", $userInfo["username"]);
-
-        $galleryImages = [];
-        foreach ($post["pictures"] as $postPicture) {
-            $imageThumbnail = $picture->getImageLink($postPicture["id"], $postPicture["secret"], "thumbnail.jpg");
-            $image = $picture->getImageLink($postPicture["id"], $postPicture["secret"], "medium.jpg");
-            $imageLarge = $picture->getImageLink($postPicture["id"], $postPicture["secret"], "large.jpg");
-
-            $galleryImages[] = [
-                "thumb" => $imageThumbnail,
-                "image" => $image,
-                "big" => $imageLarge
-            ];
-        }
-
-        if (! empty($post["youtube_video"])) {
-            $escapedYoutubeVideo = rawurlencode($post["youtube_video"]);
-
-            $video = [
-                "iframe" => "http://www.youtube.com/embed/" . $escapedYoutubeVideo . "?wmode=opaque",
-                "thumb" => "http://img.youtube.com/vi/" . $escapedYoutubeVideo . "/default.jpg"
-            ];
-            $galleryImages[] = $video;
-        }
-
         $this->view->addJsParam("postGalleryImages", $galleryImages);
 
         $availableEquipment = $posts->getAvailableEquipment($post["type"]);
