@@ -12,7 +12,7 @@ function (AppParams, $) {
         transition: 'fade'
     });
 
-    Galleria.on("image",function (e) {
+    Galleria.on("image", function (e) {
         var gallery = this;
 
         $(e.imageTarget).unbind("click").click(function() {
