@@ -868,5 +868,169 @@ define([
             del.dd.plug(Y.Plugin.Drop);
         });
 
+        var compiledPostsManagerPictureTemplate;
+
+        var compiledpostsManagerGalleryTemplate;
+
+        var $galleryManager = $("#gallery-manager");
+
+        var videoLinkEl;
+
+        var pictures;
+
+        var videoId;
+
+        var reloadImages = function () {
+            var post = $.ajax({
+                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId,
+                type: 'GET',
+                dataType: 'json',
+                data: ({
+                    format: "json",
+                    gallery: true
+                })
+            });
+
+            post.done(function (response) {
+                AppParams.postGalleryImages = response.gallery;
+                Galleria.ready(function (options) {
+                    var gallery = this;
+                    gallery.splice(0);
+                    gallery.push(response.gallery);
+                    console.log("done reload images");
+                    console.log(response.gallery);
+                });
+            });
+        };
+
+        var addPicture = function (picture) {
+            if (picture.type === "video") {
+                setVideoIdValue(picture.id);
+                return "";
+            } else {
+                return compiledPostsManagerPictureTemplate({
+                    picture: picture
+                });
+            }
+        };
+
+        var erasePicture = function (pictureId) {
+            var post = $.ajax({
+                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/picture/delete",
+                type: 'POST',
+                dataType: 'json',
+                data: ({
+                    hash: AppParams.globalAuthHash,
+                    picture_id: pictureId
+                })
+            });
+
+            post.done(function () {
+                reloadImages();
+            });
+
+            post.fail(function () {
+                reloadImages();
+            });
+        };
+
+        var parseYouTubeIdFromLink = function (link, softPass) {
+            //from http://stackoverflow.com/posts/10591582/revisions
+            var id = link.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+            if(id !== null) {
+                return id[1];
+            } else if (softPass) {
+                return link;
+            } else {
+                return "";
+            }
+        };
+
+        var buildVideoLink = function (id) {
+            return (id) ? "http://www.youtube.com/watch?v=" + encodeURIComponent(videoId) : "";
+        };
+
+        var getVideoLinkElement = function () {
+            return videoLinkEl[0];
+        };
+
+        var setVideoIdValue = function (newVideoId) {
+            videoId = newVideoId;
+
+            var el = getVideoLinkElement();
+
+            if (el !== undefined) {
+                el.value = buildVideoLink(newVideoId);
+            }
+        };
+
+        var updateVideoId = function (newVideoId) {
+            setVideoIdValue(newVideoId);
+
+            var post = updatePostItem("youtube_video", newVideoId);
+
+            post.done(function () {
+                reloadImages();
+                $(videoLinkEl).addClass("video-link-feedback-done");
+                setTimeout(function () {
+                    $(videoLinkEl).removeClass("video-link-feedback-done");
+                }, 1000);
+            });
+
+            post.fail(function () {
+                $(videoLinkEl).addClass("video-link-feedback-fail");
+                setTimeout(function () {
+                    $(videoLinkEl).removeClass("video-link-feedback-fail");
+                }, 1000);
+            });
+        };
+
+        var createThumbnails = function ($element, pictures) {
+            var picturesLength = pictures.length;
+
+            var picturesDiv = "";
+            for (var counter = 0; counter < picturesLength; counter++) {
+                picturesDiv += addPicture(pictures[counter]);
+            }
+
+            $element.html(compiledpostsManagerGalleryTemplate({
+                picturesDiv : picturesDiv,
+                isTouch : Modernizr.touch,
+                videoLink : buildVideoLink(videoId)
+            }));
+        };
+
+        var setUpGalleryManager = function () {
+            compiledPostsManagerPictureTemplate = underscore.template(postsManagerPictureTemplate);
+            compiledpostsManagerGalleryTemplate = underscore.template(postsManagerGalleryTemplate);
+            videoLinkEl = $galleryManager[0].getElementsByClassName("video-link");
+
+            pictures = AppParams.postGalleryImages;
+
+            $galleryManager.on("click", ".image .action-delete", function (e) {
+                var pictureId = e.target.parentNode.getAttribute("data-id");
+                erasePicture(pictureId);
+            });
+
+            $galleryManager.on("click", ".video .action-delete", function (e) {
+                updateVideoId("");
+            });
+
+            $galleryManager.on("submit", ".video-form", function (e) {
+                e.preventDefault();
+                var youTubeId = parseYouTubeIdFromLink(getVideoLinkElement().value, true);
+                updateVideoId(youTubeId);
+            });
+
+            createThumbnails($galleryManager, pictures);
+        };
+
+        setUpGalleryManager();
+
+        var $openGalleryManager = $("#open-gallery-manager");
+
+        $openGalleryManager.on("click", function (e) {
+            $galleryManager.toggleClass("hidden").toggleClass("active");
+        });
     }
 );
