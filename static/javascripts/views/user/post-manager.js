@@ -1,8 +1,25 @@
-/*global define */
+/*global define, Modernizr */
 /*jshint indent:4 */
 
-define(['AppParams', 'jquery', 'yui', 'underscore', 'text!templates/help/html.html', 'jquery.maskMoney' ],
-    function (AppParams, $, YUI, underscore, htmlTemplate) {
+define([
+    'AppParams',
+    'jquery',
+    'yui',
+    'underscore',
+    'text!templates/help/html.html',
+    'text!templates/posts/manager-gallery.html',
+    'text!templates/posts/manager-picture.html',
+    'jquery.maskMoney'
+],
+    function (
+        AppParams,
+        $,
+        YUI,
+        underscore,
+        htmlTemplate,
+        postsManagerGalleryTemplate,
+        postsManagerPictureTemplate
+        ) {
         "use strict";
 
         var addPictureTemplate = '<li class="span1 post-upload post-upload-free-slot">' +
