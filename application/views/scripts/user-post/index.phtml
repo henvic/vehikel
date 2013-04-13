@@ -131,6 +131,29 @@ $breadCrumb = $this->postBreadCrumb(array(
                     }
                     ?>
                     <div id="galleria" class="galleria"></div>
+                    <?php
+                    if ($this->editable) {
+                    ?>
+                    <button class="btn btn-mini gallery-manager-main-buttons" type="button" id="open-gallery-manager"><i class="icon-picture"></i> Gerenciar arquivos de mídia</button>
+                    <button class="btn btn-mini gallery-manager-main-buttons" type="button" id="upload-file"><i class="icon-upload"></i> Upload</button>
+                    <br />
+                    <div id="filelist" class="table hidden">
+                        <table id="file-names">
+                            <thead>
+                                <tr>
+                                    <th>Arquivo</th>
+                                    <th>Tamanho</th>
+                                    <th>Progresso</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                     </div>
+                    <div id="gallery-manager" class="post-gallery-manager hidden"></div>
+                    <?php
+                    }
+                    ?>
                     <br />
                     <div class="sharing-no-faces hidden-phone">
                         <div class="fb-like" data-href="<?= $escapedPostUriExternal; ?>"
