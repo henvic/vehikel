@@ -17,7 +17,7 @@ class Ml_Model_Posts
     /**
      * @var int
      */
-    protected $_maxPictures = 12;
+    protected $_maxPictures = 30;
 
     /**
      * @var int
