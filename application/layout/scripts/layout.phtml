@@ -6,6 +6,13 @@ $request = Zend_Controller_Front::getInstance()->getRequest();
 
 $config = $registry->get('config');
 
+$metaOgp = $this->metaOgp;
+
+$metaOgp[] = ["property" => "og:locale", "content" => "pt_BR"];
+$metaOgp[] = ["property" => "og:site_name", "content" => $this->escape($config["applicationname"])];
+$metaOgp[] = ["property" => "og:image", "content" => $this->escape($this->staticVersion("/images/logotype.png"))];
+$metaOgp[] = ["property" => "fb:admins", "content" => $this->escape($config["services"]["facebook"]["admins"])];
+
 $this->headScript()->setAllowArbitraryAttributes(true);
 
 $this->headMeta()->appendName('keywords', $config['keywords']);
@@ -57,6 +64,16 @@ $this->headMeta() , PHP_EOL;
 <?php echo $this->headScript(); ?>
 <?php echo $this->headStyle(); ?>
 <?php
+if (is_array($metaOgp)) {
+
+    foreach ($metaOgp as $eachOg) {
+?>
+<meta property="<?= $this->escape($eachOg["property"]); ?>" content="<?= $this->escape($eachOg["content"]); ?>" />
+<?
+    }
+    unset($eachOg);
+}
+
 /* Modernizr should load just after CSS */
 ?>
 <script src="<?php echo $this->staticVersion("/vendor/modernizr/modernizr.js"); ?>"></script>

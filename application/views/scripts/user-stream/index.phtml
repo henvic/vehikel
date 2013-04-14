@@ -21,6 +21,21 @@ $paginator =  $this->posts;
 $escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_stream_1stpage");
 
 $escapedUserLinkExternal = "http://" . $config["webhost"] . $config["webroot"] . $escapedUserLink;
+
+$metaOgp = [];
+$metaOgp[] = ["property" => "og:title", "content" => $userInfo["name"]];
+$metaOgp[] = ["property" => "og:type", "content" => "product"];
+$metaOgp[] = ["property" => "og:url", "content" => $escapedUserLinkExternal];
+
+if (isset($userInfo["avatar_info"]["id"]) && isset($userInfo["avatar_info"]["secret"])) {
+    $metaOgp[] = [
+        "property" => "og:image",
+        "content" =>
+        $this->pictureLink($userInfo["avatar_info"]["id"], $userInfo["avatar_info"]["secret"], "medium.jpg")
+    ];
+}
+
+$this->metaOgp = $metaOgp;
 ?>
 <div class="container">
 <div class="row">

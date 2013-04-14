@@ -11,6 +11,8 @@ $postForm = $this->postForm;
 
 $escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_stream_1stpage");
 
+$escapedUserPostLink = $this->url(["username" => $userInfo["username"], "post_id" => $post["id"]], "user_post");
+
 $escapedUSerLinkExternal = "http://" . $config["webhost"] . $config["webroot"] . $escapedUserLink;
 
 $unEscapedTitle = $post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"];
@@ -21,6 +23,54 @@ $escapedPostUriExternal = "http://" . $config["webhost"] . $config["webroot"] .
     $this->url(["username" => $userInfo["username"], "post_id" => $post["id"]], "user_post");
 
 $searchLink = $this->url(array(), "search");
+
+$metaOgp = [];
+$metaOgp[] = ["property" => "og:title", "content" => $unEscapedTitle];
+$metaOgp[] = ["property" => "og:type", "content" => "product"];
+$metaOgp[] = ["property" => "og:url", "content" => $escapedPostUriExternal];
+
+if (is_array($post["pictures"])) {
+    $amountOfPictures = sizeof($post["pictures"]);
+
+    $showPictures = $amountOfPictures;
+
+    if ($showPictures > 4) {
+        $showPictures = 4;
+    }
+
+    for ($pictureN = 0; $pictureN < $showPictures; $pictureN++) {
+        $picture = $post["pictures"][$pictureN];
+
+        $metaOgp[] = [
+            "property" => "og:image",
+            "content" =>
+            $this->pictureLink($picture["id"], $picture["secret"], "medium.jpg")
+        ];
+    }
+    unset($picture);
+    unset($pictureN);
+    unset($showPictures);
+    unset($amountOfPictures);
+}
+
+
+
+if (isset($userInfo["avatar_info"]["id"]) && isset($userInfo["avatar_info"]["secret"])) {
+    $metaOgp[] = [
+        "property" => "og:image",
+        "content" =>
+        $this->pictureLink($userInfo["avatar_info"]["id"], $userInfo["avatar_info"]["secret"], "medium.jpg")
+    ];
+}
+
+if ($post["youtube_video"]) {
+    $metaOgp[] = [
+        "property" => "og:video",
+        "content" => "http://www.youtube.com/v/" . $this->escape($post["youtube_video"])
+    ];
+}
+
+$this->metaOgp = $metaOgp;
 
 $breadCrumbTypeLink = $searchLink . "?q=*&amp;type=" . urlencode(mb_strtolower($post["type"]));
 $breadCrumbMakeLink = $breadCrumbTypeLink . "&amp;make=" . urlencode(mb_strtolower($post["make"]));
@@ -47,6 +97,7 @@ $breadCrumb = $this->postBreadCrumb(array(
         "name" => $post["make"] . " " . $post["model"] . " " . $post["name"]
     )
 ));
+
 ?>
 <div class="container">
     <div class="row">
