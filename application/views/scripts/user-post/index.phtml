@@ -102,9 +102,9 @@ $breadCrumb = $this->postBreadCrumb(array(
 <div class="container">
     <div class="row">
         <?= $this->render("search/facets.phtml"); ?>
-        <div class="span10">
+        <div class="span9">
             <div class="row">
-                <div class="span10">
+                <div class="span9">
                     <?= $breadCrumb; ?>
                     <?php
                     if ($this->editable) {
@@ -220,18 +220,18 @@ $breadCrumb = $this->postBreadCrumb(array(
                     </div><!-- end of .sharing -->
                     <?= $this->render("user-post/address.phtml"); ?>
                     <div class="row">
-                        <div class="span10">
+                        <div class="span9">
                             <ul class="nav nav-tabs post-info-tabs" id="post-info-tabs">
                                 <li class="active"><a href="#post-description">Descrição</a></li>
                                 <li><a href="#post-contact"><i class="icon-envelope"></i> Enviar proposta</a></li>
                             </ul>
-                        </div><!-- end of .span10 -->
+                        </div><!-- end of .span9 -->
                     </div><!-- end of .row -->
                     <div class="row">
-                        <div id="post-product-main-info" class="span5 post-product-main-info-parent">
+                        <div id="post-product-main-info" class="span4 post-product-main-info-parent">
                             <?= $this->render("user-post/partial-product-main-info.phtml"); ?>
                         </div>
-                        <div class="span5">
+                        <div class="span4">
                             <div class="tab-content">
                                 <div class="tab-pane active" id="post-description">
                                     <p <?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?> id="post-description-text"
@@ -260,12 +260,12 @@ $breadCrumb = $this->postBreadCrumb(array(
                                     <?= $this->render("user-post/partial-contact.phtml"); ?>
                                 </div><!-- end of #post-contact -->
                             </div><!-- end of .tab-content -->
-                        </div><!-- end of .span5 -->
+                        </div><!-- end of .span4 -->
                     </div><!-- end of .row -->
                     <?php
                     if ($this->editable) {
                         ?>
-                        <div class="row"><div class="offset5 span4">
+                        <div class="row"><div class="offset4 span4">
                                 <div id="post-status">
                                     <?php
                                     if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
@@ -292,12 +292,12 @@ $breadCrumb = $this->postBreadCrumb(array(
                                     </div><!-- end of .btn-group -->
                                     <br />
                                 </div><!-- end of #post-status -->
-                            </div><!-- end of .offset5 .span4 -->
+                            </div><!-- end of .offset4 .span4 -->
                         </div><!-- end of .row -->
                     <?php
                     }?>
-                </div><!-- end of .span9 -->
+                </div><!-- end of .span8 -->
             </div><!-- end of .row -->
-        </div><!-- end of .span10 -->
+        </div><!-- end of .span9 -->
     </div><!-- end of .row -->
 </div><!-- end of .container -->
