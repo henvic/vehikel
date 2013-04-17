@@ -39,7 +39,7 @@ $this->headTitle($headTitle);
             if ("development" == APPLICATION_ENV && $this->exception) {
                 ?>
                 <h2>Stack trace:</h2>
-                <pre class="prettyprint"><?php echo str_replace(array(": ", "#"), array(":<br />   ", "<br />#"), $this->escape($this->exception->getTraceAsString())); ?></pre>
+                <pre class="prettyprint pre-scrollable"><?php echo str_replace(array(": ", "#"), array(":<br />   ", "<br />#"), $this->escape($this->exception->getTraceAsString())); ?></pre>
                 <?php
             }
             ?>
