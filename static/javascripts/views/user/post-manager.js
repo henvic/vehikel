@@ -1024,7 +1024,30 @@ define([
         var $openGalleryManager = $("#open-gallery-manager");
 
         $openGalleryManager.on("click", function (e) {
-            $galleryManager.toggleClass("hidden").toggleClass("active");
+            if ($galleryManager.hasClass("hidden")) {
+                $galleryManager.removeClass("hidden");
+                $openGalleryManager.addClass("active");
+                $("i", $openGalleryManager).removeClass("icon-plus").addClass("icon-minus");
+                $('html, body').animate({
+                    scrollTop: $openGalleryManager.offset().top - 90
+                }, 400);
+            } else {
+                $galleryManager.addClass("hidden");
+                $openGalleryManager.removeClass("active");
+                $("i", $openGalleryManager).removeClass("icon-minus").addClass("icon-plus");
+            }
+        });
+
+        var $setYouTubeVideo = $("#set-youtube-video");
+
+        $setYouTubeVideo.on("click", function (e) {
+            if ($galleryManager.hasClass("hidden")) {
+                $openGalleryManager.click();
+            }
+
+            getVideoLinkElement().value = window.prompt("Link para vídeo do YouTube?", getVideoLinkElement().value);
+
+            $(".video-form", $galleryManager).submit();
         });
     }
 );
