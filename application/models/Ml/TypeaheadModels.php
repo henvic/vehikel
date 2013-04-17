@@ -38,7 +38,11 @@ class Ml_Model_TypeaheadModels
 
         $select->where("make = ?", $make)
             ->where("model LIKE ?", "%" . $part . "%")
-            ->limit(50)
+        ;
+
+        $select->order("type ASC")
+            ->order("make ASC")
+            ->order("model ASC")
         ;
 
         $data = $this->_dbAdapter->fetchAll($select);
