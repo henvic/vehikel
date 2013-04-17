@@ -33,6 +33,10 @@ class Ml_Model_TypeaheadMakes
 
         $select = $this->_dbTable->select();
 
+        $select
+            ->order("make ASC")
+        ;
+
         return $this->getDbResult($select);
     }
 
