@@ -518,12 +518,6 @@ define([
 
         var postDescriptionTextEditValue = $postDescriptionTextEdit.val();
 
-        $postDescriptionTextEdit.autoResize({
-            minHeight: 50,
-            maxHeight: 400,
-            extraSpace: 15
-        });
-
         var openDescriptionEdit = function () {
             $postDescriptionText.addClass("hidden");
             $postDescriptionEditingArea.removeClass("hidden");
