@@ -296,6 +296,10 @@ class Ml_Model_Posts
 
         $data["status"] = self::STATUS_STAGING;
 
+        if (isset($data["description"])) {
+            $data['description_html_escaped'] = $this->_purifier->purify($data['description']);
+        }
+
         try {
             $this->_dbAdapter->beginTransaction();
 

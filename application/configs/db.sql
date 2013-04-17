@@ -100,6 +100,8 @@ CREATE TABLE `people` (
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `address` text,
   `account_type` set('retail','private') NOT NULL DEFAULT 'private',
+  `post_template` text NOT NULL,
+  `post_template_html_escaped` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `email` (`email`)
@@ -123,6 +125,8 @@ CREATE TABLE `people_history` (
   `address` text,
   `change_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `account_type` set('retail','private') NOT NULL DEFAULT 'private',
+  `post_template` text NOT NULL,
+  `post_template_html_escaped` text NOT NULL,
   PRIMARY KEY (`history_id`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

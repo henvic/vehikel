@@ -135,6 +135,10 @@ class Ml_Model_People
 
         $this->saveHistorySnapshot($id);
 
+        if (isset($data["post_template"])) {
+            $data['post_template_html_escaped'] = $this->_purifier->purify($data['post_template']);
+        }
+
         $this->_dbAdapter->commit();
 
         //retrieves fresh data renewing the cached values in the process

@@ -6,6 +6,8 @@ class UserPostManagerController extends Ml_Controller_Action
 
     public function newAction()
     {
+        $signedUserInfo = $this->_registry->get("signedUserInfo");
+
         $router = Zend_Controller_Front::getInstance()->getRouter();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -35,6 +37,8 @@ class UserPostManagerController extends Ml_Controller_Action
                     }
                 }
             }
+
+            $data["description"] = $signedUserInfo["post_template"];
 
             $id = $posts->create($this->_auth->getIdentity(), $data);
 

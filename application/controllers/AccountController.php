@@ -92,6 +92,25 @@ class AccountController extends Ml_Controller_Action
         }
     }
 
+    public function templateAction()
+    {
+        $signedUserInfo = $this->_registry->get("signedUserInfo");
+
+        $people =  $this->_sc->get("people");
+        /** @var $people \Ml_Model_People() */
+
+        $form = new Ml_Form_PostTemplate();
+
+        $this->view->assign("postTemplateForm", $form);
+
+        $form->setDefault("post_template", $signedUserInfo["post_template"]);
+
+        if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
+            $data = ["post_template" => $form->getValue("post_template")];
+            $people->update($signedUserInfo["id"], $data);
+        }
+    }
+
     public function pictureAction()
     {
         $signedUserInfo = $this->_registry->get("signedUserInfo");
