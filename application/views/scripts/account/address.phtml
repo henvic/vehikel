@@ -8,7 +8,7 @@ $form = $this->addressForm;
     <div class="row">
         <?= $this->render("/account/menu.phtml"); ?>
         <div class="span6">
-            <h1>Endereço e telefones</h1>
+            <h1>Endereço e telefone</h1>
             <p><span class="label label-info">Dica</span> verifique com o
                 <a href="https://maps.google.com/" rel="external">Google Maps</a>
                 se o endereço digitado está correto.</p>
@@ -21,8 +21,8 @@ $form = $this->addressForm;
             } else {
             ?>
             <p><span class="label label-inverse">Importante</span> a sua conta é do tipo <em>Particular</em> e,
-                portanto, seu endereço é confidêncial, não sendo mostrado publicamente no site. Apenas os telefones são
-                disponibilizados publicamente.</p>
+                portanto, seu endereço é confidêncial, não sendo mostrado publicamente no site. Apenas a cidade,
+                o estado e o telefones são disponibilizado publicamente.</p>
             <?php
             }
             ?>

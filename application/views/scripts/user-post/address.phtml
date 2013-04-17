@@ -6,7 +6,7 @@ $address = $userInfo["address"];
 ?>
 <address id="post-address" class="vcard post-seller-address">
 <div class="row">
-<div class="span4">
+<div class="span8">
 <table>
 <tr>
 <td><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo, "square.jpg", 60, 60); ?></a></td>
@@ -21,12 +21,22 @@ if ($userInfo["account_type"] == "retail") {
 }
 ?>
 <span class="locality"><?= $this->escape($address["locality"]); ?></span> -
-<span class="region"><?= $this->escape($address["region"]); ?></span>
+<span class="region"><?= $this->escape($address["region"]); ?></span>,
 <?php
 if ($userInfo["account_type"] == "retail") {
-?>,
-<span class="postal-code"><?= $this->escape($address["postal_code"]); ?></span><span class="hidden">,
+?>
+<span class="hidden"><span class="postal-code"><?= $this->escape($address["postal_code"]); ?></span>
 <span class="country-name"><?= $this->escape($address["country_name"]); ?></span></span>
+<?php
+$phone = $address["phone"];
+
+$formattedBrPhone = sprintf("(%s) %s-%s",
+    mb_substr($phone, 3, 2),
+    mb_substr($phone, 5, 4),
+    mb_substr($phone, 9)
+);
+?>
+<span class="tel"><a class="tel" href="tel:<?= $this->escape($phone); ?>"><?= $this->escape($formattedBrPhone); ?></a></span>
 </td>
 <td>
 <a href="<?= $this->addressMapLink($address); ?>" id="map-link" class="map-link"
@@ -36,12 +46,6 @@ data-address="<?= $this->escape($this->addressMapLink($address, true)); ?>"><spa
 ?>
 </td>
 </table>
-</div><!-- end of .span4 -->
-<div class="span4">
-<ul>
-<?= $this->addressPhoneList($address["phones"]); ?>
-</ul>
-</div><!-- end of .span4 -->
 </div><!-- end of .row -->
 <div id="map-modal"></div>
 </address>

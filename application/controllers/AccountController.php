@@ -197,14 +197,7 @@ class AccountController extends Ml_Controller_Action
         $currentAddress = $signedUserInfo["address"];
 
         if ($currentAddress) {
-
-            $currentAddress["telephone_1_name"] = $currentAddress["phones"][0]["name"];
-            $currentAddress["telephone_1"] = mb_substr($currentAddress["phones"][0]["tel"], 3);
-
-            if (isset($currentAddress["phones"][1])) {
-                $currentAddress["telephone_2_name"] = $currentAddress["phones"][1]["name"];
-                $currentAddress["telephone_2"] = mb_substr($currentAddress["phones"][1]["tel"], 3);
-            }
+            $currentAddress["phone"] = mb_substr($currentAddress["phone"], 3);
 
             $form->setDefaults(
                 $currentAddress
@@ -226,17 +219,7 @@ class AccountController extends Ml_Controller_Action
             "country_name" => "Brasil"
         ];
 
-        $address["phones"][] = [
-            "name" => $values["telephone_1_name"],
-            "tel" => "+55" . str_replace(array(" ", "-"), "", $values["telephone_1"])
-        ];
-
-        if ($values["telephone_2"]) {
-            $address["phones"][] = [
-                "name" => $values["telephone_2_name"],
-                "tel" => "+55" . str_replace(array(" ", "-"), "", $values["telephone_2"])
-            ];
-        }
+        $address["phone"] = "+55" . str_replace(array(" ", "-"), "", $values["phone"]);
 
         $people->update($signedUserInfo['id'], array("address" => json_encode($address)));
 

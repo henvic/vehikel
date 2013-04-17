@@ -92,45 +92,15 @@ class Ml_Form_Address extends Twitter_Bootstrap_Form_Horizontal
 
         $this->getElement("postal_code")->addValidator(new Ml_Validate_Cep(), true);
 
-        $this->addElement("tel", 'telephone_1', array(
-            'label'      => '☎ Telefone 1',
+        $this->addElement("tel", 'phone', array(
+            'label'      => '☎ Telefone',
             'required'   => true,
             'filters'    => array('StringTrim', 'TelephoneBr'),
         ));
 
-        $this->getElement("telephone_1")
+        $this->getElement("phone")
             ->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 16)), true)
             ->addValidator(new Ml_Validate_TelephoneBr());
-
-        $this->addElement('text', 'telephone_1_name', array(
-            'label'      => '☎ 1, falar com',
-            'required'   => false,
-            'filters'    => array('StringTrim'),
-            'validators' => array(
-                array('validator' =>
-                'StringLength', 'options' => array(1, 40)),
-            )
-        ));
-
-        $this->addElement('tel', 'telephone_2', array(
-            'label'      => '☎ Telefone 2',
-            'required'   => false,
-            'filters'    => array('StringTrim', 'TelephoneBr'),
-        ));
-
-        $this->getElement("telephone_2")
-            ->addValidator(new Ml_Validate_StringLength(array("min" => 1, "max" => 16)), true)
-            ->addValidator(new Ml_Validate_TelephoneBr());
-
-        $this->addElement('text', 'telephone_2_name', array(
-            'label'      => '☎ 2, falar com',
-            'required'   => false,
-            'filters'    => array('StringTrim'),
-            'validators' => array(
-                array('validator' =>
-                'StringLength', 'options' => array(1, 40)),
-            )
-        ));
 
         $this->addElement('submit', 'submit', array(
             'label'    => 'Salvar',
