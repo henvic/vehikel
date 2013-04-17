@@ -42,7 +42,7 @@ class UserPostManagerController extends Ml_Controller_Action
 
             $id = $posts->create($this->_auth->getIdentity(), $data);
 
-            $username = $this->_registry->get("signedUserInfo")["username"];
+            $username = $signedUserInfo["username"];
 
             $this->_redirect($router->assemble(
                     array("username" => $username, "post_id" => $id), "user_post"), array("exit")
