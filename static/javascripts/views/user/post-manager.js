@@ -248,53 +248,6 @@ define([
             loadPostProductMakes($postProductType.val());
         });
 
-        var setCustomMake = function () {
-            var make = window.prompt("Marca?");
-
-            if (! make) {
-                return;
-            }
-
-            $postProductMake.val(make);
-            if ($postProductMake.val() === make) {
-                loadPostProductModels($postProductType.val(), $postProductMake.val());
-                return;
-            }
-
-            var $optGroup = $($postProductMake.find("optgroup")[0]);
-            var $entrySet = $("<select>");
-
-            $entrySet.append($('<option>', { value : make }).text(make));
-
-            $optGroup.append($entrySet.children());
-
-            $postProductMake.val(make);
-
-            $postProductModel.removeAttr("disabled", "disabled");
-        };
-
-        var setCustomModel = function () {
-            var model = window.prompt("Modelo?");
-
-            if (! model) {
-                return;
-            }
-
-            $postProductModel.val(model);
-            if ($postProductModel.val() === model) {
-                return;
-            }
-
-            var $optGroup = $($postProductModel.find("optgroup")[0]);
-            var $entrySet = $("<select>");
-
-            $entrySet.append($('<option>', { value : model }).text(model));
-
-            $optGroup.append($entrySet.children());
-
-            $postProductModel.val(model);
-        };
-
         var loadPostProductModels = function (type, make, model) {
             $.ajax({
                 url: AppParams.webroot + '/typeahead',
@@ -341,17 +294,7 @@ define([
             $postProductModel.val("");
             $postProductModel.attr("disabled", "disabled");
 
-            if ($(':selected', $postProductMake).data("action") === 'other') {
-                setCustomMake();
-            } else {
-                loadPostProductModels($postProductType.val(), $postProductMake.val());
-            }
-        });
-
-        $postProductModel.on("change", function (e) {
-            if ($(':selected', $postProductModel).data("action") === 'other') {
-                setCustomModel();
-            }
+            loadPostProductModels($postProductType.val(), $postProductMake.val());
         });
 
         var openPostProductNameEdit = function () {
