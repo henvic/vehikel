@@ -212,7 +212,7 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
             'filters'    => array('StringTrim'),
             'validators' => array(
                 array('validator' =>
-                'StringLength', 'options' => array(0, 4096)),
+                'StringLength', 'options' => array(0, 30000)),
             ),
             'rows' => 5
         ));
