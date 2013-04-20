@@ -18,6 +18,7 @@
         "jquery.tablesorter": "../vendor/jquery-tablesorter-2.0.5b/jquery.tablesorter",
         "jquery.fn.autoResize": "../vendor/jquery-fn-autoResize-1.14/jquery.autoresize",
         "jquery.maskMoney": "../vendor/plentz-jquery-maskmoney-5f9dadd/jquery.maskMoney",
+        "ckeditor" : "../vendor/ckeditor-4.1/ckeditor",
         "galleria" : "../vendor/galleria-1.2.9/src/galleria",
 
         // Require.js Plugins
