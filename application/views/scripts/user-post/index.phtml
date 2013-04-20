@@ -235,11 +235,11 @@ $breadCrumb = $this->postBreadCrumb(array(
                         <div class="span5">
                             <div class="tab-content">
                                 <div class="tab-pane active" id="post-description">
-                                    <p <?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?> id="post-description-text"
+                                    <div <?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?> id="post-description-text"
                                                                                                                        class="post-description-text <?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? "hidden " : ""; ?>
 <?= ($this->editable) ? "post-editable" : ""; ?>">
                                         <?= $post["description_html_escaped"]; ?>
-                                    </p>
+                                    </div>
                                     <?php
                                     if ($this->editable) {
                                         ?>
