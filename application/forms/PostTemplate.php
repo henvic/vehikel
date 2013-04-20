@@ -26,7 +26,8 @@ class Ml_Form_PostTemplate extends Twitter_Bootstrap_Form_Horizontal
                 array('validator' =>
                 'StringLength', 'options' => array(0, 30000)),
             ),
-            'rows' => 5
+            'rows' => 5,
+            'class' => 'hidden'
         ));
 
         $this->addElement('submit', 'submit', array(
