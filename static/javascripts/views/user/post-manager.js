@@ -1,4 +1,4 @@
-/*global define, Modernizr, Galleria */
+/*global define, Modernizr, Galleria, CKEDITOR */
 /*jshint indent:4 */
 
 define([
@@ -6,6 +6,7 @@ define([
     'jquery',
     'yui',
     'underscore',
+    'plugins/ckeditor-config',
     'text!templates/posts/manager-gallery.html',
     'text!templates/posts/manager-picture.html',
     'jquery.maskMoney'
@@ -15,6 +16,7 @@ define([
         $,
         YUI,
         underscore,
+        ckeditorConfig,
         postsManagerGalleryTemplate,
         postsManagerPictureTemplate
         ) {
@@ -456,16 +458,41 @@ define([
 
         var postDescriptionTextEditValue = $postDescriptionTextEdit.val();
 
+        var editor;
+
+        CKEDITOR.on("instanceReady", function (ev) {
+            editor = CKEDITOR.instances["post-description-text-edit"];
+        });
+
         var openDescriptionEdit = function () {
             $postDescriptionText.addClass("hidden");
             $postDescriptionEditingArea.removeClass("hidden");
 
             $postDescriptionTextEdit.focus();
 
-            var descriptionLength = $postDescriptionTextEdit.val().length;
-            $postDescriptionTextEdit.scrollTop($postDescriptionTextEdit.scrollHeight);
+            editor.focus();
 
-            $postDescriptionTextEdit[0].selectionStart = $postDescriptionTextEdit[0].selectionEnd = descriptionLength;
+            //see http://stackoverflow.com/questions/8914543/ckeditor-cursor-position-after-inserting-uneditable-element
+
+            var s = editor.getSelection();
+            var selected_ranges = s.getRanges();
+            var node = selected_ranges[0].startContainer;
+            var parents = node.getParents(true);
+
+            node = parents[parents.length - 2].getFirst();
+
+            while (true) {
+                var x = node.getNext();
+                if (x === null) {
+                    break;
+                }
+                node = x;
+            }
+
+            s.selectElement(node);
+            selected_ranges = s.getRanges();
+            selected_ranges[0].collapse(false);
+            s.selectRanges(selected_ranges);
         };
 
         var closeDescriptionEdit = function () {
@@ -476,6 +503,10 @@ define([
 
         var saveDescriptionEdit = function () {
             $postDescriptionTextSave.button("loading");
+
+            var content = editor.getData();
+
+            $postDescriptionTextEdit.val(content);
 
             var data = {
                 description: $postDescriptionTextEdit.val(),
@@ -493,6 +524,7 @@ define([
                 success: function (result, textStatus, jqXHR) {
                     postDescriptionTextEditValue = result.description;
                     $postDescriptionTextEdit.val(result.description);
+                    editor.setData(result.description);
                     $postDescriptionText.html(result.description_html_escaped);
                     closeDescriptionEdit();
                 }
@@ -518,6 +550,7 @@ define([
             }
         });
 
+        CKEDITOR.replace("post-description-text-edit", ckeditorConfig);
 
         $postDescriptionTextEdit.on("keyup", function (e) {
             if ($postDescriptionTextEdit.val() !== postDescriptionTextEditValue) {
