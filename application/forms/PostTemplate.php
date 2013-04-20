@@ -11,6 +11,8 @@ class Ml_Form_PostTemplate extends Twitter_Bootstrap_Form_Horizontal
     {
         $this->setMethod('post');
 
+        $this->setAttrib("id", "post-template-form");
+
         $this->addElementPrefixPath('Ml_Validate', 'Ml/Validate/',
             Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('Ml_Filter', 'Ml/Filter/',
