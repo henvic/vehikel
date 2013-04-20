@@ -36,10 +36,9 @@ class Ml_Model_HtmlPurifier
         $purifierConfig->set('Core.EscapeInvalidTags', true);
         $purifierConfig->set('AutoFormat.RemoveEmpty', true);
         $purifierConfig->set('AutoFormat.Linkify', true);
-        $purifierConfig->set('HTML.MaxImgLength', 1024);
         $purifierConfig->set('Core.ColorKeywords', '');
         //|target was here at the a element and also somewhere else
-        $purifierConfig->set('HTML.Allowed', 'a[href|title],strong,b,br,em,i,img[src|alt|width|height|title],ins,del');
+        $purifierConfig->set('HTML.Allowed', 'p,a[href|title],strong,b,br,em,i,ins,u,del,s');
 
         $def = $purifierConfig->getHTMLDefinition(true);
         //a rel nofollow http://htmlpurifier.org/phorum/read.php?3,1442,1661,quote=1
@@ -53,12 +52,6 @@ class Ml_Model_HtmlPurifier
         $a->attr['class'] = 'Text#new-window';//see above
 
         $a->attr_transform_post[] = new HTMLPurifier_AttrTransform_AValidator();
-
-        $img = $def->addBlankElement('img');
-
-        $img->attr['alt'] = 'Text';
-        $img->attr['height'] = 'Pixels#' . $purifierConfig->get("HTML.MaxImgLength");
-        $img->attr['width'] = 'Pixels#' . $purifierConfig->get("HTML.MaxImgLength");
 
         $this->_purifier = new HTMLPurifier($purifierConfig);
 
