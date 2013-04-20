@@ -48,6 +48,10 @@ install() {
   curl -o henvic-jquery.fn.autoResize-1.14.zip -O https://nodeload.github.com/henvic/jQuery.fn.autoResize/zipball/master
   cd ..
 
+  # Download CKEditor 4
+  echo "Downloading CKEditor 4"
+  curl -o ckeditor_4.1.tar.gz http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.1/ckeditor_4.1_basic.tar.gz
+
   # Download jQuery-tablesorter
   echo "Downloading jQuery-tablesorter"
   mkdir jquery-tablesorter-2.0.5b
@@ -111,6 +115,9 @@ install() {
   cp henvic-jQuery.fn.autoResize-653c1e7/jquery.autoresize.js .
   rm -r henvic-jQuery.fn.autoResize-653c1e7/
   cd ..
+
+  tar xvf ckeditor_4.1.tar.gz
+  mv ckeditor ckeditor-4.1
 
   cd jquery-tablesorter-2.0.5b
   unzip tablesorter.zip jquery.metadata.js jquery.tablesorter.js
