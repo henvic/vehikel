@@ -101,6 +101,8 @@ class AccountController extends Ml_Controller_Action
 
         $form = new Ml_Form_PostTemplate();
 
+        $this->view->addJsParam("route", "account/template");
+
         $this->view->assign("postTemplateForm", $form);
 
         $form->setDefault("post_template", $signedUserInfo["post_template"]);
