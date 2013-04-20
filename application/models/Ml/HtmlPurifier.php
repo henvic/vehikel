@@ -39,6 +39,7 @@ class Ml_Model_HtmlPurifier
         $purifierConfig->set('Core.ColorKeywords', '');
         //|target was here at the a element and also somewhere else
         $purifierConfig->set('HTML.Allowed', 'p,a[href|title],strong,b,br,em,i,ins,u,del,s');
+        $purifierConfig->set('AutoFormat.AutoParagraph', true);
 
         $def = $purifierConfig->getHTMLDefinition(true);
         //a rel nofollow http://htmlpurifier.org/phorum/read.php?3,1442,1661,quote=1
@@ -60,11 +61,6 @@ class Ml_Model_HtmlPurifier
 
     public function purify($html)
     {
-        $purifying = $this->_purifier->purify($html);
-
-        //AutoFormat.AutoParagraph doesn't provide <br />
-        $purified = nl2br($purifying);
-
-        return $purified;
+        return $this->_purifier->purify($html);
     }
 }
