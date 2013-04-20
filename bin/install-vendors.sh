@@ -41,12 +41,6 @@ install() {
   curl -o jquery.js -O http://code.jquery.com/jquery-1.9.1.js
   cd ..
 
-  # Download Zoom (jQuery plugin)
-  echo "Downloading Zoom (jQuery plugin)
-  curl -o zoom-1.7.1.tar.gz -O https://nodeload.github.com/jackmoore/zoom/tar.gz/1.7.1
-  tar xzf zoom-1.7.1.tar.gz
-  rm -r zoom-1.7.1.tar.gz
-
   # Download jQuery.fn.autoResize-1.14
   echo "Downloading jQuery.fn.autoResize-1.14"
   mkdir jquery-fn-autoResize-1.14
