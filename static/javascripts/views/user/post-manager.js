@@ -6,7 +6,6 @@ define([
     'jquery',
     'yui',
     'underscore',
-    'text!templates/help/html.html',
     'text!templates/posts/manager-gallery.html',
     'text!templates/posts/manager-picture.html',
     'jquery.maskMoney'
@@ -16,7 +15,6 @@ define([
         $,
         YUI,
         underscore,
-        htmlTemplate,
         postsManagerGalleryTemplate,
         postsManagerPictureTemplate
         ) {
@@ -55,9 +53,6 @@ define([
                 return bytes + ' B';
             }
         };
-
-        var $htmlFormattingPopover = $('.html-formatting-popover');
-        $htmlFormattingPopover.popover({title: 'HTML', content: htmlTemplate, placement: 'top'});
 
         var confirmBeforeExit = false;
 
@@ -476,7 +471,6 @@ define([
         var closeDescriptionEdit = function () {
             $postDescriptionText.removeClass("hidden");
             $postDescriptionEditingArea.addClass("hidden");
-            $htmlFormattingPopover.popover("hide");
             confirmBeforeExit = false;
         };
 
@@ -524,9 +518,6 @@ define([
             }
         });
 
-        $postDescriptionTextEdit.on("click", function (e) {
-            $htmlFormattingPopover.popover("hide");
-        });
 
         $postDescriptionTextEdit.on("keyup", function (e) {
             if ($postDescriptionTextEdit.val() !== postDescriptionTextEditValue) {

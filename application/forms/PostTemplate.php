@@ -18,9 +18,6 @@ class Ml_Form_PostTemplate extends Twitter_Bootstrap_Form_Horizontal
         $this->addPrefixPath("Ml_Form", "Ml/Form");
 
         $this->addElement('textarea', 'post_template', array(
-            'label'      => 'Descrição',
-            'description' =>
-            '<small><button class="btn btn-mini btn-link html-formatting-popover">HTML formatting</button></small>',
             'required'   => false,
             'filters'    => array('StringTrim'),
             'validators' => array(
