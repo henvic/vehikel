@@ -1,4 +1,4 @@
-/*global define, Modernizr */
+/*global define, Modernizr, Galleria */
 /*jshint indent:4 */
 
 define([
