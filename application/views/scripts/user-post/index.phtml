@@ -100,208 +100,208 @@ $breadCrumb = $this->postBreadCrumb(array(
 
 ?>
 <div class="container">
+<div class="row">
+<?= $this->render("search/facets.phtml"); ?>
+<div class="span9">
     <div class="row">
-        <?= $this->render("search/facets.phtml"); ?>
         <div class="span9">
-            <div class="row">
-                <div class="span9">
-                    <?= $breadCrumb; ?>
-                    <?php
-                    if ($this->editable) {
-                        ?>
-                        <noscript>
-                            <p class="alert">Você precisa de JavaScript ativo para efetuar algumas ações de edição deste anúncio.</p>
-                        </noscript>
-                    <?php
-                    }
-                    ?>
-                    <h1 id="post-product-name" class="post-product-name <?= ($this->editable) ? "post-editable" : ""; ?>"
-                        <?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?>>
-                        <?= $escapedTitle; ?>
-                        <span class="post-product-name-id">#<?= $this->escape($post["universal_id"]); ?></span>
-                    </h1>
-                    <?php
-                    if ($this->editable) {
-                        ?>
-                        <form id="post-product-name-editing-area" class="post-product-name-editing-area form-inline hidden" method="post">
-                            <select id="post-product-make" class="input-medium">
-                                <optgroup label="Marca">
-                                    <option value="">-</option>
-                                    <?php
-                                    if (! empty($post["make"])) {
-                                        ?>
-                                        <option value="<?= $this->escape($post["make"]); ?>" selected="selected"><?= $this->escape($post["make"]); ?></option>
-                                    <?php
-                                    }
-                                    ?>
-                                </optgroup>
-                            </select>
-                            <select id="post-product-model" class="input-medium">
-                                <optgroup label="Modelo">
-                                    <option value="">-</option>
-                                    <?php
-                                    if (! empty($post["make"])) {
-                                        ?>
-                                        <option value="<?= $this->escape($post["model"]); ?>" selected="selected"><?= $this->escape($post["model"]); ?></option>
-                                    <?php
-                                    }
-                                    ?>
-                                </optgroup>
-                            </select>
+            <?= $breadCrumb; ?>
+            <?php
+            if ($this->editable) {
+                ?>
+                <noscript>
+                    <p class="alert">Você precisa de JavaScript ativo para efetuar algumas ações de edição deste anúncio.</p>
+                </noscript>
+            <?php
+            }
+            ?>
+            <h1 id="post-product-name" class="post-product-name <?= ($this->editable) ? "post-editable" : ""; ?>"
+                <?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?>>
+                <?= $escapedTitle; ?>
+                <span class="post-product-name-id">#<?= $this->escape($post["universal_id"]); ?></span>
+            </h1>
+            <?php
+            if ($this->editable) {
+                ?>
+                <form id="post-product-name-editing-area" class="post-product-name-editing-area form-inline hidden" method="post">
+                    <select id="post-product-make" class="input-medium">
+                        <optgroup label="Marca">
+                            <option value="">-</option>
                             <?php
-                            $postForm->engine->setDecorators(array('ViewHelper'));
-                            echo $postForm->engine;
+                            if (! empty($post["make"])) {
+                                ?>
+                                <option value="<?= $this->escape($post["make"]); ?>" selected="selected"><?= $this->escape($post["make"]); ?></option>
+                            <?php
+                            }
                             ?>
-
-                            <input type="text" id="post-product-name-edit" class="post-product-name-edit input-large"
-                                   maxlength="30" placeholder="Título" value="<?= $this->escape($post["name"]); ?>" />
-                            <input class="btn btn-primary" id="post-product-name-save" type="submit" value="Salvar" />
-                            <button class="btn" id="post-product-name-cancel" type="button">Cancelar</button>
-                            <select id="post-product-type" class="input-small hidden">
-                                <optgroup label="Veículo">
-                                    <option value="car" <?= ($post["type"] == "car") ? 'selected="selected" ' : ''; ?>>Carro</option>
-                                    <option value="motorcycle" <?= ($post["type"] == "motorcycle") ? 'selected="selected" ' : ''; ?>>Motocicleta</option>
-                                    <option value="boat" <?= ($post["type"] == "boat") ? 'selected="selected" ' : ''; ?>>Embarcação</option>
-                                </optgroup>
-                            </select>
-                        </form>
+                        </optgroup>
+                    </select>
+                    <select id="post-product-model" class="input-medium">
+                        <optgroup label="Modelo">
+                            <option value="">-</option>
+                            <?php
+                            if (! empty($post["make"])) {
+                                ?>
+                                <option value="<?= $this->escape($post["model"]); ?>" selected="selected"><?= $this->escape($post["model"]); ?></option>
+                            <?php
+                            }
+                            ?>
+                        </optgroup>
+                    </select>
                     <?php
-                    }
+                    $postForm->engine->setDecorators(array('ViewHelper'));
+                    echo $postForm->engine;
                     ?>
-                    <p id="post-status-end" class="alert alert-success
+
+                    <input type="text" id="post-product-name-edit" class="post-product-name-edit input-large"
+                           maxlength="30" placeholder="Título" value="<?= $this->escape($post["name"]); ?>" />
+                    <input class="btn btn-primary" id="post-product-name-save" type="submit" value="Salvar" />
+                    <button class="btn" id="post-product-name-cancel" type="button">Cancelar</button>
+                    <select id="post-product-type" class="input-small hidden">
+                        <optgroup label="Veículo">
+                            <option value="car" <?= ($post["type"] == "car") ? 'selected="selected" ' : ''; ?>>Carro</option>
+                            <option value="motorcycle" <?= ($post["type"] == "motorcycle") ? 'selected="selected" ' : ''; ?>>Motocicleta</option>
+                            <option value="boat" <?= ($post["type"] == "boat") ? 'selected="selected" ' : ''; ?>>Embarcação</option>
+                        </optgroup>
+                    </select>
+                </form>
+            <?php
+            }
+            ?>
+            <p id="post-status-end" class="alert alert-success
 <?= ($post["status"] != Ml_Model_Posts::STATUS_END) ? " hidden" : ""; ?>
 ">Este anúncio que você está vendo já foi finalizado e não está acessível publicamente.</p>
-                    <?php
-                    if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
-                        ?>
-                        <p id="post-status-staging" class="alert alert-block
+            <?php
+            if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
+                ?>
+                <p id="post-status-staging" class="alert alert-block
 <?= ($post["status"] != Ml_Model_Posts::STATUS_STAGING) ? "hidden" : ""; ?>
 "><strong>Preview</strong><br />
-                            Adicione fotos do veículo, confira como vai ficar o anúncio e aperte o botão publicar quando estiver pronto.</p>
-                    <?php
-                    }
-                    ?>
-           </div><!-- end of .span9 -->
-       </div><!-- end of .row -->
-       <div class="row">
-           <div class="span9">
-                    <div id="galleria" class="galleria"></div>
-                    <?php
-                    if ($this->editable) {
-                    ?>
-                    <button class="btn gallery-manager-main-buttons" type="button" id="open-gallery-manager"><i class="icon-plus"></i> Editar <span class="hidden">arquivos de mídia</span></button>
-                    <button class="btn gallery-manager-main-buttons" type="button" id="upload-file"><i class="icon-upload"></i> Enviar fotos</button>
-                    <button class="btn gallery-manager-main-buttons" type="button" id="set-youtube-video"><i class="icon-film"></i> Vídeo</button>
-                    <br />
-                    <div id="filelist" class="table hidden">
-                        <table id="file-names">
-                            <thead>
-                                <tr>
-                                    <th>Arquivo</th>
-                                    <th>Tamanho</th>
-                                    <th>Progresso</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                     </div>
-                    <div id="gallery-manager" class="post-gallery-manager hidden"></div>
-                    <?php
-                    }
-                    ?>
-                    <br />
-                    <div class="sharing-no-faces hidden-phone">
-                        <div class="fb-like" data-href="<?= $escapedPostUriExternal; ?>"
-                             data-send="true" data-width="450"></div>
-                        <a href="https://twitter.com/share" class="twitter-share-button"
-                           data-url="<?= $escapedPostUriExternal; ?>"
-                           data-via="<?= $this->escape($config["services"]["twitter"]["username"]); ?>"
-                           data-lang="pt">Tweetar</a>
-                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];
-                                if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";
-                                    fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-                        </script>
-                    </div><!-- end of .sharing -->
-                    <?= $this->render("user-post/address.phtml"); ?>
-                    <div class="row">
-                        <div class="span9">
-                            <ul class="nav nav-tabs post-info-tabs" id="post-info-tabs">
-                                <li class="active"><a href="#post-description">Descrição</a></li>
-                                <li><a href="#post-contact"><i class="icon-envelope"></i> Enviar proposta</a></li>
-                            </ul>
-                        </div><!-- end of .span9 -->
-                    </div><!-- end of .row -->
-                    <div class="row">
-                        <div id="post-product-main-info" class="span4 post-product-main-info-parent">
-                            <?= $this->render("user-post/partial-product-main-info.phtml"); ?>
-                        </div>
-                        <div class="span5">
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="post-description">
-                                    <div id="post-description-text" class="post-description-text post-editable-description <?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? "hidden " : ""; ?>
-<?= ($this->editable) ? "post-editable" : ""; ?>">
-                                        <?= $post["description_html_escaped"]; ?>
-                                    </div>
-                                    <?php
-                                    if ($this->editable) {
-                                        ?>
-                                        <div id="post-description-editing-area"
-                                             class="<?= ($post["status"] != Ml_Model_Posts::STATUS_STAGING) ? "hidden" : ""; ?>">
-                                            <textarea id="post-description-text-edit" class="post-description-text-edit"
-                                                      placeholder="Escreva a descrição do produto aqui"
-                                                ><?= $this->escape($post["description"]); ?></textarea>
-                                            <br />
-                                            <button class="btn btn-primary" id="post-description-text-save" data-loading-text="salvando…"
-                                                    type="button">Salvar descrição</button>
-                                            <button class="btn" id="post-description-text-cancel" type="button">Cancelar</button>
-                                        </div><!-- end of #post-description-editing-area -->
-                                    <?php
-                                    }
-                                    ?>
-                                </div><!-- end of .tab-content -->
-                                <div class="tab-pane post-contact" id="post-contact">
-                                    <?= $this->render("user-post/partial-contact.phtml"); ?>
-                                </div><!-- end of #post-contact -->
-                            </div><!-- end of .tab-content -->
-                        </div><!-- end of .span4 -->
-                    </div><!-- end of .row -->
-                    <?php
-                    if ($this->editable) {
-                        ?>
-                        <div class="row"><div class="offset4 span4">
-                                <div id="post-status">
-                                    <?php
-                                    if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
-                                        ?><p id="post-status-info-staging" class="warning"
-                                            ><strong><span class="label label-info">Atenção<span class="hidden">:</span></span>
-                                                este anúncio ainda não foi publicado.</strong></p>
-                                    <?php
-                                    }
-                                    ?>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-large" data-rel="tooltip" title="editar" id="edit-post-button">
-                                            <i class="icon-edit"></i><span class="hidden">editar</span></button>
-                                        <?php
-                                        if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
-                                            ?>
-                                            <button type="button" class="btn btn-large btn-danger" data-action="end">Esconder</button>
-                                        <?php
-                                        } else {
-                                            ?>
-                                            <button type="button" class="btn btn-large btn-primary" data-action="publish">Publicar</button>
-                                        <?php
-                                        }
-                                        ?>
-                                    </div><!-- end of .btn-group -->
-                                    <br />
-                                </div><!-- end of #post-status -->
-                            </div><!-- end of .offset4 .span4 -->
-                        </div><!-- end of .row -->
-                    <?php
-                    }?>
-                </div><!-- end of .span8 -->
-            </div><!-- end of .row -->
+                    Adicione fotos do veículo, confira como vai ficar o anúncio e aperte o botão publicar quando estiver pronto.</p>
+            <?php
+            }
+            ?>
         </div><!-- end of .span9 -->
     </div><!-- end of .row -->
+    <div class="row">
+        <div class="span9">
+            <div id="galleria" class="galleria"></div>
+            <?php
+            if ($this->editable) {
+                ?>
+                <button class="btn gallery-manager-main-buttons" type="button" id="open-gallery-manager"><i class="icon-plus"></i> Editar <span class="hidden">arquivos de mídia</span></button>
+                <button class="btn gallery-manager-main-buttons" type="button" id="upload-file"><i class="icon-upload"></i> Enviar fotos</button>
+                <button class="btn gallery-manager-main-buttons" type="button" id="set-youtube-video"><i class="icon-film"></i> Vídeo</button>
+                <br />
+                <div id="filelist" class="table hidden">
+                    <table id="file-names">
+                        <thead>
+                        <tr>
+                            <th>Arquivo</th>
+                            <th>Tamanho</th>
+                            <th>Progresso</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="gallery-manager" class="post-gallery-manager hidden"></div>
+            <?php
+            }
+            ?>
+            <br />
+            <div class="sharing-no-faces hidden-phone">
+                <div class="fb-like" data-href="<?= $escapedPostUriExternal; ?>"
+                     data-send="true" data-width="450"></div>
+                <a href="https://twitter.com/share" class="twitter-share-button"
+                   data-url="<?= $escapedPostUriExternal; ?>"
+                   data-via="<?= $this->escape($config["services"]["twitter"]["username"]); ?>"
+                   data-lang="pt">Tweetar</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];
+                        if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";
+                            fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+                </script>
+            </div><!-- end of .sharing -->
+            <?= $this->render("user-post/address.phtml"); ?>
+            <div class="row">
+                <div class="span9">
+                    <ul class="nav nav-tabs post-info-tabs" id="post-info-tabs">
+                        <li class="active"><a href="#post-description">Descrição</a></li>
+                        <li><a href="#post-contact"><i class="icon-envelope"></i> Enviar proposta</a></li>
+                    </ul>
+                </div><!-- end of .span9 -->
+            </div><!-- end of .row -->
+            <div class="row">
+                <div id="post-product-main-info" class="span4 post-product-main-info-parent">
+                    <?= $this->render("user-post/partial-product-main-info.phtml"); ?>
+                </div>
+                <div class="span5">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="post-description">
+                            <div id="post-description-text" class="post-description-text post-editable-description <?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? "hidden " : ""; ?>
+<?= ($this->editable) ? "post-editable" : ""; ?>">
+                                <?= $post["description_html_escaped"]; ?>
+                            </div>
+                            <?php
+                            if ($this->editable) {
+                                ?>
+                                <div id="post-description-editing-area"
+                                     class="<?= ($post["status"] != Ml_Model_Posts::STATUS_STAGING) ? "hidden" : ""; ?>">
+                                    <textarea id="post-description-text-edit" class="post-description-text-edit"
+                                              placeholder="Escreva a descrição do produto aqui"
+                                        ><?= $this->escape($post["description"]); ?></textarea>
+                                    <br />
+                                    <button class="btn btn-primary" id="post-description-text-save" data-loading-text="salvando…"
+                                            type="button">Salvar descrição</button>
+                                    <button class="btn" id="post-description-text-cancel" type="button">Cancelar</button>
+                                </div><!-- end of #post-description-editing-area -->
+                            <?php
+                            }
+                            ?>
+                        </div><!-- end of .tab-content -->
+                        <div class="tab-pane post-contact" id="post-contact">
+                            <?= $this->render("user-post/partial-contact.phtml"); ?>
+                        </div><!-- end of #post-contact -->
+                    </div><!-- end of .tab-content -->
+                </div><!-- end of .span4 -->
+            </div><!-- end of .row -->
+            <?php
+            if ($this->editable) {
+                ?>
+                <div class="row"><div class="offset4 span4">
+                        <div id="post-status">
+                            <?php
+                            if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
+                                ?><p id="post-status-info-staging" class="warning"
+                                    ><strong><span class="label label-info">Atenção<span class="hidden">:</span></span>
+                                        este anúncio ainda não foi publicado.</strong></p>
+                            <?php
+                            }
+                            ?>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-large" data-rel="tooltip" title="editar" id="edit-post-button">
+                                    <i class="icon-edit"></i><span class="hidden">editar</span></button>
+                                <?php
+                                if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
+                                    ?>
+                                    <button type="button" class="btn btn-large btn-danger" data-action="end">Esconder</button>
+                                <?php
+                                } else {
+                                    ?>
+                                    <button type="button" class="btn btn-large btn-primary" data-action="publish">Publicar</button>
+                                <?php
+                                }
+                                ?>
+                            </div><!-- end of .btn-group -->
+                            <br />
+                        </div><!-- end of #post-status -->
+                    </div><!-- end of .offset4 .span4 -->
+                </div><!-- end of .row -->
+            <?php
+            }?>
+        </div><!-- end of .span8 -->
+    </div><!-- end of .row -->
+</div><!-- end of .span9 -->
+</div><!-- end of .row -->
 </div><!-- end of .container -->
