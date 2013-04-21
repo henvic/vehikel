@@ -590,7 +590,7 @@ input.no-spin-button::-webkit-inner-spin-button {
 .post-editable {
     min-height: 40px;
     background: @postEditableBackground;
-
+    background-position: center;
     -webkit-transition: background .5s ease-in-out;
     -moz-transition: background .5s ease-in-out;
     -o-transition: background .5s ease-in-out;
@@ -599,6 +599,14 @@ input.no-spin-button::-webkit-inner-spin-button {
         background: @postEditingBackground;
         cursor: pointer;
     }
+}
+
+.post-editable-description:hover {
+    background: @postEditingBackground;
+    background-image: url("../images/edit-background.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 .post-product-tab {
