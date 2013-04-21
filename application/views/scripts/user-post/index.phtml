@@ -208,34 +208,8 @@ $breadCrumb = $this->postBreadCrumb(array(
             </div><!-- end of the gallery + main info for the user post -->
 <?php
 if ($this->editable) {
-?>
-                <!-- begin of the picture management, if it exists -->
-                <div class="row">
-                    <div class="span9">
-                        <button class="btn gallery-manager-main-buttons" type="button" id="open-gallery-manager"><i class="icon-plus"></i> Editar <span class="hidden">arquivos de mídia</span></button>
-                        <button class="btn gallery-manager-main-buttons" type="button" id="upload-file"><i class="icon-upload"></i> Enviar fotos</button>
-                        <button class="btn gallery-manager-main-buttons" type="button" id="set-youtube-video"><i class="icon-film"></i> Vídeo</button>
-                        <br />
-                        <div id="filelist" class="table hidden">
-                            <table id="file-names">
-                                <thead>
-                                <tr>
-                                    <th>Arquivo</th>
-                                    <th>Tamanho</th>
-                                    <th>Progresso</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="gallery-manager" class="post-gallery-manager hidden"></div>
-                        <br />
-                    </div><!-- end of the span9 -->
-                </div><!-- end of the picture management .row, if it exists -->
-<?php
-}
-?>
+    echo $this->render("user-post/gallery-manager.phtml");
+} ?>
             <!-- begin of the address .row -->
             <div class="row">
                     <div class="span9">
