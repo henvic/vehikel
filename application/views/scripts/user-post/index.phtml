@@ -122,54 +122,11 @@ $breadCrumb = $this->postBreadCrumb(array(
                         <?= $escapedTitle; ?>
                         <span class="post-product-name-id">#<?= $this->escape($post["universal_id"]); ?></span>
                     </h1>
-                    <?php
-                    if ($this->editable) {
-                        ?>
-                        <form id="post-product-name-editing-area" class="post-product-name-editing-area form-inline hidden" method="post">
-                            <select id="post-product-make" class="input-medium">
-                                <optgroup label="Marca">
-                                    <option value="">-</option>
-                                    <?php
-                                    if (! empty($post["make"])) {
-                                        ?>
-                                        <option value="<?= $this->escape($post["make"]); ?>" selected="selected"><?= $this->escape($post["make"]); ?></option>
-                                    <?php
-                                    }
-                                    ?>
-                                </optgroup>
-                            </select>
-                            <select id="post-product-model" class="input-medium">
-                                <optgroup label="Modelo">
-                                    <option value="">-</option>
-                                    <?php
-                                    if (! empty($post["make"])) {
-                                        ?>
-                                        <option value="<?= $this->escape($post["model"]); ?>" selected="selected"><?= $this->escape($post["model"]); ?></option>
-                                    <?php
-                                    }
-                                    ?>
-                                </optgroup>
-                            </select>
-                            <?php
-                            $postForm->engine->setDecorators(array('ViewHelper'));
-                            echo $postForm->engine;
-                            ?>
-
-                            <input type="text" id="post-product-name-edit" class="post-product-name-edit input-large"
-                                   maxlength="30" placeholder="Título" value="<?= $this->escape($post["name"]); ?>" />
-                            <input class="btn btn-primary" id="post-product-name-save" type="submit" value="Salvar" />
-                            <button class="btn" id="post-product-name-cancel" type="button">Cancelar</button>
-                            <select id="post-product-type" class="input-small hidden">
-                                <optgroup label="Veículo">
-                                    <option value="car" <?= ($post["type"] == "car") ? 'selected="selected" ' : ''; ?>>Carro</option>
-                                    <option value="motorcycle" <?= ($post["type"] == "motorcycle") ? 'selected="selected" ' : ''; ?>>Motocicleta</option>
-                                    <option value="boat" <?= ($post["type"] == "boat") ? 'selected="selected" ' : ''; ?>>Embarcação</option>
-                                </optgroup>
-                            </select>
-                        </form>
-                    <?php
-                    }
-                    ?>
+<?php
+if ($this->editable) {
+    echo $this->render("user-post/product-name-editing-area.phtml");
+}
+?>
                     <p id="post-status-end" class="alert alert-success
 <?= ($post["status"] != Ml_Model_Posts::STATUS_END) ? " hidden" : ""; ?>
 ">Este anúncio que você está vendo já foi finalizado e não está acessível publicamente.</p>
