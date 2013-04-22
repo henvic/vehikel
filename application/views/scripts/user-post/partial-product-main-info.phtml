@@ -146,37 +146,5 @@ if ($editable) {
 <?php
 }
 ?>
-<h4 class="equipment-header">Acessórios</h4>
-<dl class="post-equipments-list clearfix <?= ($editable) ? 'editable' : 'uneditable' ?>">
-<?php
-foreach ($availableEquipment as $equipmentGroupKey => $equipmentGroup) {
-?>
-<dt><?= $this->escape($translatePosts->translate($equipmentGroupKey)); ?></dt>
-<dd>
-<ul>
-<?php
-    foreach ($equipmentGroup as $eachEquipment) {
-        $equipmentKey = "equipment_" . $post["type"] . "_" . $equipmentGroupKey . "_" . $eachEquipment;
-        $hasEquipment = (is_array($post["equipment"]) && in_array($equipmentKey, $post["equipment"]));
-?>
-<li>
-<label class="checkbox <?= ($hasEquipment) ? "has" : "has-not"; ?>">
-<input type="checkbox"
-<?= ($hasEquipment) ? ' checked="checked"' : '' ?>
-name="equipment[]"
-value="<?= $this->escape($equipmentKey); ?>"
->
-<small><?= $this->escape($translatePosts->translate($equipmentKey)) ?></small>
-</label>
-</li>
-<?php
-    }
-?>
-</ul>
-</dd>
-<?php
-}
-unset($hasEquipment);
-?>
-</dl>
+<?= $this->render("user-post/equipment-list.phtml"); ?>
 </div>
