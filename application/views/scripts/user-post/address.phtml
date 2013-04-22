@@ -5,8 +5,6 @@ $escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_
 $address = $userInfo["address"];
 ?>
 <address id="post-address" class="vcard post-seller-address">
-<div class="row">
-<div class="span8">
 <table>
 <tr>
 <td><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo, "square.jpg", 60, 60); ?></a></td>
@@ -46,6 +44,5 @@ data-address="<?= $this->escape($this->addressMapLink($address, true)); ?>"><spa
 ?>
 </td>
 </table>
-</div><!-- end of .row -->
 <div id="map-modal"></div>
 </address>
