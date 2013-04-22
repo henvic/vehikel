@@ -152,11 +152,11 @@ if ($this->editable) {
                     <?= $this->render("user-post/partial-product-main-info.phtml"); ?>
                     <br />
                     <?= $this->render("user-post/address.phtml"); ?>
-                    <div class="sharing-no-faces hidden-phone">
+                    <div class="sharing-no-faces">
                         <br />
-                        <div class="fb-like" data-href="<?= $escapedPostUriExternal; ?>"
-                             data-send="true" data-width="150"></div>
-                        <br />
+                        <div class="fb-like pull-left" data-href="<?= $escapedPostUriExternal; ?>"
+                             data-send="true" data-layout="button_count" data-show-faces="true"></div>
+                        &nbsp;
                         <a href="https://twitter.com/share" class="twitter-share-button"
                            data-url="<?= $escapedPostUriExternal; ?>"
                            data-via="<?= $this->escape($config["services"]["twitter"]["username"]); ?>"
