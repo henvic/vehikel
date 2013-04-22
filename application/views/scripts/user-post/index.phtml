@@ -149,9 +149,13 @@ if ($this->editable) {
                 </div>
                 <!-- begin of the main info -->
                 <div class="span4">
+                    <?= $this->render("user-post/partial-product-main-info.phtml"); ?>
+                    <br />
+                    <?= $this->render("user-post/address.phtml"); ?>
                     <div class="sharing-no-faces hidden-phone">
+                        <br />
                         <div class="fb-like" data-href="<?= $escapedPostUriExternal; ?>"
-                             data-send="true" data-width="450"></div>
+                             data-send="true" data-width="150"></div>
                         <br />
                         <a href="https://twitter.com/share" class="twitter-share-button"
                            data-url="<?= $escapedPostUriExternal; ?>"
@@ -162,18 +166,14 @@ if ($this->editable) {
                                     fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
                         </script>
                     </div><!-- end of .sharing -->
+                    <!-- begin of the address .row -->
                 </div><!-- end of the main info -->
             </div><!-- end of the gallery + main info for the user post -->
 <?php
 if ($this->editable) {
     echo $this->render("user-post/gallery-manager.phtml");
-} ?>
-            <!-- begin of the address .row -->
-            <div class="row">
-                    <div class="span9">
-                        <?= $this->render("user-post/address.phtml"); ?>
-                    </div><!-- end of .span9 -->
-                </div><!-- end of the address .row -->
+}
+?>
             <!-- begin of post-info-tabs .row -->
             <div class="row">
                 <div class="span9">
@@ -183,10 +183,10 @@ if ($this->editable) {
                     </ul>
                 </div><!-- end of .span9 -->
             </div><!-- end of post-info-tabs .row -->
-            <!-- begin of post-product-main-info .row -->
+            <!-- begin of post-product description .row -->
             <div class="row">
                 <div id="post-product-main-info" class="span4 post-product-main-info-parent">
-                    <?= $this->render("user-post/partial-product-main-info.phtml"); ?>
+                    <?= $this->render("user-post/equipment-list.phtml"); ?>
                 </div>
                 <div class="span5">
                     <div class="tab-content">
@@ -217,7 +217,7 @@ if ($this->editable) {
                         </div><!-- end of #post-contact -->
                     </div><!-- end of .tab-content -->
                 </div><!-- end of .span4 -->
-            </div><!-- end of post-product-main-info .row -->
+            </div><!-- end of post-product description .row -->
 <?php
 if ($this->editable) {
     echo $this->render("user-post/post-status.phtml");
