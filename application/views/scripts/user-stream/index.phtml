@@ -181,9 +181,11 @@ $this->metaOgp = $metaOgp;
                     echo $this->render("user-stream/thumbnail-view.phtml");
                     ?>
                 </div><!-- end of #user-stream-posts -->
-                <div class="sharing hidden-phone">
-                    <div class="fb-like" data-href="<?= $escapedUserLinkExternal; ?>"
-                         data-send="true" data-width="450" data-show-faces="true"></div>
+                <div class="sharing">
+                    <br />
+                    <div class="fb-like pull-left" data-href="<?= $escapedUserLinkExternal; ?>"
+                         data-send="true" data-layout="button_count" data-show-faces="true"></div>
+                    &nbsp;
                     <a href="https://twitter.com/share" class="twitter-share-button"
                        data-url="<?= $escapedUserLinkExternal; ?>"
                        data-text="<?= $this->escape($userInfo['name']); ?>"
