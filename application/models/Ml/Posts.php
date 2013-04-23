@@ -191,6 +191,31 @@ class Ml_Model_Posts
     }
 
     /**
+     * Returns the available stock for a given user and, optionally, status
+     * @param $uid
+     * @param $status [optional]
+     * @return array of available stock
+     */
+
+    public function getStockAmountByUserId($uid, $status = false)
+    {
+        $select = $this->_dbTable->select();
+
+        $select->from($this->_dbTableName, ["type", "make", "model", "COUNT(*) as amount"]);
+
+        $select->where("uid = ?", $uid);
+
+        if ($status) {
+            $select->where("status = ?", $status);
+        }
+
+        $select->group(["make", "model"]);
+        $select->order(["make", "model"]);
+
+        return $this->_dbTable->getAdapter()->fetchAll($select);
+    }
+
+    /**
      * @param $id
      * @param bool $useCache
      * @param bool $setCache
