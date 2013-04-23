@@ -43,8 +43,11 @@ class UserStreamController extends Ml_Controller_Action
             $status = Ml_Model_Posts::STATUS_ACTIVE;
         }
 
+        $stock = $posts->getStockAmountByUserId("33", $status);
+
         $this->view->assign("type", $type);
         $this->view->assign("status", $status);
+        $this->view->assign("stock", $stock);
 
         $paginator = $posts->getUserStreamPage($userInfo['id'], 10, $page, $type, $status);
 

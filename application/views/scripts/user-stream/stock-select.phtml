@@ -1,0 +1,51 @@
+<?php
+$paginator =  $this->posts;
+/** @var $paginator \Zend_Paginator() */
+
+$stock = $this->stock;
+
+$makes = [];
+
+foreach ($stock as $each) {
+    if (! isset($makes[$each["make"]])) {
+        $makes[$each["make"]] = [];
+    }
+
+    $makes[$each["make"]]["models"][] = $each;
+}
+
+//get the amount of vehicles per make
+$makes = array_map(function ($eachMake) {
+    $amount = 0;
+    foreach ($eachMake["models"] as $model) {
+        $amount = $amount + $model["amount"];
+    }
+
+    $eachMake["amount"] = $amount;
+
+    return $eachMake;
+}, $makes);
+?>
+<select id="stock-select" class="stock-select">
+    <option value="">Todos veículos (<?= $this->escape($paginator->getTotalItemCount()); ?>)</option>
+<?php
+foreach ($makes as $make => $makeInfo) {
+?>
+    <option value="<?= $this->escape($make); ?>">
+        ‣ <?= $this->escape($make); ?> (<?= $this->escape($makeInfo["amount"]); ?>)
+    </option>
+<?php
+    foreach ($makeInfo["models"] as $model) {
+        if ($model["make"] != "Outro" && $model["model"] != "Outro") {
+?>
+    <option value="<?= $this->escape($make . ";" . $model["model"]); ?>">
+        &nbsp; &nbsp; &nbsp;<?= $this->escape($model["model"]); ?> (<?= $this->escape($model["amount"]); ?>)
+    </option>
+<?
+        }
+    }
+?>
+<?php
+}
+?>
+</select>
