@@ -36,6 +36,18 @@ class UserStreamController extends Ml_Controller_Action
             $type = "";
         }
 
+        if (isset($params["make"]) && is_string($params["make"]) && mb_strlen($params["make"]) <= 30) {
+            $make = $params["make"];
+        } else {
+            $make = false;
+        }
+
+        if (isset($params["model"]) && is_string($params["model"]) && mb_strlen($params["model"]) <= 30) {
+            $model = $params["model"];
+        } else {
+            $model = false;
+        }
+
         if ($this->_auth->getIdentity() == $userInfo["id"] &&
             isset($params["status"]) && in_array($params["status"], $statuses)) {
             $status = $params["status"];
@@ -46,10 +58,12 @@ class UserStreamController extends Ml_Controller_Action
         $stock = $posts->getStockAmountByUserId($userInfo["id"], $type, $status);
 
         $this->view->assign("type", $type);
+        $this->view->assign("make", $make);
+        $this->view->assign("model", $model);
         $this->view->assign("status", $status);
         $this->view->assign("stock", $stock);
 
-        $paginator = $posts->getUserStreamPage($userInfo['id'], 10, $page, $type, $status);
+        $paginator = $posts->getUserStreamPage($userInfo['id'], 10, $page, $type, $make, $model, $status);
 
         //Test if there is enough pages or not
         if (! $this->_helper->pageExists($paginator)) {
