@@ -555,22 +555,39 @@ class Ml_Model_Posts
      * @param $uid
      * @param $perPage int items per page
      * @param $page
-     * @param $typeFilter
-     * @param $statusFilter
+     * @param $type
+     * @param $make
+     * @param $model
+     * @param $status
      * @return Zend_Paginator
      */
-    public function getUserStreamPage($uid, $perPage, $page, $typeFilter = self::TYPE_NO_FILTER, $statusFilter = self::STATUS_NO_FILTER)
-    {
+    public function getUserStreamPage(
+        $uid,
+        $perPage,
+        $page,
+        $type = self::TYPE_NO_FILTER,
+        $make = false,
+        $model = false,
+        $status = self::STATUS_NO_FILTER
+    ) {
         $select = $this->_dbTable->select();
 
         $select->where("uid = ?", $uid);
 
-        if ($typeFilter) {
-            $select->where("type = ?", $typeFilter);
+        if ($type) {
+            $select->where("type = ?", $type);
         }
 
-        if ($statusFilter) {
-            $select->where("status = ?", $statusFilter);
+        if ($make) {
+            $select->where("make = ?", $make);
+        }
+
+        if ($model) {
+            $select->where("model = ?", $model);
+        }
+
+        if ($status) {
+            $select->where("status = ?", $status);
         }
 
         $select->order("creation DESC");
