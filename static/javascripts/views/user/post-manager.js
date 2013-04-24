@@ -1012,7 +1012,7 @@ define([
                 $openGalleryManager.click();
             }
 
-            getVideoLinkElement().value = window.prompt("Link para vídeo do YouTube?", getVideoLinkElement().value);
+            getVideoLinkElement().value = window.prompt("Link do YouTube:", getVideoLinkElement().value);
 
             $(".video-form", $galleryManager).submit();
         });
