@@ -152,20 +152,6 @@ if ($this->editable) {
                     <?= $this->render("user-post/partial-product-main-info.phtml"); ?>
                     <br />
                     <?= $this->render("user-post/address.phtml"); ?>
-                    <div class="sharing">
-                        <br />
-                        <div class="fb-like pull-left" data-href="<?= $escapedPostUriExternal; ?>"
-                             data-send="true" data-layout="button_count" data-show-faces="true"></div>
-                        &nbsp;
-                        <a href="https://twitter.com/share" class="twitter-share-button"
-                           data-url="<?= $escapedPostUriExternal; ?>"
-                           data-via="<?= $this->escape($config["services"]["twitter"]["username"]); ?>"
-                           data-lang="pt">Tweetar</a>
-                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];
-                                if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";
-                                    fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-                        </script>
-                    </div><!-- end of .sharing -->
                     <!-- begin of the address .row -->
                 </div><!-- end of the main info -->
             </div><!-- end of the gallery + main info for the user post -->
@@ -187,6 +173,19 @@ if ($this->editable) {
             <div class="row">
                 <div id="post-product-main-info" class="span4 post-product-main-info-parent">
                     <?= $this->render("user-post/equipment-list.phtml"); ?>
+                    <div class="sharing">
+                        <div class="fb-like pull-left" data-href="<?= $escapedPostUriExternal; ?>"
+                             data-send="true" data-layout="button_count" data-show-faces="true"></div>
+                        &nbsp;
+                        <a href="https://twitter.com/share" class="twitter-share-button"
+                           data-url="<?= $escapedPostUriExternal; ?>"
+                           data-via="<?= $this->escape($config["services"]["twitter"]["username"]); ?>"
+                           data-lang="pt">Tweetar</a>
+                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];
+                                if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";
+                                    fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+                        </script>
+                    </div><!-- end of .sharing -->
                 </div>
                 <div class="span5 post-product-tabs">
                     <div class="tab-content">
