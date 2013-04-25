@@ -191,7 +191,8 @@ if ($this->editable) {
                 <div class="span5 post-product-tabs">
                     <div class="tab-content">
                         <div class="tab-pane active" id="post-description">
-                            <div id="post-description-text" class="post-description-text post-editable-description <?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? "hidden " : ""; ?>
+                            <div id="post-description-text" class="post-description-text <?= ($this->editable) ? 'post-editable-description' : ''; ?>
+                             <?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? "hidden " : ""; ?>
 <?= ($this->editable) ? "post-editable" : ""; ?>">
                                 <?= $post["description_html_escaped"]; ?>
                             </div>
