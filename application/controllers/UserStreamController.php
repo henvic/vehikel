@@ -63,6 +63,8 @@ class UserStreamController extends Ml_Controller_Action
         $this->view->assign("status", $status);
         $this->view->assign("stock", $stock);
 
+        $this->view->addJsParam("status", $status);
+
         $paginator = $posts->getUserStreamPage($userInfo['id'], 10, $page, $type, $make, $model, $status);
 
         //Test if there is enough pages or not
