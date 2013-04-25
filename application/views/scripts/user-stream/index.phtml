@@ -44,8 +44,38 @@ $this->metaOgp = $metaOgp;
         <?= $this->render("user-post/address.phtml"); ?>
         &nbsp;
         <div class="row">
+            <div class="span7">
+                <span class="muted"><?php
+                if (! $paginator->getTotalItemCount()) {
+                    echo 'Zero';
+                } else {
+                    $defaultPostsPerPage = $paginator->getDefaultItemCountPerPage();
+                    $page = $paginator->getCurrentPageNumber();
+                    $postsInThisPage = $paginator->getCurrentItemCount();
+                    $totalPosts = $paginator->getTotalItemCount();
+
+                    $firstShowedPostItem = (($page - 1) * $defaultPostsPerPage) + 1;
+                    $lastShowedPostItem = $firstShowedPostItem + $postsInThisPage - 1;
+
+                    echo $firstShowedPostItem, '-', $lastShowedPostItem, ' de ', $this->escape($totalPosts);
+                }
+                ?>
+                 resultados</span>
+                <?= $this->render("user-stream/stock-select.phtml"); ?>
+                <?php
+                if ($editable) {
+                ?>
+                <div class="btn-group" data-toggle="buttons-checkbox">
+                    <a class="btn<?= ($status == "staging") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=staging">pausados</a>
+                    <a class="btn<?= ($status == "active") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>">publicados</a>
+                    <a class="btn<?= ($status == "end") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=end">vendidos</a>
+                </div>
+                <?php
+                }
+                ?>
+            </div>
             <div class="span2">
-                <div class="btn-group" data-toggle="buttons-radio">
+                <div class="btn-group pull-right" data-toggle="buttons-radio">
                     <?php
                     if ($this->postsViewStyle === "thumbnail") {
                         echo '<button id="posts-view-style-thumbnail" class="btn active"><i class="icon-th"></i></button>
@@ -57,120 +87,6 @@ $this->metaOgp = $metaOgp;
                     ?>
                 </div><!-- end of .btn-group -->
             </div><!-- end of .span2 -->
-            <div class="span7">
-                <div class="btn-group dropdown" data-toggle="buttons-radio">
-                    <a class="btn disabled">
-                        <?php
-                        if (! $paginator->getTotalItemCount()) {
-                            echo 'Zero';
-                        } else {
-                            $defaultPostsPerPage = $paginator->getDefaultItemCountPerPage();
-                            $page = $paginator->getCurrentPageNumber();
-                            $postsInThisPage = $paginator->getCurrentItemCount();
-                            $totalPosts = $paginator->getTotalItemCount();
-
-                            $firstShowedPostItem = (($page - 1) * $defaultPostsPerPage) + 1;
-                            $lastShowedPostItem = $firstShowedPostItem + $postsInThisPage - 1;
-
-                            echo $firstShowedPostItem, '-', $lastShowedPostItem, ' de ', $this->escape($totalPosts);
-                        }
-                        ?>
-                    </a>
-                    <a href="" class="btn dropdown-toggle" data-toggle="dropdown">
-                        <?php
-                        switch ($type) {
-                            case "" :
-                                echo "veículos ";
-                                break;
-                            case "car" :
-                                echo "carros ";
-                                break;
-                            case "motorcycle" :
-                                echo "motos ";
-                                break;
-                            case "boat" :
-                                echo "embarcações ";
-                                break;
-                        }
-
-                        switch ($status) {
-                            case "staging" :
-                                echo "em criação";
-                                break;
-                            case "active" :
-                                if ($editable) {
-                                    echo "em anúncio";
-                                }
-                                break;
-                            case "end" :
-                                echo "em término";
-                                break;
-                        }
-                        ?>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu" id="status-type-menu-dropdown">
-                        <li<?= ($editable) ? ' class="dropdown-submenu"' : '' ?>>
-                            <a href="<?= $escapedUserLink ?>?type=car" class="type">carros</a>
-                            <?php
-                            if ($editable) {
-                                ?>
-                                <ul class="dropdown-menu">
-                                    <li><a href="<?= $escapedUserLink ?>?type=car&amp;status=staging"><i class="icon-lock"></i> em criação</a></li>
-                                    <li><a href="<?= $escapedUserLink ?>?type=car"><i class="icon-globe"></i> em anúncio</a></li>
-                                    <li><a href="<?= $escapedUserLink ?>?type=car&amp;status=end"><i class="icon-lock"></i> em término</a></li>
-                                </ul>
-                            <?php
-                            }
-                            ?>
-                        </li>
-                        <li<?= ($editable) ? ' class="dropdown-submenu"' : '' ?>>
-                            <a href="<?= $escapedUserLink ?>?type=motorcycle" class="type">motos</a>
-                            <?php
-                            if ($editable) {
-                                ?>
-                                <ul class="dropdown-menu">
-                                    <li><a href="<?= $escapedUserLink ?>?type=motorcycle&amp;status=staging"><i class="icon-lock"></i> em criação</a></li>
-                                    <li><a href="<?= $escapedUserLink ?>?type=motorcycle"><i class="icon-globe"></i> em anúncio</a></li>
-                                    <li><a href="<?= $escapedUserLink ?>?type=motorcycle&amp;status=end"><i class="icon-lock"></i> em término</a></li>
-                                </ul>
-                            <?php
-                            }
-                            ?>
-                        </li>
-                        <li<?= ($editable) ? ' class="dropdown-submenu"' : '' ?>>
-                            <a href="<?= $escapedUserLink ?>?type=boat" class="type">embarcações</a>
-                            <?php
-                            if ($editable) {
-                                ?>
-                                <ul class="dropdown-menu">
-                                    <li><a href="<?= $escapedUserLink ?>?type=boat&status=staging"><i class="icon-lock"></i> em criação</a></li>
-                                    <li><a href="<?= $escapedUserLink ?>?type=boat"><i class="icon-globe"></i> em anúncio</a></li>
-                                    <li><a href="<?= $escapedUserLink ?>?type=boat&status=end"><i class="icon-lock"></i> em término</a></li>
-                                </ul>
-                            <?php
-                            }
-                            ?>
-                        </li>
-                        <li class="divider"></li>
-                        <li<?= ($editable) ? ' class="dropdown-submenu"' : '' ?>>
-                            <a href="<?= $escapedUserLink ?>" class="type">Todos os veículos</a>
-                            <?php
-                            if ($editable) {
-                                ?>
-                                <ul class="dropdown-menu">
-                                    <li><a href="<?= $escapedUserLink ?>?status=staging"><i class="icon-lock"></i> em criação</a></li>
-                                    <li><a href="<?= $escapedUserLink ?>"><i class="icon-globe"></i> em anúncio</a></li>
-                                    <li><a href="<?= $escapedUserLink ?>?status=end"><i class="icon-lock"></i> em término</a></li>
-                                </ul>
-                            <?php
-                            }
-                            ?>
-                        </li>
-                    </ul>
-                </div>
-                <?= $this->render("user-stream/stock-select.phtml"); ?>
-            </div>
         </div>
         <div class="row">
             <div class="span9">
