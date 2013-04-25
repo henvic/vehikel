@@ -2,6 +2,8 @@
 <?php
 $unfilteredType = filter_input(INPUT_GET, "type");
 $unfilteredStatus = filter_input(INPUT_GET, "status");
+$unfilteredMake = filter_input(INPUT_GET, "make");
+$unfilteredModel = filter_input(INPUT_GET, "model");
 
 switch ($unfilteredType) {
     case "car":
@@ -28,21 +30,29 @@ switch ($unfilteredStatus) {
         $status = "";
 }
 
-$queryParams = "";
+$requestParams = [];
 
-if (! empty($type)) {
-    $queryParams .= "type=" . urlencode($type);
+if ($type) {
+    $requestParams["type"] = $type;
 }
 
-if (! empty($type) && ! empty($status)) {
-    $queryParams .= "&amp;";
+if ($status) {
+    $requestParams["status"] = $status;
 }
 
-if (! empty($status)) {
-    $queryParams .= "status=" . urlencode($status);
+if ($unfilteredMake) {
+    $requestParams["make"] = (string) $unfilteredMake;
 }
 
-$queryParams = "?" . $queryParams;
+if ($unfilteredModel) {
+    $requestParams["model"] = (string) $unfilteredModel;
+}
+
+$queryParams = http_build_query($requestParams);
+
+if ($queryParams) {
+    $queryParams = "?" . $queryParams;
+}
 
 ?>
 <div class="pagination pagination-centered">
