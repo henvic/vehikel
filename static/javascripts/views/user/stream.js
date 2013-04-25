@@ -40,4 +40,43 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
             e.preventDefault();
         }
     });
+
+    var $stockSelect = $("#stock-select");
+
+    $stockSelect.on("change", function (e) {
+        var value = e.target.value.split(";");
+        var status;
+        var make = value[0];
+        var model = "";
+        var url;
+
+        if (! AppParams.status || AppParams.status === "active") {
+            status = "";
+        } else {
+            status = AppParams.status;
+        }
+
+        var requestParams = {};
+
+        if (status) {
+            requestParams.status = status;
+        }
+
+        if (make) {
+            requestParams.make = make;
+        }
+
+        if (value.length === 2) {
+            model = value[1];
+            requestParams.model = model;
+        }
+
+        url = $.param(requestParams);
+
+        if (url) {
+            url = "?" + url;
+        }
+
+        window.location = url;
+    });
 });
