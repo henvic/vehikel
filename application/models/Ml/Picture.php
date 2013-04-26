@@ -6,7 +6,22 @@ class Ml_Model_Picture
 
     protected $_s3config = null;
 
-    protected $_s3 = null;
+    /** @var \Zend_Cloud_StorageService_Adapter() */
+    protected $_storage;
+
+    protected $_sizes = array(
+        "square.jpg" => 80,
+        "square@2x.jpg" => 160,
+        "square-big.jpg" => 220,
+        "square-big@2x.jpg" => 440,
+        "thumbnail.jpg" => 200,
+        "thumbnail@2x.jpg" => 400,
+        "medium.jpg" => 500,
+        "medium@2x.jpg" => 1000,
+        "large.jpg" => 1200,
+        "large@2x.jpg" => 2400
+    );
+
 
     /**
      * @param Zend_Config array $config
@@ -14,21 +29,21 @@ class Ml_Model_Picture
     public function __construct(array $config)
     {
         $this->_s3config = $config['services']['S3'];
-        $this->_s3 = new Zend_Service_Amazon_S3($this->_s3config['key'], $this->_s3config['secret']);
+
+        $storage = new Zend_Cloud_StorageService_Adapter_S3(array(
+            Zend_Cloud_StorageService_Factory::STORAGE_ADAPTER_KEY => 'Zend_Cloud_StorageService_Adapter_S3',
+            Zend_Cloud_StorageService_Adapter_S3::AWS_ACCESS_KEY => $this->_s3config["key"],
+            Zend_Cloud_StorageService_Adapter_S3::AWS_SECRET_KEY => $this->_s3config["secret"],
+            Zend_Cloud_StorageService_Adapter_S3::BUCKET_NAME => $this->_s3config["picturesBucket"]
+        ));
+
+        $this->_storage = $storage;
     }
 
-    protected $_sizes = array(
-        "square.jpg" => 75,
-        "square@2x.jpg" => 150,
-        "thumbnail.jpg" => 100,
-        "thumbnail@2x.jpg" => 200,
-        "small.jpg" => 320,
-        "small@2x.jpg" => 640,
-        "medium.jpg" => 800,
-        "medium@2x.jpg" => 1600,
-        "large.jpg" => 1280,
-        "large@2x.jpg" => 2096
-    );
+    protected function getStorage()
+    {
+        return $this->_storage;
+    }
 
     /**
      * @param $source string path to a image
@@ -62,18 +77,13 @@ class Ml_Model_Picture
 
             $tmpFile = tempnam(sys_get_temp_dir(), 'IMAGE-' . md5(openssl_random_pseudo_bytes(12)));
 
-            if ($partialPath == "square.jpg" || $partialPath == "square@2x.jpg") {
-                if ($originalDimension['height'] < $originalDimension['width']) {
-                    $size = $originalDimension['height'];
-                } else {
-                    $size = $originalDimension['width'];
-                }
+            if (mb_strpos($partialPath, "square") !== false) {
                 $im->cropThumbnailImage($maxDim, $maxDim);
             } else if ($originalDimension['width'] > $maxDim && $originalDimension['height'] > $maxDim) {
                 if ($originalDimension['width'] > $originalDimension['height']) {
-                    $im->resizeimage($maxDim, 0, Imagick::FILTER_LANCZOS, 1);
+                    $im->resizeimage($maxDim, 0, Imagick::FILTER_LANCZOS, 0);
                 } else {
-                    $im->resizeimage(0, $maxDim, Imagick::FILTER_LANCZOS, 1);
+                    $im->resizeimage(0, $maxDim, Imagick::FILTER_LANCZOS, 0);
                 }
             }
 
@@ -91,25 +101,32 @@ class Ml_Model_Picture
         $secret = mb_substr(md5(openssl_random_pseudo_bytes(20) . mt_rand()), 0, 8);
 
         foreach ($files as $partialPath => &$info) {
-            $this->_s3->putFile(
-                $info["path"],
+            $fileData = file_get_contents($info["path"]);
+            $this->getStorage()->storeItem(
                 $this->getImagePath($id, $secret, $partialPath),
-                array(
-                    Zend_Service_Amazon_S3::S3_ACL_HEADER => Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ,
-                    "Content-Type" => "image/jpeg",
-                    "Cache-Control" => "max-age=37580000, public",
-                    "Expires" => "Thu, 10 May 2029 00:00:00 GMT"
-                )
+                $fileData,
+                [
+                    Zend_Cloud_StorageService_Adapter_S3::METADATA => [
+                        Zend_Service_Amazon_S3::S3_ACL_HEADER => Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ,
+                        "Content-Type" => "image/jpeg",
+                        "Cache-Control" => "max-age=1209600"
+                    ]
+                ]
             );
 
             unlink($info["path"]);
             unset($info["path"]);
         }
 
-        $this->_s3->putFile(
-            $source,
+        $fileData = file_get_contents($source);
+        $this->getStorage()->storeItem(
             $this->getImagePath($id, $secret, "original"),
-            array(Zend_Service_Amazon_S3::S3_ACL_HEADER => Zend_Service_Amazon_S3::S3_ACL_PRIVATE)
+            $fileData,
+            [
+                Zend_Cloud_StorageService_Adapter_S3::METADATA => [
+                    Zend_Service_Amazon_S3::S3_ACL_HEADER => Zend_Service_Amazon_S3::S3_ACL_PRIVATE
+                ]
+            ]
         );
 
         return array("id" => $id, "secret" => $secret, "sizes" => $files);
@@ -118,15 +135,15 @@ class Ml_Model_Picture
     public function delete($id, $secret)
     {
         foreach ($this->_sizes as $sizeInfo) {
-            $this->_s3->removeObject($this->getImagePath($id, $secret, $sizeInfo[1]));
+            $this->getStorage()->deleteItem($this->getImagePath($id, $secret, $sizeInfo[1]));
         }
 
-        $this->_s3->removeObject($this->getImagePath($id, $secret, "original"));
+        $this->getStorage()->deleteItem($this->getImagePath($id, $secret, "original"));
     }
 
     public function getImagePath($id, $secret, $size)
     {
-        $picturePath = $this->_s3config["picturesBucket"] . "/" . $id . "-" . $secret . "-" . $size;
+        $picturePath = $id . "-" . $secret . "-" . $size;
 
         return $picturePath;
     }
