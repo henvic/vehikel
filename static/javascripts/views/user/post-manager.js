@@ -114,8 +114,8 @@ define([
         var $editPostButton = $("#edit-post-button");
 
         var $postStatusStaging = $("#post-status-staging");
+        var $postStatusActive = $("#post-status-active");
         var $postStatusEnd = $("#post-status-end");
-        var $postStatusInfoStaging = $("#post-status-info-staging");
 
         var updatePostItem = function (name, value) {
             var data =
@@ -587,18 +587,16 @@ define([
 
         $postStatus.on("click", 'button', function (e) {
             var $target = $(e.target);
-            var $button = $target.closest("button");
-            var action = $button.data("action");
+            var action = $target.data("action");
 
             switch (action) {
             case "end" :
                 setPostStatus("end", function (success) {
                     if (success) {
-                        $button.removeClass("btn-danger");
-                        $button.addClass("btn-primary");
-                        $button.html("Publicar");
-                        $button.data("action", "publish");
+                        $(".publish", $postStatus).removeClass("hidden");
+                        $(".end", $postStatus).addClass("hidden");
                         $postStatusStaging.addClass("hidden");
+                        $postStatusActive.addClass("hidden");
                         $postStatusEnd.removeClass("hidden");
                     }
                 });
@@ -606,13 +604,11 @@ define([
             case "publish" :
                 setPostStatus("active", function (success) {
                     if (success) {
-                        $button.removeClass("btn-primary");
-                        $button.addClass("btn-danger");
-                        $button.html("Esconder");
-                        $button.data("action", "end");
+                        $(".publish", $postStatus).addClass("hidden");
+                        $(".end", $postStatus).removeClass("hidden");
                         $postStatusStaging.addClass("hidden");
                         $postStatusEnd.addClass("hidden");
-                        $postStatusInfoStaging.addClass("hidden");
+                        $postStatusActive.removeClass("hidden");
                     }
                 });
                 break;

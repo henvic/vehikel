@@ -2,33 +2,20 @@
 $post = $this->post;
 ?>
 <!-- being of the post status set row -->
-<div class="row">
-    <div class="offset4 span4">
-        <div id="post-status">
-            <?php
-            if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
-                ?><p id="post-status-info-staging" class="warning"
-                    ><strong><span class="label label-info">Atenção<span class="hidden">:</span></span>
-                        este anúncio ainda não foi publicado.</strong></p>
-            <?php
-            }
-            ?>
-            <div class="btn-group">
-                <button type="button" class="btn btn-large" data-rel="tooltip" title="editar" id="edit-post-button">
-                    <i class="icon-edit"></i><span class="hidden">editar</span></button>
-                <?php
-                if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
-                    ?>
-                    <button type="button" class="btn btn-large btn-danger" data-action="end">Esconder</button>
-                <?php
-                } else {
-                    ?>
-                    <button type="button" class="btn btn-large btn-primary" data-action="publish">Publicar</button>
-                <?php
-                }
-                ?>
-            </div><!-- end of .btn-group -->
-            <br />
-        </div><!-- end of #post-status -->
-    </div><!-- end of .offset4 .span4 -->
-</div><!-- end of the post status set row -->
+<div id="post-status">
+<p id="post-status-end" class="alert alert-success
+<?= ($post["status"] != Ml_Model_Posts::STATUS_END) ? " hidden" : ""; ?>
+"><strong>Anúncio finalizado</strong><br /> Este anúncio não é mais acessível publicamente.</p>
+<p id="post-status-staging" class="alert
+<?= ($post["status"] != Ml_Model_Posts::STATUS_STAGING) ? "hidden" : ""; ?>
+"><strong>Preview</strong><br />Este anúncio ainda não foi anunciado.</p>
+<p id="post-status-active" class="alert alert-info
+<?= ($post["status"] != Ml_Model_Posts::STATUS_ACTIVE) ? "hidden" : ""; ?>
+"><strong>Anúncio ativo</strong><br />Este anúncio está publicado.</p>
+<button type="button"
+class="btn end btn-large btn-danger
+<?= ($post["status"] != Ml_Model_Posts::STATUS_ACTIVE) ? " hidden" : "" ?>" data-action="end">Finalizar</button>
+<button type="button"
+class="btn publish btn-large btn-primary
+<?= ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) ? " hidden" : "" ?>" data-action="publish">Anunciar</button>
+</div><!-- end of #post-status -->

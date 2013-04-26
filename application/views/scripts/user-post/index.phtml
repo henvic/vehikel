@@ -127,19 +127,6 @@ if ($this->editable) {
     echo $this->render("user-post/product-name-editing-area.phtml");
 }
 ?>
-                    <p id="post-status-end" class="alert alert-success
-<?= ($post["status"] != Ml_Model_Posts::STATUS_END) ? " hidden" : ""; ?>
-">Este anúncio que você está vendo já foi finalizado e não está acessível publicamente.</p>
-                    <?php
-                    if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
-                        ?>
-                        <p id="post-status-staging" class="alert alert-block
-<?= ($post["status"] != Ml_Model_Posts::STATUS_STAGING) ? "hidden" : ""; ?>
-"><strong>Preview</strong><br />
-                            Adicione fotos do veículo, confira como vai ficar o anúncio e aperte o botão publicar quando estiver pronto.</p>
-                    <?php
-                    }
-                    ?>
                 </div><!-- end of .span9 -->
             </div><!-- end of the top bar for the user post -->
             <!-- begin of the gallery + main info for the user post -->
@@ -218,11 +205,6 @@ if ($this->editable) {
                     </div><!-- end of .tab-content -->
                 </div><!-- end of .span4 -->
             </div><!-- end of post-product description .row -->
-<?php
-if ($this->editable) {
-    echo $this->render("user-post/post-status.phtml");
-}
-?>
         </div><!-- end of the main content area for the user-post -->
     </div><!-- end of the main .row for the user-post -->
 </div><!-- end of .container -->
