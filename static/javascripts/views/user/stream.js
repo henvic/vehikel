@@ -1,4 +1,4 @@
-/*global define */
+/*global define, require */
 /*jshint indent:4 */
 
 define(['AppParams', 'jquery'], function (AppParams, $) {
@@ -79,4 +79,9 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
 
         window.location = url;
     });
+
+    if (AppParams.accountEditable === true) {
+        require(["views/user/stream-manager"], function () {
+        });
+    }
 });
