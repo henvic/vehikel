@@ -17,7 +17,7 @@ foreach ($posts as $post) {
     $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
     $price->setValue($this->escape($post["price"] / 100));
 ?>
-<tr data-link="<?= $escapedPostLink; ?>">
+<tr data-link="<?= $escapedPostLink; ?>" id="post-id-<?= $this->escape($post["id"]); ?>-row">
 <td class="span1">
 <?php
 if (is_array($post["pictures"][0])) {
@@ -82,6 +82,15 @@ for ($counter = 0; $counter < $sizeOfSpecialItems; $counter++)
 </td>
 <td class="post-listing-price">
 <?= $price; ?>
+<?php
+if ($this->editable && $post["status"] == "active") {
+?>
+ <button class="btn btn-mini end pull-right" data-id="<?= $this->escape($post["id"]); ?>">
+     finalizar
+ </button>
+<?php
+}
+?>
 </td>
 </tr>
 <?php

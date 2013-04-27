@@ -7,7 +7,7 @@ $paginator =  $this->posts;
 
 $posts = $paginator->getCurrentItems();
 ?>
-<ul id="posts-thumbnail-view" class="thumbnails<?= ($this->postsViewStyle !== "thumbnail") ? " hidden" : ""; ?>">
+<ul id="posts-thumbnail-view" class="posts-thumbnail-view <?= ($this->postsViewStyle !== "thumbnail") ? " hidden" : ""; ?>">
 <?php
 foreach ($posts as $post) {
     $escapedPostLink = $this->url(
@@ -17,8 +17,9 @@ foreach ($posts as $post) {
     $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
     $price->setValue($this->escape($post["price"] / 100));
 ?>
-<li class="span3">
-<a href="<?= $escapedPostLink; ?>" class="thumbnail post-thumbnail">
+<li id="post-id-<?= $this->escape($post["id"]); ?>-thumbnail">
+<a href="<?= $escapedPostLink; ?>">
+<div class="img-place">
 <?php
     if (is_array($post["pictures"][0])) {
         $picture = $post["pictures"][0];
@@ -29,6 +30,7 @@ foreach ($posts as $post) {
 <?php
     }
 ?>
+</div>
 <p>
 <?= $this->escape($post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"]); ?>
 <br /><span class="post-listing-price"><?= $price; ?></span>
@@ -58,7 +60,7 @@ if ($post["handicapped"]) {
 
 if ($post["transmission"] == 'automatic') {
 ?>
-<span class="label label-info">câmbio automático</span>
+<span class="label label-info">Automático</span>
 <?php
 }
 
@@ -70,11 +72,20 @@ if ($post["traction"] == '4x4') {
 
 if ($post["model_year"] <= date("Y") - 30) {
 ?>
-<span class="label label-inverse">colecionador</span>
+<span class="label label-inverse">Colecionador</span>
+<?php
+}
+
+if ($this->editable && $post["status"] == "active") {
+?>
+<div class="end" data-id="<?= $this->escape($post["id"]); ?>">
+    finalizar
+</div>
 <?php
 }
 ?>
-</p></a></li>
+</p></a>
+</li>
 <?php
 }
 ?>

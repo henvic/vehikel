@@ -138,7 +138,7 @@ var itemsLength = items.length;
     }
     %>
 </table>
-<ul class="thumbnails results-thumbnail<%= (viewStyle === 'table') ? ' hidden' : '' %>">
+<ul class="posts-thumbnail-view<%= (viewStyle === 'table') ? ' hidden' : '' %>">
 <%
 for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
     var postSearch = items[itemPos];
@@ -146,8 +146,9 @@ for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
     var escapedPostLink = AppParams.webroot + "/" + encodeURIComponent(post.user.username) + "/" + post.id;
     var price = post.price;
 %>
-    <li class="span3">
-    <a href="<%= escapedPostLink %>" class="thumbnail post-thumbnail">
+    <li>
+    <a href="<%= escapedPostLink %>">
+        <div class="img-place">
         <%
         if (post.pictures !== undefined && post.pictures !== null && post.pictures[0] !== undefined) {
         var picture = post.pictures[0];
@@ -160,6 +161,7 @@ for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
         <%
         }
         %>
+        </div>
         <p>
             <%
             if (postSearch.highlight !== undefined && postSearch.highlight.title !== undefined) {
@@ -199,7 +201,7 @@ for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
 
             if (post.transmission == 'automatic') {
             %>
-            <span class="label label-info">câmbio automático</span>
+            <span class="label label-info">Automático</span>
             <%
             }
 
@@ -211,7 +213,7 @@ for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
 
             if (post.year <= new Date().getFullYear() - 30) {
             %>
-            <span class="label label-inverse">colecionador</span>
+            <span class="label label-inverse">Colecionador</span>
             <%
             }
             %>
