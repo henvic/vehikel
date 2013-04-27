@@ -57,6 +57,9 @@ class UserStreamController extends Ml_Controller_Action
 
         $stock = $posts->getStockAmountByUserId($userInfo["id"], $type, $status);
 
+        $this->view->addJsParam("postUid", $userInfo["id"]);
+        $this->view->addJsParam("postUsername", $userInfo["username"]);
+
         $this->view->assign("type", $type);
         $this->view->assign("make", $make);
         $this->view->assign("model", $model);
