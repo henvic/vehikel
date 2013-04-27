@@ -7,7 +7,7 @@ $paginator =  $this->posts;
 
 $posts = $paginator->getCurrentItems();
 ?>
-<table id="posts-table-view" class="posts-table-view table table-striped table-hover<?= ($this->postsViewStyle !== "table") ? " hidden" : ""; ?>">
+<table id="posts-table-view" class="posts-list posts-table-view table table-striped table-hover<?= ($this->postsViewStyle !== "table") ? " hidden" : ""; ?>">
 <?php
 foreach ($posts as $post) {
     $escapedPostLink = $this->url(
