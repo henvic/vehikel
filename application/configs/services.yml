@@ -19,7 +19,7 @@ services:
         arguments: [null, @purifier, @gearmanClient]
     posts:
         class: Ml_Model_Posts
-        arguments: [null, @memCache, @gearmanClient, @people, @purifier, @numbers]
+        arguments: [null, @gearmanClient, @people, @purifier, @numbers, @picture]
     picture:
         class: Ml_Model_Picture
         arguments: [null, @http, @config]

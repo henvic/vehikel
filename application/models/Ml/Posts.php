@@ -2,7 +2,6 @@
 class Ml_Model_Posts
 {
     use Ml_Model_Db_Table_History;
-    use Ml_Model_Db_Cache;
 
     const TYPE_CAR = "car";
     const TYPE_MOTORCYCLE = "motorcycle";
@@ -18,17 +17,6 @@ class Ml_Model_Posts
      * @var int
      */
     protected $_maxPictures = 30;
-
-    /**
-     * @var int
-     */
-    protected $_cacheLifetime = 10;
-
-    /**
-     * this cache versioning number should change at significant updates
-     * @var int
-     */
-    protected $_cacheObjectVersion = 1;
 
     /**
      * @var string
@@ -49,11 +37,6 @@ class Ml_Model_Posts
      * @var Zend_Db_Table
      */
     protected $_dbTable;
-
-    /**
-     * @var string
-     */
-    protected $_cachePrefix = "post_";
 
     /**
      * @var GearmanClient
@@ -91,7 +74,6 @@ class Ml_Model_Posts
 
     /**
      * @param $config
-     * @param Zend_Cache_Core $cache
      * @param GearmanClient $gearmanClient
      * @param Ml_Model_People $people
      * @param Ml_Model_HtmlPurifier $purifier
@@ -99,7 +81,6 @@ class Ml_Model_Posts
      */
     public function __construct(
         $config,
-        Zend_Cache_Core $cache,
         GearmanClient $gearmanClient,
         Ml_Model_People $people,
         Ml_Model_HtmlPurifier $purifier,
@@ -107,7 +88,6 @@ class Ml_Model_Posts
         Ml_Model_Picture $picture
     )
     {
-        $this->setCache($cache);
         $this->_dbTable = new Zend_Db_Table($this->_dbTableName, $config);
         $this->_dbAdapter = $this->_dbTable->getAdapter();
 
@@ -230,22 +210,29 @@ class Ml_Model_Posts
 
     /**
      * @param $id
-     * @param bool $useCache
-     * @param bool $setCache
      * @return array|bool|false|mixed
      */
-    public function getById($id, $useCache = true, $setCache = true)
+    public function getById($id)
     {
-        if ($useCache) {
-            $cached = $this->getCacheById($id);
-            if ($cached) {
-                return $cached;
-            }
+        $select = $this->_dbTable->select()->where("binary id = ?", $id);
+
+        $data = $this->_dbAdapter->fetchRow($select);
+
+        if (is_array($data)) {
+            $picturesSortingOrder = json_decode($data["pictures_sorting_order"], true);
+            unset($data["pictures_sorting_order"]);
+
+            $pictures = $this->_picture->getPictures($data["uid"], $data["id"], true);
+
+            $sortedPictures = $this->_picture->sortPictures($pictures, $picturesSortingOrder);
+
+            $data["pictures"] = $sortedPictures;
+            $data["equipment"] = json_decode($data["equipment"], true);
+
+            return $data;
         }
 
-        $select = $this->_dbTable->select()->where("binary `id` = ?", $id);
-
-        return $this->getDbResult($select, $setCache);
+        return false;
     }
 
     /**
@@ -367,10 +354,6 @@ class Ml_Model_Posts
      */
     public function update($id, $data)
     {
-        if (isset($data["pictures"])) {
-            $data["pictures"] = json_encode($data["pictures"]);
-        }
-
         if (isset($data["equipment"])) {
             $data["equipment"] = json_encode($data["equipment"]);
         }
@@ -387,8 +370,7 @@ class Ml_Model_Posts
 
         $this->_dbAdapter->commit();
 
-        //retrieves fresh data renewing the cached values in the process
-        $updatedPost = $this->getById($id, false);
+        $updatedPost = $this->getById($id);
 
         if (! is_array($updatedPost)) {
             return false;
@@ -407,72 +389,12 @@ class Ml_Model_Posts
      */
     public function sortPictures($postId, $newPicturesIdsSortingOrder)
     {
-        try {
-            $this->_dbAdapter->beginTransaction();
-
-            $originalData = $this->getById($postId, false, false);
-
-            if (! $originalData) {
-                return false;
-            }
-
-            $originalPictures = $originalData["pictures"];
-
-            $newPictures = [];
-
-            foreach ($newPicturesIdsSortingOrder as $eachPictureId) {
-                foreach ($originalPictures as $pos => $originalPicture) {
-                    if ($originalPicture["id"] == $eachPictureId) {
-                        $newPictures[] = $originalPicture;
-                        unset($originalPictures[$pos]);
-                    }
-                }
-            }
         $sorting = json_encode($newPicturesIdsSortingOrder);
         $where = $this->_dbAdapter->quoteInto("id = ?", $postId);
         $update = $this->_dbTable->update(["pictures_sorting_order" => $sorting], $where);
         $this->saveHistorySnapshot($postId);
 
-
-            $update = $this->_dbTable->update(["pictures" => $pictures], $this->_dbAdapter->quoteInto("id = ?", $postId));
-
-            if ($update) {
-                $this->saveHistorySnapshot($postId);
-                $this->_dbAdapter->commit();
-                $this->syncSearch($postId);
-                return $newPicturesValues;
-            }
-        } catch (Exception $e) {
-            $this->_dbAdapter->rollBack();
-            throw $e;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Zend_Db_Select $sql
-     * @param bool $setCache
-     * @return array|bool
-     */
-    protected function getDbResult(Zend_Db_Select $sql, $setCache = true)
-    {
-        $data = $this->_dbAdapter->fetchRow($sql);
-
-        if (is_array($data)) {
-            $data["pictures"] = json_decode($data["pictures"], true);
-            $data["equipment"] = json_decode($data["equipment"], true);
-
-            $data["cache"] = false;
-
-            if ($setCache) {
-                $this->setCacheForId($data["id"], $data);
-            }
-
-            return $data;
-        }
-
-        return false;
+        return $update;
     }
 
     /**
