@@ -4,154 +4,212 @@ class Ml_Model_Picture
 {
     protected $_imageQuality = 70;
 
-    protected $_s3config = null;
+    protected $_config;
 
-    /** @var \Zend_Cloud_StorageService_Adapter() */
-    protected $_storage;
+    protected $_http;
 
-    protected $_sizes = array(
-        "square.jpg" => 80,
-        "square@2x.jpg" => 160,
-        "square-big.jpg" => 220,
-        "square-big@2x.jpg" => 440,
-        "thumbnail.jpg" => 200,
-        "thumbnail@2x.jpg" => 400,
-        "medium.jpg" => 500,
-        "medium@2x.jpg" => 1000,
-        "large.jpg" => 1200,
-        "large@2x.jpg" => 2400
-    );
+    protected $_dbTable;
 
+    protected $_dbAdapter;
+
+    protected $_dbTableName = "pictures";
+
+    const PICTURE_ACTIVE = "active";
+    const PICTURE_REMOVED = "removed";
 
     /**
+     * @param Zend_Config DB array $dbconfig
+     * @param Ml_Http $http
      * @param Zend_Config array $config
      */
-    public function __construct(array $config)
+    public function __construct($dbConfig, $http, $config)
     {
-        $this->_s3config = $config['services']['S3'];
+        $this->_config = $config;
 
-        $storage = new Zend_Cloud_StorageService_Adapter_S3(array(
-            Zend_Cloud_StorageService_Factory::STORAGE_ADAPTER_KEY => 'Zend_Cloud_StorageService_Adapter_S3',
-            Zend_Cloud_StorageService_Adapter_S3::AWS_ACCESS_KEY => $this->_s3config["key"],
-            Zend_Cloud_StorageService_Adapter_S3::AWS_SECRET_KEY => $this->_s3config["secret"],
-            Zend_Cloud_StorageService_Adapter_S3::BUCKET_NAME => $this->_s3config["picturesBucket"]
-        ));
+        $this->_http = $http;
 
-        $this->_storage = $storage;
+        $this->_dbTable = new Zend_Db_Table($this->_dbTableName, $dbConfig);
+
+        $this->_dbAdapter = $this->_dbTable->getAdapter();
     }
 
-    protected function getStorage()
+    protected function getMetaJsonFromThumbor($id)
     {
-        return $this->_storage;
+        $uri = $this->_config["services"]["thumbor"]["server"] . "/unsafe/meta/";
+
+        $uri .= rawurlencode($id);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL, $uri);
+
+        $response = curl_exec($ch);
+
+        $responseArray = $this->_http->parseResponse($response);
+
+        $metaJson = $responseArray["body"];
+
+        json_decode($metaJson, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return false;
+        }
+
+        return $metaJson;
+    }
+
+    public function getInfo($imageId)
+    {
+        $select = $this->_dbTable->select();
+        $select->where("picture_id = ?", $imageId);
+
+        $pictureInfo = $this->_dbAdapter()->fetchRow($select);
+
+        if (! $pictureInfo) {
+            return false;
+        }
+
+        $pictureInfo["meta"] = json_decode($pictureInfo["meta"], true);
+
+        return $pictureInfo;
+    }
+
+    public function getPictures($uid, $postId, $status = false)
+    {
+        $select = $this->_dbTable->select();
+
+        if ($uid) {
+            $select->where("uid = ?", $uid);
+        }
+
+        if ($postId) {
+            $select->where("post_id = ?", $postId);
+        }
+
+        if ($status) {
+            $select->where("status = ?", $status);
+        }
+
+        $data = $this->_dbAdapter->fetchAll($select);
+
+        foreach ($data as $key => $picture) {
+            $data[$key]["meta"] = json_decode($picture["meta"], true);
+            $data[$key]["options"] = json_decode($picture["options"], true);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param $pictures array of pictures
+     * @param $sortingOrder array of picture_id values
+     * @return array of sorted pictures
+     */
+    public function sortPictures($pictures, $sortingOrder)
+    {
+        $tmpPictures = [];
+        $final = [];
+
+        // create a temporary array with the key as the picture_id
+        foreach ($pictures as $eachPicture) {
+            $tmpPictures[$eachPicture["picture_id"]] = $eachPicture;
+        }
+
+        // read the sorting order, adding to the final array
+        // the pictures that are on it and exists, and finally
+        // removing them from the array
+        foreach ($sortingOrder as $sortedPictureId) {
+            if (isset($tmpPictures[$sortedPictureId])) {
+                $final[] = $tmpPictures[$sortedPictureId];
+                unset($tmpPictures[$sortedPictureId]);
+            }
+        }
+
+        // add any picture that was not already added to the sorted order
+        // on the final array
+        foreach ($tmpPictures as $eachPicture) {
+            $final[] = $eachPicture;
+        }
+
+        return $final;
     }
 
     /**
      * @param $source string path to a image
-     * @param $id string image id that should be used
-     * @return array with picture data in success, -1 if the image could not be loaded, false otherwise
+     * @param $uid
+     * @param $postId
+     * @return picture id on success, false otherwise
      */
-    public function create($source, $id)
+    public function create($source, $uid = null, $postId = null)
     {
-        try {
-            $originalIm = new Imagick($source);
-        } catch (Exception $e) {
-            return -1;
-        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_URL, $this->_config["services"]["thumbor"]["server"]. "/image");
 
-        $originalDimension = $originalIm->getimagegeometry();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Expect:"
+        ]);
 
-        if (! $originalDimension) {
+        //curl assumes a field value starting with a @ as a file
+        curl_setopt($ch, CURLOPT_POSTFIELDS, [
+            "media"=> "@" . $source . ";filename=picture.jpg"
+        ]);
+
+        $response = curl_exec($ch);
+
+        $responseArray = $this->_http->parseResponse($response);
+
+        $headers = $responseArray["headers"];
+
+        if (! isset($headers["Location"])) {
             return false;
         }
 
-        $originalIm->setimagecompressionquality($this->_imageQuality);
+        $imageLocation = $headers["Location"];
 
-        $originalIm->unsharpMaskImage(0 , 0.5 , 1 , 0.05);
+        $imageLocationExploded = explode("/", $imageLocation);
 
-        $originalIm->setImageFormat('jpeg');
-
-        $files = array();
-
-        foreach ($this->_sizes as $partialPath => $maxDim) {
-            $im = $originalIm->getImage();
-
-            $tmpFile = tempnam(sys_get_temp_dir(), 'IMAGE-' . md5(openssl_random_pseudo_bytes(12)));
-
-            if (mb_strpos($partialPath, "square") !== false) {
-                $im->cropThumbnailImage($maxDim, $maxDim);
-            } else if ($originalDimension['width'] > $maxDim && $originalDimension['height'] > $maxDim) {
-                if ($originalDimension['width'] > $originalDimension['height']) {
-                    $im->resizeimage($maxDim, 0, Imagick::FILTER_LANCZOS, 0);
-                } else {
-                    $im->resizeimage(0, $maxDim, Imagick::FILTER_LANCZOS, 0);
-                }
-            }
-
-            $im->writeimage($tmpFile);
-
-            $imGeometry = $im->getimagegeometry();
-
-            $files[$partialPath] = array(
-                "path" => $tmpFile,
-                "width" => $imGeometry['width'],
-                "height" => $imGeometry['height']
-            );
+        if (! isset($imageLocationExploded[2])) {
+            return false;
         }
 
-        $secret = mb_substr(md5(openssl_random_pseudo_bytes(20) . mt_rand()), 0, 8);
+        $imageId = $imageLocationExploded[2];
 
-        foreach ($files as $partialPath => &$info) {
-            $fileData = file_get_contents($info["path"]);
-            $this->getStorage()->storeItem(
-                $this->getImagePath($id, $secret, $partialPath),
-                $fileData,
-                [
-                    Zend_Cloud_StorageService_Adapter_S3::METADATA => [
-                        Zend_Service_Amazon_S3::S3_ACL_HEADER => Zend_Service_Amazon_S3::S3_ACL_PUBLIC_READ,
-                        "Content-Type" => "image/jpeg",
-                        "Cache-Control" => "max-age=1209600"
-                    ]
-                ]
-            );
+        $json = $this->getMetaJsonFromThumbor($imageId);
 
-            unlink($info["path"]);
-            unset($info["path"]);
+        if (! $json) {
+            return false;
         }
 
-        $fileData = file_get_contents($source);
-        $this->getStorage()->storeItem(
-            $this->getImagePath($id, $secret, "original"),
-            $fileData,
+        $this->_dbTable->insert(
             [
-                Zend_Cloud_StorageService_Adapter_S3::METADATA => [
-                    Zend_Service_Amazon_S3::S3_ACL_HEADER => Zend_Service_Amazon_S3::S3_ACL_PRIVATE
-                ]
+                "picture_id" => $imageId,
+                "uid" => $uid,
+                "post_id" => $postId,
+                "meta" => $json,
+                "status" => true
             ]
         );
 
-        return array("id" => $id, "secret" => $secret, "sizes" => $files);
+        return $imageId;
     }
 
-    public function delete($id, $secret)
+    public function delete($pictureId, $uid = null, $postId = null)
     {
-        foreach ($this->_sizes as $sizeInfo) {
-            $this->getStorage()->deleteItem($this->getImagePath($id, $secret, $sizeInfo[1]));
-        }
-
-        $this->getStorage()->deleteItem($this->getImagePath($id, $secret, "original"));
+        $where = [];
+        $where[] = $this->_dbAdapter->quoteInto("picture_id = ?", $pictureId);
+        $where[] = $this->_dbAdapter->quoteInto("uid = ?", $uid);
+        $where[] = $this->_dbAdapter->quoteInto("post_id = ?", $postId);
+        return $this->_dbTable->update(["status" => "removed"], $where);
     }
 
-    public function getImagePath($id, $secret, $size)
+    public function getImageLink($id, $options = "")
     {
-        $picturePath = $id . "-" . $secret . "-" . $size;
+        $path = $this->_config["services"]["thumbor"]["cdn"] . "/unsafe/" . $id . $options . "/picture.jpg";
 
-        return $picturePath;
-    }
-
-    public function getImageLink($id, $secret, $size)
-    {
-        $pictureLink = $this->_s3config["picturesBucketAddress"] . $id . "-" . $secret . "-" . $size;
-
-        return $pictureLink;
+        return $path;
     }
 }

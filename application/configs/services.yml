@@ -22,7 +22,7 @@ services:
         arguments: [null, @memCache, @gearmanClient, @people, @purifier, @numbers]
     picture:
         class: Ml_Model_Picture
-        arguments: [@config]
+        arguments: [null, @http, @config]
     search:
         class: Ml_Model_Search
         arguments: [@people, @posts, @memCache, @config]
