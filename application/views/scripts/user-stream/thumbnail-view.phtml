@@ -6,6 +6,9 @@ $paginator =  $this->posts;
 /** @var $paginator \Zend_Paginator() */
 
 $posts = $paginator->getCurrentItems();
+
+$postsPictures = $this->postsPictures;
+
 ?>
 <ul id="posts-thumbnail-view" class="posts-list posts-thumbnail-view <?= ($this->postsViewStyle !== "thumbnail") ? " hidden" : ""; ?>">
 <?php
@@ -21,9 +24,9 @@ foreach ($posts as $post) {
 <a href="<?= $escapedPostLink; ?>">
 <div class="img-place">
 <?php
-    if (is_array($post["pictures"][0])) {
-        $picture = $post["pictures"][0];
-        echo $this->picture($picture["id"], $picture["secret"], "small.jpg");
+    if (isset($postsPictures[$post["id"]][0]) && is_array($postsPictures[$post["id"]][0])) {
+        $picture = $postsPictures[$post["id"]][0];
+        echo $this->picture($picture["id"], "small.jpg");
     } else {
 ?>
 <img src="<?= $this->staticVersion("/images/chevrolet-impala-icon-small.png"); ?>" alt="picture placeholder">
