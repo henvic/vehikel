@@ -24,6 +24,9 @@ class UserStreamController extends Ml_Controller_Action
         $posts =  $this->_sc->get("posts");
         /** @var $posts \Ml_Model_Posts() */
 
+        $picture =  $this->_sc->get("picture");
+        /** @var $picture \Ml_Model_Picture() */
+
         $page = $this->_request->getUserParam("page");
 
         $types = $posts->getTypes();
@@ -70,6 +73,13 @@ class UserStreamController extends Ml_Controller_Action
 
         $paginator = $posts->getUserStreamPage($userInfo['id'], 10, $page, $type, $make, $model, $status);
 
+        $postsPictures = [];
+
+        foreach ($paginator->getCurrentItems() as $post) {
+            $pictures = $picture->getPictures($userInfo["id"], $post["id"], Ml_Model_Picture::PICTURE_ACTIVE);
+            $postsPictures[$post["id"]] = $pictures;
+        }
+
         //Test if there is enough pages or not
         if (! $this->_helper->pageExists($paginator)) {
             $this->_redirect($this->_router->assemble(array("username" =>
@@ -77,5 +87,6 @@ class UserStreamController extends Ml_Controller_Action
         }
 
         $this->view->assign("posts", $paginator);
+        $this->view->assign("postsPictures", $postsPictures);
     }
 }

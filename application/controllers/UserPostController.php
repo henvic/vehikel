@@ -26,18 +26,21 @@ class UserPostController extends Ml_Controller_Action
         $this->view->assign("facetsQuery", $search->getFacetsQuery());
 
         $galleryImages = [];
-        foreach ($post["pictures"] as $postPicture) {
-            $imageThumbnail = $picture->getImageLink($postPicture["id"], $postPicture["secret"], "thumbnail.jpg");
-            $image = $picture->getImageLink($postPicture["id"], $postPicture["secret"], "medium.jpg");
-            $imageLarge = $picture->getImageLink($postPicture["id"], $postPicture["secret"], "large.jpg");
 
-            $galleryImages[] = [
-                "id" => $postPicture["id"],
-                "type" => "image",
-                "thumb" => $imageThumbnail,
-                "image" => $image,
-                "big" => $imageLarge
-            ];
+        if (is_array($post["pictures"])) {
+            foreach ($post["pictures"] as $postPicture) {
+                $imageThumbnail = $picture->getImageLink($postPicture["picture_id"]);
+                $image = $picture->getImageLink($postPicture["picture_id"]);
+                $imageLarge = $picture->getImageLink($postPicture["picture_id"]);
+
+                $galleryImages[] = [
+                    "id" => $postPicture["picture_id"],
+                    "type" => "image",
+                    "thumb" => $imageThumbnail,
+                    "image" => $image,
+                    "big" => $imageLarge
+                ];
+            }
         }
 
         if (! empty($post["youtube_video"])) {
