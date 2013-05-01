@@ -2,6 +2,8 @@ parameters:
     logger.adapter.mongo.collection: log
     logger.adapter.mongo.db: vehikel
 services:
+    http:
+        class: Ml_Http
     mongo:
         class: Mongo
     numbers:
