@@ -278,7 +278,7 @@ class UserPostManagerController extends Ml_Controller_Action
         if (isset($unsafePostData["picture_id"]) && is_array($unsafePostData["picture_id"])) {
             $safePictureIds = [];
 
-            $stringLengthValidator = new Ml_Validate_StringLength(["min" => 1, "max" => 20]);
+            $stringLengthValidator = new Ml_Validate_StringLength(["min" => 1, "max" => 64]);
             $regexValidator = new Zend_Validate_Regex("/^[\w\-]+$/");
             foreach ($unsafePostData["picture_id"] as $pictureId) {
                 if (

@@ -16,7 +16,7 @@ class Ml_Form_PicturePostDelete extends Zend_Form
         $pictureElement
             ->setRequired(true)
             ->setLabel("Picture ID")
-            ->addValidator(new Ml_Validate_StringLength(["min" => 1, "max" => 20]))
+            ->addValidator(new Ml_Validate_StringLength(["min" => 1, "max" => 64]))
             ->addValidator(new Zend_Validate_Regex("/^[\w\-]+$/"))
         ;
 
