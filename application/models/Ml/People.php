@@ -2,30 +2,18 @@
 class Ml_Model_People
 {
     use Ml_Model_Db_Table_History;
-    use Ml_Model_Db_CachePeople;
-
-    protected $_cacheLifetime = 10;
-
-    // this number should change after relevant changes
-    protected $_cacheObjectVersion = 1;
 
     protected $_dbTableName = "people";
     protected $_dbHistoryTableName = "people_history";
     protected $_dbAdapter;
     protected $_dbTable;
 
-    protected $_cachePrefix = "user_";
-    protected $_cacheUsernamePrefix = "user_name_";
-
     public function __construct(
         $config,
         Ml_Model_HtmlPurifier $purifier,
-        Zend_Cache_Core $cache,
         GearmanClient $gearmanClient
     )
     {
-        $this->setCache($cache);
-
         $this->_purifier = $purifier;
 
         $this->_dbTable = new Zend_Db_Table($this->_dbTableName, $config);
@@ -78,15 +66,8 @@ class Ml_Model_People
         return $ids;
     }
 
-    public function getByUsername($username, $useCache = true)
+    public function getByUsername($username)
     {
-        if ($useCache) {
-            $cached = $this->getCacheByUsername($username);
-            if ($cached) {
-                return $cached;
-            }
-        }
-
         $select = $this->_dbTable->select()
             ->where("binary `username` = ?", $username);
 
@@ -103,25 +84,17 @@ class Ml_Model_People
 
     /**
      * @param $value value is username or email
-     * @param bool $useCache if cache might be used or not, it is ignored if email
      */
-    public function get($value, $useCache = true)
+    public function get($value)
     {
         if (strpos($value, '@') === false) {
-            return $this->getByUsername($value, $useCache);
+            return $this->getByUsername($value);
         }
         return $this->getByEmail($value);
     }
 
-    public function getById($id, $useCache = true)
+    public function getById($id)
     {
-        if ($useCache) {
-            $cached = $this->getCacheById($id);
-            if ($cached) {
-                return $cached;
-            }
-        }
-
         $select = $this->_dbTable->select()->where("binary `id` = ?", $id);
 
         return $this->getDbResult($select);
@@ -141,8 +114,7 @@ class Ml_Model_People
 
         $this->_dbAdapter->commit();
 
-        //retrieves fresh data renewing the cached values in the process
-        $updatedUserInfo = $this->getById($id, false);
+        $updatedUserInfo = $this->getById($id);
 
         if (! is_array($updatedUserInfo)) {
             return false;
@@ -236,7 +208,7 @@ class Ml_Model_People
             throw $e;
         }
 
-        $userInfo = $this->getById($id, false);
+        $userInfo = $this->getById($id);
 
         $this->syncSearch($userInfo);
         $this->syncPostsSearch($userInfo["id"]);
@@ -249,11 +221,8 @@ class Ml_Model_People
         $userInfo = $this->_dbAdapter->fetchRow($sql);
 
         if (is_array($userInfo)) {
-            $userInfo["cache"] = false;
             $userInfo["avatar_info"] = json_decode($userInfo["avatar_info"], true);
             $userInfo["address"] = json_decode($userInfo["address"], true);
-
-            $this->setUserInfoCache($userInfo);
 
             return $userInfo;
         }
