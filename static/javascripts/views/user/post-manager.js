@@ -684,7 +684,7 @@ define([
 
                 uploader.on("uploadstart", function (event) {
                     uploader.set("enabled", false);
-                    $("#upload-file").addClass("disabled").off("click");
+                    $("#upload-file").addClass("disabled");
                 });
 
                 uploader.on("uploadcomplete", function (event) {
@@ -704,12 +704,6 @@ define([
                         Y.one("#filelist").addClass("hidden");
                         reloadImages();
                     }, 1000);
-
-                    $uploadFile.on("click", function () {
-                        if (! uploadDone && uploader.get("fileList").length > 0) {
-                            uploader.uploadAll();
-                        }
-                    });
                     uploadDone = true;
                 });
             }
