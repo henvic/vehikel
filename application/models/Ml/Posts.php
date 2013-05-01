@@ -76,6 +76,11 @@ class Ml_Model_Posts
     protected $_numbers;
 
     /**
+     * @var Ml_Model_Picture
+     */
+    protected $_picture;
+
+    /**
      * @var array
      */
     protected $_types = ["car", "motorcycle", "boat"];
@@ -98,7 +103,8 @@ class Ml_Model_Posts
         GearmanClient $gearmanClient,
         Ml_Model_People $people,
         Ml_Model_HtmlPurifier $purifier,
-        Ml_Model_Numbers $numbers
+        Ml_Model_Numbers $numbers,
+        Ml_Model_Picture $picture
     )
     {
         $this->setCache($cache);
@@ -112,6 +118,8 @@ class Ml_Model_Posts
         $this->_purifier = $purifier;
 
         $this->_numbers = $numbers;
+
+        $this->_picture = $picture;
     }
 
     public function getUniversalId($uid, $postId)
@@ -392,89 +400,6 @@ class Ml_Model_Posts
     }
 
     /**
-     * @param $pictureInfo
-     * @param $postId
-     * @return bool
-     * @throws Exception
-     */
-    public function addPicture($pictureInfo, $postId)
-    {
-        try {
-            $this->_dbAdapter->beginTransaction();
-
-            $originalData = $this->getById($postId, false, false);
-
-            if (! $originalData) {
-                return false;
-            }
-
-            $pictures = $originalData["pictures"];
-
-            $pictures[] = ["id" => $pictureInfo["id"], "secret" => $pictureInfo["secret"]];
-
-            $pictures = json_encode(array_values($pictures));
-
-            $update = $this->_dbTable->update(["pictures" => $pictures], $this->_dbAdapter->quoteInto("id = ?", $postId));
-
-            if ($update) {
-                $this->saveHistorySnapshot($postId);
-                $this->_dbAdapter->commit();
-                $this->syncSearch($postId);
-                return true;
-            }
-        } catch (Exception $e) {
-            $this->_dbAdapter->rollBack();
-            throw $e;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $postId
-     * @param $pictureId
-     * @return bool
-     * @throws Exception
-     */
-    public function deletePicture($postId, $pictureId)
-    {
-        try {
-            $this->_dbAdapter->beginTransaction();
-
-            $post = $this->getById($postId, false, false);
-
-            $found = false;
-
-            foreach ($post["pictures"] as $position => $eachPicture) {
-                if ($eachPicture["id"] == $pictureId) {
-                    $found = true;
-                    break;
-                }
-            }
-
-            if ($found) {
-                unset($post["pictures"][$position]);
-
-                $data = ["pictures" => json_encode(array_values($post["pictures"]))];
-
-                $update = $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $postId));
-
-                if ($update) {
-                    $this->saveHistorySnapshot($postId);
-                    $this->_dbAdapter->commit();
-                    $this->syncSearch($postId);
-                    return true;
-                }
-            }
-        } catch (Exception $e) {
-            $this->_dbAdapter->rollBack();
-            throw $e;
-        }
-
-        return false;
-    }
-
-    /**
      * @param $postId
      * @param $newPicturesIdsSortingOrder array of picture ids in the new sorting order
      * @return picturesInfo array on success, false in failure
@@ -503,12 +428,11 @@ class Ml_Model_Posts
                     }
                 }
             }
+        $sorting = json_encode($newPicturesIdsSortingOrder);
+        $where = $this->_dbAdapter->quoteInto("id = ?", $postId);
+        $update = $this->_dbTable->update(["pictures_sorting_order" => $sorting], $where);
+        $this->saveHistorySnapshot($postId);
 
-            $newPictures = array_merge($newPictures, $originalPictures);
-
-            $newPicturesValues = array_values($newPictures);
-
-            $pictures = json_encode($newPicturesValues);
 
             $update = $this->_dbTable->update(["pictures" => $pictures], $this->_dbAdapter->quoteInto("id = ?", $postId));
 
@@ -594,7 +518,7 @@ class Ml_Model_Posts
 
         $paginator = new Zend_Paginator(
             new Ml_Paginator_Adapter_DbTableSelectWithJsonFields($select, [
-                "pictures",
+                "pictures_sorting_order",
                 "equipment"
             ])
         );
