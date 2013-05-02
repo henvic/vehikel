@@ -718,7 +718,7 @@ define([
                     drop = e.drop.get('node');
 
                 if (drop.get('tagName').toLowerCase() === 'li') {
-                    if (!goingUp) {
+                    if (! goingUp) {
                         drop = drop.get('nextSibling');
                     }
                     e.drop.get('node').get('parentNode').insertBefore(drag, drop);
@@ -844,12 +844,12 @@ define([
 
             post.done(function (response) {
                 AppParams.postGalleryImages = response.gallery;
+                var $thumbnails = $(".pictures-thumbnails", $("#gallery-manager"));
+                $thumbnails.html(drawThumbnails(response.gallery));
                 Galleria.ready(function (options) {
                     var gallery = this;
                     gallery.splice(0);
                     gallery.push(response.gallery);
-                    console.log("done reload images");
-                    console.log(response.gallery);
                 });
             });
         };
@@ -936,7 +936,7 @@ define([
             });
         };
 
-        var createThumbnails = function ($element, pictures) {
+        var drawThumbnails = function (pictures) {
             var picturesLength = pictures.length;
 
             var picturesDiv = "";
@@ -944,8 +944,12 @@ define([
                 picturesDiv += addPicture(pictures[counter]);
             }
 
+            return picturesDiv;
+        };
+
+        var createThumbnails = function ($element, pictures) {
             $element.html(compiledpostsManagerGalleryTemplate({
-                picturesDiv : picturesDiv,
+                picturesDiv : drawThumbnails(pictures),
                 isTouch : Modernizr.touch,
                 videoLink : buildVideoLink(videoId)
             }));
