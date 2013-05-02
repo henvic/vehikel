@@ -119,10 +119,13 @@ class Ml_Model_Picture
         // read the sorting order, adding to the final array
         // the pictures that are on it and exists, and finally
         // removing them from the array
-        foreach ($sortingOrder as $sortedPictureId) {
-            if (isset($tmpPictures[$sortedPictureId])) {
-                $final[] = $tmpPictures[$sortedPictureId];
-                unset($tmpPictures[$sortedPictureId]);
+
+        if (is_array($sortingOrder)) {
+            foreach ($sortingOrder as $sortedPictureId) {
+                if (isset($tmpPictures[$sortedPictureId])) {
+                    $final[] = $tmpPictures[$sortedPictureId];
+                    unset($tmpPictures[$sortedPictureId]);
+                }
             }
         }
 
