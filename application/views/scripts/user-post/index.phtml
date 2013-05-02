@@ -44,7 +44,7 @@ if (is_array($post["pictures"])) {
         $metaOgp[] = [
             "property" => "og:image",
             "content" =>
-            $this->pictureLink($picture["id"], $picture["secret"], "medium.jpg")
+            $this->pictureLink($picture["id"], "medium.jpg")
         ];
     }
     unset($picture);
@@ -55,11 +55,11 @@ if (is_array($post["pictures"])) {
 
 
 
-if (isset($userInfo["avatar_info"]["id"]) && isset($userInfo["avatar_info"]["secret"])) {
+if (isset($userInfo["avatar_info"]["id"])) {
     $metaOgp[] = [
         "property" => "og:image",
         "content" =>
-        $this->pictureLink($userInfo["avatar_info"]["id"], $userInfo["avatar_info"]["secret"], "medium.jpg")
+        $this->pictureLink($userInfo["avatar_info"]["id"], "medium.jpg")
     ];
 }
 

@@ -198,19 +198,19 @@ class UserPostManagerController extends Ml_Controller_Action
         if ($form->Filedata->isUploaded()) {
             $fileInfo = $form->Filedata->getFileInfo();
 
-            $id = $userInfo['id'] . "-p-" . $post["id"] . "-" . mt_rand();
+            $pictureId = $picture->create($fileInfo['Filedata']['tmp_name'], $userInfo["id"], $post["id"]);
 
-            $pictureInfo = $picture->create($fileInfo['Filedata']['tmp_name'], $id);
-
-            if (is_array($pictureInfo)) {
-                $posts->addPicture($pictureInfo, $post["id"]);
-
-                $this->_helper->json($pictureInfo);
-            } else {
+            if (! $pictureId) {
                 $this->getResponse()->setHttpResponseCode(404);
                 $this->_helper->json(["error" => "not-uploaded"]);
                 return;
             }
+
+            $pictureInfo = $picture->getInfo($pictureId);
+
+            $posts->syncSearch($post["id"]);
+
+            $this->_helper->json($pictureInfo);
         }
     }
 
@@ -238,15 +238,9 @@ class UserPostManagerController extends Ml_Controller_Action
 
         $pictureId = $form->getValue("picture_id");
 
-        if (is_array($post["pictures"])) {
-            foreach ($post["pictures"] as $position => $eachPicture) {
-                if ($eachPicture["id"] == $pictureId) {
-                    $posts->deletePicture($this->_post["id"], $pictureId);
-                    $picture->delete($eachPicture["id"], $eachPicture["secret"]);
-                    break;
-                }
-            }
-        }
+        $picture->delete($pictureId, $userInfo["id"], $post["id"]);
+
+        $posts->syncSearch($post["id"]);
 
         $this->_helper->json(["pictureRemoved" => $pictureId]);
         return;
