@@ -41,6 +41,10 @@ install() {
   curl -o jquery.js -O http://code.jquery.com/jquery-1.9.1.js
   cd ..
 
+  # Download Jcrop
+  echo "Downloading Jcrop"
+  curl -o Jcrop-0.9.12.tar.gz -O https://codeload.github.com/tapmodo/Jcrop/legacy.tar.gz/v0.9.12
+
   # Download jQuery.fn.autoResize-1.14
   echo "Downloading jQuery.fn.autoResize-1.14"
   mkdir jquery-fn-autoResize-1.14
@@ -109,6 +113,11 @@ install() {
   unzip bootstrap.v2.3.1.zip
   mv bootstrap bootstrap-2.3.1
   rm bootstrap.v2.3.1.zip
+
+  tar xzf Jcrop-0.9.12.tar.gz
+  mv tapmodo-Jcrop-1902fbc Jcrop-0.9.12
+  rm -r Jcrop-0.9.12/demos
+  rm Jcrop-0.9.12.tar.gz
 
   cd jquery-fn-autoResize-1.14/
   unzip henvic-jquery.fn.autoResize-1.14.zip henvic-jQuery.fn.autoResize-653c1e7/jquery.autoresize.js

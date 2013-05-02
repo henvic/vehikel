@@ -15,6 +15,7 @@
         jquery: "../vendor/jquery-1.9.1/jquery",
         underscore: "../vendor/underscore-1.3.3/underscore",
         "twitter.bootstrap": "../vendor/bootstrap-2.3.1/js/bootstrap",
+        "jcrop": "../vendor/Jcrop-0.9.12/js/jquery.JCrop",
         "jquery.tablesorter": "../vendor/jquery-tablesorter-2.0.5b/jquery.tablesorter",
         "jquery.fn.autoResize": "../vendor/jquery-fn-autoResize-1.14/jquery.autoresize",
         "jquery.maskMoney": "../vendor/plentz-jquery-maskmoney-5f9dadd/jquery.maskMoney",

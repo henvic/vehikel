@@ -29,6 +29,10 @@ $metaOgp[] = ["property" => "og:title", "content" => $unEscapedTitle];
 $metaOgp[] = ["property" => "og:type", "content" => "product"];
 $metaOgp[] = ["property" => "og:url", "content" => $escapedPostUriExternal];
 
+if ($this->editable) {
+    $this->headLink()->appendStylesheet($this->staticVersion("/vendor/Jcrop/css/jquery.Jcrop.css"));
+}
+
 if (is_array($post["pictures"])) {
     $amountOfPictures = sizeof($post["pictures"]);
 

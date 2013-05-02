@@ -9,6 +9,7 @@ define([
     'plugins/ckeditor-config',
     'text!templates/posts/manager-gallery.html',
     'text!templates/posts/manager-picture.html',
+    'jcrop',
     'jquery.maskMoney'
 ],
     function (
