@@ -1,6 +1,7 @@
 <li class="picture <%- (picture.type === 'video') ? 'video' : 'image' %> span2" data-id="<%- picture.id %>">
     <img src="<%- picture.thumb %>" />
-    <div class="actions action-delete">
-        apagar
+    <div class="actions">
+        <div class="action-edit pull-left">editar</div>
+        <div class="action-delete pull-right">apagar</div>
     </div>
 </li>

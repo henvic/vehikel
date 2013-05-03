@@ -963,13 +963,14 @@ define([
 
             pictures = AppParams.postGalleryImages;
 
-            $galleryManager.on("click", ".image .action-delete", function (e) {
-                var pictureId = e.target.parentNode.getAttribute("data-id");
-                erasePicture(pictureId);
+            $galleryManager.on("click", ".image .action-edit", function (e) {
+                var pictureId = e.target.parentNode.parentNode.getAttribute("data-id");
+                editPicture(pictureId);
             });
 
-            $galleryManager.on("click", ".video .action-delete", function (e) {
-                updateVideoId("");
+            $galleryManager.on("click", ".image .action-delete", function (e) {
+                var pictureId = e.target.parentNode.parentNode.getAttribute("data-id");
+                erasePicture(pictureId);
             });
 
             $galleryManager.on("submit", ".video-form", function (e) {

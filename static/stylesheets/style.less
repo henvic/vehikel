@@ -469,13 +469,29 @@ input.no-spin-button::-webkit-inner-spin-button {
         padding: 2px;
         box-sizing: border-box;
         font-size: 90%;
-        background: rgba(167, 13, 28, 0.78);
         cursor: pointer;
         &:hover {
-            background: rgba(167, 13, 28, 0.95);
             -webkit-transition: all 0.5s ease-in-out;
             -moz-transition: all 0.5s ease-in-out;
             -o-transition: all 0.5s ease-in-out;
+        }
+    }
+
+    .action-edit, .action-delete {
+        width: 49%;
+    }
+
+    .action-edit {
+        background: rgba(13, 166, 100, 0.78);
+        &:hover {
+            background: rgba(13, 166, 100, 0.95);
+        }
+    }
+
+    .action-delete {
+        background: rgba(167, 13, 28, 0.78);
+        &:hover {
+            background: rgba(167, 13, 28, 0.95);
         }
     }
 
