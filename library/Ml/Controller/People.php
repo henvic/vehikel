@@ -88,6 +88,7 @@ trait Ml_Controller_People
                 case "user_post_delete" :
                 case "user_post_picture_add" :
                 case "user_post_picture_delete" :
+                case "user_post_picture_edit" :
                 case "user_post_picture_sort" :
                 if ($this->_auth->getIdentity() != $post["uid"]) {
                     $this->getResponse()->setHttpResponseCode(403);
