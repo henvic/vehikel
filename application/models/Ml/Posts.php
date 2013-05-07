@@ -222,7 +222,7 @@ class Ml_Model_Posts
             $picturesSortingOrder = json_decode($data["pictures_sorting_order"], true);
             unset($data["pictures_sorting_order"]);
 
-            $pictures = $this->_picture->getPictures($data["uid"], $data["id"], true);
+            $pictures = $this->_picture->getPictures($data["uid"], $data["id"], Ml_Model_Picture::PICTURE_ACTIVE);
 
             $sortedPictures = $this->_picture->sortPictures($pictures, $picturesSortingOrder);
 
