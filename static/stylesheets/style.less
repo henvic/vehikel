@@ -446,17 +446,20 @@ input.no-spin-button::-webkit-inner-spin-button {
     .pictures-thumbnails {
         display: table;
         margin-top: 20px;
-        padding-bottom: 20px;
+        margin-bottom: 20px;
         background: @postEditingBackground;
+        li + li {
+            border-left: 1px dotted #bababa;
+        }
     }
 
     .pictures-thumbnails .picture {
-        margin-top: 20px;
         position: relative;
         .galleria-container-background();
         text-align: center;
-        width: 150px;
-        height: 100px;
+        margin: 0;
+        width: 200px;
+        height: 150px;
         float: left;
     }
 
