@@ -246,6 +246,48 @@ class UserPostManagerController extends Ml_Controller_Action
         return;
     }
 
+    public function pictureEditAction() {
+        $userInfo = $this->_userInfo;
+
+        $picture =  $this->_sc->get("picture");
+        /** @var $picture \Ml_Model_Picture() */
+
+        $form = new Ml_Form_PicturePostEdit();
+
+        if (! $this->getRequest()->isPost() || ! $form->isValid($this->getRequest()->getPost())) {
+            $this->getResponse()->setHttpResponseCode(403);
+            $this->_helper->json(["error" => ["validate" => $form->getErrors()]]);
+            return;
+        }
+
+        $values = $form->getValues();
+
+        $pictureInfo = $picture->getInfo($values["picture_id"]);
+
+        if (! is_array($pictureInfo)) {
+            $this->getResponse()->setHttpResponseCode(403);
+            $this->_helper->json(["error" => ["picture" => "not-found"]]);
+            return;
+        }
+
+        if ($pictureInfo["uid"] !== $userInfo["id"]) {
+            $this->getResponse()->setHttpResponseCode(403);
+            $this->_helper->json(["error" => ["permissions" => "different-picture-owner"]]);
+            return;
+        }
+
+        $newOptions = [
+            "x" => $values["x"],
+            "y" => $values["y"],
+            "x2" => $values["x2"],
+            "y2" => $values["y2"],
+        ];
+
+        $saved = $picture->setOptions($pictureInfo["picture_id"], $newOptions);
+
+        $this->_helper->json($saved);
+    }
+
     public function pictureSortAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
