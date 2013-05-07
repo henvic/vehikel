@@ -71,6 +71,7 @@ class Ml_Model_Picture
         }
 
         $pictureInfo["meta"] = json_decode($pictureInfo["meta"], true);
+        $pictureInfo["options"] = json_decode($pictureInfo["options"], true);
 
         return $pictureInfo;
     }
@@ -207,6 +208,13 @@ class Ml_Model_Picture
         $where[] = $this->_dbAdapter->quoteInto("uid = ?", $uid);
         $where[] = $this->_dbAdapter->quoteInto("post_id = ?", $postId);
         return $this->_dbTable->update(["status" => "removed"], $where);
+    }
+
+    public function setOptions($pictureId, $options)
+    {
+        $where = $this->_dbAdapter->quoteInto("picture_id = ?", $pictureId);
+        $data = ["options" => json_encode($options)];
+        return $this->_dbTable->update($data, $where);
     }
 
     public function getImageLink($id, $options = "")
