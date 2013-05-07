@@ -64,7 +64,7 @@ class Ml_Model_Picture
         $select = $this->_dbTable->select();
         $select->where("picture_id = ?", $imageId);
 
-        $pictureInfo = $this->_dbAdapter()->fetchRow($select);
+        $pictureInfo = $this->_dbAdapter->fetchRow($select);
 
         if (! $pictureInfo) {
             return false;
