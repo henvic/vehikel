@@ -25,25 +25,25 @@ class Ml_Form_PicturePostEdit extends Zend_Form
         $this->addElement('text', 'x', array(
             'label' => 'x',
             'required' => true,
-            'validators' => array(array('validator' => 'Digits'))
+            'validators' => array(array('validator' => 'Int'))
         ));
 
         $this->addElement('text', 'y', array(
             'label' => 'y',
             'required' => true,
-            'validators' => array(array('validator' => 'Digits'))
+            'validators' => array(array('validator' => 'Int'))
         ));
 
         $this->addElement('text', 'x2', array(
             'label' => 'x2',
             'required' => true,
-            'validators' => array(array('validator' => 'Digits'))
+            'validators' => array(array('validator' => 'Int'))
         ));
 
         $this->addElement('text', 'y2', array(
             'label' => 'y2',
             'required' => true,
-            'validators' => array(array('validator' => 'Digits'))
+            'validators' => array(array('validator' => 'Int'))
         ));
 
         $this->addElement(Ml_Model_MagicCookies::formElement());
