@@ -855,6 +855,25 @@ define([
             });
         };
 
+        var cutPicture = function (pictureId, cut) {
+            return $.ajax({
+                url: AppParams.webroot + "/" + AppParams.postUsername + "/" +
+                    AppParams.postId + "/picture/edit",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    hash: AppParams.globalAuthHash,
+                    picture_id: pictureId,
+                    x : cut.x,
+                    y : cut.y,
+                    x2 : cut.x2,
+                    y2 : cut.y2,
+                    w : cut.w,
+                    h : cut.h
+                }
+            });
+        };
+
         var addPicture = function (picture) {
             if (picture.type === "video") {
                 setVideoIdValue(picture.id);
