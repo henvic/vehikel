@@ -281,6 +281,8 @@ class UserPostManagerController extends Ml_Controller_Action
             "y" => $values["y"],
             "x2" => $values["x2"],
             "y2" => $values["y2"],
+            "w" => $values["w"],
+            "h" => $values["h"]
         ];
 
         $saved = $picture->setOptions($pictureInfo["picture_id"], $newOptions);
