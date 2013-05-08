@@ -46,6 +46,18 @@ class Ml_Form_PicturePostEdit extends Zend_Form
             'validators' => array(array('validator' => 'Int'))
         ));
 
+        $this->addElement('text', 'w', array(
+            'label' => 'w',
+            'required' => true,
+            'validators' => array(array('validator' => 'Int'))
+        ));
+
+        $this->addElement('text', 'h', array(
+            'label' => 'h',
+            'required' => true,
+            'validators' => array(array('validator' => 'Int'))
+        ));
+
         $this->addElement(Ml_Model_MagicCookies::formElement());
     }
 }
