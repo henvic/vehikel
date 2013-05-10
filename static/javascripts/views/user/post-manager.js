@@ -9,6 +9,7 @@ define([
     'plugins/ckeditor-config',
     'text!templates/posts/manager-gallery.html',
     'text!templates/posts/manager-picture.html',
+    'text!templates/posts/crop-picture.html',
     'jcrop',
     'jquery.maskMoney'
 ],
@@ -19,7 +20,8 @@ define([
         underscore,
         ckeditorConfig,
         postsManagerGalleryTemplate,
-        postsManagerPictureTemplate
+        postsManagerPictureTemplate,
+        cropPictureTemplate
         ) {
         "use strict";
 
@@ -883,6 +885,94 @@ define([
                     picture: picture
                 });
             }
+        };
+
+        var editPicture = function (pictureId) {
+            var picture = underscore.find(AppParams.postGalleryImages,
+                function (eachPicture) {
+                    return eachPicture.id === pictureId;
+                }
+            );
+
+            var compiledTemplate = underscore.template(cropPictureTemplate);
+            $("body").append(compiledTemplate({
+                imageSrc: picture.original
+            }));
+
+            var $cropPictureModal = $("#crop-picture-modal");
+
+            $cropPictureModal.modal();
+
+            $cropPictureModal.on("shown", function () {
+                var $cropImage = $(".crop-image", $cropPictureModal);
+
+                var jCropApi;
+
+                $cropPictureModal.on("hidden", function (e) {
+                    jCropApi.destroy();
+                    $cropPictureModal.off();
+                    $cropImage.off();
+                    $cropPictureModal.remove();
+                });
+
+                var width = picture.original_size.width;
+                var height = picture.original_size.height;
+                var selected = false;
+
+                var setRelease = function () {
+                    selected = false;
+                };
+
+                var setSelect = function () {
+                    selected = true;
+                };
+
+                setTimeout(function () {
+                    $cropImage.Jcrop({
+                        aspectRatio: 4 / 3,
+                        trueSize: [width, height],
+                        onRelease: setRelease,
+                        onSelect: setSelect
+                    }, function () {
+                        jCropApi = this;
+
+                        var cropOptions = picture.crop_options;
+
+                        if (cropOptions.w > 0 && cropOptions.h > 0) {
+                            jCropApi.animateTo([cropOptions.x, cropOptions.y, cropOptions.x2, cropOptions.y2]);
+                            selected = true;
+                        }
+                    });
+                }, 1500);
+
+                $(".clear-selection", $cropPictureModal).on("click", function (e) {
+                    jCropApi.release();
+                });
+
+                $(".cut", $cropPictureModal).on("click", function (e) {
+                    var cut;
+
+                    if (selected) {
+                        cut = jCropApi.tellSelect();
+                    } else {
+                        cut = {x: 0, y: 0, x2: 0, y2: 0, w: 0, h: 0};
+                    }
+
+                    var cutResponse = cutPicture(pictureId, {
+                        x: Math.floor(cut.x),
+                        y: Math.floor(cut.y),
+                        x2: Math.floor(cut.x2),
+                        y2: Math.floor(cut.y2),
+                        w: Math.floor(cut.w),
+                        h: Math.floor(cut.h)
+                    });
+
+                    cutResponse.done(function () {
+                        $cropPictureModal.modal("hide");
+                        reloadImages();
+                    });
+                });
+            });
         };
 
         var erasePicture = function (pictureId) {
