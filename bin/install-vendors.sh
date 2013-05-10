@@ -88,9 +88,9 @@ install() {
 
   # Download Underscore.js
   echo "Downloading Underscore.js"
-  mkdir underscore-1.3.3
-  cd underscore-1.3.3
-  curl -o underscore.js -O https://raw.github.com/documentcloud/underscore/1.3.3/underscore.js
+  mkdir underscore-1.4.4
+  cd underscore-1.4.4
+  curl -o underscore.js -O https://raw.github.com/documentcloud/underscore/1.4.4/underscore.js
   cd ..
 
   # Download Galleria

@@ -12,7 +12,7 @@ var config = (function () {
             AppParams: "foo",
             yui: "http://yui.yahooapis.com/3.9.1/build/yui/yui-min",
             jquery: "../vendor/jquery-1.9.1/jquery",
-            underscore: "../vendor/underscore-1.3.3/underscore",
+            underscore: "../vendor/underscore-1.4.4/underscore",
             "twitter.bootstrap": "../vendor/bootstrap-2.3.1/js/bootstrap",
             "jcrop": "../vendor/Jcrop-0.9.12/js/jquery.JCrop",
             "jquery.tablesorter": "../vendor/jquery-tablesorter-2.0.5b/jquery.tablesorter",
