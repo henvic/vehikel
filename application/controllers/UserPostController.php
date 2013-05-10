@@ -29,17 +29,50 @@ class UserPostController extends Ml_Controller_Action
 
         if (is_array($post["pictures"])) {
             foreach ($post["pictures"] as $postPicture) {
-                $imageThumbnail = $picture->getImageLink($postPicture["picture_id"]);
-                $image = $picture->getImageLink($postPicture["picture_id"]);
-                $imageLarge = $picture->getImageLink($postPicture["picture_id"]);
+                $picOpt = $postPicture["options"];
 
-                $galleryImages[] = [
+                $opt = "";
+
+                if (isset($picOpt["w"]) && isset($picOpt["h"]) && $picOpt["w"] > 0 && $picOpt["h"] > 0) {
+                    $opt .= (int) $picOpt["x"] . "x" . (int) $picOpt["y"] . ":" .
+                        (int) $picOpt["x2"] . "x" . (int) $picOpt["y2"]
+                    ;
+                }
+
+                $optThumbnail = $opt . "/266x200";
+                $imageThumbnail = $picture->getImageLink($postPicture["picture_id"], $optThumbnail);
+
+                $imageMedium = $opt . "/800x600";
+                $image = $picture->getImageLink($postPicture["picture_id"], $imageMedium);
+
+                $imageLarge = $picture->getImageLink($postPicture["picture_id"], $opt);
+
+                $pictureData = [
                     "id" => $postPicture["picture_id"],
                     "type" => "image",
                     "thumb" => $imageThumbnail,
                     "image" => $image,
                     "big" => $imageLarge
                 ];
+
+                if ($this->_editable) {
+                    $pictureData["original"] = $picture->getImageLink($postPicture["picture_id"]);
+                    $pictureData["crop_options"] = $postPicture["options"];
+
+                    $pictureMeta = $postPicture["meta"];
+
+                    if (isset($pictureMeta["thumbor"]) && isset($pictureMeta["thumbor"]["source"])) {
+                        if (isset($pictureMeta["thumbor"]["source"]["width"])) {
+                            $pictureData["original_size"]["width"] = (int) $pictureMeta["thumbor"]["source"]["width"];
+                        }
+
+                        if (isset($pictureMeta["thumbor"]["source"]["height"])) {
+                            $pictureData["original_size"]["height"] = (int) $pictureMeta["thumbor"]["source"]["height"];
+                        }
+                    }
+                }
+
+                $galleryImages[] = $pictureData;
             }
         }
 
