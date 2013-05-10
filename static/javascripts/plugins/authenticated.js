@@ -50,54 +50,9 @@ define(["AppParams", "jquery", "jquery.maskMoney"], function (AppParams, $) {
             loadPostProductMakes($postProductTypeNew.val());
         });
 
-        var setCustomMake = function () {
-            var make = window.prompt("Marca?");
 
-            if (! make) {
-                return;
-            }
 
-            $postProductMakeNew.val(make);
-            if ($postProductMakeNew.val() === make) {
-                loadPostProductModels($postProductTypeNew.val(), $postProductMakeNew.val());
-                return;
-            }
 
-            var $optGroup = $($postProductMakeNew.find("optgroup")[0]);
-            var $entrySet = $("<select>");
-
-            $entrySet.append($("<option>", { value : make }).text(make));
-
-            $optGroup.append($entrySet.children());
-
-            $postProductMakeNew.val(make);
-
-            $postProductModelNew.removeAttr("disabled", "disabled");
-        };
-
-        var setCustomModel = function () {
-            var model = window.prompt("Modelo?");
-
-            if (! model) {
-                return;
-            }
-
-            $postProductModelNew.val(model);
-            if ($postProductModelNew.val() === model) {
-                return;
-            }
-
-            var $optGroup = $($postProductModelNew.find("optgroup")[0]);
-            var $entrySet = $("<select>");
-
-            $entrySet.append($("<option>", { value : model }).text(model));
-
-            $optGroup.append($entrySet.children());
-
-            $postProductModelNew.val(model);
-        };
-
-        var loadPostProductMakes = function (type, make) {
             $.ajax({
                 url: AppParams.webroot + "/typeahead",
                 type: "GET",
@@ -181,17 +136,7 @@ define(["AppParams", "jquery", "jquery.maskMoney"], function (AppParams, $) {
             $postProductModelNew.val("");
             $postProductModelNew.attr("disabled", "disabled");
 
-            if ($(":selected", $postProductMakeNew).data("action") === "other") {
-                setCustomMake();
-            } else {
-                loadPostProductModels($postProductTypeNew.val(), $postProductMakeNew.val());
-            }
-        });
-
-        $postProductModelNew.on("change", function (e) {
-            if ($(":selected", $postProductModelNew).data("action") === "other") {
-                setCustomModel();
-            }
+            loadPostProductModels($postProductTypeNew.val(), $postProductMakeNew.val());
         });
 
         $postProductPriceNew.maskMoney(
