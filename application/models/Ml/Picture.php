@@ -219,7 +219,11 @@ class Ml_Model_Picture
 
     public function getImageLink($id, $options = "")
     {
-        $path = $this->_config["services"]["thumbor"]["cdn"] . "/unsafe/" . $id . $options . "/picture.jpg";
+        if ($options) {
+            $options .= "/";
+        }
+
+        $path = $this->_config["services"]["thumbor"]["cdn"] . "/unsafe/" . $options . $id . "/picture.jpg";
 
         return $path;
     }
