@@ -6,6 +6,7 @@ define([
     'jquery',
     'yui',
     'underscore',
+    'models/vehicles',
     'plugins/ckeditor-config',
     'text!templates/posts/manager-gallery.html',
     'text!templates/posts/manager-picture.html',
@@ -18,6 +19,7 @@ define([
         $,
         YUI,
         underscore,
+        vehiclesModel,
         ckeditorConfig,
         postsManagerGalleryTemplate,
         postsManagerPictureTemplate,
@@ -202,100 +204,7 @@ define([
 
         loadPostProductInfoEditingAreaElements();
 
-        var loadPostProductMakes = function (type, make) {
-            $.ajax({
-                url: AppParams.webroot + '/typeahead',
-                type: 'GET',
-                dataType: 'json',
-                data: ({
-                    search: "makes",
-                    type: type
-                }),
-                success: function (data, textStatus, jqXHR) {
-                    if (data.values instanceof Array) {
-                        var $optGroup = $($postProductMake.find("optgroup")[0]);
-                        var $entrySet = $("<select>");
-                        $entrySet.append('<option value="">-</option>');
-                        $.each(data.values, function (key, value) {
-                            $entrySet.append($('<option>', { value : value }).text(value));
-                        });
-
-                        $entrySet.append($('<option>', { 'data-action' : 'other' }).text("Outro"));
-
-                        $postProductMake.removeAttr("disabled");
-                        $optGroup.html($entrySet.children());
-
-                        if (make !== undefined) {
-                            $postProductMake.val(make);
-
-                            if ($postProductMake.val() === make) {
-                                return;
-                            }
-
-                            $optGroup.append($('<option>', { value : make }).text(make));
-                            $postProductMake.val(make);
-                        }
-                    }
-                }
-            });
-        };
-
-        $postProductType.on("change", function (e) {
-            $postProductMake.val("");
-            $postProductMake.attr("disabled", "disabled");
-            $postProductModel.val("");
-            $postProductModel.attr("disabled", "disabled");
-            loadPostProductMakes($postProductType.val());
-        });
-
-        var loadPostProductModels = function (type, make, model) {
-            $.ajax({
-                url: AppParams.webroot + '/typeahead',
-                type: 'GET',
-                dataType: 'json',
-                data: ({
-                    search: "models",
-                    type: type,
-                    make: make
-                }),
-                success: function (data, textStatus, jqXHR) {
-                    if (data.values instanceof Array) {
-                        $postProductModel.html('<optgroup label="Modelo"><option value="">-</option></optgroup>');
-                        var $optGroup = $($postProductModel.find("optgroup")[0]);
-                        var $entrySet = $("<select>");
-                        $.each(data.values, function (key, value) {
-                            $entrySet.append($('<option>', { value : value }).text(value));
-                        });
-
-                        $entrySet.append($('<option>', { 'data-action' : 'other' }).text("Outro"));
-
-                        $postProductModel.removeAttr("disabled");
-                        $optGroup.append($entrySet.children());
-
-                        if (model !== undefined) {
-                            $postProductModel.val(model);
-
-                            if ($postProductModel.val() === model) {
-                                return;
-                            }
-
-                            $optGroup.append($('<option>', { value : model }).text(model));
-                            $postProductModel.val(model);
-                        }
-                    }
-                }
-            });
-        };
-
-        loadPostProductMakes($postProductType.val(), $postProductMake.val());
-        loadPostProductModels($postProductType.val(), $postProductMake.val(), $postProductModel.val());
-
-        $postProductMake.on("change", function (e) {
-            $postProductModel.val("");
-            $postProductModel.attr("disabled", "disabled");
-
-            loadPostProductModels($postProductType.val(), $postProductMake.val());
-        });
+        vehiclesModel.setUp($postProductType, $postProductMake, $postProductModel);
 
         var openPostProductNameEdit = function () {
             $postProductName.attr('unselectable', 'on').on('selectstart', false);
@@ -318,8 +227,13 @@ define([
         $postProductNameCancel.on("click", function (e) {
             closePostProductNameEdit();
             $postProductType.val(postProductTypeValue);
-            loadPostProductMakes(postProductTypeValue, postProductMakeValue);
-            loadPostProductModels(postProductTypeValue, postProductMakeValue, postProductModelValue);
+            vehiclesModel.loadPostProductMakes($postProductMake, postProductTypeValue, postProductMakeValue);
+            vehiclesModel.loadPostProductModels(
+                $postProductModel,
+                postProductTypeValue,
+                postProductMakeValue,
+                postProductModelValue
+            );
             $postProductNameEdit.val(postProductNameEditValue);
         });
 
@@ -358,8 +272,8 @@ define([
                     postProductModelValue = result.model;
                     postProductNameEditValue = result.name;
                     $postProductType.val(result.type);
-                    loadPostProductMakes(result.type, result.make);
-                    loadPostProductModels(result.type, result.make, result.model);
+                    vehiclesModel.loadPostProductMakes($postProductMake, result.type, result.make);
+                    vehiclesModel.loadPostProductModels($postProductModel, result.type, result.make, result.model);
                     $postProductNameEdit.val(result.name);
 
                     // rewrite the breadcrumb

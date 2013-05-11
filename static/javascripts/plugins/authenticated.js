@@ -1,7 +1,7 @@
 /*global define, window */
 /*jshint indent:4 */
 
-define(["AppParams", "jquery", "jquery.maskMoney"], function (AppParams, $) {
+define(["AppParams", "jquery", "models/vehicles", "jquery.maskMoney"], function (AppParams, $, vehiclesModel) {
     "use strict";
 
     /**
@@ -42,102 +42,7 @@ define(["AppParams", "jquery", "jquery.maskMoney"], function (AppParams, $) {
         var $postProductModelNew = $("#post-product-model-new");
         var $postProductPriceNew = $("#post-product-price-new");
 
-        $postProductTypeNew.on("change", function (e) {
-            $postProductMakeNew.val("");
-            $postProductMakeNew.attr("disabled", "disabled");
-            $postProductModelNew.val("");
-            $postProductModelNew.attr("disabled", "disabled");
-            loadPostProductMakes($postProductTypeNew.val());
-        });
-
-
-
-
-            $.ajax({
-                url: AppParams.webroot + "/typeahead",
-                type: "GET",
-                dataType: "json",
-                data: ({
-                    search: "makes",
-                    type: type
-                }),
-                success: function (data, textStatus, jqXHR) {
-                    if (data.values instanceof Array) {
-                        var $optGroup = $($postProductMakeNew.find("optgroup")[0]);
-                        var $entrySet = $("<select>");
-                        $entrySet.append('<option value="">-</option>');
-                        $.each(data.values, function (key, value) {
-                            $entrySet.append($("<option>", { value : value }).text(value));
-                        });
-
-                        $entrySet.append($("<option>", { "data-action" : "other" }).text("Outro"));
-
-                        $postProductMakeNew.removeAttr("disabled");
-                        $optGroup.html($entrySet.children());
-
-                        if (make !== undefined) {
-                            $postProductMakeNew.val(make);
-
-                            if ($postProductMakeNew.val() === make) {
-                                return;
-                            }
-
-                            $optGroup.append($("<option>", { value : make }).text(make));
-                            $postProductMakeNew.val(make);
-                        }
-                    }
-                }
-            });
-        };
-
-        var loadPostProductModels = function (type, make, model) {
-            $.ajax({
-                url: AppParams.webroot + "/typeahead",
-                type: "GET",
-                dataType: "json",
-                data: ({
-                    search: "models",
-                    type: type,
-                    make: make
-                }),
-                success: function (data, textStatus, jqXHR) {
-                    if (data.values instanceof Array) {
-                        $postProductModelNew.html('<optgroup label="Modelo"><option value="">-</option></optgroup>');
-                        var $optGroup = $($postProductModelNew.find("optgroup")[0]);
-                        var $entrySet = $("<select>");
-                        $.each(data.values, function (key, value) {
-                            $entrySet.append($("<option>", { value : value }).text(value));
-                        });
-
-                        $entrySet.append($("<option>", { "data-action" : "other" }).text("Outro"));
-
-                        $postProductModelNew.removeAttr("disabled");
-                        $optGroup.append($entrySet.children());
-
-                        if (model !== undefined) {
-                            $postProductModelNew.val(model);
-
-                            if ($postProductModelNew.val() === model) {
-                                return;
-                            }
-
-                            $optGroup.append($("<option>", { value : model }).text(model));
-                            $postProductModelNew.val(model);
-                        }
-                    }
-                }
-            });
-        };
-
-        loadPostProductMakes($postProductTypeNew.val(), $postProductMakeNew.val());
-        loadPostProductModels($postProductTypeNew.val(), $postProductMakeNew.val(), $postProductModelNew.val());
-
-        $postProductMakeNew.on("change", function (e) {
-            $postProductModelNew.val("");
-            $postProductModelNew.attr("disabled", "disabled");
-
-            loadPostProductModels($postProductTypeNew.val(), $postProductMakeNew.val());
-        });
+        vehiclesModel.setUp($postProductTypeNew, $postProductMakeNew, $postProductModelNew);
 
         $postProductPriceNew.maskMoney(
             {
