@@ -29,15 +29,9 @@ class UserPostController extends Ml_Controller_Action
 
         if (is_array($post["pictures"])) {
             foreach ($post["pictures"] as $postPicture) {
-                $picOpt = $postPicture["options"];
-
                 $opt = "";
 
-                if (isset($picOpt["w"]) && isset($picOpt["h"]) && $picOpt["w"] > 0 && $picOpt["h"] > 0) {
-                    $opt .= (int) $picOpt["x"] . "x" . (int) $picOpt["y"] . ":" .
-                        (int) $picOpt["x2"] . "x" . (int) $picOpt["y2"]
-                    ;
-                }
+                $opt .= $picture->getCropOptions($postPicture["options"]);
 
                 $optThumbnail = $opt . "/266x200";
                 $imageThumbnail = $picture->getImageLink($postPicture["picture_id"], $optThumbnail);
