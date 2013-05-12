@@ -14,6 +14,8 @@ class Ml_Model_Picture
 
     protected $_dbTableName = "pictures";
 
+    protected $_placeholder;
+
     const PICTURE_ACTIVE = "active";
     const PICTURE_REMOVED = "removed";
 
@@ -25,6 +27,8 @@ class Ml_Model_Picture
     public function __construct($dbConfig, $http, $config)
     {
         $this->_config = $config;
+
+        $this->_placeholder = $config["services"]["thumbor"]["placeholder"];
 
         $this->_http = $http;
 
@@ -100,6 +104,11 @@ class Ml_Model_Picture
         }
 
         return $data;
+    }
+
+    public function getPlaceholder()
+    {
+        return $this->_placeholder;
     }
 
     /**
