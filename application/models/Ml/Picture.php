@@ -217,6 +217,19 @@ class Ml_Model_Picture
         return $this->_dbTable->update($data, $where);
     }
 
+    public function getCropOptions($options)
+    {
+        $crop = "";
+
+        if (isset($options["w"]) && isset($options["h"]) && $options["w"] > 0 && $options["h"] > 0) {
+            $crop .= (int) $options["x"] . "x" . (int) $options["y"] . ":" .
+                (int) $options["x2"] . "x" . (int) $options["y2"]
+            ;
+        }
+
+        return $crop;
+    }
+
     public function getImageLink($id, $options = "")
     {
         if ($options) {
