@@ -80,6 +80,16 @@ class Ml_Model_Picture
         return $pictureInfo;
     }
 
+    public function getPublicInfo($picture)
+    {
+        $publicInfo = [
+            "picture_id" => $picture["picture_id"],
+            "crop_options" => $picture["options"],
+        ];
+
+        return $publicInfo;
+    }
+
     public function getPictures($uid, $postId, $status = false)
     {
         $select = $this->_dbTable->select();
