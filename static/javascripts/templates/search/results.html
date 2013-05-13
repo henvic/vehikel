@@ -58,21 +58,10 @@ var itemsLength = items.length;
     %>
     <tr data-link="<%= escapedPostLink %>">
         <td class="span1">
-            <%
-            if (post.pictures !== undefined && post.pictures !== null && post.pictures[0] !== undefined) {
-            var picture = post.pictures[0];
-            %>
-            <img src="<%- AppParams.imagesCdn %><%- picture.id %>-<%- picture.secret %>-square.jpg" alt="picture">
-            <%
-            } else {
-            %>
-            <img src="<%- AppParams.cdn %>images/chevrolet-impala-icon-square.png" alt="picture placeholder">
-            <%
-            }
-            %>
+            <img src="<%- getFirstPictureAddress(post.pictures, '100x75/') %>" alt="picture">
             </td>
         <td>
-            <div class="span5">
+            <div class="span4">
                 <a href="<%= escapedPostLink %>">
                 <%
                 if (postSearch.highlight !== undefined && postSearch.highlight.title !== undefined) {
@@ -149,18 +138,7 @@ for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
     <li>
     <a href="<%= escapedPostLink %>">
         <div class="img-place">
-        <%
-        if (post.pictures !== undefined && post.pictures !== null && post.pictures[0] !== undefined) {
-        var picture = post.pictures[0];
-        %>
-        <img src="<%- AppParams.imagesCdn %><%- picture.id %>-<%- picture.secret %>-small.jpg" alt="picture">
-        <%
-        } else {
-        %>
-        <img src="<%- AppParams.cdn %>images/chevrolet-impala-icon-small.png" alt="picture placeholder">
-        <%
-        }
-        %>
+        <img src="<%- getFirstPictureAddress(post.pictures, '400x300/') %>" alt="picture">
         </div>
         <p>
             <%
