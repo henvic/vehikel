@@ -4,7 +4,11 @@ class SearchController extends Ml_Controller_Action
 {
     public function indexAction()
     {
+        $picture =  $this->_sc->get("picture");
+        /** @var $picture \Ml_Model_Picture() */
+
         $this->view->addJsParam("route", "search/engine");
+        $this->view->addJsParam("placeholder", $picture->getPlaceholder());
 
         $this->_helper->viewStyle();
 
