@@ -3,6 +3,11 @@ class Ml_Model_People
 {
     use Ml_Model_Db_Table_History;
 
+    /**
+     * @var Ml_Model_Picture
+     */
+    protected $_picture;
+
     protected $_dbTableName = "people";
     protected $_dbHistoryTableName = "people_history";
     protected $_dbAdapter;
@@ -11,6 +16,7 @@ class Ml_Model_People
     public function __construct(
         $config,
         Ml_Model_HtmlPurifier $purifier,
+        Ml_Model_Picture $picture,
         GearmanClient $gearmanClient
     )
     {
@@ -18,6 +24,8 @@ class Ml_Model_People
 
         $this->_dbTable = new Zend_Db_Table($this->_dbTableName, $config);
         $this->_dbAdapter = $this->_dbTable->getAdapter();
+
+        $this->_picture = $picture;
 
         $this->_gearmanClient = $gearmanClient;
     }
