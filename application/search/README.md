@@ -95,10 +95,7 @@ curl -XPUT http://localhost:9200/posts/user/_mapping?pretty=1 -d '
       "picture" : {
         "dynamic" : "true",
         "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "secret" : {
+          "picture_id" : {
             "type" : "string"
           }
         }
@@ -217,10 +214,7 @@ curl -XPUT http://localhost:9200/posts/post/_mapping?pretty=1 -d '
         "pictures" : {
           "dynamic" : "true",
           "properties" : {
-            "id" : {
-              "type" : "string"
-            },
-            "secret" : {
+            "picture_id" : {
               "type" : "string"
             }
           }
@@ -324,10 +318,7 @@ curl -XPUT http://localhost:9200/posts/post/_mapping?pretty=1 -d '
             "picture" : {
               "dynamic" : "true",
               "properties" : {
-                "id" : {
-                  "type" : "string"
-                },
-                "secret" : {
+                "picture_id" : {
                   "type" : "string"
                 }
               }
