@@ -7,21 +7,21 @@ if ($registry->isRegistered("signedUserInfo")) {
 $flashMessenger = $this->flashMessenger();
 
 if (! empty($flashMessenger) ||
-    (isset($signedUserInfo) && (! $signedUserInfo["avatar_info"] || ! $signedUserInfo["address"])
+    (isset($signedUserInfo) && (! $signedUserInfo["picture_id"] || ! $signedUserInfo["address"])
     )) {
 ?>
 <div class="container">
     <div class="row">
         <div class="span12">
             <?php
-            if (isset($signedUserInfo) && (! $signedUserInfo["avatar_info"] || ! $signedUserInfo["address"])) {
+            if (isset($signedUserInfo) && (! $signedUserInfo["picture_id"] || ! $signedUserInfo["address"])) {
             ?>
                 &nbsp;
                 <div class="alert alert-block alert-info">
                     <p>Para poder anunciar está faltando você:<br />
                     <ul>
                         <?php
-                        if (! $signedUserInfo["avatar_info"]) {
+                        if (! $signedUserInfo["picture_id"]) {
                             ?>
                             <li><a href="<?= $this->url(array(), "account_picture"); ?>">Colocar uma imagem de perfil</a></li>
                             <?php
