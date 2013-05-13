@@ -48,7 +48,7 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
         var status;
         var make = value[0];
         var model = "";
-        var url;
+        var url = AppParams.webroot + "/" + AppParams.postUsername;
 
         if (! AppParams.status || AppParams.status === "active") {
             status = "";
@@ -71,10 +71,10 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
             requestParams.model = model;
         }
 
-        url = $.param(requestParams);
+        var subUrl = $.param(requestParams);
 
-        if (url) {
-            url = "?" + url;
+        if (subUrl) {
+            url = url + "?" + subUrl;
         }
 
         window.location = url;
