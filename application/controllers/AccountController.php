@@ -129,10 +129,8 @@ class AccountController extends Ml_Controller_Action
 
         $this->view->submitPictureForm = $form;
 
-        $pictureInfo = $signedUserInfo["avatar_info"];
-
-        if ($pictureInfo) {
-            $this->view->pictureLink = $picture->getImageLink($pictureInfo["id"], "small.jpg");
+        if ($signedUserInfo["picture_id"]) {
+            $this->view->pictureLink = $picture->getImageLink($signedUserInfo["picture_id"]);
         }
 
         if (! $this->_request->isPost() || ! $form->isValid($this->_request->getPost())) {
@@ -140,20 +138,18 @@ class AccountController extends Ml_Controller_Action
         }
 
         if ($form->getValue("delete")) {
-            $people->update($signedUserInfo["id"], array("avatar_info" => false));
-            $oldPicturesInfo = $signedUserInfo["avatar_info"];
-            $picture->delete($oldPicturesInfo);
+            $people->update($signedUserInfo["id"], array("picture_id" => false));
+            $picture->delete($signedUserInfo["picture_id"], $signedUserInfo["id"]);
             $this->_redirect($this->_router->assemble(array(), "account_picture"), array("exit"));
         } else if ($form->Image->isUploaded()) {
             $fileInfo = $form->Image->getFileInfo();
-            $picturesInfo = $picture->create($fileInfo['Image']['tmp_name'], $signedUserInfo['id']);
+            $pictureId = $picture->create($fileInfo['Image']['tmp_name'], $signedUserInfo['id']);
 
-            if (is_array($picturesInfo)) {
-                $people->update($signedUserInfo['id'], array("avatar_info" => json_encode($picturesInfo)));
-                $oldPicturesInfo = $signedUserInfo["avatar_info"];
-                if (is_array($oldPicturesInfo) && isset($oldPicturesInfo["secret"])) {
-                    $picture->delete($oldPicturesInfo);
-                }
+            if ($pictureId) {
+                $people->update($signedUserInfo['id'], array("picture_id" => $pictureId));
+
+                //remove the old picture, if it exists
+                $picture->delete($signedUserInfo["picture_id"]);
                 $this->_redirect($this->_router->assemble(array(), "account_picture"), array("exit"));
             } else {
                 throw new Exception("Error creating pictures.");
