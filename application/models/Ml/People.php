@@ -43,12 +43,10 @@ class Ml_Model_People
             "name" => $userInfo["name"]
         ];
 
-        if (isset($userInfo["avatar_info"]["id"]) && isset($userInfo["avatar_info"]["secret"])) {
-            $content["picture"]["id"] = $userInfo["avatar_info"]["id"];
-            $content["picture"]["secret"] = $userInfo["avatar_info"]["secret"];
+        if ($userInfo["picture"]) {
+            $content["picture"] = $this->_picture->getPublicInfo($userInfo["picture"]);
         } else {
-            $content["picture"]["id"] = "";
-            $content["picture"]["secret"] = "";
+            $content["picture"] = null;
         }
 
         $address = $userInfo["address"];

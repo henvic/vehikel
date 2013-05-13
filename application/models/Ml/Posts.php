@@ -133,14 +133,30 @@ class Ml_Model_Posts
             "fuel" => $post["fuel"],
             "km" => (int) $post["km"],
             "armor" => (bool) $post["armor"],
-            "handicapped" => (bool) $post["handicapped"],
-            "pictures" => $post["pictures"],
-            "equipment" => $post["equipment"],
-            "status" => $post["status"],
-            "traction" => $post["traction"],
-            "description" => $post["description"],
-            "description_html_escaped" => $post["description_html_escaped"]
+            "handicapped" => (bool) $post["handicapped"]
         ];
+
+        $pictures = [];
+
+        if (is_array($post["pictures"])) {
+            foreach ($post["pictures"] as $picture) {
+                $pictures[] = $this->_picture->getPublicInfo($picture);
+            }
+        }
+
+        if (empty($pictures)) {
+            $pictures[] = [
+                "picture_id" => $this->_picture->getPlaceholder()
+            ];
+        }
+
+        $content["pictures"] = $pictures;
+
+        $content["equipment"] = $post["equipment"];
+        $content["status"] = $post["status"];
+        $content["traction"] = $post["traction"];
+        $content["description"] = $post["description"];
+        $content["description_html_escaped"] = $post["description_html_escaped"];
 
         return $content;
     }
