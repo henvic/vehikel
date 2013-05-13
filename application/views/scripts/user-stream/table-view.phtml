@@ -26,12 +26,10 @@ foreach ($posts as $post) {
 if (isset($postsPictures[$post["id"]][0]) && is_array($postsPictures[$post["id"]][0])) {
 $picture = $postsPictures[$post["id"]][0];
 ?>
-<?= $this->picture($picture["id"], "square.jpg"); ?>
+<?= $this->picture($picture, "/100x75"); ?>
 <?php
 } else {
-?>
-<img src="<?= $this->staticVersion("/images/chevrolet-impala-icon-square.png"); ?>" alt="picture placeholder">
-<?php
+    echo $this->picture(null, "/100x75");
 }
 ?>
 </td>

@@ -7,7 +7,7 @@ $address = $userInfo["address"];
 <address id="post-address" class="vcard post-seller-address">
 <table>
 <tr>
-<td><a href="<?= $escapedUserLink; ?>"><?= $this->avatar($userInfo, "square.jpg", 60, 60); ?></a></td>
+<td><a href="<?= $escapedUserLink; ?>"><?= $this->picture($userInfo["picture"], "/60x60"); ?></a></td>
 <td>
 <strong class="fn"><a href="<?= $escapedUserLink; ?>"><?= $this->escape($userInfo["name"]); ?></a></strong><br />
 <?php

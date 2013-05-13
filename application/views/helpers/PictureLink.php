@@ -16,8 +16,19 @@ class Ml_View_Helper_PictureLink extends Zend_View_Helper_Abstract
         $this->_picture = $picture;
     }
 
-    public function pictureLink($prefix, $secret, $format = "medium.jpg")
+    public function pictureLink($picture = null, $options = "")
     {
-        return $this->_picture->getImageLink($prefix, $secret, $format);
+        $src = "";
+
+        if (is_null($picture)) {
+            $placeholder = $this->_picture->getPlaceholder();
+            $src .= $this->_picture->getImageLink($placeholder, $options);
+        } else {
+            $crop = $this->_picture->getCropOptions($picture["options"]);
+
+            $src .= $this->_picture->getImageLink($picture["picture_id"], $crop . $options);
+        }
+
+        return $src;
     }
 }

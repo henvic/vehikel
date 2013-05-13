@@ -229,8 +229,13 @@ class Ml_Model_People
         $userInfo = $this->_dbAdapter->fetchRow($sql);
 
         if (is_array($userInfo)) {
-            $userInfo["avatar_info"] = json_decode($userInfo["avatar_info"], true);
             $userInfo["address"] = json_decode($userInfo["address"], true);
+
+            if ($userInfo["picture_id"]) {
+                $userInfo["picture"] = $this->_picture->getInfo($userInfo["picture_id"]);
+            } else {
+                $userInfo["picture"] = null;
+            }
 
             return $userInfo;
         }

@@ -16,16 +16,18 @@ class Ml_View_Helper_Picture extends Zend_View_Helper_Abstract
         $this->_picture = $picture;
     }
 
-    public function picture($id, $secret, $format = "medium.jpg", $alt = 'picture', $width = false, $height = false)
+    public function picture($picture = null, $options = "")
     {
-        $pictureLink = $this->_picture->getImageLink($id, $secret, $format);
+        if (is_null($picture)) {
+            $placeholder = $this->_picture->getPlaceholder();
+            $src = $this->_picture->getImageLink($placeholder, $options);
+        } else {
+            $crop = $this->_picture->getCropOptions($picture["options"]);
 
-        $img = '<img src="' .
-            $this->view->escape($pictureLink) .
-            '" alt="' . $this->view->escape($alt) . '"' .
-            ' width="' . $this->view->escape($width) . '"' .
-            ' height="' . $this->view->escape($height) . '"' .
-            ' />';
+            $src = $this->_picture->getImageLink($picture["picture_id"], $crop . $options);
+        }
+
+        $img = '<img src="' . $this->view->escape($src) . '" ' . 'alt="picture" />';
 
         return $img;
     }

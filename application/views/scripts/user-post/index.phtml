@@ -48,7 +48,7 @@ if (is_array($post["pictures"])) {
         $metaOgp[] = [
             "property" => "og:image",
             "content" =>
-            $this->pictureLink($picture["id"], "medium.jpg")
+            $this->pictureLink($picture, "medium.jpg")
         ];
     }
     unset($picture);

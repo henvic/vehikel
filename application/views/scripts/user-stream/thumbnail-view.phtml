@@ -26,11 +26,9 @@ foreach ($posts as $post) {
 <?php
     if (isset($postsPictures[$post["id"]][0]) && is_array($postsPictures[$post["id"]][0])) {
         $picture = $postsPictures[$post["id"]][0];
-        echo $this->picture($picture["id"], "small.jpg");
+        echo $this->picture($picture, "/400x300");
     } else {
-?>
-<img src="<?= $this->staticVersion("/images/chevrolet-impala-icon-small.png"); ?>" alt="picture placeholder">
-<?php
+        echo $this->picture(null, "/400x300");
     }
 ?>
 </div>
