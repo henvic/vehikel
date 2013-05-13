@@ -62,8 +62,7 @@ if (is_array($post["pictures"])) {
 if (isset($userInfo["avatar_info"]["id"])) {
     $metaOgp[] = [
         "property" => "og:image",
-        "content" =>
-        $this->pictureLink($userInfo["avatar_info"]["id"], "medium.jpg")
+        "content" => $this->pictureLink($userInfo["picture"])
     ];
 }
 

@@ -27,11 +27,10 @@ $metaOgp[] = ["property" => "og:title", "content" => $userInfo["name"]];
 $metaOgp[] = ["property" => "og:type", "content" => "product"];
 $metaOgp[] = ["property" => "og:url", "content" => $escapedUserLinkExternal];
 
-if (isset($userInfo["avatar_info"]["id"]) && isset($userInfo["avatar_info"]["secret"])) {
+if ($userInfo["picture"]) {
     $metaOgp[] = [
         "property" => "og:image",
-        "content" =>
-        $this->pictureLink($userInfo["avatar_info"]["id"], $userInfo["avatar_info"]["secret"], "medium.jpg")
+        "content" => $this->pictureLink($userInfo["picture"])
     ];
 }
 
