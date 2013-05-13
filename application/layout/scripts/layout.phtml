@@ -26,7 +26,7 @@ $this->addJsParam("webroot", $config['webroot']);
 
 $this->addJsParam("cdn", $config['cdn']);
 
-$this->addJsParam("imagesCdn", $config['services']['S3']['picturesBucketAddress']);
+$this->addJsParam("imagesCdn", $config['services']['thumbor']['cdn']);
 
 $this->headLink()
 ->appendStylesheet($this->staticVersion("/vendor/bootstrap/css/bootstrap.css"))
