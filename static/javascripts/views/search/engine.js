@@ -449,12 +449,35 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                         }
                     );
 
+                    var getFirstPictureAddress = function (pictures, cropOptions) {
+                        var picture;
+                        if (pictures !== undefined && pictures !== null && pictures[0] !== undefined) {
+                            picture = pictures[0];
+                        } else {
+                            picture = {
+                                "picture_id" : AppParams.placeholder
+                            };
+                        }
+
+                        var cropSubPath = "";
+                        if (picture.crop_options) {
+                            cropSubPath = picture.crop_options.x + "x" + picture.crop_options.y + ":" +
+                                picture.crop_options.x2 + "x" + picture.crop_options.y2 + "/"
+                            ;
+                        }
+
+                        cropSubPath = cropSubPath + cropOptions;
+
+                        return AppParams.imagesCdn + "/unsafe/" + cropSubPath + picture.picture_id + ".jpg";
+                    };
+
                     $searchResults.html(compiledResults(
                         {
                             facetsHtml : facetsHtml,
                             pageLink : pageLink,
                             formatMoney : formatMoney,
                             AppParams : AppParams,
+                            getFirstPictureAddress : getFirstPictureAddress,
                             result : result,
                             size : size,
                             from : from,
