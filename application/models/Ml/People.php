@@ -53,7 +53,13 @@ class Ml_Model_People
 
         $address = $userInfo["address"];
         $content["where"] =  $address["locality"] . " - " . $address["region"];
-        $content["address"] = $address;
+
+        if ($userInfo["account_type"] == "retail") {
+            $content["address"] = $address;
+        } else {
+            $content["address"] = $content["where"];
+        }
+
         $content["account_type"] = $userInfo["account_type"];
 
         return $content;
