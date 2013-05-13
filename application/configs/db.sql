@@ -1,13 +1,13 @@
 # ************************************************************
 # Sequel Pro SQL dump
-# Version 4004
+# Version 4096
 #
 # http://www.sequelpro.com/
 # http://code.google.com/p/sequel-pro/
 #
 # Host: 127.0.0.1 (MySQL 5.5.24-0ubuntu0.12.04.1)
 # Database: vehikel
-# Generation Time: 2013-03-21 22:58:53 +0000
+# Generation Time: 2013-05-13 01:55:45 +0000
 # ************************************************************
 
 
@@ -63,10 +63,10 @@ CREATE TABLE `log` (
 CREATE TABLE `people` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `username` char(15) NOT NULL,
+  `picture_id` char(64) DEFAULT '',
   `email` char(60) DEFAULT '',
   `membership` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `name` char(50) NOT NULL,
-  `avatar_info` varchar(600) NOT NULL DEFAULT '',
   `private_email` tinyint(1) NOT NULL DEFAULT '1',
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `address` text,
@@ -87,10 +87,10 @@ CREATE TABLE `people_history` (
   `history_id` char(36) NOT NULL DEFAULT '',
   `id` bigint(20) unsigned NOT NULL,
   `username` char(15) NOT NULL,
+  `picture_id` char(64) DEFAULT NULL,
   `email` char(60) DEFAULT '',
   `membership` timestamp NULL DEFAULT NULL,
   `name` char(50) NOT NULL,
-  `avatar_info` varchar(600) NOT NULL DEFAULT '',
   `private_email` tinyint(1) NOT NULL DEFAULT '1',
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `address` text,
