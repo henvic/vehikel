@@ -791,14 +791,9 @@ define([
         };
 
         var addPicture = function (picture) {
-            if (picture.type === "video") {
-                setVideoIdValue(picture.id);
-                return "";
-            } else {
-                return compiledPostsManagerPictureTemplate({
-                    picture: picture
-                });
-            }
+            return compiledPostsManagerPictureTemplate({
+                picture: picture
+            });
         };
 
         var editPicture = function (pictureId) {
@@ -965,7 +960,11 @@ define([
 
             var picturesDiv = "";
             for (var counter = 0; counter < picturesLength; counter++) {
-                picturesDiv += addPicture(pictures[counter]);
+                if (pictures[counter].type === "video") {
+                    setVideoIdValue(pictures[counter].id);
+                } else if (pictures[counter].type === "image" && pictures[counter].placeholder === undefined) {
+                    picturesDiv += addPicture(pictures[counter]);
+                }
             }
 
             return picturesDiv;
