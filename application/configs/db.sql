@@ -104,6 +104,26 @@ CREATE TABLE `people_history` (
 
 
 
+# Dump of table pictures
+# ------------------------------------------------------------
+
+CREATE TABLE `pictures` (
+  `picture_id` char(64) NOT NULL,
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) unsigned DEFAULT NULL,
+  `post_id` bigint(20) unsigned DEFAULT NULL,
+  `meta` text NOT NULL,
+  `options` text NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` set('active','removed') NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `picture_id` (`picture_id`),
+  KEY `uid` (`uid`),
+  KEY `post_id` (`post_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 # Dump of table posts
 # ------------------------------------------------------------
 
@@ -124,7 +144,7 @@ CREATE TABLE `posts` (
   `km` int(11) DEFAULT NULL,
   `armor` tinyint(1) NOT NULL,
   `handicapped` tinyint(1) NOT NULL,
-  `pictures` text NOT NULL,
+  `pictures_sorting_order` text NOT NULL,
   `equipment` text NOT NULL,
   `status` set('staging','active','end') NOT NULL DEFAULT 'staging',
   `traction` set('front','rear','4x4') NOT NULL DEFAULT '',
@@ -163,7 +183,7 @@ CREATE TABLE `posts_history` (
   `km` int(11) DEFAULT NULL,
   `armor` tinyint(1) DEFAULT NULL,
   `handicapped` tinyint(1) DEFAULT NULL,
-  `pictures` varchar(600) DEFAULT NULL,
+  `pictures_sorting_order` varchar(600) DEFAULT NULL,
   `equipment` varchar(600) DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `traction` set('front','rear','4x4') DEFAULT '',
