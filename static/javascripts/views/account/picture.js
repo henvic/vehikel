@@ -36,15 +36,21 @@ define(['jquery'], function($) {
         createImage(e.dataTransfer.files[0]);
     }, false);
 
-    var image = $('<img src="" />');
+    var imageElement = document.createElement("img");
 
-    function previewImage(image) {
-        jFileButton.popover({title: 'Preview', content: image, placement: 'bottom'});
+    function previewImage(imageElement) {
+        jFileButton.popover({
+            title: 'Preview',
+            content: imageElement,
+            html: true,
+            placement: 'bottom'
+        });
         jFileButton.popover('show');
+        console.log(imageElement);
 
         setTimeout(function () {
             jFileButton.popover('hide');
-            image.attr('src', '');
+            imageElement.src = "";
         }, 2500);
     }
 
@@ -55,15 +61,14 @@ define(['jquery'], function($) {
 
         var reader = new FileReader();
 
-        image.width = 100;
-        image.height = 100;
+        imageElement.width = 100;
+        imageElement.height = 100;
 
         reader.onload = function (e) {
-            image.attr('src', e.target.result);
+            imageElement.src = e.target.result;
+            previewImage(imageElement);
         };
 
         reader.readAsDataURL(file);
-
-        previewImage(image);
     }
 });
