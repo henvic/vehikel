@@ -68,6 +68,18 @@ class UserPostController extends Ml_Controller_Action
 
                 $galleryImages[] = $pictureData;
             }
+
+            if (empty($galleryImages)) {
+                $pictureData = [
+                    "id" => $picture->getPlaceholder(),
+                    "type" => "image",
+                    "thumb" => $picture->getImageLink($picture->getPlaceholder()),
+                    "image" => $picture->getImageLink($picture->getPlaceholder()),
+                    "placeholder" => true
+                ];
+
+                $galleryImages[] = $pictureData;
+            }
         }
 
         if (! empty($post["youtube_video"])) {
