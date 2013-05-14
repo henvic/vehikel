@@ -13,6 +13,22 @@ module.exports = function (syncUserData, Gearman, elasticManager, settings) {
         settings.gearman.hostname, settings.gearman.port, settings.env
     );
 
+    gearman.on("connect", function () {
+        console.info("Connected to Gearman!\n");
+    });
+
+    gearman.on("idle", function () {
+        console.info("No jobs, resting!\n");
+    });
+
+    gearman.on("close", function () {
+        console.error("Gearman connection closed!\n");
+    });
+
+    gearman.on("error", function () {
+        console.error("Gearman error, disconnected!\n");
+    });
+
     gearman.registerWorker("searchDelete", function (payload, worker) {
         var data;
 
