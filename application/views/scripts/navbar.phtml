@@ -1,0 +1,99 @@
+<?php
+$registry = Zend_Registry::getInstance();
+
+if ($registry->isRegistered("signedUserInfo")) {
+    $signedUserInfo = $registry->get("signedUserInfo");
+}
+?>
+
+<div class="btn-group">
+<?php
+if (isset($signedUserInfo)) {
+?>
+    <a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>"
+       class="btn btn-mini btn-inverse">@fiatitalianalima</a>
+<?php
+}
+?>
+    <button class="btn btn-mini btn-inverse dropdown-toggle" data-toggle="dropdown">
+        ☰
+    </button>
+    <ul id="site-menu" class="dropdown-menu">
+        <li>
+            <a href="<?= $this->url(array(), "user_post_new"); ?>" id="post-new-ad-button">
+                <i class="icon-pencil"></i> Anunciar
+            </a>
+        </li>
+        <li class="divider-vertical"></li>
+<?php
+if (! isset($signedUserInfo)) {
+?>
+    <li>
+        <form class="navbar-login-well" enctype="application/x-www-form-urlencoded" action="<?= $this->url(array(), "login"); ?>" method="post">
+            <label for="navbar-login-username">Usuário ou email</label>
+            <input type="text" id="navbar-login-username" name="username" required="required">
+            <label for="navbar-login-password">Senha</label>
+            <input type="password" id="navbar-login-password" name="password" required="required">
+            <fieldset class="form-inline">
+                <input type="hidden" name="remember_me" value="0" />
+                <label class="checkbox">
+                    <input type="checkbox" name="remember_me" value="1" /> Relembrar-me
+                </label>
+                <button type="submit" class="btn">Entrar</button>
+            </fieldset>
+        </form>
+    </li>
+    <li><a href="<?php echo $this->url(array(), "recover") ?>">Perdeu seu usuário ou senha?</a></li>
+    <li><a href="<?php echo $this->url(array(), "join"); ?>">Cadastre-se</a></li>
+<?php
+}
+?>
+<?php
+if (isset($signedUserInfo)) {
+    ?>
+    <li>
+        <a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>">
+            <?php
+            echo $this->picture($signedUserInfo["picture"], "/20x20"), " Meus anúncios";
+            ?>
+        </a>
+    </li>
+    <li><a href="<?= $this->url(array(), "account"); ?>"><i class="icon-wrench"></i> Minha conta</a></li>
+    <li><a href="<?= $this->url(array(), "logout"); ?>" id="navbar-logout-link" rel="nofollow" class="navbar-logout-link">Sair</a></li>
+<?php
+}
+?>
+    </ul>
+</div>
+<form method="get" action="/search" id="search-posts-form" class="search">
+    <label for="search-text" class="none">Busca</label>
+    <input id="search-text" type="text" placeholder="O que você procura?" maxlength="80" class="search-text search-query" name="q" autocomplete="off" />
+    <button id="facets-toggle" class="facets-toggle btn visible-phone" data-toggle="button"><i class="icon-filter"></i><span class="hidden"> Filtros</span></button>
+    <div class="hidden">
+        <input type="text" id="search-price-max" placeholder="R$ máximo" maxlength="16" class="span2" name="price-max" />
+        <input type="text" id="search-price-min" placeholder="R$ mínimo" maxlength="16" class="span2" name="price-min" />
+        <input type="text" id="search-make" name="make" placeholder="Marca" />
+        <input type="text" id="search-model" name="model" placeholder="Modelo" />
+        <input type="text" id="search-year" name="year" placeholder="Ano" />
+        <input type="text" id="search-where" name="where" placeholder="Localização" />
+        <input type="text" id="search-user" name="u" placeholder="Usuário" />
+        <input type="text" id="search-transmission" name="transmission" placeholder="Transmissão" />
+        <input type="text" id="search-traction" name="traction" placeholder="Tração" />
+        <input type="text" id="search-handicapped" name="handicapped" placeholder="Deficiente" />
+        <input type="text" id="search-armor" name="armor" placeholder="Deficiente" />
+        <label class="radio">
+            <input type="radio" name="type" value="" checked="checked" /> todo tipo de veículo
+        </label>
+        <label class="radio">
+            <input type="radio" name="type" value="car" /> carro
+        </label>
+        <label class="radio">
+            <input type="radio" name="type" value="motorcycle" /> motocicleta
+        </label>
+        <label class="radio">
+            <input type="radio" name="type" value="boat" /> embarcação
+        </label>
+    </div>
+    <ul id="search-tips" class="search-tips unstyled hidden">
+    </ul>
+</form>

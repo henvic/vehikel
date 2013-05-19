@@ -64,34 +64,12 @@ function (AppParams, $, underscore, mapModalTemplate) {
             }
         } ());
 
-        var NavbarClosure = (function () {
-            var windowObj = $(window);
-            var $stickAnchor = $("#sticky-anchor");
-            var $navbar = $("#navbar");
-            var $searchPostsForm = $("#search-posts-form");
+        var $siteMenu = $("#site-menu");
 
-            var stickAnchorOffsetTop = $stickAnchor.offset().top;
-            var isOnTop = null;
-
-            function stickyRelocate() {
-                if (windowObj.scrollTop() > stickAnchorOffsetTop) {
-                    if (isOnTop !== false) {
-                        isOnTop = false;
-                        $navbar.removeClass("navbar-fixed-top-override").addClass("navbar-fixed-top-override2");
-                        $searchPostsForm.addClass("search-box-fixed");
-                    }
-                } else {
-                    if (isOnTop !== true) {
-                        isOnTop = true;
-                        $navbar.addClass("navbar-fixed-top-override").removeClass("navbar-fixed-top-override2");
-                        $searchPostsForm.removeClass("search-box-fixed");
-                    }
-                }
-            }
-
-            $(window).scroll(stickyRelocate);
-            stickyRelocate();
-        } ());
+        //avoid the site menu from closing when clicked
+        $siteMenu.on("click", function(e) {
+            e.stopPropagation();
+        });
 
         $("a[rel=\"external\"]")
            .click(function () {

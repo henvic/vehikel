@@ -79,93 +79,19 @@ if (is_array($metaOgp)) {
 <script src="<?php echo $this->staticVersion("/vendor/modernizr/modernizr.js"); ?>"></script>
 </head>
 <body id="body">
-<div class="site-logotype" id="site-logotype">
-<a href="<?php echo $this->url(array(), "index"); ?>">
-<img src="<?php echo $this->staticVersion("/images/logotype.png"); ?>" width="551" height="65" alt="<?= $this->escape($config["applicationname"]); ?>" /></a>
-</div>
-<div id="sticky-anchor"></div>
-<div class="navbar navbar-inverse navbar-fixed-top navbar-fixed-top-override" id="navbar">
-  <div class="navbar-inner">
-    <div class="container">
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
-      <a class="brand" href="<?php echo $this->url(array(), "index"); ?>"><?php echo $this->escape($config['applicationname']); ?></a>
-      <div class="nav-collapse">
-          <ul class="nav">
-              <li class="divider-vertical"></li>
-              <li>
-                  <a href="<?= $this->url(array(), "user_post_new"); ?>" id="post-new-ad-button">
-                      <i class="icon-pencil icon-white"></i> Anunciar
-                  </a>
-              </li>
-              <li class="divider-vertical"></li>
-          </ul>
-        <ul class="nav pull-right">
-            <li class="divider-vertical"></li>
-<?php
-if (isset($signedUserInfo)) {
-?>
-        <li>
-            <a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>">
-<?php
-    echo $this->picture($signedUserInfo["picture"], "/20x20"), " ", $this->escape($signedUserInfo['username']);
-?>
-            </a>
-        </li>
-        <li class="divider-vertical"></li>
-        <li id="navbar-user" class="dropdown">
-            <a href="<?= $this->url(array(), "account"); ?>"
-               data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-wrench icon-white"></i>
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>">Meus anúncios</a></li>
-                <li><a href="<?= $this->url(array(), "account"); ?>">Minha conta</a></li>
-                <li class="divider"></li>
-                <li><a href="<?= $this->url(array(), "logout"); ?>" id="navbar-logout-link" rel="nofollow" class="navbar-logout-link">Sair</a></li>
-            </ul>
-        </li>
-<?php
-} else {
-?>
-                <li id="navbar-user" class="dropdown">
-                    <a href="<?php echo $this->url(array(), "login") ?>" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-user icon-white"></i> Entrar
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <form class="navbar-login-well" enctype="application/x-www-form-urlencoded" action="<?= $this->url(array(), "login"); ?>" method="post">
-                                <label for="navbar-login-username">Usuário ou email</label>
-                                <input type="text" id="navbar-login-username" name="username" required="required">
-                                <label for="navbar-login-password">Senha</label>
-                                <input type="password" id="navbar-login-password" name="password" required="required">
-                                <fieldset class="form-inline">
-                                    <input type="hidden" name="remember_me" value="0" />
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="remember_me" value="1" /> Relembrar-me
-                                    </label>
-                                    <button type="submit" class="btn">Entrar</button>
-                                </fieldset>
-                            </form>
-                        </li>
-                        <li><a href="<?php echo $this->url(array(), "recover") ?>">Perdeu seu usuário ou senha?</a></li>
-                        <li><a href="<?php echo $this->url(array(), "join"); ?>">Cadastre-se</a></li>
-                    </ul>
-                </li>
-<?php
-}
-?>
-        </ul>
-      </div>
+<div class="container">
+<div class="row site-topbar-row">
+<div class="span6">
+    <div class="site-logotype" id="site-logotype">
+        <a href="<?php echo $this->url(array(), "index"); ?>">
+            <img src="<?php echo $this->staticVersion("/images/logotype.png"); ?>" width="551" height="65" alt="<?= $this->escape($config["applicationname"]); ?>" /></a>
     </div>
-  </div>
-</div><!-- end of navbar -->
-<?= $this->render("search-form.phtml"); ?>
+</div><!-- end of .span4 -->
+<div class="span6 search-area">
+<?= $this->render("navbar.phtml"); ?>
+</div><!-- end of .span8 -->
+</div><!-- end of .row -->
+</div><!-- end of .container -->
 <?= $this->render("messenger.phtml"); ?>
 <?php echo $this->layout()->content; ?>
 <footer class="footer">

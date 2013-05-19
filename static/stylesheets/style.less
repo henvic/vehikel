@@ -52,7 +52,6 @@ body
 .search-tips {
     position: absolute;
     z-index: 22000;
-    margin-top: 36px;
     list-style: none;
     background: #fafafa;
     background: rgba(250, 250, 250, 0.97);
@@ -71,41 +70,43 @@ body
     }
 }
 
-.search-box {
-    width: 300px;
-    margin: 0 auto;
-    margin-top: -36px;
-    position: absolute;
+.search-area {
+    float: right;
+    margin-top: 15px;
 }
 
-.search-box-fixed {
-    z-index: 1040;
+.search {
+    margin-top: 20px;
+    display: inline;
+    .facets-toggle {
+        @media (max-width : 767px) {
+            display: inline !important;
+        }
+    }
+}
+
+.none {
+    display: none !important;
+}
+
+.site-menu {
+    width: 20px;
 }
 
 .search-text {
     background: url("../images/magnifying-glass-icon.png") #fff no-repeat;
     background-position: 10px 5px;
-    z-index: 11;
-    position: absolute;
     padding-left: 35px !important;
+    width: 150px;
+}
+
+@media (max-width : 767px) {
+    .navbar-login-well {
+        margin: 20px;
+    }
 }
 
 @media (min-width : 767px) {
-    .navbar {
-        .navbar-inner a {
-            &,&:link, &:visited, &:active, &:hover {
-                color: #ffffff;
-            }
-        }
-        .dropdown-menu a {
-            &,&:link, &:visited {
-                color: #4995cd;
-            }
-            &:active, &:hover {
-                color: #ffffff;
-            }
-        }
-    }
     .navbar-login-well {
         padding: 15px;
         margin-bottom: 0;
@@ -125,16 +126,12 @@ body
     position: static;
 }
 
-.site-logotype {
-    text-align: center;
-    border-top: 8px solid @redT;
+.site-topbar-row {
+    border-top: 6px solid @redT;
 }
 
-@media (max-width : 767px) {
-    .site-logotype {
-        display: none;
-        visibility: invisible;
-    }
+.site-logotype {
+    text-align: center;
 }
 
 .post-seller-address {
