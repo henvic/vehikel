@@ -471,6 +471,10 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                         return AppParams.imagesCdn + "/unsafe/" + cropSubPath + picture.picture_id + ".jpg";
                     };
 
+                    if ($facetsToggle.hasClass("hidden")) {
+                        $facetsToggle.removeClass("hidden");
+                    }
+
                     $searchResults.html(compiledResults(
                         {
                             facetsHtml : facetsHtml,
