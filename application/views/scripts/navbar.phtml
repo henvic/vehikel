@@ -11,7 +11,7 @@ if ($registry->isRegistered("signedUserInfo")) {
 if (isset($signedUserInfo)) {
 ?>
     <a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>"
-       class="btn btn-mini btn-inverse">@fiatitalianalima</a>
+       class="btn btn-mini btn-inverse">@<?= $this->escape($signedUserInfo['username']); ?></a>
 <?php
 }
 ?>
