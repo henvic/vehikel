@@ -246,4 +246,20 @@ class Ml_Model_People
 
         return false;
     }
+
+    /**
+     * Deactivate the account
+     * @param $uid
+     * @return bool true in success, false otherwise
+     */
+    public function deactivate($uid)
+    {
+        $result = $this->_dbTable->update($uid, array("email" => null, "active" => false));
+
+        if (! $result) {
+            return false;
+        }
+
+        return true;
+    }
 }

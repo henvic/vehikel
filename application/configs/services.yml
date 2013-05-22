@@ -58,9 +58,6 @@ services:
         class: GearmanClient
         calls:
             - [ addServers ]
-    account:
-        class: Ml_Model_Account
-        arguments: [@people, @gearmanClient]
     newsletter_manager:
         class:     NewsletterManager
         calls:

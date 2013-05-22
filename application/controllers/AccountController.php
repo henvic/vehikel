@@ -162,14 +162,14 @@ class AccountController extends Ml_Controller_Action
         $credential =  $this->_sc->get("credential");
         /** @var $credential \Ml_Model_Credential() */
 
+        $people = $this->_sc->get("people");
+        /** @var $people \Ml_Model_People() */
+
         $logger = $this->_sc->get("logger");
         /** @var $logger \Ml_Logger() */
 
         $session = $this->_sc->get("session");
         /** @var $session \Ml_Model_Session() */
-
-        $account = $this->_sc->get("account");
-        /** @var $account \Ml_Model_Account */
 
         $signedUserInfo = $this->_registry->get("signedUserInfo");
 
@@ -181,7 +181,7 @@ class AccountController extends Ml_Controller_Action
             return;
         }
 
-        $result = $account->deactive($signedUserInfo["id"]);
+        $result = $people->deactivate($signedUserInfo["id"]);
 
         if (! $result) {
             throw new Exception("Failure in deactivating account");
