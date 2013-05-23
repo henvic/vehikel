@@ -161,9 +161,6 @@ install() {
   echo "Downloading oauth-php"
   curl -o oauth-php-175.tar.gz -O http://oauth-php.googlecode.com/files/oauth-php-175.tar.gz
 
-  echo "Downloading predis"
-  curl -o predis-0.7.tar.gz -O https://nodeload.github.com/nrk/predis/tarball/v0.7
-
   echo "Don't install anything directly here. It will be erased with any new install. Use bin/install for the job instead." >> IMPORTANT.md
 
   md5sum -c files.md5
@@ -197,10 +194,6 @@ install() {
 
   tar xzf oauth-php-175.tar.gz
   rm oauth-php-175.tar.gz
-
-  tar xzf predis-0.7.tar.gz
-  mv nrk-predis-6e9db69 predis
-  rm predis-0.7.tar.gz
 
   cd ..
   composer install
