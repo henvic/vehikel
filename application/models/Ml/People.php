@@ -254,12 +254,9 @@ class Ml_Model_People
      */
     public function deactivate($uid)
     {
-        $result = $this->_dbTable->update($uid, array("email" => null, "active" => false));
-
-        if (! $result) {
-            return false;
-        }
-
-        return true;
+        return $this->update($uid, [
+            "email" => null,
+            "active" => false
+        ]);
     }
 }
