@@ -43,7 +43,7 @@ For performance you want to strip the require_once's from the Zend framework cod
 
 
 ### Services
-* [Amazon Web Services S3](http://aws.amazon.com/s3/) - pictures and static documents are stored with Amazon S3
+* [Amazon Web Services S3](http://aws.amazon.com/s3/) - static assets are stored with Amazon S3
 * [Twitter API](https://dev.twitter.com/) - ([create your key](https://dev.twitter.com/apps))
 * [GeoIP by MaxMind](http://www.maxmind.com/) - (get a [free] database, note we use a custom PHP extension rather than theirs)
 * [reCAPTCHA](http://www.google.com/recaptcha) - captcha service
@@ -115,6 +115,20 @@ For production you should use a CDN service (such as S3 + CloudFront) to serve t
 
 If you install as a development environment a link is made inside *public*. It is *public/dev-static-link*.
 It is useful especially for crafting the templates files with XHR restrictions issues (in production the files' contents are placed in .js files to overcome this).
+
+### Image system
+[thumbor](http://github.com/globocom/thumbor) is used to abstract the needed processing of the images uploaded by the users.
+
+As of now, it is assumed to be working with a basic installation (as in, the "safe" signing option is not being used).
+
+In a brand new install the placeholder might be set like this:
+
+```curl -i -H "Content-Type: image/jpeg" -H "Slug: vehicle-image-placeholder.jpg" -XPOST http://localhost:8888/image --data-binary "@vehicle-image-placeholder.jpg"```
+
+On success, the image ID will be returned as a new location and then should be copied to application.ini's ```services.thumbor.placeholder```.
+
+Jcrop is used along with the Thumbor to provide a nice cropping feature to the end-users.
+
 
 ## Scheduled tasks
 Some operations might be expensive. For example: if a user removes his account it is not smart to start a batch delete operation of all his files right away (and let him waiting for it, for instance).
