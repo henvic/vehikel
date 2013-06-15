@@ -122,7 +122,9 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
 
                 if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
                     delete jsonFormSerialized.type;
-                    var escapedUrlRemove = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+                    var escapedUrlRemove = AppParams.webroot +
+                        "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+')
+                    ;
 
                     content += '<span class="label label-inverse">' +
                         underscore.escape(types[terms[termPos].term]) +
@@ -131,7 +133,7 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
                         'data-value=""><i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>' +
                         "</span>";
                 } else {
-                    var escapedUrl = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+                    var escapedUrl = AppParams.webroot + "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
 
                     content += '<a href="' + escapedUrl + '" data-name="type" ' +
                         'data-value="' + underscore.escape(terms[termPos].term) + '">' +
@@ -158,7 +160,7 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
             for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
                 jsonFormSerialized[termName] = underscore.escape(terms[termPos].term);
 
-                var escapedUrl = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+                var escapedUrl = AppParams.webroot + "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
 
                 content += "<li>";
 
@@ -170,7 +172,9 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
 
                 if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
                     delete jsonFormSerialized[termName];
-                    var escapedUrlRemove = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+                    var escapedUrlRemove = AppParams.webroot +
+                        "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+')
+                    ;
 
                     content += '<span class="label label-inverse">' +
                         underscore.escape(value) +
@@ -206,7 +210,7 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
             for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
                 jsonFormSerialized[termName] = "1";
 
-                var escapedUrl = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+                var escapedUrl = AppParams.webroot + "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
 
                 if (terms[termPos].term !== "T") {
                     continue;
@@ -216,7 +220,9 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
 
                 if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
                     delete jsonFormSerialized[termName];
-                    var escapedUrlRemove = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+                    var escapedUrlRemove = AppParams.webroot +
+                        "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+')
+                        ;
 
                     content += '<span class="label label-inverse">' +
                         underscore.escape(value) +
