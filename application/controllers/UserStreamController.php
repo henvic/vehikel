@@ -24,13 +24,8 @@ class UserStreamController extends Ml_Controller_Action
         $posts =  $this->_sc->get("posts");
         /** @var $posts \Ml_Model_Posts() */
 
-        $search =  $this->_sc->get("search");
-        /** @var $search \Ml_Model_Search() */
-
         $picture =  $this->_sc->get("picture");
         /** @var $picture \Ml_Model_Picture() */
-
-        $this->view->assign("facetsQuery", $search->getFacetsQuery());
 
         $page = $this->_request->getUserParam("page");
 

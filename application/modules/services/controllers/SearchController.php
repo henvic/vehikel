@@ -82,19 +82,4 @@ class SearchController extends Ml_Controller_Action
 
         echo "A total of ", $totalJobs, " posts jobs were registered\n";
     }
-
-    public function cacheFacetsAction() {
-        $search =  $this->_sc->get("search");
-        /** @var $search \Ml_Model_Search() */
-
-        $cached = $search->cacheFacetsQuery();
-
-        if ($cached === -1) {
-            error_log("Error retrieving the values of the search facets");
-        } else if (! $cached) {
-            error_log("Error saving the search facets to the cache");
-        } else {
-            echo "Facets saved to the cache\n";
-        }
-    }
 }

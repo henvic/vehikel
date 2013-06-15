@@ -79,30 +79,4 @@ class Ml_Model_Search {
 
         return $postsJobsSynced;
     }
-
-    public function cacheFacetsQuery($timeout = 3600)
-    {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->_config["webhost"] . "/search-engine?facets");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 4);
-        $content = curl_exec($ch);
-        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-        curl_close($ch);
-
-        if ($statusCode === 200 && $contentType === "application/json") {
-            $contentArray = json_decode($content, true);
-            $isSaved = $this->_cache->save($contentArray, "facets_cache", array(), $timeout);
-
-            return $isSaved;
-        } else {
-            return -1;
-        }
-    }
-
-    public function getFacetsQuery()
-    {
-        return $this->_cache->load(("facets_cache"));
-    }
 }
