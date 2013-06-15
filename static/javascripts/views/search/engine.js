@@ -204,7 +204,9 @@ define(
 
                         address += "?" + decodeURIComponent($.param(searchParams)).replace(/%2B/g, '+');
 
-                        window.history.pushState(null, null, address);
+                        if (window.location.pathname + window.location.search !== address) {
+                            window.history.pushState(null, null, address);
+                        }
                     }
 
                     var searchParamsTotal = underscore.size(searchParams);
