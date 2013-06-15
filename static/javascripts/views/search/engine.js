@@ -1,29 +1,17 @@
 /*global define, require */
 /*jshint indent:4 */
 
-define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html', 'text!templates/search/facets.html', 'jquery.maskMoney'],
-    function (AppParams, $, underscore, resultsTemplate, facetsTemplate) {
+define(
+    [
+        "AppParams",
+        "jquery",
+        "underscore",
+        "models/search",
+        "text!templates/search/results.html",
+        "text!templates/search/facets.html"
+    ],
+    function (AppParams, $, underscore, searchModel, resultsTemplate, facetsTemplate) {
         "use strict";
-
-        var parseQueryString = function (queryString) {
-            //from http://www.joezimjs.com/javascript/3-ways-to-parse-a-query-string-in-a-url/
-            var params = {};
-            var queries;
-            var temp;
-            var i;
-            var l;
-
-            // Split into key/value pairs
-            queries = queryString.split("&");
-
-            // Convert the array of strings into an object
-            for (i = 0, l = queries.length; i < l; i = i + 1) {
-                temp = queries[i].split('=');
-                params[temp[0]] = temp[1];
-            }
-
-            return params;
-        };
 
         var $body = $("body");
         var $searchPostsForm = $("#search-posts-form");
@@ -46,206 +34,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         var currentPage;
         var currentSort;
         var pages;
-
-        var maskMoney = function ($element) {
-            $element.maskMoney(
-                {
-                    symbol: 'R$ ',
-                    showSymbol: true,
-                    symbolStay: true,
-                    thousands: '.',
-                    decimal: ',',
-                    defaultZero: false
-                }
-            );
-        };
-
-        var urlParts = (function () {
-            var vars = {};
-            window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-                if (vars[key] !== undefined) {
-                    vars[key].push(value.toLowerCase());
-                } else {
-                    vars[key] = value.toLowerCase();
-                }
-            });
-
-            return vars;
-        } ());
-
-        var pageLink = function (formSerialized, page, pageSort) {
-            if (formSerialized === "") {
-                if (page === 1) {
-                    if (pageSort) {
-                        return "?sort=" + pageSort;
-                    } else {
-                        return "";
-                    }
-                } else {
-                    if (pageSort) {
-                        return "?page=" + page + "&sort=" + pageSort;
-                    } else {
-                        return "?page=" + page;
-                    }
-                }
-            } else {
-                if (page === 1) {
-                    if (pageSort) {
-                        return "?" + formSerialized + "&sort=" + pageSort;
-                    } else {
-                        return "?" + formSerialized;
-                    }
-                } else {
-                    if (pageSort) {
-                        return "?" + formSerialized + "&page=" + page + "&sort=" + pageSort;
-                    } else {
-                        return "?" + formSerialized + "&page=" + page;
-                    }
-                }
-            }
-        };
-
-        var formatMoney = function (money) {
-            var $foo = $('<input type="text">');
-            maskMoney($foo);
-            $foo.val(money);
-            $foo.trigger("mask");
-            return $foo.val();
-        };
-
-        var termListHtmlElementsType = function (terms, formSerialized, currentQueryStringParams) {
-            var jsonFormSerialized = parseQueryString(formSerialized.replace(/\+/g, ' '));
-            var types = {
-                car : "carro",
-                motorcycle : "motocicleta",
-                boat : "embarcação"
-            };
-
-            var content = "";
-
-            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
-                jsonFormSerialized.type = underscore.escape(terms[termPos].term);
-
-                content += "<li>";
-
-                if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
-                    delete jsonFormSerialized.type;
-                    var escapedUrlRemove = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
-
-                    content += '<span class="label label-inverse">' +
-                        underscore.escape(types[terms[termPos].term]) +
-                        " (" + underscore.escape(terms[termPos].count) + ")" +
-                        ' <a href="' + escapedUrlRemove + '" data-name="type" ' +
-                        'data-value=""><i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>' +
-                    "</span>";
-                } else {
-                    var escapedUrl = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
-
-                    content += '<a href="' + escapedUrl + '" data-name="type" ' +
-                        'data-value="' + underscore.escape(terms[termPos].term) + '">' +
-                        underscore.escape(types[terms[termPos].term]) +
-                        "</a> (" + underscore.escape(terms[termPos].count) + ")";
-                }
-
-                content += "</li>";
-            }
-
-            return content;
-        };
-
-        var termListHtmlElements = function (
-            termName,
-            terms,
-            formSerialized,
-            currentQueryStringParams,
-            translationObject
-        ) {
-            var jsonFormSerialized = parseQueryString(formSerialized.replace(/\+/g, ' '));
-            var content = "";
-
-            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
-                jsonFormSerialized[termName] = underscore.escape(terms[termPos].term);
-
-                var escapedUrl = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
-
-                content += "<li>";
-
-                var value = terms[termPos].term;
-
-                if (translationObject !== undefined && translationObject[value] !== undefined) {
-                    value = translationObject[value];
-                }
-
-                if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
-                    delete jsonFormSerialized[termName];
-                    var escapedUrlRemove = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
-
-                    content += '<span class="label label-inverse">' +
-                        underscore.escape(value) +
-                        " (" + underscore.escape(terms[termPos].count) + ')' +
-                        ' <a href="' + escapedUrlRemove + '" data-name="' +
-                        underscore.escape(termName) + '" ' +
-                        'data-value=""><i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>' +
-                        '</span>';
-                } else {
-                    content += '<a href="' + escapedUrl + '" data-name="' +
-                        underscore.escape(termName) + '" ' +
-                        'data-value="' + underscore.escape(terms[termPos].term) + '">' +
-                        underscore.escape(value) +
-                        "</a> (" + underscore.escape(terms[termPos].count) + ")";
-                }
-
-                content += "</li>";
-            }
-
-            return content;
-        };
-
-        var termListHtmlElementsBool = function (
-            termName,
-            terms,
-            formSerialized,
-            currentQueryStringParams,
-            value
-            ) {
-            var jsonFormSerialized = parseQueryString(formSerialized.replace(/\+/g, ' '));
-            var content = "";
-
-            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
-                jsonFormSerialized[termName] = "1";
-
-                var escapedUrl = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
-
-                if (terms[termPos].term !== "T") {
-                    continue;
-                }
-
-                content += "<li>";
-
-                if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
-                    delete jsonFormSerialized[termName];
-                    var escapedUrlRemove = "?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
-
-                    content += '<span class="label label-inverse">' +
-                        underscore.escape(value) +
-                        " (" + underscore.escape(terms[termPos].count) + ')' +
-                        ' <a href="' + escapedUrlRemove + '" data-name="' +
-                        underscore.escape(termName) + '" ' +
-                        'data-value=""><i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>' +
-                        '</span>';
-                } else {
-                    content += '<a href="' + escapedUrl + '" data-name="' +
-                        underscore.escape(termName) + '" ' +
-                        'data-value="1">' +
-                        underscore.escape(value) +
-                        "</a> (" + underscore.escape(terms[termPos].count) + ")";
-                }
-
-                content += "</li>";
-            }
-
-            return content;
-        };
 
         $(document.documentElement).on("keyup", function (e) {
             if (e.target.nodeName.toLowerCase() !== "body") {
@@ -326,18 +114,6 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
             $('[name="type"][value=""]', $searchPostsForm).prop("checked", true);
         };
 
-        var transmissionTranslation = {
-            "manual" : "manual",
-            "automatic" : "automático",
-            "other" : "outra"
-        };
-
-        var tractionTranslation = {
-            "front" : "frontal",
-            "rear" : "traseira",
-            "4x4" : "4x4"
-        };
-
         var search = function (data) {
             if (data === undefined) {
                 data = {};
@@ -405,7 +181,7 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                     currentPage = page;
                     currentSort = sort;
 
-                    var searchParams = parseQueryString(formSerialized);
+                    var searchParams = searchModel.parseQueryString(formSerialized);
 
                     if (currentPage !== 1) {
                         searchParams.page = currentPage;
@@ -435,17 +211,17 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
 
                     var facetsHtml = compiledFacets(
                         {
-                            pageLink : pageLink,
-                            formatMoney : formatMoney,
-                            termListHtmlElements : termListHtmlElements,
-                            termListHtmlElementsType : termListHtmlElementsType,
-                            termListHtmlElementsBool : termListHtmlElementsBool,
+                            pageLink : searchModel.pageLink,
+                            formatMoney : searchModel.formatMoney,
+                            termListHtmlElements : searchModel.termListHtmlElements,
+                            termListHtmlElementsType : searchModel.termListHtmlElementsType,
+                            termListHtmlElementsBool : searchModel.termListHtmlElementsBool,
                             formSerialized : formSerialized,
-                            transmissionTranslation : transmissionTranslation,
-                            tractionTranslation : tractionTranslation,
+                            transmissionTranslation : searchModel.transmissionTranslation,
+                            tractionTranslation : searchModel.tractionTranslation,
                             facets : result.facets,
                             searchParamsTotal : searchParamsTotal,
-                            currentQueryStringParams : parseQueryString(window.location.search.substr(1).replace(/\+/g, ' '))
+                            currentQueryStringParams : searchModel.parseQueryString(window.location.search.substr(1).replace(/\+/g, ' '))
                         }
                     );
 
@@ -478,8 +254,8 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                     $searchResults.html(compiledResults(
                         {
                             facetsHtml : facetsHtml,
-                            pageLink : pageLink,
-                            formatMoney : formatMoney,
+                            pageLink : searchModel.pageLink,
+                            formatMoney : searchModel.formatMoney,
                             AppParams : AppParams,
                             getFirstPictureAddress : getFirstPictureAddress,
                             result : result,
@@ -499,13 +275,13 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
                     var $priceMinInput = $(".price-min-input", $searchResults);
                     var $priceMaxInput = $(".price-max-input", $searchResults);
 
-                    $priceMinInput.val(formatMoney($searchPriceMin.val()));
-                    $priceMaxInput.val(formatMoney($searchPriceMax.val()));
+                    $priceMinInput.val(searchModel.formatMoney($searchPriceMin.val()));
+                    $priceMaxInput.val(searchModel.formatMoney($searchPriceMax.val()));
 
                     $priceInputs.tooltip();
 
-                    maskMoney($priceMinInput);
-                    maskMoney($priceMaxInput);
+                    searchModel.maskMoney($priceMinInput);
+                    searchModel.maskMoney($priceMaxInput);
 
                     $priceInputs.on("keyup", function (e) {
                         if (e.keyCode === 13) {
@@ -521,16 +297,16 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         };
 
         var changeSearchTermByUrl = function ($termObject, name) {
-            if (urlParts[name] !== undefined) {
-                $termObject.val(decodeURIComponent(urlParts[name].replace(/\+/gi, " ")));
+            if (searchModel.urlParts[name] !== undefined) {
+                $termObject.val(decodeURIComponent(searchModel.urlParts[name].replace(/\+/gi, " ")));
             }
         };
 
         changeSearchTermByUrl($searchPriceMin, "price-min");
         changeSearchTermByUrl($searchPriceMax, "price-max");
 
-        if (urlParts.type !== undefined) {
-            $searchTypesNames.filter('[value="' + underscore.escape(urlParts.type) + '"]').prop("checked", true);
+        if (searchModel.urlParts.type !== undefined) {
+            $searchTypesNames.filter('[value="' + underscore.escape(searchModel.urlParts.type) + '"]').prop("checked", true);
         }
 
         changeSearchTermByUrl($searchMake, "make");
@@ -546,9 +322,9 @@ define(['AppParams', 'jquery', 'underscore', 'text!templates/search/results.html
         // if the query is defined on the page load, search by it
         // otherwise, if the search is accessed without a query and not on the index page,
         // focus it, and if the page is in the index page, load the index js file
-        if (urlParts.q !== undefined) {
-            $searchText.val(decodeURIComponent(urlParts.q.replace(/\+/gi, " ")));
-            search({page: urlParts.page || 1, sort: urlParts.sort});
+        if (searchModel.urlParts.q !== undefined) {
+            $searchText.val(decodeURIComponent(searchModel.urlParts.q.replace(/\+/gi, " ")));
+            search({page: searchModel.urlParts.page || 1, sort: searchModel.urlParts.sort});
         } else if (window.location.pathname === "/") {
             require(["views/index/index"], function () {
             });
