@@ -158,6 +158,10 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
             var content = "";
 
             for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
+                if (! terms[termPos].term) {
+                    continue;
+                }
+
                 jsonFormSerialized[termName] = underscore.escape(terms[termPos].term);
 
                 var escapedUrl = AppParams.webroot + "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
