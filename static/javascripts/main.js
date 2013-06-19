@@ -69,6 +69,11 @@ var config = (function () {
 
     require(["jquery", "twitter.bootstrap", "jquery.fn.autoResize"],
         function ($) {
+            if (window.location.pathname !== AppParams.webroot + "/search") {
+                require(["plugins/facets"], function () {
+                });
+            }
+
             require(["common", "search"], function () {
                 if (typeof AppParams.route !== 'undefined') {
                     require(["views/" + AppParams.route], function () {
