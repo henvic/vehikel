@@ -45,6 +45,40 @@ define(["AppParams", "jquery", "underscore", "models/search", "text!templates/se
             );
 
             $asideSimilarOffers.html(facetsHtml);
+
+            var $priceInputs = $(".price-inputs", $asideSimilarOffers);
+            var $priceMinInput = $(".price-min-input", $asideSimilarOffers);
+            var $priceMaxInput = $(".price-max-input", $asideSimilarOffers);
+
+            $priceInputs.on("keyup", function (e) {
+                if (e.keyCode === 13) {
+                    var priceMin = $priceMinInput.val().replace(/[^0-9]/g, '');
+                    var priceMax = $priceMaxInput.val().replace(/[^0-9]/g, '');
+
+                    var linkParamsArray = [];
+
+                    linkParamsArray.push("q=*");
+
+                    if (AppParams.postUsername !== undefined) {
+                        linkParamsArray.push("u=" + encodeURIComponent(AppParams.postUsername));
+                    }
+
+                    if (priceMin) {
+                        linkParamsArray.push("price-min=" + encodeURIComponent(priceMin));
+                    }
+
+                    if (priceMax) {
+                        linkParamsArray.push("price-max=" + encodeURIComponent(priceMax));
+                    }
+
+                    window.location = AppParams.webroot + "/search?" + linkParamsArray.join("&");
+                }
+            });
+
+            $priceInputs.tooltip();
+
+            searchModel.maskMoney($priceMinInput);
+            searchModel.maskMoney($priceMaxInput);
         };
 
         xhr.done(function (response) {
