@@ -1,4 +1,4 @@
-/*global define, window */
+/*global define */
 /*jshint indent:4 */
 
 define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
@@ -38,19 +38,6 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
 
             return params;
         };
-
-        exports.urlParts = (function () {
-            var vars = {};
-            window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-                if (vars[key] !== undefined) {
-                    vars[key].push(value.toLowerCase());
-                } else {
-                    vars[key] = value.toLowerCase();
-                }
-            });
-
-            return vars;
-        } ());
 
         exports.pageLink = function (formSerialized, page, pageSort) {
             if (formSerialized === "") {
