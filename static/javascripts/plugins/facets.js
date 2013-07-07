@@ -27,7 +27,7 @@ define(["AppParams", "jquery", "underscore", "models/search", "text!templates/se
             cache: true
         });
 
-        xhr.done(function (response) {
+        var loadFacets = function (facets) {
             var compiledFacets = underscore.template(facetsTemplate);
 
             var facetsHtml = compiledFacets(
@@ -38,13 +38,17 @@ define(["AppParams", "jquery", "underscore", "models/search", "text!templates/se
                     formSerialized : formSerialized,
                     transmissionTranslation : searchModel.transmissionTranslation,
                     tractionTranslation : searchModel.tractionTranslation,
-                    facets : response.facets,
+                    facets : facets,
                     searchParamsTotal : 0,
                     currentQueryStringParams : searchModel.parseQueryString(formSerialized)
                 }
             );
 
             $asideSimilarOffers.html(facetsHtml);
+        };
+
+        xhr.done(function (response) {
+            loadFacets(response.facets);
         });
     }
 );
