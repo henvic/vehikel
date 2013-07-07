@@ -347,8 +347,10 @@ define(
 
             changeSearchTermsByUrlParams(urlParams);
 
-            $searchText.val(decodeURIComponent(urlParams.q.replace(/\+/gi, " ")));
-            search({page: urlParams.page || 1, sort: urlParams.sort});
+            if (urlParams.q !== undefined) {
+                $searchText.val(decodeURIComponent(urlParams.q.replace(/\+/gi, " ")));
+                search({page: urlParams.page || 1, sort: urlParams.sort});
+            }
         };
 
         $searchText.on("change", function (e) {
