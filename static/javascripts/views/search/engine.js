@@ -342,7 +342,7 @@ define(
             $searchText.focus();
         }
 
-        window.onpopstate = function(event) {
+        window.onpopstate = function (event) {
             var urlParams = searchModel.parseQueryString(window.location.search.substr(1).replace(/\+/g, ' '));
 
             changeSearchTermsByUrlParams(urlParams);
