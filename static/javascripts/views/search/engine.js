@@ -298,41 +298,58 @@ define(
             });
         };
 
-        var changeSearchTermByUrl = function ($termObject, name) {
-            if (searchModel.urlParts[name] !== undefined) {
-                $termObject.val(decodeURIComponent(searchModel.urlParts[name].replace(/\+/gi, " ")));
+        var changeSearchTermByUrl = function (urlParams, $termObject, name) {
+            if (urlParams[name] !== undefined) {
+                $termObject.val(decodeURIComponent(urlParams[name].replace(/\+/gi, " ")));
+            } else {
+                $termObject.val("");
             }
         };
 
-        changeSearchTermByUrl($searchPriceMin, "price-min");
-        changeSearchTermByUrl($searchPriceMax, "price-max");
+        var changeSearchTermsByUrlParams = function (urlParams) {
+            changeSearchTermByUrl(urlParams, $searchPriceMin, "price-min");
+            changeSearchTermByUrl(urlParams, $searchPriceMax, "price-max");
 
-        if (searchModel.urlParts.type !== undefined) {
-            $searchTypesNames.filter('[value="' + underscore.escape(searchModel.urlParts.type) + '"]').prop("checked", true);
-        }
+            if (urlParams.type !== undefined) {
+                $searchTypesNames.filter('[value="' + underscore.escape(urlParams.type) + '"]').prop("checked", true);
+            }
 
-        changeSearchTermByUrl($searchMake, "make");
-        changeSearchTermByUrl($searchModel, "model");
-        changeSearchTermByUrl($searchYear, "year");
-        changeSearchTermByUrl($searchWhere, "where");
-        changeSearchTermByUrl($searchUser, "u");
-        changeSearchTermByUrl($searchTransmission, "transmission");
-        changeSearchTermByUrl($searchTraction, "traction");
-        changeSearchTermByUrl($searchHandicapped, "handicapped");
-        changeSearchTermByUrl($searchArmor, "armor");
+            changeSearchTermByUrl(urlParams, $searchMake, "make");
+            changeSearchTermByUrl(urlParams, $searchModel, "model");
+            changeSearchTermByUrl(urlParams, $searchYear, "year");
+            changeSearchTermByUrl(urlParams, $searchWhere, "where");
+            changeSearchTermByUrl(urlParams, $searchUser, "u");
+            changeSearchTermByUrl(urlParams, $searchTransmission, "transmission");
+            changeSearchTermByUrl(urlParams, $searchTraction, "traction");
+            changeSearchTermByUrl(urlParams, $searchHandicapped, "handicapped");
+            changeSearchTermByUrl(urlParams, $searchArmor, "armor");
+        };
+
+        var urlParams = searchModel.parseQueryString(window.location.search.substr(1).replace(/\+/g, ' '));
+
+        changeSearchTermsByUrlParams(urlParams);
 
         // if the query is defined on the page load, search by it
         // otherwise, if the search is accessed without a query and not on the index page,
         // focus it, and if the page is in the index page, load the index js file
-        if (searchModel.urlParts.q !== undefined) {
-            $searchText.val(decodeURIComponent(searchModel.urlParts.q.replace(/\+/gi, " ")));
-            search({page: searchModel.urlParts.page || 1, sort: searchModel.urlParts.sort});
+        if (urlParams.q !== undefined) {
+            $searchText.val(decodeURIComponent(urlParams.q.replace(/\+/gi, " ")));
+            search({page: urlParams.page || 1, sort: urlParams.sort});
         } else if (window.location.pathname === "/") {
             require(["views/index/index"], function () {
             });
         } else {
             $searchText.focus();
         }
+
+        window.onpopstate = function(event) {
+            var urlParams = searchModel.parseQueryString(window.location.search.substr(1).replace(/\+/g, ' '));
+
+            changeSearchTermsByUrlParams(urlParams);
+
+            $searchText.val(decodeURIComponent(urlParams.q.replace(/\+/gi, " ")));
+            search({page: urlParams.page || 1, sort: urlParams.sort});
+        };
 
         $searchText.on("change", function (e) {
             setTimeout(function () {
