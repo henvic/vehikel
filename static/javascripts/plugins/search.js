@@ -108,10 +108,16 @@ define(["AppParams", "jquery", "underscore"],
                     lastAutoCompleteXhr.abort();
                 }
 
+                var requestData = {
+                    "q" : q
+                };
+
+                if (AppParams.postUsername) {
+                    requestData.u = AppParams.postUsername;
+                }
+
                 lastAutoCompleteXhr = $.ajax({
-                    data: {
-                        "q" : q
-                    },
+                    data: requestData,
                     url: AppParams.webroot + "/search-engine?suggestion=true",
                     cache: true,
                     type: "GET",
