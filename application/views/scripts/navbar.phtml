@@ -4,6 +4,12 @@ $registry = Zend_Registry::getInstance();
 if ($registry->isRegistered("signedUserInfo")) {
     $signedUserInfo = $registry->get("signedUserInfo");
 }
+
+$persistSearchUsername = (string) filter_input(INPUT_GET, "u", FILTER_UNSAFE_RAW);
+
+if ($this->userInfo) {
+    $persistSearchUsername = ($this->userInfo["username"]);
+}
 ?>
 
 <div class="btn-group">
@@ -68,6 +74,16 @@ if (isset($signedUserInfo)) {
 <form method="get" action="/search" id="search-posts-form" class="search">
     <label for="search-text" class="none">Busca</label>
     <input id="search-text" type="text" placeholder="O que você procura?" maxlength="80" class="search-text search-query" name="q" autocomplete="off" />
+<?php
+if ($persistSearchUsername) {
+?>
+    <div class="search-persist-username-box">
+    <label class="radio inline"><input type="radio" name="persist-username" value="" checked>todos usuários</label>
+    <label class="radio inline"><input type="radio" name="persist-username" value="<?= $this->escape($persistSearchUsername); ?>"><?= $this->escape($persistSearchUsername); ?></label>
+    </div>
+<?php
+}
+?>
     <button id="facets-toggle" class="facets-toggle btn visible-phone hidden" data-toggle="button"><i class="icon-filter"></i><span class="hidden"> Filtros</span></button>
     <div class="hidden">
         <input type="text" id="search-price-max" placeholder="R$ máximo" maxlength="16" class="span2" name="price-max" />
