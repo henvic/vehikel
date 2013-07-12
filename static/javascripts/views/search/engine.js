@@ -112,6 +112,7 @@ define(
             });
 
             $('[name="type"][value=""]', $searchPostsForm).prop("checked", true);
+            $('[name="persist-username"][value=""]', $searchPostsForm).prop("checked", true);
         };
 
         var search = function (data) {
