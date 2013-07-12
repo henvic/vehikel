@@ -116,6 +116,12 @@ define(
         };
 
         var search = function (data) {
+            var persistUsernameValue = $("[name=persist-username]:checked").val();
+
+            if (persistUsernameValue) {
+                $searchUser.val(persistUsernameValue);
+            }
+
             if (data === undefined) {
                 data = {};
             }
