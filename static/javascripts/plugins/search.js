@@ -168,4 +168,5 @@ define(["AppParams", "jquery", "underscore"],
         });
 
         return function () {};
-    });
+    }
+);
