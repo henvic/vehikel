@@ -112,8 +112,10 @@ define(["AppParams", "jquery", "underscore"],
                     "q" : q
                 };
 
-                if (AppParams.postUsername) {
-                    requestData.u = AppParams.postUsername;
+                var persistUsernameValue = $("[name=persist-username]:checked").val();
+
+                if (persistUsernameValue) {
+                    requestData.u = persistUsernameValue;
                 }
 
                 lastAutoCompleteXhr = $.ajax({
