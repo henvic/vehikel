@@ -26,8 +26,17 @@ define(["AppParams", "jquery", "underscore"],
 
         var loadSearch = function () {
             var q = $searchText.val();
+
+            var url = AppParams.webroot + "/search?q=" + encodeURIComponent(q);
+
+            var persistUsernameValue = $("[name=persist-username]:checked").val();
+
+            if (persistUsernameValue) {
+                url += "&u=" + encodeURIComponent(persistUsernameValue);
+            }
+
             if (AppParams.route !== "search/engine") {
-                window.location = AppParams.webroot + "/search?q=" + encodeURIComponent(q);
+                window.location = url;
             } else {
                 hideSearchTips();
             }
