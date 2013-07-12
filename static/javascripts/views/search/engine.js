@@ -200,6 +200,8 @@ define(
                         searchParams["price-max"] = decodeURIComponent(searchParams["price-max"]).replace(/[^0-9]/g, '');
                     }
 
+                    delete(searchParams["persist-username"]);
+
                     if (window.history && window.history.pushState) {
                         var address = AppParams.webroot + "/search";
 
