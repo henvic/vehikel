@@ -38,6 +38,9 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
                 params[temp[0]] = temp[1];
             }
 
+            //@todo improve this: the filter shouldn't be here
+            delete(params["persist-username"]);
+
             return params;
         };
 
