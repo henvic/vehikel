@@ -384,12 +384,6 @@ define(
             }
         });
 
-        $searchPostsForm.on("submit", function (e) {
-            e.preventDefault();
-            removeFilters();
-            search();
-        });
-
         $searchResults.on("click", ".remove-filters", function (e) {
             removeFilters();
             search();
