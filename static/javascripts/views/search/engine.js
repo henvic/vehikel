@@ -232,7 +232,7 @@ define(
                             tractionTranslation : searchModel.tractionTranslation,
                             facets : result.facets,
                             searchParamsTotal : searchParamsTotal,
-                            currentQueryStringParams : searchModel.parseQueryString(window.location.search.substr(1).replace(/\+/g, ' '))
+                            currentQueryStringParams : searchModel.parseLocationQueryString()
                         }
                     );
 
@@ -334,7 +334,7 @@ define(
             changeSearchTermByUrl(urlParams, $searchArmor, "armor");
         };
 
-        var urlParams = searchModel.parseQueryString(window.location.search.substr(1).replace(/\+/g, ' '));
+        var urlParams = searchModel.parseLocationQueryString();
 
         changeSearchTermsByUrlParams(urlParams);
 
@@ -352,7 +352,7 @@ define(
         }
 
         window.onpopstate = function (event) {
-            var urlParams = searchModel.parseQueryString(window.location.search.substr(1).replace(/\+/g, ' '));
+            var urlParams = searchModel.parseLocationQueryString();
 
             changeSearchTermsByUrlParams(urlParams);
 

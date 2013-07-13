@@ -1,4 +1,4 @@
-/*global define */
+/*global define, window */
 /*jshint indent:4 */
 
 define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
@@ -27,6 +27,8 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
             var i;
             var l;
 
+            queryString = queryString.replace(/\+/g, ' ');
+
             // Split into key/value pairs
             queries = queryString.split("&");
 
@@ -37,6 +39,10 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
             }
 
             return params;
+        };
+
+        exports.parseLocationQueryString = function () {
+            return exports.parseQueryString(window.location.search.substr(1));
         };
 
         exports.pageLink = function (formSerialized, page, pageSort) {
@@ -93,7 +99,7 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
         };
 
         exports.termListHtmlElementsType = function (terms, formSerialized, currentQueryStringParams) {
-            var jsonFormSerialized = exports.parseQueryString(formSerialized.replace(/\+/g, ' '));
+            var jsonFormSerialized = exports.parseQueryString(formSerialized);
             var types = {
                 car : "carro",
                 motorcycle : "motocicleta",
@@ -141,7 +147,7 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
             currentQueryStringParams,
             translationObject
             ) {
-            var jsonFormSerialized = exports.parseQueryString(formSerialized.replace(/\+/g, ' '));
+            var jsonFormSerialized = exports.parseQueryString(formSerialized);
             var content = "";
 
             for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
@@ -195,7 +201,7 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
             currentQueryStringParams,
             value
             ) {
-            var jsonFormSerialized = exports.parseQueryString(formSerialized.replace(/\+/g, ' '));
+            var jsonFormSerialized = exports.parseQueryString(formSerialized);
             var content = "";
 
             for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
