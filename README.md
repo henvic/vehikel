@@ -63,7 +63,7 @@ cd bin
 
 
 This will take care of setting application paths, downloading and setting up the dependencies.
-It will write a *application/configs/Environment.php.dist similar to *[application/configs/Environment.php](https://github.com/henvic/vehikel/blob/master/application/configs/Environment.php)*, with the choosen timezone and directory and file paths.
+It will write a `application/configs/Environment.php.dist` similar to [application/configs/Environment.php](https://github.com/henvic/vehikel/blob/master/application/configs/Environment.php), with the choosen timezone and directory and file paths.
 
 If a extension is missing you will know it.
 You can get most of them with [PECL](http://pecl.php.net/) or apt-get on a Debian-based system such as Ubuntu.
