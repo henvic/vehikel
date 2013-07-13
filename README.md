@@ -108,13 +108,15 @@ For performance and to avoid the trouble of dealing with .htaccess I recommend n
 
 Note /index.php is hard-coded to return a 404 Not Found to make sure you do the proper thing and to avoid duplicates.
 
+#### Search engine
+Set the entry-point */search-engine* to the search service with a reverse proxy.
+
 #### Static assets
-You have static assets (on the *statics* directory) such as images, JavaScripts and CSS which your users need to access.
+Set the static/ directory to the entry-point */static/**.
 
-For production you should use a CDN service (such as S3 + CloudFront) to serve them.
+**Important**: unless the JS template files are processed to be native JS code, it has to be this way otherwise XHR restrictions will affect the system as documented on the [XHR restrictions section of the text plugin](https://github.com/requirejs/text).
 
-If you install as a development environment a link is made inside *public*. It is *public/dev-static-link*.
-It is useful especially for crafting the templates files with XHR restrictions issues (in production the files' contents are placed in .js files to overcome this).
+For production you should use a CDN service (such as S3 + CloudFront) to serve them, after processing them to create .js files.
 
 ### Image system
 [thumbor](http://github.com/globocom/thumbor) is used to abstract the needed processing of the images uploaded by the users.

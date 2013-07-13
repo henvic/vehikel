@@ -1,6 +1,4 @@
 # based on https://github.com/github/gitignore
-# development
-public/dev-static-link
 # nodejs
 node_modules
 pids
