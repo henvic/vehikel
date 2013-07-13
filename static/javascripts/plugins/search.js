@@ -5,6 +5,14 @@ define(["AppParams", "jquery", "underscore"],
     function (AppParams, $, underscore) {
         "use strict";
 
+        var $searchPostsForm = ("#search-posts-form");
+
+        //change the u input field w/ the username of the given user
+        //on the persist-username checkbox, when the checkbox selection is changed
+        $("[name=persist-username]", $searchPostsForm).on("change", function (e) {
+            $("[name=u]", $searchPostsForm).val(this.value);
+        });
+
         //the #search-results is used both on the search page as well as on the user posts pages
         var $searchResults = $("#search-results");
 
