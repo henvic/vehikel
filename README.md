@@ -12,6 +12,9 @@ Unless otherwise referenced to, the versions for the requirements are given by t
 * [PHP](http://php.net/) >= 5.4.x
 * [MySQL](http://www.mysql.com/) >= 5.1
 * [memcached](http://memcached.org/)
+* [Gearman Job Server](http://gearman.org/)
+* [Node.js](http://nodejs.org/) >= 0.10.x
+* [ElaticSearch](http://www.elasticsearch.org/) >= 0.90.x
 
 Please note that the default memcached is insecure by design because it's freely accessible from everywhere. You must restrict access to it yourself.
 
@@ -111,6 +114,12 @@ Note /index.php is hard-coded to return a 404 Not Found to make sure you do the 
 #### Search engine
 Set the entry-point */search-engine* to the search service with a reverse proxy.
 
+The search service is composed of the following two node.js applications, plus ElasticSearch:
+
+`application/search/worker` - worker to add content from the database to the ElasticSearch search service
+
+`application/search/server` - front-end server which serves as a simple "smart proxy" to ElasticSearch, limiting what queries can be made and simplifying them
+
 #### Static assets
 Set the static/ directory to the entry-point */static/**.
 
@@ -135,6 +144,8 @@ Jcrop is used along with the Thumbor to provide a nice cropping feature to the e
 ## Scheduled tasks
 Some operations might be expensive. For example: if a user removes his account it is not smart to start a batch delete operation of all his files right away (and let him waiting for it, for instance).
 A way to solve this and other similar issues is to make use of a scheduled task to run from time to time and do this heavy work.
+
+Gearman is being used to serve tasks.
 
 ## Push, open bugs, etc.
 Feel free to push code to this repository. Anything you want, go to the [issue tracker](https://github.com/henvic/vehikel/issues/).
