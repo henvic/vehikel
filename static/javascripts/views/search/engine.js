@@ -206,16 +206,16 @@ define(
                         searchParams["price-max"] = decodeURIComponent(searchParams["price-max"]).replace(/[^0-9]/g, '');
                     }
 
-                    delete(searchParams["persist-username"]);
+                    var oldSearchParams = searchModel.parseLocationQueryString(window);
 
-                    if (window.history && window.history.pushState) {
+                    var searchParamsEqual = underscore.isEqual(searchParams, oldSearchParams);
+
+                    if (window.history && window.history.pushState && ! searchParamsEqual) {
                         var address = AppParams.webroot + "/search";
 
                         address += "?" + decodeURIComponent($.param(searchParams)).replace(/%2B/g, '+');
 
-                        if (window.location.pathname + window.location.search !== address) {
-                            window.history.pushState(null, null, address);
-                        }
+                        window.history.pushState(null, null, address);
                     }
 
                     var searchParamsTotal = underscore.size(searchParams);
