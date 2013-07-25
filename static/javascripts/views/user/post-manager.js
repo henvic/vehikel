@@ -129,7 +129,7 @@ define([
                     encodeURIComponent(AppParams.globalAuthHash)
                 ;
 
-            // @todo add success and failure handling
+            // @todo add success and failure handling, cancel if another is called
             var xhr = $.ajax({
                 url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
                 type: 'POST',
@@ -153,13 +153,19 @@ define([
             updatePostItem(e.target.name, (isChecked) ? 1 : 0);
         });
 
+        var lastUpdatePostEquipmentsCall;
+
         var updatePostEquipments = function () {
+            if (lastUpdatePostEquipmentsCall) {
+                lastUpdatePostEquipmentsCall.abort();
+            }
+
             var equipment = $('.post-equipments-list [name="equipment[]"]', $postProductMainInfo).serialize();
 
             var data = equipment + "&hash=" + encodeURIComponent(AppParams.globalAuthHash);
 
             // @todo add success and failure handling
-            $.ajax({
+            lastUpdatePostEquipmentsCall = $.ajax({
                 url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
                 type: 'POST',
                 dataType: 'json',
