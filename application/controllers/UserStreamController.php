@@ -71,7 +71,7 @@ class UserStreamController extends Ml_Controller_Action
 
         $this->view->addJsParam("status", $status);
 
-        $paginator = $posts->getUserStreamPage($userInfo['id'], 10, $page, $type, $make, $model, $status);
+        $paginator = $posts->getUserStreamPage($userInfo['id'], 12, $page, $type, $make, $model, $status);
 
         $postsPictures = [];
 
