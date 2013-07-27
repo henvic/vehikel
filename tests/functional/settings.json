@@ -1,0 +1,7 @@
+{
+    "host": "http://vehikel.testbed.trazqueeupago.com",
+    "credentials": {
+        "username": "username",
+        "password": "password"
+    }
+}
