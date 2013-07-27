@@ -15,6 +15,8 @@ Unless otherwise referenced to, the versions for the requirements are given by t
 * [Gearman Job Server](http://gearman.org/)
 * [Node.js](http://nodejs.org/) >= 0.10.x
 * [ElaticSearch](http://www.elasticsearch.org/) >= 0.90.x
+* [CasperJS](http://casperjs.org/) >= 1.1-beta1
+* [PhantomJS](http://phantomjs.org/) >= 1.9.1
 
 Please note that the default memcached is insecure by design because it's freely accessible from everywhere. You must restrict access to it yourself.
 
@@ -139,6 +141,14 @@ In a brand new install the placeholder might be set like this:
 On success, the image ID will be returned as a new location and then should be copied to application.ini's ```services.thumbor.placeholder```.
 
 Jcrop is used along with the Thumbor to provide a nice cropping feature to the end-users.
+
+
+## Functional testing
+Use `casperjs test add.js` to create random products pages out of thin air.
+
+Add a `settings.json.dist` file to use custom configuration, instead of modifying the original on the `tests/functional` path.
+
+There is a `tests/functional/providers` submodule with data providers for the functional tests.
 
 
 ## Scheduled tasks
