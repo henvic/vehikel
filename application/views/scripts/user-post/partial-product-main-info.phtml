@@ -29,37 +29,45 @@ if ($this->editable) {
 <dt><?= $this->escape($translatePosts->translate("year")); ?>:</dt>
 <dd><?= $this->escape($post["model_year"]); ?></dd>
 <dt>km:</dt>
+<dd>
 <?php
 if ($post["km"] != "") {
 ?>
-<dd><?= $this->escape(number_format($post["km"], 0, ".", ".")); ?></dd>
+<?= $this->escape(number_format($post["km"], 0, ".", ".")); ?>
 <?php
 }
 ?>
+&nbsp;</dd>
 <dt><?= $this->escape($translatePosts->translate("fuel")); ?>:</dt>
+<dd>
 <?php
 if ($post["fuel"]) {
 ?>
-<dd><?= $this->escape($translatePosts->translate($post["fuel"] . "_lowercase")); ?></dd>
+<?= $this->escape($translatePosts->translate($post["fuel"] . "_lowercase")); ?>
 <?php
 }
 ?>
+&nbsp;</dd>
 <dt><?= $this->escape($translatePosts->translate("transmission")); ?>:</dt>
+<dd>
 <?php
 if ($post["transmission"]) {
 ?>
-<dd><?= $this->escape($translatePosts->translate($post["transmission"] . "_lowercase")); ?></dd>
+<?= $this->escape($translatePosts->translate($post["transmission"] . "_lowercase")); ?>
 <?php
 }
 ?>
+&nbsp;</dd>
 <dt><?= $this->escape($translatePosts->translate("traction")); ?>:</dt>
+<dd>
 <?php
 if ($post["traction"]) {
 ?>
-<dd><?= $translatePosts->translate($post["traction"]); ?></dd>
+<?= $translatePosts->translate($post["traction"]); ?>
 <?php
 }
 ?>
+&nbsp;</dd>
 </dl>
 </div><!-- end of #post-product-info -->
 <?php
@@ -116,7 +124,7 @@ $postForm->getElement("traction")
 ?>
 <div class="post-product-info-others" id="post-product-info-others">
 <?php
-if ($post["armor"] || $editable) {
+if ($post["type"] == "car" && ($post["armor"] || $editable)) {
 ?>
 <?= ($editable) ? '<label class="label-checkbox-armor label-checkbox">' : "" ?>
 <span class="label label-important<?= ($post["armor"]) ? ' has' : ' has-not' ?>">
