@@ -69,23 +69,6 @@ class UserPostManagerController extends Ml_Controller_Action
 
         $type = $post["type"];
 
-        if (isset($validatePost["type"])) {
-            switch ($validatePost["type"]) {
-                case "car" :
-                    $type = "car";
-                    break;
-                case "motorcycle" :
-                    $type = "motorcycle";
-                    break;
-                case "boat" :
-                    $type = "boat";
-                    break;
-                default:
-                    $this->getResponse()->setHttpResponseCode(404);
-                    $this->_helper->json(["errors" => array("type" => "invalid")]);
-            }
-        }
-
         $availableEquipment = $posts->getAvailableEquipment($type);
 
         $this->view->assign("availableEquipment", $availableEquipment);
@@ -119,12 +102,6 @@ class UserPostManagerController extends Ml_Controller_Action
                 }
             }
 
-            // clear the traction, transmission, and equipment on type change
-            if ($type != $post["type"]) {
-                $validatePost["traction"] = "";
-                $validatePost["transmission"] = "";
-                $validatePost["equipment"] = [];
-            }
 
             if ($form->isValid($validatePost)) {
                 $values = $form->getValues();
