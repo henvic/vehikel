@@ -87,34 +87,19 @@ class UserPostManagerController extends Ml_Controller_Action
         $this->view->assign("postForm", $form);
 
         if ($this->getRequest()->isPost()) {
-            $formKeys = ["make", "model", "name", "price", "model_year", "engine", "traction",
-                "transmission", "fuel", "km", "armor", "handicapped", "equipment",
-                "youtube_video", "description", "status"];
-
-            foreach ($formKeys as $key) {
-                if (! isset($validatePost[$key])) {
-                    if ($key == "price") {
-                        $filterCurrencyBr = new Ml_Filter_CurrencyBr();
-                        $validatePost["price"] = $filterCurrencyBr->filter($post["price"] / 100);
-                    } else {
-                        $validatePost[$key] = $post[$key];
-                    }
-                }
-            }
-
 
             if ($form->isValid($validatePost)) {
                 $values = $form->getValues();
 
-                $data = [];
+                //unset / ignore the values of the form inputs not submitted
+                $listOfValuesSent = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+                $data = array_intersect_key($values, $listOfValuesSent);
 
-                $data["type"] = $type;
-
-                foreach ($formKeys as $key) {
-                    $data[$key] = $values[$key];
+                if (isset($data["price"])) {
+                    $data["price"] = str_replace(array(",", "."), "", $data["price"]);
                 }
 
-                $data["price"] = str_replace(array(",", "."), "", $data["price"]);
+                unset($data["hash"]);
 
                 $updatedPost = $posts->update($post["id"], $data);
 
