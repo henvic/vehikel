@@ -99,6 +99,10 @@ class UserPostManagerController extends Ml_Controller_Action
                     $data["price"] = str_replace(array(",", "."), "", $data["price"]);
                 }
 
+                if (isset($data["km"]) && $data["km"] === "") {
+                    $data["km"] = null;
+                }
+
                 unset($data["hash"]);
 
                 $updatedPost = $posts->update($post["id"], $data);
