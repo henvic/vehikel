@@ -198,6 +198,20 @@ CREATE TABLE `posts_history` (
 
 
 
+# Dump of table posts_delayed_sync_list
+# ------------------------------------------------------------
+
+CREATE TABLE `posts_delayed_sync_list` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `post_id` bigint(20) unsigned DEFAULT NULL,
+  `uid` bigint(20) unsigned NOT NULL,
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `post_id` (`post_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12283 DEFAULT CHARSET=utf8;
+
+
+
 # Dump of table user_sessions_lookup
 # ------------------------------------------------------------
 
