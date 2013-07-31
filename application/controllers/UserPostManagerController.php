@@ -174,7 +174,7 @@ class UserPostManagerController extends Ml_Controller_Action
 
             $pictureInfo = $picture->getInfo($pictureId);
 
-            $posts->syncSearch($post["id"]);
+            $posts->syncSearchById($post["id"]);
 
             $this->_helper->json($pictureInfo);
         }
@@ -206,7 +206,7 @@ class UserPostManagerController extends Ml_Controller_Action
 
         $picture->delete($pictureId, $userInfo["id"], $post["id"]);
 
-        $posts->syncSearch($post["id"]);
+        $posts->syncSearchById($post["id"]);
 
         $this->_helper->json(["pictureRemoved" => $pictureId]);
         return;
