@@ -147,6 +147,17 @@ class Ml_Model_People
         return $updatedUserInfo;
     }
 
+    protected function syncPostsDelayed($uid)
+    {
+        $delayedPostsSyncQuery = $this->_dbAdapter->quoteInto("REPLACE INTO " .
+        $this->_dbAdapter->quoteIdentifier($this->_postsDelayedSyncListTableName) .
+        " (post_id, uid) SELECT id, uid from " .
+        $this->_dbAdapter->quoteIdentifier($this->_postsTableName) .
+        " where uid = ?;", $uid);
+
+        return $this->_dbAdapter->query($delayedPostsSyncQuery);
+    }
+
     /**
      * Syncs the profile with the search engine and add the posts to be
      * delayed synced later
@@ -157,13 +168,7 @@ class Ml_Model_People
     {
         $publicUserInfo = $this->getPublicInfo($userInfo);
 
-        $delayedPostsSyncQuery = $this->_dbAdapter->quoteInto("REPLACE INTO " .
-        $this->_dbAdapter->quoteIdentifier($this->_postsDelayedSyncListTableName) .
-            " (post_id, uid) SELECT id, uid from " .
-            $this->_dbAdapter->quoteIdentifier($this->_postsTableName) .
-            " where uid = ?;", $userInfo["id"]);
-
-        $this->_dbAdapter->query($delayedPostsSyncQuery);
+        $this->syncPostsDelayed($userInfo["id"]);
 
         return $this->_search->post("posts", "user", $userInfo["id"], null, $publicUserInfo);
     }
