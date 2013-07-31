@@ -352,7 +352,7 @@ class Ml_Model_Posts
             return false;
         }
 
-        $this->syncSearch($id);
+        $this->syncSearch($updatedPost);
 
         return $updatedPost;
     }
