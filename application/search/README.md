@@ -137,6 +137,9 @@ curl -XGET http://localhost:9200/posts/user/_mapping?pretty
 curl -XPUT http://localhost:9200/posts/post/_mapping?pretty=1 -d '
 {
     "post" : {
+      "_parent" : {
+        "type" : "user"
+      },
       "properties" : {
         "armor" : {
           "type" : "boolean"
