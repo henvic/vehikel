@@ -4,6 +4,11 @@ class Ml_Model_People
     use Ml_Model_Db_Table_History;
 
     /**
+     * @var Ml_Model_Search
+     */
+    protected $_search;
+
+    /**
      * @var Ml_Model_Picture
      */
     protected $_picture;
@@ -16,8 +21,8 @@ class Ml_Model_People
     public function __construct(
         $config,
         Ml_Model_HtmlPurifier $purifier,
-        Ml_Model_Picture $picture,
-        GearmanClient $gearmanClient
+        Ml_Model_Search $search,
+        Ml_Model_Picture $picture
     )
     {
         $this->_purifier = $purifier;
@@ -25,9 +30,8 @@ class Ml_Model_People
         $this->_dbTable = new Zend_Db_Table($this->_dbTableName, $config);
         $this->_dbAdapter = $this->_dbTable->getAdapter();
 
+        $this->_search = $search;
         $this->_picture = $picture;
-
-        $this->_gearmanClient = $gearmanClient;
     }
 
     /**
@@ -137,14 +141,12 @@ class Ml_Model_People
         }
 
         $this->syncSearch($updatedUserInfo);
-        $this->syncPostsSearch($updatedUserInfo["id"]);
 
         return $updatedUserInfo;
     }
 
     /**
      * @param $userInfo
-     * @return string
      * @return mixed int with version on success, false otherwise
      */
     protected function syncSearch($userInfo)
@@ -190,7 +192,6 @@ class Ml_Model_People
         $userInfo = $this->getById($id);
 
         $this->syncSearch($userInfo);
-        $this->syncPostsSearch($userInfo["id"]);
 
         return $id;
     }
