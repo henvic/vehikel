@@ -252,75 +252,17 @@ class Ml_Model_Posts
     }
 
     /**
-     * @param $id
-     * @param $userInfo optional userInfo data to avoid getting the userInfo once again
-     * @param $post optional post data to avoid getting the post once again
-     * @return string
-     * @throws Exception
-     */
-    public function syncSearch($id, $userInfo = null, $post = null)
-    {
-        if (! $post) {
-            $post = $this->getById($id);
-        }
-
-        if (! $userInfo) {
-            $userInfo = $this->_people->getById($post["uid"]);
-        }
-
-        if (! is_array($post) || ! is_array($userInfo)) {
-            throw new Exception("Impossible to sync with the search database.");
-        }
-
-        if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
-            $job = $this->createSearchIndex($post, $userInfo);
-        } else {
-            $job = $this->deleteSearchIndex($id);
-        }
-
-        return $job;
-    }
-
-    /**
      * @param $post
-     * @param $userInfo
-     * @return string
      */
-    public function createSearchIndex($post, $userInfo)
     {
-        $publicPost = $this->getPublicInfo($post);
 
-        $publicUserInfo = $this->_people->getPublicInfo($userInfo);
 
-        $publicPost["user"] = $publicUserInfo;
 
-        $data = [
-            "index" => "posts",
-            "type" => "post",
-            "id" => $post["id"],
-            "document" => $publicPost
-        ];
-
-        $job = $this->_gearmanClient->doBackground("searchIndex", json_encode($data));
-
-        return $job;
     }
 
-    /**
-     * @param $id
-     * @return string
-     */
-    public function deleteSearchIndex($id)
     {
-        $data = [
-            "index" => "posts",
-            "type" => "post",
-            "id" => $id
-        ];
 
-        $job = $this->_gearmanClient->doBackground("searchDelete", json_encode($data));
 
-        return $job;
     }
 
     /**
