@@ -190,6 +190,8 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
             }
         }
 
+        $equipment->addMultiOption("", "");
+
         $this->addElement($equipment);
 
         $this->addElement('text', 'youtube_video', array(

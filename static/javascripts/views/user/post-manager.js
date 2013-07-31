@@ -162,6 +162,10 @@ define([
 
             var equipment = $('.post-equipments-list [name="equipment[]"]', $postProductMainInfo).serialize();
 
+            if (equipment === "") {
+                equipment = 'equipment%5B%5D=';
+            }
+
             var data = equipment + "&hash=" + encodeURIComponent(AppParams.globalAuthHash);
 
             // @todo add success and failure handling

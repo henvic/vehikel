@@ -371,6 +371,10 @@ class Ml_Model_Posts
     public function update($id, $data)
     {
         if (isset($data["equipment"])) {
+            if (sizeof($data["equipment"]) == 1 && $data["equipment"][0] == "") {
+                $data["equipment"] = [];
+            }
+
             $data["equipment"] = json_encode($data["equipment"]);
         }
 
