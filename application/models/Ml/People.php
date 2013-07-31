@@ -142,31 +142,6 @@ class Ml_Model_People
         return $updatedUserInfo;
     }
 
-    public function syncPostsSearch($uid)
-    {
-        return $this->_gearmanClient->doBackground("syncUserData", $uid);
-    }
-
-    /**
-     * @param $userInfo
-     * @return string
-     * @throws Exception
-     */
-    public function syncSearch($userInfo)
-    {
-        if (! is_array($userInfo)) {
-            throw new Exception("Impossible to sync with the search database.");
-        }
-
-        if ($userInfo["active"]) {
-            $job = $this->createSearchIndex($userInfo);
-        } else {
-            $job = $this->deleteSearchIndex($userInfo["id"]);
-        }
-
-        return $job;
-    }
-
     /**
      * @param $userInfo
      * @return string
