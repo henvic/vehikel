@@ -32,10 +32,18 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
             // Split into key/value pairs
             queries = queryString.split("&");
 
+            if (queries.length === 1 && queries[0] === "") {
+                queries = ["q="];
+            }
+
             // Convert the array of strings into an object
             for (i = 0, l = queries.length; i < l; i = i + 1) {
                 temp = queries[i].split('=');
                 params[temp[0]] = temp[1];
+            }
+
+            if (params.q === undefined) {
+                params.q = "";
             }
 
             //@todo improve this: the filter shouldn't be here

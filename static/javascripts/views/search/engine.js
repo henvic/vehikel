@@ -213,7 +213,13 @@ define(
                     if (window.history && window.history.pushState && ! searchParamsEqual) {
                         var address = AppParams.webroot + "/search";
 
-                        address += "?" + decodeURIComponent($.param(searchParams)).replace(/%2B/g, '+');
+                        var part = $.param(searchParams);
+
+                        if (part === "=") {
+                            part = "q=";
+                        }
+
+                        address += "?" + decodeURIComponent(part).replace(/%2B/g, '+');
 
                         window.history.pushState(null, null, address);
                     }
