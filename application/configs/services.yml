@@ -27,7 +27,7 @@ services:
         arguments: [null, @http, @config]
     search:
         class: Ml_Model_Search
-        arguments: [@people, @posts, @memCache, @config]
+        arguments: [@config]
     typeaheadMakes:
         class: Ml_Model_TypeaheadMakes
         arguments: [null, @memCache]
