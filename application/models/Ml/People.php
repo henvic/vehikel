@@ -114,17 +114,19 @@ class Ml_Model_People
 
     public function update($id, $data)
     {
-        $this->_dbAdapter->beginTransaction();
-
-        $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $id));
-
-        $this->saveHistorySnapshot($id);
-
         if (isset($data["post_template"])) {
             $data['post_template_html_escaped'] = $this->_purifier->purify($data['post_template']);
         }
 
-        $this->_dbAdapter->commit();
+        if (! empty($data)) {
+            $this->_dbAdapter->beginTransaction();
+
+            $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $id));
+
+            $this->saveHistorySnapshot($id);
+
+            $this->_dbAdapter->commit();
+        }
 
         $updatedUserInfo = $this->getById($id);
 
