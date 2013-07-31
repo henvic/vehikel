@@ -47,39 +47,4 @@ class SearchController extends Ml_Controller_Action
         }
     }
 
-    public function syncAllAction() {
-        $people =  $this->_registry->get("sc")->get("people");
-        /** @var $people \Ml_Model_People() */
-
-        $search =  $this->_registry->get("sc")->get("search");
-        /** @var $search \Ml_Model_Search() */
-
-        $uids = $people->getUsersIds();
-
-        $totalJobs = 0;
-
-        echo "UID | username | posts search indexing / deleting jobs registered";
-
-        foreach ($uids as $uid) {
-            $userInfo = $people->getById($uid);
-
-            if (! $userInfo) {
-                echo "", escapeshellcmd($uid), " | user not found\n";
-                continue;
-            }
-
-            $postsJobsSynced = $search->syncUser($userInfo);
-
-            if ($postsJobsSynced !== false) {
-                echo $uid, " | ", escapeshellcmd($userInfo["username"]), " | ", $postsJobsSynced, "\n";
-
-                $totalJobs += $postsJobsSynced;
-            } else {
-                echo $uid, " | ", escapeshellcmd($userInfo["username"]), " | failure to sync\n";
-                echo "Failed to snyc posts jobs for ", escapeshellcmd($userInfo["username"]), "\n";
-            }
-        }
-
-        echo "A total of ", $totalJobs, " posts jobs were registered\n";
-    }
 }
