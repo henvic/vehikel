@@ -253,16 +253,28 @@ class Ml_Model_Posts
 
     /**
      * @param $post
+     * @return mixed int with version on success, false otherwise
      */
+    protected function syncSearch($post)
     {
+        $publicPostInfo = $this->getPublicInfo($post);
 
+        $userInfo = $this->_people->getById($post["uid"]);
 
+        $publicPostInfo["user"] = $this->_people->getPublicInfo($userInfo);
 
+        return $this->_search->post("posts", "post", $post["id"], $post["uid"], $publicPostInfo);
     }
 
+    public function syncSearchById($id)
     {
+        $post = $this->getById($id);
 
+        if ($post) {
+            return $this->syncSearch($post);
+        }
 
+        return false;
     }
 
     /**
