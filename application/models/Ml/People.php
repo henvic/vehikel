@@ -15,6 +15,8 @@ class Ml_Model_People
 
     protected $_dbTableName = "people";
     protected $_dbHistoryTableName = "people_history";
+    protected $_postsTableName = "posts";
+    protected $_postsDelayedSyncListTableName = "posts_delayed_sync_list";
     protected $_dbAdapter;
     protected $_dbTable;
 
@@ -146,6 +148,8 @@ class Ml_Model_People
     }
 
     /**
+     * Syncs the profile with the search engine and add the posts to be
+     * delayed synced later
      * @param $userInfo
      * @return mixed int with version on success, false otherwise
      */
@@ -153,7 +157,13 @@ class Ml_Model_People
     {
         $publicUserInfo = $this->getPublicInfo($userInfo);
 
-        //@todo update this info on all the posts
+        $delayedPostsSyncQuery = $this->_dbAdapter->quoteInto("REPLACE INTO " .
+        $this->_dbAdapter->quoteIdentifier($this->_postsDelayedSyncListTableName) .
+            " (post_id, uid) SELECT id, uid from " .
+            $this->_dbAdapter->quoteIdentifier($this->_postsTableName) .
+            " where uid = ?;", $userInfo["id"]);
+
+        $this->_dbAdapter->query($delayedPostsSyncQuery);
 
         return $this->_search->post("posts", "user", $userInfo["id"], null, $publicUserInfo);
     }
