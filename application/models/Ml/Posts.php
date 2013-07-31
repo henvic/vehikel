@@ -382,13 +382,15 @@ class Ml_Model_Posts
             $data['description_html_escaped'] = $this->_purifier->purify($data['description']);
         }
 
-        $this->_dbAdapter->beginTransaction();
+        if (! empty($data)) {
+            $this->_dbAdapter->beginTransaction();
 
-        $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $id));
+            $this->_dbTable->update($data, $this->_dbAdapter->quoteInto("id = ?", $id));
 
-        $this->saveHistorySnapshot($id);
+            $this->saveHistorySnapshot($id);
 
-        $this->_dbAdapter->commit();
+            $this->_dbAdapter->commit();
+        }
 
         $updatedPost = $this->getById($id);
 
