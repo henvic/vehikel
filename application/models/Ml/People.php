@@ -145,20 +145,26 @@ class Ml_Model_People
     /**
      * @param $userInfo
      * @return string
+     * @return mixed int with version on success, false otherwise
      */
+    protected function syncSearch($userInfo)
     {
         $publicUserInfo = $this->getPublicInfo($userInfo);
 
-        ];
+        //@todo update this info on all the posts
 
-        $job = $this->_gearmanClient->doBackground("searchIndex", json_encode($data));
-
-        return $job;
+        return $this->_search->post("posts", "user", $userInfo["id"], null, $publicUserInfo);
     }
 
+    public function syncSearchById($id)
     {
+        $userInfo = $this->getById($id);
 
+        if ($userInfo) {
+            return $this->syncSearch($userInfo);
+        }
 
+        return false;
     }
 
     public function create($username, $name, $email)
