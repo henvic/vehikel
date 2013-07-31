@@ -406,7 +406,7 @@ class Ml_Model_Posts
     /**
      * @param $postId
      * @param $newPicturesIdsSortingOrder array of picture ids in the new sorting order
-     * @return picturesInfo array on success, false in failure
+     * @return array picturesInfo on success, false on failure
      * @throws Exception
      */
     public function sortPictures($postId, $newPicturesIdsSortingOrder)
