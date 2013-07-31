@@ -359,6 +359,10 @@ define(
         }
 
         window.onpopstate = function (event) {
+            if (window.location.pathname === AppParams.webroot + "/") {
+                return;
+            }
+
             var urlParams = searchModel.parseLocationQueryString();
 
             changeSearchTermsByUrlParams(urlParams);
