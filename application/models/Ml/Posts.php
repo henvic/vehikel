@@ -39,14 +39,14 @@ class Ml_Model_Posts
     protected $_dbTable;
 
     /**
-     * @var GearmanClient
-     */
-    protected $_gearmanClient;
-
-    /**
      * @var Ml_Model_People
      */
     protected $_people;
+
+    /**
+     * @var Ml_Model_Search
+     */
+    protected $_search;
 
     /**
      * @var Ml_Model_HtmlPurifier
@@ -74,15 +74,15 @@ class Ml_Model_Posts
 
     /**
      * @param $config
-     * @param GearmanClient $gearmanClient
      * @param Ml_Model_People $people
+     * @param Ml_Model_Search $search
      * @param Ml_Model_HtmlPurifier $purifier
      * @param Ml_Model_Numbers $numbers
      */
     public function __construct(
         $config,
-        GearmanClient $gearmanClient,
         Ml_Model_People $people,
+        Ml_Model_Search $search,
         Ml_Model_HtmlPurifier $purifier,
         Ml_Model_Numbers $numbers,
         Ml_Model_Picture $picture
@@ -91,9 +91,9 @@ class Ml_Model_Posts
         $this->_dbTable = new Zend_Db_Table($this->_dbTableName, $config);
         $this->_dbAdapter = $this->_dbTable->getAdapter();
 
-        $this->_gearmanClient = $gearmanClient;
-
         $this->_people = $people;
+
+        $this->_search = $search;
 
         $this->_purifier = $purifier;
 
