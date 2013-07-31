@@ -10,7 +10,7 @@ $posts = $paginator->getCurrentItems();
 $postsPictures = $this->postsPictures;
 
 ?>
-<ul id="posts-thumbnail-view" class="posts-list posts-thumbnail-view <?= ($this->postsViewStyle !== "thumbnail") ? " hidden" : ""; ?>">
+<ul id="posts-thumbnail-view" class="posts-list posts-thumbnail-view <?= ($this->postsViewStyle !== "thumbnail") ? " none" : ""; ?>">
 <?php
 foreach ($posts as $post) {
     $escapedPostLink = $this->url(

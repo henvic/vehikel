@@ -70,12 +70,12 @@ define(
 
         var changeViewStyle = function (style) {
             if (style === "table") {
-                $($(".results-thumbnail", $searchResults)[0]).addClass("hidden");
+                $($(".results-thumbnail", $searchResults)[0]).addClass("none");
             } else {
-                $($(".results-table", $searchResults)[0]).addClass("hidden");
+                $($(".results-table", $searchResults)[0]).addClass("none");
             }
 
-            $($(".results-" + style, $searchResults)[0]).removeClass("hidden");
+            $($(".results-" + style, $searchResults)[0]).removeClass("none");
 
             AppParams.postsViewStyle = style;
 

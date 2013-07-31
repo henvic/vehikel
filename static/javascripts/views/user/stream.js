@@ -12,11 +12,11 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
 
     var changeViewStyle = function (style) {
         if (style === "table") {
-            $postsTableView.removeClass("hidden");
-            $postsThumbnailView.addClass("hidden");
+            $postsTableView.removeClass("none");
+            $postsThumbnailView.addClass("none");
         } else {
-            $postsTableView.addClass("hidden");
-            $postsThumbnailView.removeClass("hidden");
+            $postsTableView.addClass("none");
+            $postsThumbnailView.removeClass("none");
         }
 
         $.ajax({
