@@ -210,7 +210,8 @@ define(
 
                     var searchParamsEqual = underscore.isEqual(searchParams, oldSearchParams);
 
-                    if (window.history && window.history.pushState && ! searchParamsEqual) {
+                    if ((window.history && window.history.pushState && ! searchParamsEqual) ||
+                            window.location.pathname !== AppParams.webroot + "/search") {
                         var address = AppParams.webroot + "/search";
 
                         var part = $.param(searchParams);
