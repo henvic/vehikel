@@ -348,12 +348,12 @@ define(
         // if the query is defined on the page load, search by it
         // otherwise, if the search is accessed without a query and not on the index page,
         // focus it, and if the page is in the index page, load the index js file
-        if (urlParams.q !== undefined) {
-            $searchText.val(decodeURIComponent(urlParams.q.replace(/\+/gi, " ")));
-            search({page: urlParams.page || 1, sort: urlParams.sort});
-        } else if (window.location.pathname === "/") {
+        if (window.location.pathname === "/") {
             require(["views/index/index"], function () {
             });
+        } else if (urlParams.q !== undefined) {
+            $searchText.val(decodeURIComponent(urlParams.q.replace(/\+/gi, " ")));
+            search({page: urlParams.page || 1, sort: urlParams.sort});
         } else {
             $searchText.focus();
         }
