@@ -103,6 +103,9 @@ curl -XPUT http://localhost:9200/posts/user/_mapping?pretty=1 -d '
       "username" : {
         "type" : "string"
       },
+      "active" : {
+        "type" : "string"
+      },
       "where" : {
         "type" : "multi_field",
         "fields" : {
@@ -342,6 +345,9 @@ curl -XPUT http://localhost:9200/posts/post/_mapping?pretty=1 -d '
                   "analyzer" : "lowercase"
                 }
               }
+            },
+            "active" : {
+             "type" : "string"
             }
           }
         }
