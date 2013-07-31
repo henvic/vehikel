@@ -60,6 +60,8 @@ class Ml_Model_People
 
         $content["account_type"] = $userInfo["account_type"];
 
+        $content["active"] = $userInfo["active"];
+
         return $content;
     }
 
