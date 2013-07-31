@@ -314,6 +314,10 @@ class Ml_Model_Posts
             throw $e;
         }
 
+        $post = $this->getById($id);
+
+        $this->syncSearch($post);
+
         return $id;
     }
 
