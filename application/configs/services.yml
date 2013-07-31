@@ -58,7 +58,3 @@ services:
         class: GearmanClient
         calls:
             - [ addServers ]
-    newsletter_manager:
-        class:     NewsletterManager
-        calls:
-            - [ setMailer, [ @mailer ] ]
