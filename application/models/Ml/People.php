@@ -146,15 +146,9 @@ class Ml_Model_People
      * @param $userInfo
      * @return string
      */
-    public function createSearchIndex($userInfo)
     {
         $publicUserInfo = $this->getPublicInfo($userInfo);
 
-        $data = [
-            "index" => "posts",
-            "type" => "user",
-            "id" => $userInfo["id"],
-            "document" => $publicUserInfo
         ];
 
         $job = $this->_gearmanClient->doBackground("searchIndex", json_encode($data));
@@ -162,21 +156,9 @@ class Ml_Model_People
         return $job;
     }
 
-    /**
-     * @param $id
-     * @return string
-     */
-    public function deleteSearchIndex($id)
     {
-        $data = [
-            "index" => "posts",
-            "type" => "user",
-            "id" => $id,
-        ];
 
-        $job = $this->_gearmanClient->doBackground("searchDelete", json_encode($data));
 
-        return $job;
     }
 
     public function create($username, $name, $email)
