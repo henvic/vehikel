@@ -3,11 +3,11 @@ class SearchController extends Ml_Controller_Action
 {
     public function syncUserProfileOnPostsAction() {
         $config = array(
-            'help|h' => 'prints this usage information',
-            'action|a=s' => 'action name (default: index)',
-            'controller|c=s' => 'controller name  (default: index)',
-            'verbose|v' => 'explain what is being done',
-            'uid=i' => 'User ID to sync the data from the DB to the search engine'
+            "help|h" => "prints this usage information",
+            "action|a=s" => "action name (default: index)",
+            "controller|c=s" => "controller name (default: index)",
+            "verbose|v" => "explain what is being done",
+            "uid=i" => "User ID to sync the data from the DB to the search engine"
         );
 
         $options = new Ml_Console_Getopt($config);
@@ -39,11 +39,11 @@ class SearchController extends Ml_Controller_Action
 
     public function rebuildUserAction() {
         $config = array(
-            'help|h' => 'prints this usage information',
-            'action|a=s' => 'action name (default: index)',
-            'controller|c=s' => 'controller name  (default: index)',
-            'verbose|v' => 'explain what is being done',
-            'uid=i' => 'User ID to sync the data from the DB to the search engine'
+            "help|h" => "prints this usage information",
+            "action|a=s" => "action name (default: index)",
+            "controller|c=s" => "controller name (default: index)",
+            "verbose|v" => "explain what is being done",
+            "uid=i" => "User ID to sync the data from the DB to the search engine"
         );
 
         $options = new Ml_Console_Getopt($config);
