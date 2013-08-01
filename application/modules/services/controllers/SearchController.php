@@ -1,6 +1,42 @@
 <?php
 class SearchController extends Ml_Controller_Action
 {
+    public function syncUserProfileOnPostsAction() {
+        $config = array(
+            'help|h' => 'prints this usage information',
+            'action|a=s' => 'action name (default: index)',
+            'controller|c=s' => 'controller name  (default: index)',
+            'verbose|v' => 'explain what is being done',
+            'uid=i' => 'User ID to sync the data from the DB to the search engine'
+        );
+
+        $options = new Ml_Console_Getopt($config);
+        $options->setOption(Ml_Console_Getopt::CONFIG_PERMIT_UNKNOWN, true);
+        $options->parse();
+
+        $people =  $this->_registry->get("sc")->get("people");
+        /** @var $people \Ml_Model_People() */
+
+        $uid = $options->getOption("uid");
+
+        if (! $uid) {
+            echo $options->getUsageMessage();
+            exit(0);
+        }
+
+        $result = $people->updateProfileOnPosts($uid);
+
+        if ($result !== false) {
+            echo "Posts just updated with the new user data: ", escapeshellcmd($result), ".\n";
+            $exitCode = 0;
+        } else {
+            echo "Sync failed\n";
+            $exitCode = 1;
+        }
+
+        exit($exitCode);
+    }
+
     public function rebuildUserAction() {
         $config = array(
             'help|h' => 'prints this usage information',
