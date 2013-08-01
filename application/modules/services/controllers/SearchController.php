@@ -49,7 +49,8 @@ class SearchController extends Ml_Controller_Action
         }
 
         if ($syncError) {
-            echo "Profile synced. Sync failed for ", escapeshellcmd($syncError), "posts out of ", escapeshellcmd($syncPos), "\n";
+            echo "Profile synced. Sync failed for ",
+            escapeshellcmd($syncError), "posts out of ", escapeshellcmd($syncPos), "\n";
             exit(1);
         }
 
