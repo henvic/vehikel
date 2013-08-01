@@ -24,7 +24,8 @@ class Ml_Model_People
         $config,
         Ml_Model_HtmlPurifier $purifier,
         Ml_Model_Search $search,
-        Ml_Model_Picture $picture
+        Ml_Model_Picture $picture,
+        GearmanClient $gearmanClient
     )
     {
         $this->_purifier = $purifier;
@@ -34,6 +35,8 @@ class Ml_Model_People
 
         $this->_search = $search;
         $this->_picture = $picture;
+
+        $this->_gearmanClient = $gearmanClient;
     }
 
     /**
