@@ -162,23 +162,31 @@ class Ml_Model_People
      * Syncs the profile with the search engine and add the posts to be
      * delayed synced later
      * @param $userInfo
+     * @param bool $syncPosts
      * @return mixed int with version on success, false otherwise
      */
-    protected function syncSearch($userInfo)
+    protected function syncSearch($userInfo, $syncPosts = true)
     {
         $publicUserInfo = $this->getPublicInfo($userInfo);
 
-        $this->syncPostsDelayed($userInfo["id"]);
+        if ($syncPosts) {
+            $this->syncPostsDelayed($userInfo["id"]);
+        }
 
         return $this->_search->post("posts", "user", $userInfo["id"], null, $publicUserInfo);
     }
 
-    public function syncSearchById($id)
+    /**
+     * @param $id
+     * @param bool $syncPosts
+     * @return bool|mixed
+     */
+    public function syncSearchById($id, $syncPosts = true)
     {
         $userInfo = $this->getById($id);
 
         if ($userInfo) {
-            return $this->syncSearch($userInfo);
+            return $this->syncSearch($userInfo, $syncPosts);
         }
 
         return false;
