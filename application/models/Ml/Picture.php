@@ -141,10 +141,10 @@ class Ml_Model_Picture
         // removing them from the array
 
         if (is_array($sortingOrder)) {
-            foreach ($sortingOrder as $sortedPictureId) {
-                if (isset($tmpPictures[$sortedPictureId])) {
-                    $final[] = $tmpPictures[$sortedPictureId];
-                    unset($tmpPictures[$sortedPictureId]);
+            foreach ($sortingOrder as $sortedPicture) {
+                if (isset($sortedPicture["id"]) && isset($tmpPictures[$sortedPicture["id"]])) {
+                    $final[] = $tmpPictures[$sortedPicture["id"]];
+                    unset($tmpPictures[$sortedPicture["id"]]);
                 }
             }
         }
