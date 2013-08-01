@@ -184,6 +184,19 @@ class Ml_Model_People
         return false;
     }
 
+    public function updateProfileOnPosts($id)
+    {
+        $userInfo = $this->getById($id);
+
+        if ($userInfo) {
+            $publicUserInfo = $this->getPublicInfo($userInfo);
+
+            return $this->_search->callUpdatePublicProfileOnPosts($publicUserInfo);
+        }
+
+        return false;
+    }
+
     public function create($username, $name, $email)
     {
         $this->_dbAdapter->beginTransaction();
