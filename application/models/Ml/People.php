@@ -15,8 +15,6 @@ class Ml_Model_People
 
     protected $_dbTableName = "people";
     protected $_dbHistoryTableName = "people_history";
-    protected $_postsTableName = "posts";
-    protected $_postsDelayedSyncListTableName = "posts_delayed_sync_list";
     protected $_dbAdapter;
     protected $_dbTable;
 
@@ -152,13 +150,7 @@ class Ml_Model_People
 
     protected function syncPostsDelayed($uid)
     {
-        $delayedPostsSyncQuery = $this->_dbAdapter->quoteInto("REPLACE INTO " .
-        $this->_dbAdapter->quoteIdentifier($this->_postsDelayedSyncListTableName) .
-        " (post_id, uid) SELECT id, uid from " .
-        $this->_dbAdapter->quoteIdentifier($this->_postsTableName) .
-        " where uid = ?;", $uid);
-
-        return $this->_dbAdapter->query($delayedPostsSyncQuery);
+        return $this->_gearmanClient->doBackground("syncUserProfileOnPosts", $uid);
     }
 
     /**
