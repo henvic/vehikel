@@ -1,0 +1,80 @@
+{
+    "user" : {
+        "properties" : {
+            "account_type" : {
+                "type" : "string"
+            },
+            "address" : {
+                "dynamic" : "true",
+                "properties" : {
+                    "country_name" : {
+                        "type" : "string"
+                    },
+                    "locality" : {
+                        "type" : "string"
+                    },
+                    "neighborhood" : {
+                        "type" : "string"
+                    },
+                    "phones" : {
+                        "dynamic" : "true",
+                        "properties" : {
+                            "name" : {
+                                "type" : "string"
+                            },
+                            "tel" : {
+                                "type" : "string"
+                            }
+                        }
+                    },
+                    "postal_code" : {
+                        "type" : "string"
+                    },
+                    "region" : {
+                        "type" : "string"
+                    },
+                    "street_address" : {
+                        "type" : "string"
+                    }
+                }
+            },
+            "id" : {
+                "type" : "long"
+            },
+            "name" : {
+                "type" : "string"
+            },
+            "picture" : {
+                "dynamic" : "true",
+                "properties" : {
+                    "picture_id" : {
+                        "type" : "string"
+                    }
+                }
+            },
+            "username" : {
+                "type" : "string"
+            },
+            "active" : {
+                "type" : "string"
+            },
+            "where" : {
+                "type" : "multi_field",
+                "fields" : {
+                    "where" : {
+                        "type" : "string",
+                        "index" : "analyzed"
+                    },
+                    "untouched" : {
+                        "type" : "string",
+                        "index" : "not_analyzed"
+                    },
+                    "lowercase" : {
+                        "type" : "string",
+                        "analyzer" : "lowercase"
+                    }
+                }
+            }
+        }
+    }
+}

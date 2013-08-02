@@ -24,6 +24,10 @@ Please note that the default memcached is insecure by design because it's freely
 * [memcached](http://php.net/memcached)
 * [GeoIP](http://www.maxmind.com/app/php) (you need a MaxMind's database service for that, this library will be changed soon)
 
+### ElasticSearch plugins
+[elasticsearch-action-updatebyquery](https://github.com/yakaz/elasticsearch-action-updatebyquery)
+
+
 ### PHP Libraries
 * [Zend Framework](http://framework.zend.com/)
 * [Symfony](http://symfony.com/) (some components)
@@ -116,12 +120,6 @@ Note /index.php is hard-coded to return a 404 Not Found to make sure you do the 
 #### Search engine
 Set the entry-point */search-engine* to the search service with a reverse proxy.
 
-The search service is composed of the following two node.js applications, plus ElasticSearch:
-
-`application/search/worker` - worker to add content from the database to the ElasticSearch search service
-
-`application/search/server` - front-end server which serves as a simple "smart proxy" to ElasticSearch, limiting what queries can be made and simplifying them
-
 #### Static assets
 Set the static/ directory to the entry-point */static/**.
 
@@ -156,6 +154,46 @@ Some operations might be expensive. For example: if a user removes his account i
 A way to solve this and other similar issues is to make use of a scheduled task to run from time to time and do this heavy work.
 
 Gearman is being used to serve tasks.
+
+## ElasticSearch (search engine)
+The search is built on top of ElasticSearch (using a JSON RESTful API), with the help of Gearman. You should install the elasticsearch-action-updatebyquery plugin with:
+
+`./bin/plugin --install elasticsearch-action-updatebyquery`
+
+This search currently indexes the account profiles and posts, but only return the search results of the posts.
+
+For effect of simplicity we assume you just installed ES on localhost.
+
+### Preparing Elasticsearch
+If you want to redo this process, before proceeding do the following to remove your data: `curl -XDELETE http://localhost:9200/posts`
+
+From the `application/search/es-configs/` directory:
+
+1. Add the typeahead suggestion analyzer with `curl -XPOST http://localhost:9200/posts?pretty=1 -d @posts-settings.json`
+
+2. Verify it with `curl -XGET http://localhost:9200/posts/_settings?pretty`
+
+3. Ceate the user mapping with `curl -XPUT http://localhost:9200/posts/user/_mapping?pretty=1 -d @posts-user-mapping.json`
+
+4. Verify it with `curl -XGET http://localhost:9200/posts/user/_mapping?pretty`
+
+5. Create the post mapping with `curl -XPUT http://localhost:9200/posts/post/_mapping?pretty=1 -d @posts-post-mapping.json`
+
+6. Verify it with `curl -XGET http://localhost:9200/posts/post/_mapping?pretty`
+
+Then you are ready to use ES.
+
+The PHP back-end is used to call the ElasticSearch for indexing purpose.
+
+There are two actions currently available via the service module:
+
+1. For syncing the user profile on the posts: `./services --controller search --action sync-user-profile-on-posts --uid 33`
+
+2. For rebuilding the entire posts: `./services --controller search --action sync-user-profile-on-posts --uid 33`
+
+When the user changes the user profile data a gearman task is created, it is watched by the node.js worker, which calls the PHP syncing process.
+
+A node.js server, serves as a simple "smart proxy" to ElasticSearch, limiting what queries can be made to the engine, by the final users.
 
 ## Push, open bugs, etc.
 Feel free to push code to this repository. Anything you want, go to the [issue tracker](https://github.com/henvic/vehikel/issues/).

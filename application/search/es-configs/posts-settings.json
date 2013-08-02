@@ -1,0 +1,17 @@
+{
+    "settings" : {
+        "index.analysis.filter.suggestions_lowercase.type" : "lowercase",
+        "index.version.created" : "200199",
+        "index.number_of_replicas" : "1",
+        "index.number_of_shards" : "5",
+        "index.analysis.filter.phrase_lowercase.type" : "lowercase",
+        "index.analysis.analyzer.lowercase.filter.0" : "phrase_lowercase",
+        "index.analysis.analyzer.lowercase.tokenizer" : "keyword",
+        "index.analysis.analyzer.suggestions.filter.0" : "suggestions_lowercase",
+        "index.analysis.analyzer.suggestions.tokenizer" : "standard",
+        "index.analysis.filter.suggestions_shingle.max_shingle_size" : "5",
+        "index.analysis.filter.suggestions_shingle.type" : "shingle",
+        "index.analysis.filter.suggestions_shingle.min_shingle_size" : "2",
+        "index.analysis.analyzer.suggestions.filter.1" : "suggestions_shingle"
+    }
+}

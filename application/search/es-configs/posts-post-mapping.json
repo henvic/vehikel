@@ -1,0 +1,216 @@
+{
+    "post" : {
+        "_parent" : {
+            "type" : "user"
+        },
+        "properties" : {
+            "armor" : {
+                "type" : "boolean"
+            },
+            "handicapped" : {
+                "type" : "boolean"
+            },
+            "creation" : {
+                "type" : "string"
+            },
+            "description" : {
+                "type" : "string"
+            },
+            "description_html_escaped" : {
+                "type" : "string"
+            },
+            "engine" : {
+                "type" : "string"
+            },
+            "equipment" : {
+                "type" : "string"
+            },
+            "fuel" : {
+                "type" : "string"
+            },
+            "id" : {
+                "type" : "long"
+            },
+            "universal_id" : {
+                "type" : "string"
+            },
+            "km" : {
+                "type" : "integer"
+            },
+            "make" : {
+                "type" : "multi_field",
+                "fields" : {
+                    "make" : {
+                        "type" : "string",
+                        "index" : "analyzed"
+                    },
+                    "untouched" : {
+                        "type" : "string",
+                        "index" : "not_analyzed"
+                    },
+                    "lowercase" : {
+                        "type" : "string",
+                        "analyzer" : "lowercase"
+                    }
+                }
+            },
+            "model" : {
+                "type" : "multi_field",
+                "fields" : {
+                    "model" : {
+                        "type" : "string",
+                        "index" : "analyzed"
+                    },
+                    "untouched" : {
+                        "type" : "string",
+                        "index" : "not_analyzed"
+                    },
+                    "lowercase" : {
+                        "type" : "string",
+                        "analyzer" : "lowercase"
+                    }
+                }
+            },
+            "year" : {
+                "type" : "short"
+            },
+            "name" : {
+                "type" : "string"
+            },
+            "pictures" : {
+                "dynamic" : "true",
+                "properties" : {
+                    "picture_id" : {
+                        "type" : "string"
+                    }
+                }
+            },
+            "price" : {
+                "type" : "long"
+            },
+            "status" : {
+                "type" : "string"
+            },
+            "title" : {
+                "type" : "multi_field",
+                "fields" : {
+                    "title" : {
+                        "type" : "string",
+                        "analyzer" : "standard",
+                        "include_in_all" : true
+                    },
+                    "suggestions" : {
+                        "type" : "string",
+                        "analyzer" : "suggestions",
+                        "include_in_all" : false
+                    }
+                }
+            },
+            "traction" : {
+                "type" : "string",
+                "analyzer" : "lowercase"
+            },
+            "transmission" : {
+                "type" : "string",
+                "analyzer" : "lowercase"
+            },
+            "type" : {
+                "type" : "string",
+                "analyzer" : "lowercase"
+            },
+            "user" : {
+                "dynamic" : "true",
+                "properties" : {
+                    "account_type" : {
+                        "type" : "string"
+                    },
+                    "where" : {
+                        "type" : "multi_field",
+                        "fields" : {
+                            "where" : {
+                                "type" : "string",
+                                "index" : "analyzed"
+                            },
+                            "untouched" : {
+                                "type" : "string",
+                                "index" : "not_analyzed"
+                            },
+                            "lowercase" : {
+                                "type" : "string",
+                                "analyzer" : "lowercase"
+                            }
+                        }
+                    },
+                    "address" : {
+                        "dynamic" : "true",
+                        "properties" : {
+                            "country_name" : {
+                                "type" : "string"
+                            },
+                            "locality" : {
+                                "type" : "string"
+                            },
+                            "neighborhood" : {
+                                "type" : "string"
+                            },
+                            "phones" : {
+                                "dynamic" : "true",
+                                "properties" : {
+                                    "name" : {
+                                        "type" : "string"
+                                    },
+                                    "tel" : {
+                                        "type" : "string"
+                                    }
+                                }
+                            },
+                            "postal_code" : {
+                                "type" : "string"
+                            },
+                            "region" : {
+                                "type" : "string"
+                            },
+                            "street_address" : {
+                                "type" : "string"
+                            }
+                        }
+                    },
+                    "id" : {
+                        "type" : "string"
+                    },
+                    "name" : {
+                        "type" : "string"
+                    },
+                    "picture" : {
+                        "dynamic" : "true",
+                        "properties" : {
+                            "picture_id" : {
+                                "type" : "string"
+                            }
+                        }
+                    },
+                    "username" : {
+                        "type" : "multi_field",
+                        "fields" : {
+                            "username" : {
+                                "type" : "string",
+                                "index" : "analyzed"
+                            },
+                            "untouched" : {
+                                "type" : "string",
+                                "index" : "not_analyzed"
+                            },
+                            "lowercase" : {
+                                "type" : "string",
+                                "analyzer" : "lowercase"
+                            }
+                        }
+                    },
+                    "active" : {
+                        "type" : "string"
+                    }
+                }
+            }
+        }
+    }
+}
