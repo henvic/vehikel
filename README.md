@@ -189,7 +189,7 @@ There are two actions currently available via the service module:
 
 1. For syncing the user profile on the posts: `./services --controller search --action sync-user-profile-on-posts --uid <uid>`
 
-2. For rebuilding the entire posts: `./services --controller search --action sync-user-profile-on-posts --uid <uid>`
+2. For rebuilding the entire posts: `./services --controller search --action rebuild-user --uid <uid>`
 
 When the user changes the user profile data a gearman task is created, it is watched by the node.js worker, which calls the PHP syncing process.
 
