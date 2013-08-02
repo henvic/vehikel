@@ -219,6 +219,16 @@ module.exports = function (util, events, http, settings) {
                         }
                     }
                 ];
+            } else {
+                requestData.sort = [
+                    {
+                        "id" : {
+                            "order" : "desc",
+                            "missing" : "_last",
+                            "ignore_unmapped" : true
+                        }
+                    }
+                ];
             }
         }
 
