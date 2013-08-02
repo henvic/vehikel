@@ -417,6 +417,10 @@ define(
             } else if ($input.attr("type") === "radio") {
                 $input.filter('[value="' + underscore.escape(value) + '"]').prop("checked", true);
             } else {
+                if (name === "u") {
+                    $('[name="persist-username"][value=""]', $searchPostsForm).prop("checked", true);
+                }
+
                 $input.val(value);
             }
 
