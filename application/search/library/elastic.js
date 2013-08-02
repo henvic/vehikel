@@ -162,12 +162,20 @@ module.exports = function (util, events, http, settings) {
                     field : "year"
                 },
                 {
+                    name : "status",
+                    field : "status"
+                },
+                {
                     name : "where",
                     field : "user.where.lowercase"
                 },
                 {
                     name : "u",
                     field : "user.username.lowercase"
+                },
+                {
+                    name : "user.active",
+                    field : "user.active"
                 },
                 {
                     name : "transmission",
