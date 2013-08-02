@@ -89,7 +89,8 @@
                 "type" : "long"
             },
             "status" : {
-                "type" : "string"
+                "type" : "string",
+                "analyzer" : "standard"
             },
             "title" : {
                 "type" : "multi_field",
@@ -207,7 +208,8 @@
                         }
                     },
                     "active" : {
-                        "type" : "string"
+                        "type" : "string",
+                        "analyzer" : "standard"
                     }
                 }
             }
