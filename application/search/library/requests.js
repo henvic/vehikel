@@ -6,6 +6,23 @@ module.exports = function (util, events, http, querystring, url, elastic) {
 
     var exports = {};
 
+    /**
+     * Filter the posts to only query the public posts available
+     * @param query
+     * @returns modified query
+     */
+    var filterPublicPosts = function (query) {
+        query.status = "active";
+
+        if (query.user === undefined) {
+            query.user = {};
+        }
+
+        query.user.active = "1";
+
+        return query;
+    };
+
     var searchRequest = function (request, response) {
         request.setEncoding("utf8");
 
