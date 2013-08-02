@@ -1,7 +1,7 @@
 /*jslint node: true */
 /*global require */
 
-module.exports = function (util, events, http) {
+module.exports = function (util, events, http, settings) {
     "use strict";
 
     var setFilters = function (query, filter, filterList) {
@@ -303,9 +303,9 @@ module.exports = function (util, events, http) {
         }
 
         var postRequest = {
-            hostname: "localhost",
+            hostname: settings.elastic.hostname,
             path: "/posts/post/_search?size=" + encodeURIComponent(size) + "&from=" + encodeURIComponent(from),
-            port: 9200,
+            port: settings.elastic.port,
             method: "GET",
             headers: {
                 "Content-Length": Buffer.byteLength(sendBuffer)

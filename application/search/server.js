@@ -20,7 +20,7 @@ module.exports = function () {
 
     var url = require("url");
 
-    var elastic = require("./library/elastic")(util, events, http);
+    var elastic = require("./library/elastic")(util, events, http, settings);
 
     var requests = require("./library/requests")(util, events, http, querystring, url, elastic);
 
