@@ -42,7 +42,7 @@ module.exports = function (util, events, http, querystring, url, elastic) {
 
             var search = new elastic.search();
 
-            search.query(requestUrl.query);
+            search.query(filterPublicPosts(requestUrl.query));
 
             search.on("success", function (searchResponse) {
                 var result;
