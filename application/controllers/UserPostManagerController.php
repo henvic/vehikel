@@ -294,6 +294,7 @@ class UserPostManagerController extends Ml_Controller_Action
             }
 
             $picturesInfo = $posts->sortPictures($post["id"], $safePictureIds);
+            $posts->syncSearchById($post["id"]);
             $this->_helper->json($picturesInfo);
             return;
         }
