@@ -78,6 +78,7 @@ $this->metaOgp = $metaOgp;
 $breadCrumbTypeLink = $searchLink . "?q=*&amp;type=" . urlencode(mb_strtolower($post["type"]));
 $breadCrumbMakeLink = $breadCrumbTypeLink . "&amp;make=" . urlencode(mb_strtolower($post["make"]));
 $breadCrumbModelLink = $breadCrumbMakeLink . "&amp;model=" . urlencode(mb_strtolower($post["model"]));
+$breadCrumbLinksActive = ($post["status"] === Ml_Model_Posts::STATUS_ACTIVE);
 
 $breadCrumb = $this->postBreadCrumb(array(
     array(
@@ -99,7 +100,7 @@ $breadCrumb = $this->postBreadCrumb(array(
         "id" => "post-breadcrumb-name",
         "name" => $post["make"] . " " . $post["model"] . " " . $post["name"]
     )
-));
+), $breadCrumbLinksActive);
 
 ?>
 <div class="container">
