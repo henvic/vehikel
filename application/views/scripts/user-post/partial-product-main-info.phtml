@@ -14,11 +14,6 @@ $availableEquipment = $this->availableEquipment;
 $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
 $price->setValue($this->escape($post["price"] / 100));
 ?>
-<?php
-if ($this->editable) {
-    echo $this->render("user-post/post-status.phtml");
-}
-?>
 <div class="post-product-info <?= ($editable) ? "post-editable" : ""; ?>" id="post-product-info"
     <?= ($editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?>>
     <h2 id="post-product-price" class="post-product-info-price">
@@ -157,6 +152,10 @@ if ($editable) {
 </span>
 <?= ($editable) ? "</label>" : "" ?>
 <?php
+}
+
+if ($editable) {
+    echo $this->render("user-post/post-status.phtml");
 }
 ?>
 </div>
