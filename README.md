@@ -209,7 +209,7 @@ The [New BSD License](http://en.wikipedia.org/wiki/New_BSD_license) and the [MIT
 * [Chevrolet impala Icon](http://www.iconarchive.com/show/classic-cars-icons-by-cemagraphics/chevrolet-impala-icon.html)
 * [Magnifying glass Icon](http://commons.wikimedia.org/wiki/File:Magnifying_glass_icon.svg)
 * [Maps Icon](http://www.iconarchive.com/show/mobile-icons-by-webiconset/maps-icon.html)
-* [International Symbol of Access](http://en.wikipedia.org/wiki/File:International_Symbol_of_Access.svg)
+* [Disability symbols](https://commons.wikimedia.org/wiki/File:Disability_symbols.svg)
 * [YouTube Branding Guidelines](https://developers.google.com/youtube/branding)
 
 ## Author
