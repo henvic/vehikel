@@ -303,6 +303,23 @@ module.exports = function (util, events, http, settings) {
                     }
                 }
             };
+
+            requestData.fields = [
+                "id",
+                "universal_id",
+                "title",
+                "price",
+                "year",
+                "transmission",
+                "fuel",
+                "km",
+                "armor",
+                "handicapped",
+                "pictures",
+                "traction",
+                "user.username",
+                "user.where"
+            ];
         }
 
         var sendBuffer = JSON.stringify(requestData);

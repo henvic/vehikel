@@ -52,8 +52,8 @@ var itemsLength = items.length;
     <%
     for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
     var postSearch = items[itemPos];
-    var post = postSearch._source;
-    var escapedPostLink = AppParams.webroot + "/" + encodeURIComponent(post.user.username) + "/" + post.id;
+    var post = postSearch.fields;
+    var escapedPostLink = AppParams.webroot + "/" + encodeURIComponent(post["user.username"]) + "/" + post.id;
     var price = post.price;
     %>
     <tr data-link="<%= escapedPostLink %>">
@@ -131,8 +131,8 @@ var itemsLength = items.length;
 <%
 for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
     var postSearch = items[itemPos];
-    var post = postSearch._source;
-    var escapedPostLink = AppParams.webroot + "/" + encodeURIComponent(post.user.username) + "/" + post.id;
+    var post = postSearch.fields;
+    var escapedPostLink = AppParams.webroot + "/" + encodeURIComponent(post["user.username"]) + "/" + post.id;
     var price = post.price;
 %>
     <li>
