@@ -103,6 +103,11 @@ $breadCrumb = $this->postBreadCrumb(array(
 
 ?>
 <div class="container">
+    <div class="row breadcrumb-div">
+        <div class="span12">
+            <?= $breadCrumb; ?>
+        </div>
+    </div><!-- end of the .breadcrumb-div -->
     <div class="row">
         <!-- include side facets -->
         <?= $this->render("search/facets.phtml"); ?>
@@ -110,7 +115,6 @@ $breadCrumb = $this->postBreadCrumb(array(
             <!-- begin of top bar for the user post -->
             <div class="row">
                 <div class="span9">
-                    <?= $breadCrumb; ?>
                     <?php
                     if ($this->editable) {
                         ?>
