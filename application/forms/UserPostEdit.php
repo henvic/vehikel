@@ -223,7 +223,6 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
                 'required' => false,
                 'label'    => 'Status',
                 'multiOptions' => array(
-                    "" => "-",
                     "staging" => "staging",
                     "active" => "active",
                     "end" => "end"
