@@ -54,8 +54,6 @@ class UserPostManagerController extends Ml_Controller_Action
     {
         $params = $this->getRequest()->getParams();
 
-        $this->view->addJsParam("route", "user/post-manager");
-
         $people =  $this->_registry->get("sc")->get("people");
         /** @var $people \Ml_Model_People() */
 
@@ -65,13 +63,10 @@ class UserPostManagerController extends Ml_Controller_Action
         $validatePost = $this->getRequest()->getPost();
 
         $post = $this->_post;
-        $userInfo = $this->_userInfo;
 
         $type = $post["type"];
 
         $availableEquipment = $posts->getAvailableEquipment($type);
-
-        $this->view->assign("availableEquipment", $availableEquipment);
 
         $form = new Ml_Form_UserPostEdit(
             null,
@@ -83,8 +78,6 @@ class UserPostManagerController extends Ml_Controller_Action
         );
 
         $form->setDefaults($post);
-
-        $this->view->assign("postForm", $form);
 
         if ($this->getRequest()->isPost()) {
 
@@ -112,10 +105,6 @@ class UserPostManagerController extends Ml_Controller_Action
                 }
 
                 $post = $updatedPost;
-
-                $this->_post = $post;
-
-                $this->view->assign("post", $post);
             } else {
                 $this->getResponse()->setHttpResponseCode(404);
                 $this->_helper->json(["errors" => $form->getErrors()]);
@@ -124,11 +113,7 @@ class UserPostManagerController extends Ml_Controller_Action
 
         $this->_helper->layout->disableLayout();
 
-        if ($this->getRequest()->getParam("show-partial") == "post-product-info") {
-            $this->render("user-post/partial-product-main-info", null, "user-post");
-        } else {
-            $this->_helper->json($post);
-        }
+        $this->_helper->json($post);
     }
 
     public function pictureAddAction()

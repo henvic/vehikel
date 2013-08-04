@@ -96,8 +96,6 @@ define([
         var $postProductNameEditingArea = $('#post-product-name-editing-area');
         var $postProductNameCancel = $('#post-product-name-cancel');
 
-        var $postProductInfo = $('#post-product-info');
-        var $postProductInfoEditingArea = $('#post-product-info-editing-area');
         var $postProductMainInfo = $("#post-product-main-info");
         var $postProductInfoOthers = $("#post-product-info-others");
 
@@ -112,7 +110,6 @@ define([
         var postProductMakeValue = $postProductMake.val();
         var postProductModelValue = $postProductModel.val();
         var postProductNameEditValue = $postProductNameEdit.val();
-        var postProductInfoEditingAreaOriginal = $postProductInfoEditingArea.html();
 
         var $editPostButton = $("#edit-post-button");
 
@@ -183,7 +180,6 @@ define([
 
         $editPostButton.on("click", function (e) {
             openPostProductNameEdit();
-            openPostProductInfoEdit();
             openDescriptionEdit();
             $(window).scrollTop($postProductNameEditingArea.position().top);
         });
@@ -198,12 +194,6 @@ define([
                 }
             );
         };
-
-        var loadPostProductInfoEditingAreaElements = function () {
-            maskMoney($('#post-product-info-editing-area #price'));
-        };
-
-        loadPostProductInfoEditingAreaElements();
 
         vehiclesModel.setUp(
             $postProductMake,
@@ -300,60 +290,6 @@ define([
                     ;
                 }
             });
-        });
-
-        $postProductInfoEditingArea.on("submit", function (e) {
-            e.preventDefault();
-            savePostProductInfo();
-        });
-
-        var savePostProductInfo = function () {
-            var data = $postProductInfoEditingArea.serialize();
-
-            $.ajax({
-                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId +
-                    "/edit?show-partial=post-product-info",
-                type: 'POST',
-                dataType: 'html',
-                data: data,
-                success: function (result, textStatus, jqXHR) {
-                    updatePostProductInfo(result);
-                }
-            });
-        };
-
-        var openPostProductInfoEdit = function () {
-            $postProductInfo.addClass("hidden");
-            $postProductInfoEditingArea.removeClass("hidden");
-            $('[name="price"]', $postProductInfoEditingArea).focus();
-        };
-
-        var closePostProductInfoEdit = function () {
-            $postProductInfo.removeClass("hidden");
-            $postProductInfoEditingArea.addClass("hidden");
-        };
-
-        var updatePostProductInfo = function (result) {
-            var $result = $('<div></div>').html(result);
-
-            $postProductInfo.html($("#post-product-info", $result).html());
-            $postProductInfoEditingArea.html($("#post-product-info-editing-area", $result).html());
-            postProductInfoEditingAreaOriginal = $postProductInfoEditingArea.html();
-
-            $postProductInfoOthers.html($("#post-product-info-others", $result).html());
-
-            loadPostProductInfoEditingAreaElements();
-            closePostProductInfoEdit();
-        };
-
-        $postProductInfo.on("click", function (e) {
-            openPostProductInfoEdit();
-        });
-
-        $postProductInfoEditingArea.on("click", '#post-product-info-cancel', function () {
-            $postProductInfoEditingArea.html(postProductInfoEditingAreaOriginal);
-            loadPostProductInfoEditingAreaElements();
-            closePostProductInfoEdit();
         });
 
         var postDescriptionTextEditValue = $postDescriptionTextEdit.val();
