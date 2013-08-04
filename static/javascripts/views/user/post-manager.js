@@ -129,15 +129,12 @@ define([
                     encodeURIComponent(AppParams.globalAuthHash)
                 ;
 
-            // @todo add success and failure handling, cancel if another is called
-            var xhr = $.ajax({
+            return $.ajax({
                 url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
                 type: 'POST',
                 dataType: 'json',
                 data: data
             });
-
-            return xhr;
         };
 
         $postProductInfoOthers.on("click", '.label-checkbox [type="checkbox"]', function (e) {
