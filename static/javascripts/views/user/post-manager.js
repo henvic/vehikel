@@ -87,7 +87,6 @@ define([
             }
         };
 
-        var $postProductType = $('#post-product-type');
         var $postProductMake = $('#post-product-make');
         var $postProductModel = $('#post-product-model');
         var $postProductEngine = $('#post-product-engine');
@@ -110,7 +109,6 @@ define([
 
         var $postStatus = $('#post-status');
 
-        var postProductTypeValue = $postProductType.val();
         var postProductMakeValue = $postProductMake.val();
         var postProductModelValue = $postProductModel.val();
         var postProductNameEditValue = $postProductNameEdit.val();
@@ -207,7 +205,13 @@ define([
 
         loadPostProductInfoEditingAreaElements();
 
-        vehiclesModel.setUp($postProductType, $postProductMake, $postProductModel);
+        vehiclesModel.setUp(
+            $postProductMake,
+            $postProductModel,
+            AppParams.postMake,
+            AppParams.postModel,
+            AppParams.postType
+        );
 
         var openPostProductNameEdit = function () {
             $postProductName.attr('unselectable', 'on').on('selectstart', false);
@@ -229,11 +233,10 @@ define([
 
         $postProductNameCancel.on("click", function (e) {
             closePostProductNameEdit();
-            $postProductType.val(postProductTypeValue);
-            vehiclesModel.loadPostProductMakes($postProductMake, postProductTypeValue, postProductMakeValue);
+            vehiclesModel.loadPostProductMakes($postProductMake, AppParams.postType, postProductMakeValue);
             vehiclesModel.loadPostProductModels(
                 $postProductModel,
-                postProductTypeValue,
+                AppParams.postType,
                 postProductMakeValue,
                 postProductModelValue
             );
@@ -244,7 +247,6 @@ define([
             e.preventDefault();
 
             var data = {
-                type: $postProductType.val(),
                 make: $postProductMake.val(),
                 model: $postProductModel.val(),
                 engine: $postProductEngine.val(),
@@ -266,15 +268,9 @@ define([
                     ;
                     closePostProductNameEdit();
 
-                    if (postProductTypeValue !== result.type) {
-                        loadPostProductInfo();
-                    }
-
-                    postProductTypeValue = result.type;
                     postProductMakeValue = result.make;
                     postProductModelValue = result.model;
                     postProductNameEditValue = result.name;
-                    $postProductType.val(result.type);
                     vehiclesModel.loadPostProductMakes($postProductMake, result.type, result.make);
                     vehiclesModel.loadPostProductModels($postProductModel, result.type, result.make, result.model);
                     $postProductNameEdit.val(result.name);
@@ -284,12 +280,8 @@ define([
                     var breadCrumbMakeLink = breadCrumbTypeLink + "&make=" + encodeURI(result.make);
                     var breadCrumbModelLink = breadCrumbMakeLink + "&model=" + encodeURI(result.model);
 
-                    var $breadCrumbType = $('#post-breadcrumb-type a');
                     var $breadCrumbMake = $('#post-breadcrumb-make a');
                     var $breadCrumbModel = $('#post-breadcrumb-model a');
-
-                    $breadCrumbType.text($('#post-product-type option:selected').text());
-                    $breadCrumbType.attr("href", breadCrumbTypeLink);
 
                     $breadCrumbMake.text(result.make);
                     $breadCrumbMake.attr("href", breadCrumbMakeLink);
@@ -314,18 +306,6 @@ define([
             e.preventDefault();
             savePostProductInfo();
         });
-
-        var loadPostProductInfo = function () {
-            $.ajax({
-                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId +
-                    "/edit?show-partial=post-product-info",
-                type: 'GET',
-                dataType: 'html',
-                success: function (result, textStatus, jqXHR) {
-                    updatePostProductInfo(result);
-                }
-            });
-        };
 
         var savePostProductInfo = function () {
             var data = $postProductInfoEditingArea.serialize();

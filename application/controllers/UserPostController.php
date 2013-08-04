@@ -106,6 +106,9 @@ class UserPostController extends Ml_Controller_Action
 
         $this->view->addJsParam("route", "user/post");
         $this->view->addJsParam("postId", $post["id"]);
+        $this->view->addJsParam("postType", $post["type"]);
+        $this->view->addJsParam("postMake", $post["make"]);
+        $this->view->addJsParam("postModel", $post["model"]);
         $this->view->addJsParam("postUid", $userInfo["id"]);
         $this->view->addJsParam("postUsername", $userInfo["username"]);
         $this->view->addJsParam("postGalleryImages", $galleryImages);

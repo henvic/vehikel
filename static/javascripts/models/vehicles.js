@@ -20,25 +20,14 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
         return vehicles;
     };
 
-    exports.setUp = function ($typeSelector, $makeSelector, $modelSelector, make, model, type) {
-        $typeSelector.on("change", function (e) {
-            $makeSelector.val("").attr("disabled", "disabled");
-            $modelSelector.val("").attr("disabled", "disabled");
-            exports.loadPostProductMakes($makeSelector, $typeSelector.val());
-        });
-
-        exports.loadPostProductMakes($makeSelector, $typeSelector.val(), $makeSelector.val());
-        exports.loadPostProductModels(
-            $modelSelector,
-            $typeSelector.val(),
-            $makeSelector.val(),
-            $modelSelector.val()
-        );
+    exports.setUp = function ($makeSelector, $modelSelector, make, model, type) {
+        exports.loadPostProductMakes($makeSelector, type, make);
+        exports.loadPostProductModels($modelSelector, type, make, model);
 
         $makeSelector.on("change", function (e) {
             $modelSelector.val("").attr("disabled", "disabled");
 
-            exports.loadPostProductModels($modelSelector, $typeSelector.val(), $makeSelector.val());
+            exports.loadPostProductModels($modelSelector, type, make);
         });
     };
 

@@ -36,11 +36,4 @@ $postForm = $this->postForm;
            maxlength="30" placeholder="Título" value="<?= $this->escape($post["name"]); ?>" />
     <input class="btn btn-primary" id="post-product-name-save" type="submit" value="Salvar" />
     <button class="btn" id="post-product-name-cancel" type="button">Cancelar</button>
-    <select id="post-product-type" class="input-small hidden">
-        <optgroup label="Veículo">
-            <option value="car" <?= ($post["type"] == "car") ? 'selected="selected" ' : ''; ?>>Carro</option>
-            <option value="motorcycle" <?= ($post["type"] == "motorcycle") ? 'selected="selected" ' : ''; ?>>Motocicleta</option>
-            <option value="boat" <?= ($post["type"] == "boat") ? 'selected="selected" ' : ''; ?>>Embarcação</option>
-        </optgroup>
-    </select>
 </form>
