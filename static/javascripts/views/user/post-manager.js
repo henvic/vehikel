@@ -118,10 +118,6 @@ define([
 
         var $editPostButton = $("#edit-post-button");
 
-        var $postStatusStaging = $("#post-status-staging");
-        var $postStatusActive = $("#post-status-active");
-        var $postStatusEnd = $("#post-status-end");
-
         var updatePostItem = function (name, value) {
             var data =
                 encodeURIComponent(name) + "=" + encodeURIComponent(value) +
@@ -488,51 +484,14 @@ define([
             confirmBeforeExit = ($postDescriptionTextEdit.val() !== postDescriptionTextEditValue);
         });
 
-        var setPostStatus = function (status, callbackfn) {
-            $.ajax({
-                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    hash: AppParams.globalAuthHash,
-                    status: status
-                },
-                success: function (result, textStatus, jqXHR) {
-                    if (result.status) {
-                        callbackfn(true);
-                    }
-                }
-            });
-        };
+        var lastUpdateStatusCall;
 
-        $postStatus.on("click", 'button', function (e) {
-            var $target = $(e.target);
-            var action = $target.data("action");
-
-            switch (action) {
-            case "end" :
-                setPostStatus("end", function (success) {
-                    if (success) {
-                        $(".publish", $postStatus).removeClass("hidden");
-                        $(".end", $postStatus).addClass("hidden");
-                        $postStatusStaging.addClass("hidden");
-                        $postStatusActive.addClass("hidden");
-                        $postStatusEnd.removeClass("hidden");
-                    }
-                });
-                break;
-            case "publish" :
-                setPostStatus("active", function (success) {
-                    if (success) {
-                        $(".publish", $postStatus).addClass("hidden");
-                        $(".end", $postStatus).removeClass("hidden");
-                        $postStatusStaging.addClass("hidden");
-                        $postStatusEnd.addClass("hidden");
-                        $postStatusActive.removeClass("hidden");
-                    }
-                });
-                break;
+        $("[name=status]", $postStatus).on("change", function (e) {
+            if (lastUpdateStatusCall) {
+                lastUpdateStatusCall.abort();
             }
+
+            lastUpdateStatusCall = updatePostItem("status", this.value);
         });
 
         YUI({filter:"raw"}).use("uploader", function(Y) {
