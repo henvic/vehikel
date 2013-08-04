@@ -485,11 +485,7 @@ define([
         });
 
         $postDescriptionTextEdit.on("paste", function (e) {
-            if ($postDescriptionTextEdit.val() !== postDescriptionTextEditValue) {
-                confirmBeforeExit = true;
-            } else {
-                confirmBeforeExit = false;
-            }
+            confirmBeforeExit = ($postDescriptionTextEdit.val() !== postDescriptionTextEditValue);
         });
 
         var setPostStatus = function (status, callbackfn) {
