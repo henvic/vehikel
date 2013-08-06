@@ -814,16 +814,16 @@ define([
 
             post.done(function () {
                 reloadImages();
-                $(videoLinkEl).addClass("video-link-feedback-done");
+                $(videoLinkEl).addClass("input-field-feedback-done");
                 setTimeout(function () {
-                    $(videoLinkEl).removeClass("video-link-feedback-done");
+                    $(videoLinkEl).removeClass("input-field-feedback-done");
                 }, 1000);
             });
 
             post.fail(function () {
-                $(videoLinkEl).addClass("video-link-feedback-fail");
+                $(videoLinkEl).addClass("input-field-feedback-fail");
                 setTimeout(function () {
-                    $(videoLinkEl).removeClass("video-link-feedback-fail");
+                    $(videoLinkEl).removeClass("input-field-feedback-fail");
                 }, 1000);
             });
         };
