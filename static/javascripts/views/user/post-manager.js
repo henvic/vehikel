@@ -87,6 +87,7 @@ define([
             }
         };
 
+        var $postProductType = $('#post-product-type');
         var $postProductMake = $('#post-product-make');
         var $postProductModel = $('#post-product-model');
         var $postProductEngine = $('#post-product-engine');
@@ -195,13 +196,7 @@ define([
             );
         };
 
-        vehiclesModel.setUp(
-            $postProductMake,
-            $postProductModel,
-            AppParams.postMake,
-            AppParams.postModel,
-            AppParams.postType
-        );
+        vehiclesModel.setUp($postProductType, $postProductMake, $postProductModel);
 
         var openPostProductNameEdit = function () {
             $postProductName.attr('unselectable', 'on').on('selectstart', false);
