@@ -68,7 +68,7 @@ class Ml_Form_UserPostNew extends Twitter_Bootstrap_Form_Horizontal
 
         $thisYear = gmdate("Y");
         $years = ["" => "-"];
-        for ($yearCount = $thisYear + 1; $yearCount >= $thisYear - 100; $yearCount--) {
+        for ($yearCount = (int) $thisYear + 1; $yearCount >= $thisYear - 100; $yearCount--) {
             $years[$yearCount] = $yearCount;
         }
 
