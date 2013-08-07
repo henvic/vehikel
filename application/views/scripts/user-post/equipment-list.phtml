@@ -26,7 +26,7 @@ $availableEquipment = $this->availableEquipment;
                             <input type="checkbox"
                                 <?= ($hasEquipment) ? ' checked="checked"' : '' ?>
                                    name="equipment[]"
-                                   value="<?= $this->escape($equipmentKey); ?>"
+                                   value="<?= $this->escape($equipmentKey); ?>" tabindex="400"
                                 >
                             <small><?= $this->escape($translatePosts->translate($equipmentKey)) ?></small>
                         </label>
