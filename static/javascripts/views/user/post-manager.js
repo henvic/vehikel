@@ -98,6 +98,8 @@ define([
         var $postProductNameCancel = $('#post-product-name-cancel');
 
         var $postProductMainInfo = $("#post-product-main-info");
+        var $postProductInfo = $("#post-product-info");
+        var $postProductInfoValue = $("#post-product-info .value");
         var $postProductInfoOthers = $("#post-product-info-others");
 
         var $postDescriptionText = $('#post-description-text');
@@ -198,6 +200,8 @@ define([
             );
         };
 
+        maskMoney($("#post-product-info #price"));
+
         vehiclesModel.setUp($postProductType, $postProductMake, $postProductModel);
 
         var openPostProductNameEdit = function () {
@@ -287,6 +291,132 @@ define([
                     ;
                 }
             });
+        });
+
+        var closeProductInfoField = function (name) {
+            //@todo escape the unescaped name var
+            var $value = $('[data-name="' + name + '"] .value');
+
+            var $action = $(".action", $value);
+            var $textValue = $(".text-value", $value);
+            var $editableValue = $(".editable-value", $value);
+
+            $value.addClass("value-on");
+            $textValue.removeClass("none");
+            $editableValue.addClass("none");
+            $action.addClass("edit-button").removeClass("save-button");
+            $(".icon-ok", $action).addClass("icon-edit").removeClass("icon-ok");
+        };
+
+        var filterProductInfoFieldData = function (name, value) {
+            if (name === "price" && value.substr(0, 3) === "R$ ") {
+                value = value.substr(3);
+            }
+
+            return value;
+        };
+
+        var updateProductInfoField = function (name) {
+            //@todo escape the unescaped name var
+            var $inputField = $('[name="' + name + '"]', $postProductInfo);
+            var $value = $('[data-name="' + name + '"] .value');
+
+            var $textValue = $(".text-value", $value);
+
+            var enteredValue = $inputField.val();
+
+            if ($value.data("saved-value").toString() === enteredValue) {
+                closeProductInfoField(name);
+                return;
+            }
+
+            var value = filterProductInfoFieldData(name, enteredValue);
+
+            var post = updatePostItem(name, value);
+
+            post.done(function () {
+                $($inputField).addClass("input-field-feedback-done");
+                var $action = $(".action", $value);
+                $action.removeAttr("tabindex");
+                setTimeout(function () {
+                    $($inputField).removeClass("input-field-feedback-done");
+
+                    var printName = enteredValue;
+
+                    if ($inputField[0].nodeName && $inputField[0].nodeName.toLowerCase() === "select") {
+                        printName = $(':selected', $inputField).text();
+                    }
+
+                    if (printName) {
+                        $textValue.text(printName);
+                    }
+
+                    if (! enteredValue) {
+                        $textValue.html('<span class="muted">-</span>');
+                    }
+
+                    closeProductInfoField(name);
+                    $value.data("saved-value", enteredValue);
+                }, 500);
+            });
+
+            post.fail(function () {
+                $($inputField).addClass("input-field-feedback-fail");
+                setTimeout(function () {
+                    $($inputField).removeClass("input-field-feedback-fail");
+                }, 500);
+            });
+        };
+
+        $postProductInfoValue.on("click", function (e) {
+            var $value = $(this.parentNode.getElementsByClassName("value")[0]);
+            var $action = $(".action", $value);
+
+            if ($action.hasClass("edit-button")) {
+                var $textValue = $(".text-value", $value);
+                var $editableValue = $(".editable-value", $value);
+
+                $value.removeClass("value-on");
+                $textValue.addClass("none");
+                $editableValue.removeClass("none").focus();
+                $action.removeClass("edit-button").addClass("save-button").attr("tabindex", "-1");
+                $(".icon-edit", $action).removeClass("icon-edit").addClass("icon-ok");
+
+                return;
+            }
+
+            if ($action.hasClass("save-button")) {
+                var targetName = e.target.nodeName.toLowerCase();
+                if (targetName === "button" || targetName === "i") {
+                    var name = this.parentNode.getAttribute("data-name");
+                    updateProductInfoField(name);
+                }
+            }
+        });
+
+        $postProductInfoValue.on("keydown", function (e) {
+            if (e.target.nodeName.toLowerCase() !== "button" && (e.keyCode === 9 || e.keyCode === 13)) {
+                var name = e.target.parentNode.parentNode.getAttribute("data-name");
+                updateProductInfoField(name);
+            }
+
+            //on the tab key go to next
+            if (e.keyCode === 9) {
+                var $nextItem;
+
+                //if the shift key is being pressed, let's go back instead
+                if (e.shiftKey) {
+                    $nextItem = $(e.target.parentNode).parent('tr').prev();
+                } else {
+                    $nextItem = $(e.target.parentNode).parent('tr').next();
+                }
+
+                if ($nextItem[0] !== undefined) {
+                    $nextItem.children(".value").click();
+                    $nextItem.find(".value .editable-value").focus();
+                    e.preventDefault();
+                }
+            }
         });
 
         var postDescriptionTextEditValue = $postDescriptionTextEdit.val();
