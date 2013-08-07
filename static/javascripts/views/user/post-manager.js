@@ -188,7 +188,9 @@ define([
         var maskMoney = function ($element) {
             $element.maskMoney(
                 {
-                    symbol: 'R$',
+                    symbol: 'R$ ',
+                    showSymbol: true,
+                    symbolStay: true,
                     thousands: '.',
                     decimal: ',',
                     defaultZero: false
