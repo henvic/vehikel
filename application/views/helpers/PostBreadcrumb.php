@@ -22,7 +22,7 @@ class Ml_View_Helper_PostBreadcrumb extends Zend_View_Helper_Abstract
         $content .= '<span class="hidden-phone">';
 
         if ($linksActive) {
-            $content .= '<a href="' . $this->view->url(array(), "search") . '?q=*">';
+            $content .= '<a href="' . $this->view->url(array(), "search") . '?q=">';
         }
 
         $content .= 'Carros, motos e outros';

@@ -14,7 +14,7 @@ define(["AppParams", "jquery", "underscore", "models/search", "text!templates/se
 
         var $asideSimilarOffers = $("#aside-similar-offers");
 
-        var formSerialized = "q=*";
+        var formSerialized = "q=";
 
         if (AppParams.postUsername !== undefined) {
             formSerialized += "&u=" + encodeURIComponent(AppParams.postUsername);
@@ -57,7 +57,7 @@ define(["AppParams", "jquery", "underscore", "models/search", "text!templates/se
 
                     var linkParamsArray = [];
 
-                    linkParamsArray.push("q=*");
+                    linkParamsArray.push("q=");
 
                     if (AppParams.postUsername !== undefined) {
                         linkParamsArray.push("u=" + encodeURIComponent(AppParams.postUsername));
