@@ -817,14 +817,14 @@ define([
                 $(videoLinkEl).addClass("input-field-feedback-done");
                 setTimeout(function () {
                     $(videoLinkEl).removeClass("input-field-feedback-done");
-                }, 1000);
+                }, 500);
             });
 
             post.fail(function () {
                 $(videoLinkEl).addClass("input-field-feedback-fail");
                 setTimeout(function () {
                     $(videoLinkEl).removeClass("input-field-feedback-fail");
-                }, 1000);
+                }, 500);
             });
         };
 
