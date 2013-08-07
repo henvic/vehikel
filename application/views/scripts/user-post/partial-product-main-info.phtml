@@ -46,65 +46,79 @@ if ($post["traction"]) {
 }
 
 $postProductInfoData = [
-    [
+    "price" => [
         "name" => "price",
         "title" => "Preço",
         "input_value" => $priceOnInput,
         "value" => $price,
-        "input" =>
-        '<input type="text" name="price" id="price" value="' .
-        $this->escape($priceOnInput) . '" placeholder="R$ 00.000,00" ' .
-        'class="input-medium input-main-info input-text-main-info editable-value none" maxlength="16">'
+        "input" => ""
     ],
-    [
+    "model_year" => [
         "name" => "model_year",
         "title" => "Ano",
         "input_value" => $post["model_year"],
         "value" => $post["model_year"],
-        "input" => $postForm->getElement("model_year")->removeDecorator("wrapper")
-            ->removeDecorator("label")
-            ->removeDecorator("htmltag")
-            ->removeDecorator("description")
+        "input" => ""
     ],
-    [
+    "km" => [
         "name" => "km",
         "title" => "km",
         "input_value" => $post["km"],
         "value" => $km,
-        "input" => '<input type="text" name="km" id="km" value="' . $this->escape($post["km"]) . '"
- class="input-mini input-main-info input-text-main-info editable-value none" maxlength="16">'
+        "input" => ""
     ],
-    [
+    "fuel" => [
         "name" => "fuel",
         "title" => "Combustível",
         "input_value" => $post["fuel"],
         "value" => $fuel,
-        "input" => $postForm->getElement("fuel")->removeDecorator("wrapper")
-            ->removeDecorator("label")
-            ->removeDecorator("htmltag")
-            ->removeDecorator("description")
+        "input" => ""
     ],
-    [
+    "transmission" => [
         "name" => "transmission",
         "title" => "Câmbio",
         "input_value" => $post["transmission"],
         "value" => $transmission,
-        "input" => $postForm->getElement("transmission")->removeDecorator("wrapper")
-            ->removeDecorator("label")
-            ->removeDecorator("htmltag")
-            ->removeDecorator("description")
+        "input" => ""
     ],
-    [
+    "traction" => [
         "name" => "traction",
         "title" => "Tração",
         "input_value" => $post["traction"],
         "value" => $traction,
-        "input" => $postForm->getElement("traction")->removeDecorator("wrapper")
-            ->removeDecorator("label")
-            ->removeDecorator("htmltag")
-            ->removeDecorator("description")
+        "input" => ""
     ]
 ];
+
+if ($editable) {
+    $postProductInfoData["price"]["input"] = '<input type="text" name="price" id="price" value="' .
+        $this->escape($priceOnInput) . '" placeholder="R$ 00.000,00" ' .
+        'class="input-medium input-main-info input-text-main-info editable-value none" maxlength="16">';
+
+    $postProductInfoData["model_year"]["input"] = $postForm->getElement("model_year")->removeDecorator("wrapper")
+        ->removeDecorator("label")
+        ->removeDecorator("htmltag")
+        ->removeDecorator("description");
+
+    $postProductInfoData["km"]["input"] = '<input type="text" name="km" id="km" value="' .
+        $this->escape($post["km"]) . '" class="input-mini input-main-info input-text-main-info editable-value none"' .
+        ' maxlength="16">';
+
+    $postProductInfoData["fuel"]["input"] = $postForm->getElement("fuel")->removeDecorator("wrapper")
+        ->removeDecorator("label")
+        ->removeDecorator("htmltag")
+        ->removeDecorator("description");
+
+    $postProductInfoData["transmission"]["input"] = $postForm->getElement("transmission")->removeDecorator("wrapper")
+        ->removeDecorator("label")
+        ->removeDecorator("htmltag")
+        ->removeDecorator("description");
+
+    $postProductInfoData["traction"]["input"] = $postForm->getElement("traction")->removeDecorator("wrapper")
+        ->removeDecorator("label")
+        ->removeDecorator("htmltag")
+        ->removeDecorator("description");
+}
 ?>
 <table id="post-product-info"
  class="post-product-info table table-striped table-hover<?= ($editable) ? ' editable' : '' ?>"><tbody>
