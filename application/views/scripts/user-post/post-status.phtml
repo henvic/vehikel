@@ -6,15 +6,15 @@ $post = $this->post;
 <label for="status" data-rel="tooltip" data-title="status do anúncio">
     <span class="hidden">status do anúncio</span><i class="icon-tasks"></i>
 </label>
-    <label class=" radio" for="status-staging">
+    <label class="radio" for="status-staging">
         <input type="radio" name="status" id="status-staging" value="staging" tabindex="140"
         <?php if ($post["status"] === Ml_Model_Posts::STATUS_STAGING) echo ' checked="checked"'; ?>>&nbsp;pausado
     </label>&nbsp;
-    <label class=" radio" for="status-active">
+    <label class="radio" for="status-active">
         <input type="radio" name="status" id="status-active" value="active" tabindex="140"
         <?php if ($post["status"] === Ml_Model_Posts::STATUS_ACTIVE) echo ' checked="checked"'; ?>>&nbsp;ativo
     </label>&nbsp;
-    <label class=" radio" for="status-end">
+    <label class="radio" for="status-end">
         <input type="radio" name="status" id="status-end" value="end" tabindex="140"
         <?php if ($post["status"] === Ml_Model_Posts::STATUS_END) echo ' checked="checked"'; ?>>&nbsp;finalizado
     </label>
