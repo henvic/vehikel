@@ -20,7 +20,7 @@ if ($post["type"] == "car" && ($post["armor"] || $editable)) {
 <?php
 if ($editable) {
 ?>
-<input name="armor" type="checkbox"<?= ($post["armor"]) ? ' checked="checked"' : ''; ?> />
+<input name="armor" type="checkbox"<?= ($post["armor"]) ? ' checked="checked"' : ''; ?> tabindex="120" />
 <?php
 }
 ?>
@@ -38,7 +38,7 @@ data-rel="tooltip" data-placement="bottom" title="para deficientes físicos">
 <?php
 if ($editable) {
 ?>
-<input name="handicapped" type="checkbox"<?= ($post["handicapped"]) ? ' checked="checked"' : ''; ?> />
+<input name="handicapped" type="checkbox"<?= ($post["handicapped"]) ? ' checked="checked"' : ''; ?> tabindex="121" />
 <?php
 }
 ?>
