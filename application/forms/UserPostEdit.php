@@ -91,7 +91,7 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
             'label'      => 'Ano do modelo',
             'required'   => false,
             'multiOptions' => $years,
-            'class' => 'input-small'
+            'class' => 'input-small input-main-info editable-value none'
         ));
 
         $engineCcs = ["" => "-"];
@@ -117,7 +117,8 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
                     "front" => "Frontal",
                     "rear" => "Traseira",
                     "4x4" => "4x4"
-                )
+                ),
+                'class' => 'input-small input-main-info editable-value none'
             )
         );
 
@@ -131,7 +132,8 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
                     "" => "-",
                     "manual" => "Manual",
                     "automatic" => "Automático"
-                )
+                ),
+                'class' => 'input-small input-main-info editable-value none'
             )
         );
 
@@ -145,7 +147,8 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
                     "ethanol" => "Etanol",
                     "diesel" => "Diesel",
                     "other" => "Outro"
-                )
+                ),
+                'class' => 'input-small input-main-info editable-value none'
             )
         );
 
