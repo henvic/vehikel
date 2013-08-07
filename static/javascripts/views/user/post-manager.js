@@ -853,7 +853,7 @@ define([
                             selected = true;
                         }
                     });
-                }, 1500);
+                }, 300);
 
                 $(".clear-selection", $cropPictureModal).on("click", function (e) {
                     jCropApi.release();
