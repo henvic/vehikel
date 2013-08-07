@@ -13,7 +13,7 @@ $availableEquipment = $this->availableEquipment;
     <?php
     foreach ($availableEquipment as $equipmentGroupKey => $equipmentGroup) {
         ?>
-        <dt><?= $this->escape($translatePosts->translate($equipmentGroupKey)); ?></dt>
+        <dt class="hidden"><?= $this->escape($translatePosts->translate($equipmentGroupKey)); ?></dt>
         <dd>
             <ul>
                 <?php
