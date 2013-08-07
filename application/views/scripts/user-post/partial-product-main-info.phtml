@@ -10,7 +10,140 @@ $post = $this->post;
 $editable = $this->editable;
 
 $availableEquipment = $this->availableEquipment;
+
+$price = '';
+$priceOnInput = '';
+
+if ($post["price"]) {
+    $price = new Zend_Currency(array("symbol" => "R$ "), "pt_BR");
+    $price->setValue($post["price"] / 100);
+
+    $priceOnInput = "R$ " . number_format($post["price"] / 100, 2, ",", ".");
+}
+
+$km = '';
+
+if ($post["km"]) {
+    $km = number_format($post["km"], 0, ".", ".");
+}
+
+$fuel = '';
+
+if ($post["fuel"]) {
+    $fuel = $translatePosts->translate($post["fuel"]);
+}
+
+$transmission = '';
+
+if ($post["transmission"]) {
+    $transmission = $translatePosts->translate($post["transmission"]);
+}
+
+$traction = '';
+
+if ($post["traction"]) {
+    $traction = $translatePosts->translate($post["traction"]);
+}
+
+$postProductInfoData = [
+    [
+        "name" => "price",
+        "title" => "Preço",
+        "input_value" => $priceOnInput,
+        "value" => $price,
+        "input" =>
+        '<input type="text" name="price" id="price" value="' .
+        $this->escape($priceOnInput) . '" placeholder="R$ 00.000,00" ' .
+        'class="input-medium input-main-info input-text-main-info editable-value none" maxlength="16">'
+    ],
+    [
+        "name" => "model_year",
+        "title" => "Ano",
+        "input_value" => $post["model_year"],
+        "value" => $post["model_year"],
+        "input" => $postForm->getElement("model_year")->removeDecorator("wrapper")
+            ->removeDecorator("label")
+            ->removeDecorator("htmltag")
+            ->removeDecorator("description")
+    ],
+    [
+        "name" => "km",
+        "title" => "km",
+        "input_value" => $post["km"],
+        "value" => $km,
+        "input" => '<input type="text" name="km" id="km" value="' . $this->escape($post["km"]) . '"
+ class="input-mini input-main-info input-text-main-info editable-value none" maxlength="16">'
+    ],
+    [
+        "name" => "fuel",
+        "title" => "Combustível",
+        "input_value" => $post["fuel"],
+        "value" => $fuel,
+        "input" => $postForm->getElement("fuel")->removeDecorator("wrapper")
+            ->removeDecorator("label")
+            ->removeDecorator("htmltag")
+            ->removeDecorator("description")
+    ],
+    [
+        "name" => "transmission",
+        "title" => "Câmbio",
+        "input_value" => $post["transmission"],
+        "value" => $transmission,
+        "input" => $postForm->getElement("transmission")->removeDecorator("wrapper")
+            ->removeDecorator("label")
+            ->removeDecorator("htmltag")
+            ->removeDecorator("description")
+    ],
+    [
+        "name" => "traction",
+        "title" => "Tração",
+        "input_value" => $post["traction"],
+        "value" => $traction,
+        "input" => $postForm->getElement("traction")->removeDecorator("wrapper")
+            ->removeDecorator("label")
+            ->removeDecorator("htmltag")
+            ->removeDecorator("description")
+    ]
+];
 ?>
+<table id="post-product-info"
+ class="post-product-info table table-striped table-hover<?= ($editable) ? ' editable' : '' ?>"><tbody>
+<?php
+foreach ($postProductInfoData as $productInfo) {
+?>
+<tr class="element" data-name="<?= $this->escape($productInfo["name"]); ?>">
+<td class="name"><strong class="pull-right"><?= $this->escape($productInfo["title"]); ?></strong></td>
+<td class="value value-on" data-saved-value="<?= $this->escape($productInfo["input_value"]); ?>">
+<span class="text-value text-value-<?= $this->escape($productInfo["name"]); ?>">
+<?php
+$escapedValue = '<span class="muted">-</span>';
+
+if ($productInfo["value"]) {
+    $escapedValue = $this->escape($productInfo["value"]);
+}
+
+echo $escapedValue;
+?>
+</span>
+<?php
+if ($editable) {
+?>
+<label for="<?= $this->escape($productInfo["name"]); ?>" class="hidden">
+<?= $this->escape($productInfo["title"]); ?></label>
+<?= $productInfo["input"]; ?>
+<span class="pull-right">
+<button class="btn btn-mini pull-right edit-button action" tabindex="100"><i class="icon-edit"></i></button>
+</span>
+<?php
+}
+?>
+</td>
+</tr>
+<?php
+}
+unset($productInfo);
+?>
+</tbody></table><!-- end of .post-product-info -->
 <div class="post-product-info-others" id="post-product-info-others">
 <?php
 if ($post["type"] == "car" && ($post["armor"] || $editable)) {
