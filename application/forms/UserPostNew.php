@@ -21,7 +21,7 @@ class Ml_Form_UserPostNew extends Twitter_Bootstrap_Form_Horizontal
         $this->addElement('select', 'type', array(
             'label'      => 'Veículo',
             'required'   => true,
-            'multiOptions' => ["car" => "Carro", "motorcycle" => "Motocicleta", "boat" => "Embarcação"],
+            'multiOptions' => ["car" => "Carro", "motorcycle" => "Motocicleta"],
             'class' => 'input-small',
             'id' => 'post-product-type-new'
         ));
