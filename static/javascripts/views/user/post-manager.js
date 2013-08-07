@@ -848,10 +848,24 @@ define([
 
                         var cropOptions = picture.crop_options;
 
-                        if (cropOptions.w > 0 && cropOptions.h > 0) {
-                            jCropApi.animateTo([cropOptions.x, cropOptions.y, cropOptions.x2, cropOptions.y2]);
-                            selected = true;
+                        var crop = {
+                            x : width * 0.1,
+                            y : height * 0.1,
+                            x2 : width * 0.9,
+                            y2 : height * 0.9
+                        };
+
+                        if (cropOptions && cropOptions.w > 0 && cropOptions.h > 0) {
+                            crop = {
+                                x : cropOptions.x,
+                                y : cropOptions.y,
+                                x2 : cropOptions.x2,
+                                y2 : cropOptions.y2
+                            };
                         }
+
+                        jCropApi.animateTo([crop.x, crop.y, crop.x2, crop.y2]);
+                        selected = true;
                     });
                 }, 300);
 
