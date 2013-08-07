@@ -384,11 +384,7 @@ define([
         CKEDITOR.replace("post-description-text-edit", ckeditorConfig);
 
         $postDescriptionTextEdit.on("keyup", function (e) {
-            if ($postDescriptionTextEdit.val() !== postDescriptionTextEditValue) {
-                confirmBeforeExit = true;
-            } else {
-                confirmBeforeExit = false;
-            }
+            confirmBeforeExit = ($postDescriptionTextEdit.val() !== postDescriptionTextEditValue);
         });
 
         $postDescriptionTextEdit.on("paste", function (e) {
