@@ -75,7 +75,7 @@ if ($post["youtube_video"]) {
 
 $this->metaOgp = $metaOgp;
 
-$breadCrumbTypeLink = $searchLink . "?q=*&amp;type=" . urlencode(mb_strtolower($post["type"]));
+$breadCrumbTypeLink = $searchLink . "?q=&amp;type=" . urlencode(mb_strtolower($post["type"]));
 $breadCrumbMakeLink = $breadCrumbTypeLink . "&amp;make=" . urlencode(mb_strtolower($post["make"]));
 $breadCrumbModelLink = $breadCrumbMakeLink . "&amp;model=" . urlencode(mb_strtolower($post["model"]));
 $breadCrumbLinksActive = ($post["status"] === Ml_Model_Posts::STATUS_ACTIVE);
