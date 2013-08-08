@@ -649,13 +649,7 @@ define([
                 //Get the last y point
                 var y = e.target.lastXY[1];
                 //is it greater than the lastY var?
-                if (y < lastY) {
-                    //We are going up
-                    goingUp = true;
-                } else {
-                    //We are going down.
-                    goingUp = false;
-                }
+                goingUp = (y < lastY);
                 //Cache for next check
                 lastY = y;
             });
