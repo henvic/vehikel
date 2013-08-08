@@ -603,20 +603,38 @@ input.no-spin-button::-webkit-inner-spin-button {
 
 .post-equipments-list {
     margin-top: 0;
+
     .has {
         color: #6a6a6a;
     }
+
     .has-not {
-        color: #c7c7c7;
+        color: #858585;
     }
 
     &.uneditable {
         input {
             cursor: default;
+            visibility: hidden;
         }
 
         label {
             cursor: text;
+        }
+
+        .has-not {
+            color: #c7c7c7;
+        }
+
+        .has:before {
+            content: "✓";
+            margin-left: -17px;
+        }
+
+        .has-not:before {
+            content: "▢";
+            opacity: 0.15;
+            margin-left: -19px;
         }
     }
 
