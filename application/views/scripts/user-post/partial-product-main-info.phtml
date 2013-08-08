@@ -125,10 +125,11 @@ if ($editable) {
 <?php
 foreach ($postProductInfoData as $productInfo) {
 ?>
-<tr class="element" data-name="<?= $this->escape($productInfo["name"]); ?>">
+<tr class="element tr-<?= $this->escape($productInfo["name"]); ?>"
+data-name="<?= $this->escape($productInfo["name"]); ?>">
 <td class="name"><strong class="pull-right"><?= $this->escape($productInfo["title"]); ?></strong></td>
 <td class="value value-on" data-saved-value="<?= $this->escape($productInfo["input_value"]); ?>">
-<span class="text-value text-value-<?= $this->escape($productInfo["name"]); ?>">
+<span class="text-value">
 <?php
 $escapedValue = '<span class="muted">-</span>';
 
