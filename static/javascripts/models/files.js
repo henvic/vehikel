@@ -22,22 +22,25 @@ define([], function () {
 
         if ((bytes >= 0) && (bytes < kilobyte)) {
             return bytes + ' B';
-
-        } else if ((bytes >= kilobyte) && (bytes < megabyte)) {
-            return (bytes / kilobyte).toFixed(precision) + ' KB';
-
-        } else if ((bytes >= megabyte) && (bytes < gigabyte)) {
-            return (bytes / megabyte).toFixed(precision) + ' MB';
-
-        } else if ((bytes >= gigabyte) && (bytes < terabyte)) {
-            return (bytes / gigabyte).toFixed(precision) + ' GB';
-
-        } else if (bytes >= terabyte) {
-            return (bytes / terabyte).toFixed(precision) + ' TB';
-
-        } else {
-            return bytes + ' B';
         }
+
+        if ((bytes >= kilobyte) && (bytes < megabyte)) {
+            return (bytes / kilobyte).toFixed(precision) + ' KB';
+        }
+
+        if ((bytes >= megabyte) && (bytes < gigabyte)) {
+            return (bytes / megabyte).toFixed(precision) + ' MB';
+        }
+
+        if ((bytes >= gigabyte) && (bytes < terabyte)) {
+            return (bytes / gigabyte).toFixed(precision) + ' GB';
+        }
+
+        if (bytes >= terabyte) {
+            return (bytes / terabyte).toFixed(precision) + ' TB';
+        }
+
+        return bytes + ' B';
     };
 
     return exports;
