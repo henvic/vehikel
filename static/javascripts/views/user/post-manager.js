@@ -155,20 +155,7 @@ define([
             $(window).scrollTop($postProductNameEditingArea.position().top);
         });
 
-        var maskMoney = function ($element) {
-            $element.maskMoney(
-                {
-                    symbol: 'R$ ',
-                    showSymbol: true,
-                    symbolStay: true,
-                    thousands: '.',
-                    decimal: ',',
-                    defaultZero: false
-                }
-            );
-        };
-
-        maskMoney($("#post-product-info #price"));
+        vehiclesModel.maskMoney($("#post-product-info #price"));
 
         vehiclesModel.setUp($postProductType, $postProductMake, $postProductModel);
 

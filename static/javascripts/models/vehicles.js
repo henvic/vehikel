@@ -114,5 +114,18 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
         }
     };
 
+    exports.maskMoney = function ($element) {
+        $element.maskMoney(
+            {
+                symbol: 'R$ ',
+                showSymbol: true,
+                symbolStay: true,
+                thousands: '.',
+                decimal: ',',
+                defaultZero: false
+            }
+        );
+    };
+
     return exports;
 });
