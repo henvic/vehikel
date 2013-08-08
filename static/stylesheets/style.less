@@ -535,9 +535,19 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .post-product-info {
-    .text-value-price {
-        color: @redT;
-        font-weight: bold;
+    .tr-price {
+        .name strong {
+            display: none;
+        }
+        .value input {
+            margin-left: -40px;
+        }
+        .text-value {
+            margin-left: -40px;
+            color: @redT;
+            font-weight: bold;
+            font-size: 150%;
+        }
     }
 }
 
