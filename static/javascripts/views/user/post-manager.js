@@ -7,6 +7,7 @@ define([
     'yui',
     'underscore',
     'models/vehicles',
+    'models/files',
     'plugins/ckeditor-config',
     'text!templates/posts/manager-gallery.html',
     'text!templates/posts/manager-picture.html',
@@ -20,46 +21,13 @@ define([
         YUI,
         underscore,
         vehiclesModel,
+        filesModel,
         ckeditorConfig,
         postsManagerGalleryTemplate,
         postsManagerPictureTemplate,
         cropPictureTemplate
         ) {
         "use strict";
-
-        /**
-         * Convert number of bytes into human readable format
-         * from http://codeaid.net/javascript/convert-size-in-bytes-to-human-readable-format-(javascript)
-         *
-         * @param integer bytes Number of bytes to convert
-         * @param integer precision Number of digits after the decimal separator
-         * @return string
-         */
-        var bytesToSize = function (bytes, precision) {
-            var kilobyte = 1024;
-            var megabyte = kilobyte * 1024;
-            var gigabyte = megabyte * 1024;
-            var terabyte = gigabyte * 1024;
-
-            if ((bytes >= 0) && (bytes < kilobyte)) {
-                return bytes + ' B';
-
-            } else if ((bytes >= kilobyte) && (bytes < megabyte)) {
-                return (bytes / kilobyte).toFixed(precision) + ' KB';
-
-            } else if ((bytes >= megabyte) && (bytes < gigabyte)) {
-                return (bytes / megabyte).toFixed(precision) + ' MB';
-
-            } else if ((bytes >= gigabyte) && (bytes < terabyte)) {
-                return (bytes / gigabyte).toFixed(precision) + ' GB';
-
-            } else if (bytes >= terabyte) {
-                return (bytes / terabyte).toFixed(precision) + ' TB';
-
-            } else {
-                return bytes + ' B';
-            }
-        };
 
         var confirmBeforeExit = false;
 
@@ -578,7 +546,7 @@ define([
                     }
 
                     Y.each(fileList, function (fileInstance) {
-                        var fileSize = bytesToSize(fileInstance.get("size"), 2);
+                        var fileSize = filesModel.convertBytesToSize(fileInstance.get("size"), 2);
 
                         fileTable.append('<tr id="'+ fileInstance.get("id") + "_row" + '"><td><strong>' +
                             fileInstance.get("name") + '</strong></td>' +
