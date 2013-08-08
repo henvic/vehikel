@@ -868,18 +868,6 @@ define([
             });
         };
 
-        var parseYouTubeIdFromLink = function (link, softPass) {
-            //from http://stackoverflow.com/posts/10591582/revisions
-            var id = link.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
-            if(id !== null) {
-                return id[1];
-            } else if (softPass) {
-                return link;
-            } else {
-                return "";
-            }
-        };
-
         var buildVideoLink = function (id) {
             return (id) ? "http://www.youtube.com/watch?v=" + encodeURIComponent(videoId) : "";
         };
@@ -961,7 +949,7 @@ define([
 
             $galleryManager.on("submit", ".video-form", function (e) {
                 e.preventDefault();
-                var youTubeId = parseYouTubeIdFromLink(getVideoLinkElement().value, true);
+                var youTubeId = vehiclesModel.parseYouTubeIdFromLink(getVideoLinkElement().value, true);
                 updateVideoId(youTubeId);
             });
 
