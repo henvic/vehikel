@@ -130,13 +130,16 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
     exports.parseYouTubeIdFromLink = function (link, softPass) {
         //from http://stackoverflow.com/posts/10591582/revisions
         var id = link.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+
         if(id !== null) {
             return id[1];
-        } else if (softPass) {
-            return link;
-        } else {
-            return "";
         }
+
+        if (softPass) {
+            return link;
+        }
+
+        return "";
     };
 
     return exports;
