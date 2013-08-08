@@ -87,7 +87,7 @@ class Ml_Form_UserPostNew extends Twitter_Bootstrap_Form_Horizontal
         }
 
         $this->addElement('select', 'engine', array(
-            'label' => 'Motor',
+            'label' => 'cc',
             'required' => false,
             'multiOptions' => ["Motor" => $engineCcs],
             'id' => 'post-product-engine',
