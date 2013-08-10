@@ -29,7 +29,29 @@ $postForm = $this->postForm;
     </select>
     <?php
     $postForm->engine->setDecorators(array('ViewHelper'));
-    echo $postForm->engine;
+
+    if ($post["type"] != Ml_Model_Posts::TYPE_CAR) {
+        echo $postForm->engine;
+    } else {
+    ?>
+        <select name="engine" id="post-product-engine" class="input-mini">
+            <optgroup id="post-product-engine-optgroup-Motor" label="Motor">
+                <option value="">-</option>
+<?php
+        for ($engineCc = 0.8; $engineCc <= 6.8; $engineCc += 0.1) {
+            $engineCcFormated = number_format($engineCc, 1);
+?>
+<option value="<?= $this->escape($engineCcFormated); ?>"
+        <?= ($engineCcFormated == $post["engine"]) ? 'selected="selected"' : "" ?>>
+    <?= $this->escape($engineCcFormated); ?>
+</option>
+<?php
+        }
+?>
+            </optgroup>
+        </select>
+<?php
+    }
     ?>
 
     <input type="text" id="post-product-name-edit" class="post-product-name-edit input-large"

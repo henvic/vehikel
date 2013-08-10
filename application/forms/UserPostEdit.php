@@ -94,17 +94,9 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
             'class' => 'input-small input-main-info editable-value none'
         ));
 
-        $engineCcs = ["" => "-"];
-
-        for ($engineCc = 0.8; $engineCc <= 6.8; $engineCc += 0.1) {
-            $engineCcFormated = number_format($engineCc, 1);
-            $engineCcs[$engineCcFormated] = $engineCcFormated;
-        }
-
-        $this->addElement('select', 'engine', array(
+        $this->addElement('text', 'engine', array(
             'label' => 'Motor',
             'required' => false,
-            'multiOptions' => ["Motor" => $engineCcs],
             'id' => 'post-product-engine',
             'class' => 'input-mini'
         ));
