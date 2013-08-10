@@ -255,31 +255,31 @@ module.exports = function (util, events, http, settings) {
                 "make": {
                     "terms" : {
                         "field" : "make.lowercase",
-                        "size" : 10
+                        "size" : 30
                     }
                 },
                 "model" : {
                     "terms" : {
                         "field" : "model.lowercase",
-                        "size" : 10
+                        "size" : 30
                     }
                 },
                 "year": {
                     "terms" : {
                         "field" : "year",
-                            "size" : 10
+                            "size" : 30
                     }
                 },
                 "where" : {
                     "terms" : {
                         "field" : "user.where.lowercase",
-                        "size" : 10
+                        "size" : 30
                     }
                 },
                 "u" : {
                     "terms" : {
                         "field" : "user.username.lowercase",
-                        "size" : 10
+                        "size" : 30
                     }
                 },
                 "transmission" : {
