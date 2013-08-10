@@ -14,27 +14,91 @@
     </dd>
     <dt>Marca</dt>
     <dd>
+<%
+var makeTermsLength = facets["make"].terms.length;
+
+if (makeTermsLength > 4) {
+%>
+        <input type="checkbox" id="read-more-make" class="read-more-checkbox" role="button">
+<%
+}
+%>
         <ul>
             <%= termListHtmlElements("make", facets["make"].terms, formSerialized, currentQueryStringParams) %>
         </ul>
+<%
+if (makeTermsLength > 4) {
+%>
+        <label for="read-more-make" class="read-more-label"><span class="hidden">mostrar tudo</span></label>
+<%
+}
+%>
     </dd>
     <dt>Modelo</dt>
     <dd>
+<%
+var modelTermsLength = facets["model"].terms.length;
+
+if (modelTermsLength > 4) {
+%>
+        <input type="checkbox" id="read-more-model" class="read-more-checkbox" role="button">
+<%
+}
+%>
         <ul>
             <%= termListHtmlElements("model", facets["model"].terms, formSerialized, currentQueryStringParams) %>
         </ul>
+<%
+if (modelTermsLength > 4) {
+%>
+        <label for="read-more-model" class="read-more-label"><span class="hidden">mostrar tudo</span></label>
+<%
+}
+%>
     </dd>
     <dt>Localização</dt>
     <dd>
+<%
+var whereTermsLength = facets["where"].terms.length;
+
+if (whereTermsLength > 4) {
+%>
+        <input type="checkbox" id="read-more-where" class="read-more-checkbox" role="button">
+<%
+}
+%>
         <ul>
             <%= termListHtmlElements("where", facets["where"].terms, formSerialized, currentQueryStringParams) %>
         </ul>
+<%
+if (whereTermsLength > 4) {
+%>
+        <label for="read-more-where" class="read-more-label"><span class="hidden">mostrar tudo</span></label>
+<%
+}
+%>
     </dd>
     <dt>Ano do modelo</dt>
     <dd>
+<%
+var yearTermsLength = facets["year"].terms.length;
+
+if (yearTermsLength > 4) {
+%>
+        <input type="checkbox" id="read-more-year" class="read-more-checkbox" role="button">
+<%
+}
+%>
         <ul>
             <%= termListHtmlElements("year", facets["year"].terms, formSerialized, currentQueryStringParams) %>
         </ul>
+<%
+if (yearTermsLength > 4) {
+%>
+        <label for="read-more-year" class="read-more-label"><span class="hidden">mostrar tudo</span></label>
+<%
+}
+%>
     </dd>
     <dt>Preço</dt>
     <dd>

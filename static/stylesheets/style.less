@@ -70,6 +70,50 @@ body
     }
 }
 
+.search-facets {
+    li {
+        overflow: hidden;
+    }
+
+    ul li:nth-child(n+5) {
+        opacity: 0;
+        height: 0;
+        -webkit-transition: all .2s cubic-bezier(1,.21,.89,.34);
+        -moz-transition: all .2s cubic-bezier(1,.21,.89,.34);
+        transition: all .2s cubic-bezier(1,.21,.89,.34);
+    }
+
+    .read-more-checkbox:checked ~ ul li:nth-child(n+5) {
+        opacity: 1;
+        height: 18px;
+        -webkit-transition: all .2s cubic-bezier(1,.21,.89,.34);
+        -moz-transition: all .2s cubic-bezier(1,.21,.89,.34);
+        transition: all .2s cubic-bezier(1,.21,.89,.34);
+    }
+
+    .read-more-checkbox {
+        display: none;
+    }
+
+    .read-more-label {
+        display: block;
+        margin-top: -10px;
+        width: 60px;
+    }
+
+    .read-more-checkbox ~ .read-more-label::after {
+        content: "▢ mostrar tudo";
+        width: 140px;
+        font-size: 50%;
+        display: block;
+        padding-left: 2px;
+    }
+
+    .read-more-checkbox:checked ~ .read-more-label::after {
+        content: "✓ mostrar tudo";
+    }
+}
+
 .search-area {
     float: right;
     margin-top: 15px;
