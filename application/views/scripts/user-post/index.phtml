@@ -83,10 +83,10 @@ $breadCrumbModelLink = $breadCrumbMakeLink . "&amp;model=" . urlencode(mb_strtol
     <div class="row">
         <!-- include side facets -->
         <?= $this->render("search/facets.phtml"); ?>
-        <div class="span9">
+        <div class="span10">
             <!-- begin of top bar for the user post -->
             <div class="row">
-                <div class="span9">
+                <div class="span10">
                     <?php
                     if ($this->editable) {
                         ?>
@@ -117,11 +117,11 @@ if ($this->editable) {
     echo $this->render("user-post/product-name-editing-area.phtml");
 }
 ?>
-                </div><!-- end of .span9 -->
+                </div><!-- end of .span10 -->
             </div><!-- end of the top bar for the user post -->
             <!-- begin of the gallery + main info for the user post -->
             <div class="row">
-                <div class="span5">
+                <div class="span6">
                     <div id="galleria" class="galleria"></div>
                 </div>
                 <!-- begin of the main info -->
@@ -139,12 +139,12 @@ if ($this->editable) {
 ?>
             <!-- begin of post-info-tabs .row -->
             <div class="row">
-                <div class="span9">
+                <div class="span10">
                     <ul class="nav nav-tabs post-info-tabs" id="post-info-tabs">
                         <li class="active"><a href="#post-description">Descrição</a></li>
                         <li><a href="#post-contact"><i class="icon-envelope"></i> Enviar proposta</a></li>
                     </ul>
-                </div><!-- end of .span9 -->
+                </div><!-- end of .span10 -->
             </div><!-- end of post-info-tabs .row -->
             <!-- begin of post-product description .row -->
             <div class="row">
@@ -164,7 +164,7 @@ if ($this->editable) {
                         </script>
                     </div><!-- end of .sharing -->
                 </div>
-                <div class="span5 post-product-tabs">
+                <div class="span6 post-product-tabs">
                     <div class="tab-content">
                         <div class="tab-pane active" id="post-description">
                             <div id="post-description-text" class="post-description-text <?= ($this->editable) ? 'post-editable-description' : ''; ?>

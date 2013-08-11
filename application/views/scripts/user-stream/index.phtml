@@ -39,11 +39,11 @@ $this->metaOgp = $metaOgp;
 <div class="container">
 <div class="row">
     <?= $this->render("search/facets.phtml"); ?>
-    <div class="span9">
+    <div class="span10">
         <?= $this->render("user-post/address.phtml"); ?>
         &nbsp;
         <div class="row">
-            <div class="span7">
+            <div class="span8">
                 <span class="muted"><?php
                 if (! $paginator->getTotalItemCount()) {
                     echo 'Zero';
@@ -88,7 +88,7 @@ $this->metaOgp = $metaOgp;
             </div><!-- end of .span2 -->
         </div>
         <div class="row">
-            <div class="span9">
+            <div class="span10">
                 &nbsp;
                 <div id="search-results">
                     <?php
@@ -114,8 +114,8 @@ $this->metaOgp = $metaOgp;
                 <?php
                 echo $this->paginationControl($paginator, null, "user-stream/pagination.phtml");
                 ?>
-            </div><!-- end of .span9 -->
-    </div><!-- end of .span9 -->
+            </div><!-- end of .span10 -->
+    </div><!-- end of .span10 -->
 </div><!-- end of .row -->
 </div><!-- end of .row -->
 </div><!-- end of .container -->
