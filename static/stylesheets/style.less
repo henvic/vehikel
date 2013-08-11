@@ -338,20 +338,8 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .post-product-name-editing-area {
-    margin-bottom: 5px;
-}
-
-.post-product-name {
-    font-size: 130%;
-    margin: 0;
-    margin-top: -6px;
-}
-
-.post-product-name-id {
-    font-weight: normal;
-    color: #ccc;
-}
-
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 #uploadFilesButtonContainer, #selectFilesButtonContainer, #overallProgress {
@@ -755,6 +743,24 @@ input.no-spin-button::-webkit-inner-spin-button {
     &:hover {
         background: @postEditingBackground;
         cursor: pointer;
+    }
+}
+
+.post-product-name {
+    font-size: 100%;
+    font-weight: normal;
+    margin-bottom: 10px;
+    padding: 0 10px;
+    background: #fafafa;
+    background: -webkit-radial-gradient(80% 40%, closest-corner, #ffffff, #fafafa);
+    background: -moz-radial-gradient(80% 40%, closest-corner, #ffffff, #fafafa);
+    color: #5d5d5d;
+    .title {
+        font-weight: bold;
+    }
+
+    .category, .category a {
+        color: #ccc;
     }
 }
 
