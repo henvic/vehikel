@@ -352,18 +352,6 @@ input.no-spin-button::-webkit-inner-spin-button {
     color: #ccc;
 }
 
-@media (max-width : 480px) {
-    .post-product-name {
-        font-size: 115%;
-    }
-
-    .post-product-price-edit {
-        max-width: 107px;
-    }
-
-    .vcard img {
-        zoom: 0.7;
-    }
 }
 
 #uploadFilesButtonContainer, #selectFilesButtonContainer, #overallProgress {
@@ -767,6 +755,20 @@ input.no-spin-button::-webkit-inner-spin-button {
     &:hover {
         background: @postEditingBackground;
         cursor: pointer;
+    }
+}
+
+@media (max-width : 480px) {
+    .post-product-name {
+        font-size: 115%;
+    }
+
+    .post-product-price-edit {
+        max-width: 107px;
+    }
+
+    .vcard img {
+        zoom: 0.7;
     }
 }
 
