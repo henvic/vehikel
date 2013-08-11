@@ -206,12 +206,17 @@ define([
                 dataType: 'json',
                 data: data,
                 success: function (result, textStatus, jqXHR) {
-                    var $postProductNameId = $('<span class="post-product-name-id"></span>');
-                    $postProductNameId.text("#" + result.universal_id);
-                    $postProductName
-                        .text(result.make + '  ' + result.model + ' ' + result.engine + ' ' + result.name + ' ')
-                        .append($postProductNameId)
-                    ;
+                    var breadCrumbTypeLink = AppParams.webroot + "/search?type=" + encodeURI(result.type);
+                    var breadCrumbMakeLink = breadCrumbTypeLink + "&make=" + encodeURI(result.make);
+                    var breadCrumbModelLink = breadCrumbMakeLink + "&model=" + encodeURI(result.model);
+
+                    $(".make-a", $postProductName).text(result.make).attr("href", breadCrumbMakeLink);
+                    $(".make", $postProductName).text(result.make);
+                    $(".model-a", $postProductName).text(result.model).attr("href", breadCrumbModelLink);
+                    $(".model", $postProductName).text(result.model);
+                    $(".engine", $postProductName).text(result.engine);
+                    $(".name", $postProductName).text(result.name);
+
                     closePostProductNameEdit();
 
                     postProductMakeValue = result.make;
@@ -220,22 +225,6 @@ define([
                     vehiclesModel.loadPostProductMakes($postProductMake, result.type, result.make);
                     vehiclesModel.loadPostProductModels($postProductModel, result.type, result.make, result.model);
                     $postProductNameEdit.val(result.name);
-
-                    // rewrite the breadcrumb
-                    var breadCrumbTypeLink = AppParams.webroot + "/search?type=" + encodeURI(result.type);
-                    var breadCrumbMakeLink = breadCrumbTypeLink + "&make=" + encodeURI(result.make);
-                    var breadCrumbModelLink = breadCrumbMakeLink + "&model=" + encodeURI(result.model);
-
-                    var $breadCrumbMake = $('#post-breadcrumb-make a');
-                    var $breadCrumbModel = $('#post-breadcrumb-model a');
-
-                    $breadCrumbMake.text(result.make);
-                    $breadCrumbMake.attr("href", breadCrumbMakeLink);
-
-                    $breadCrumbModel.text(result.model);
-                    $breadCrumbModel.attr("href", breadCrumbModelLink);
-
-                    $('#post-breadcrumb-name').text(result.name);
 
                     window.document.title =
                         result.make + " " +

@@ -78,37 +78,8 @@ $this->metaOgp = $metaOgp;
 $breadCrumbTypeLink = $searchLink . "?q=&amp;type=" . urlencode(mb_strtolower($post["type"]));
 $breadCrumbMakeLink = $breadCrumbTypeLink . "&amp;make=" . urlencode(mb_strtolower($post["make"]));
 $breadCrumbModelLink = $breadCrumbMakeLink . "&amp;model=" . urlencode(mb_strtolower($post["model"]));
-$breadCrumbLinksActive = ($post["status"] === Ml_Model_Posts::STATUS_ACTIVE);
-
-$breadCrumb = $this->postBreadCrumb(array(
-    array(
-        "id" => "post-breadcrumb-type",
-        "name" => $translatePosts->translate($post["type"] . "_plural"),
-        "link" => $breadCrumbTypeLink
-    ),
-    array(
-        "id" => "post-breadcrumb-make",
-        "name" => $post["make"],
-        "link" => $breadCrumbMakeLink
-    ),
-    array(
-        "id" => "post-breadcrumb-model",
-        "name" => $post["model"],
-        "link" => $breadCrumbModelLink
-    ),
-    array(
-        "id" => "post-breadcrumb-name",
-        "name" => $post["make"] . " " . $post["model"] . " " . $post["name"]
-    )
-), $breadCrumbLinksActive);
-
 ?>
 <div class="container">
-    <div class="row breadcrumb-div">
-        <div class="span12">
-            <?= $breadCrumb; ?>
-        </div>
-    </div><!-- end of the .breadcrumb-div -->
     <div class="row">
         <!-- include side facets -->
         <?= $this->render("search/facets.phtml"); ?>
@@ -127,8 +98,19 @@ $breadCrumb = $this->postBreadCrumb(array(
                     ?>
                     <h1 id="post-product-name" class="post-product-name <?= ($this->editable) ? "post-editable" : ""; ?>"
                         <?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?>>
-                        <?= $escapedTitle; ?>
-                        <span class="post-product-name-id">#<?= $this->escape($post["universal_id"]); ?></span>
+<span class="category hidden-phone">
+<a href="<?= $breadCrumbTypeLink; ?>" class="type-a">
+<?= $this->escape($translatePosts->translate($post["type"] . "_plural")); ?>
+</a> &gt;
+<a href="<?= $breadCrumbMakeLink; ?>" class="make-a"><?= $this->escape($post["make"]); ?></a> &gt;
+<a href="<?= $breadCrumbModelLink; ?>" class="model-a"><?= $this->escape($post["model"]); ?></a> &gt;
+</span>
+<span class="title">
+<span class="make"><?= $this->escape($post["make"]); ?></span>
+<span class="model"><?= $this->escape($post["model"]); ?></span>
+<span class="engine"><?= $this->escape($post["engine"]); ?></span>
+<span class="name"><?= $this->escape($post["name"]); ?></span>
+</span>
                     </h1>
 <?php
 if ($this->editable) {
