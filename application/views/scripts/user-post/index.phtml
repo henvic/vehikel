@@ -96,8 +96,7 @@ $breadCrumbModelLink = $breadCrumbMakeLink . "&amp;model=" . urlencode(mb_strtol
                     <?php
                     }
                     ?>
-                    <h1 id="post-product-name" class="post-product-name <?= ($this->editable) ? "post-editable" : ""; ?>"
-                        <?= ($this->editable) ? 'data-rel="tooltip" title="clique para editar"': ""; ?>>
+<h1 id="post-product-name" class="post-product-name <?= ($this->editable) ? "post-editable" : ""; ?>">
 <span class="category hidden-phone">
 <a href="<?= $breadCrumbTypeLink; ?>" class="type-a">
 <?= $this->escape($translatePosts->translate($post["type"] . "_plural")); ?>
@@ -111,7 +110,14 @@ $breadCrumbModelLink = $breadCrumbMakeLink . "&amp;model=" . urlencode(mb_strtol
 <span class="engine"><?= $this->escape($post["engine"]); ?></span>
 <span class="name"><?= $this->escape($post["name"]); ?></span>
 </span>
-                    </h1>
+<?php
+if ($this->editable) {
+?>
+<span class="pull-right"><button class="btn edit-title-icon"><i class="icon-edit"></i></button></span>
+<?php
+}
+?>
+</h1>
 <?php
 if ($this->editable) {
     echo $this->render("user-post/product-name-editing-area.phtml");
