@@ -338,8 +338,13 @@ define([
             }
         });
 
+        $postProductInfoValue.on("focusout", function (e) {
+            var name = e.target.parentNode.parentNode.getAttribute("data-name");
+            updateProductInfoField(name);
+        });
+
         $postProductInfoValue.on("keydown", function (e) {
-            if (e.target.nodeName.toLowerCase() !== "button" && (e.keyCode === 9 || e.keyCode === 13)) {
+            if (e.target.nodeName.toLowerCase() !== "button" && e.keyCode === 13) {
                 var name = e.target.parentNode.parentNode.getAttribute("data-name");
                 updateProductInfoField(name);
             }
