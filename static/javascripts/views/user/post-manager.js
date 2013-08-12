@@ -63,7 +63,6 @@ define([
         var $postProductName = $('#post-product-name');
         var $postProductNameEdit = $('#post-product-name-edit');
         var $postProductNameEditingArea = $('#post-product-name-editing-area');
-        var $postProductNameCancel = $('#post-product-name-cancel');
 
         var $postProductMainInfo = $("#post-product-main-info");
         var $postProductInfo = $("#post-product-info");
@@ -175,18 +174,6 @@ define([
 
         $postProductName.on("click", function (e) {
             openPostProductNameEdit();
-        });
-
-        $postProductNameCancel.on("click", function (e) {
-            closePostProductNameEdit();
-            vehiclesModel.loadPostProductMakes($postProductMake, AppParams.postType, postProductMakeValue);
-            vehiclesModel.loadPostProductModels(
-                $postProductModel,
-                AppParams.postType,
-                postProductMakeValue,
-                postProductModelValue
-            );
-            $postProductNameEdit.val(postProductNameEditValue);
         });
 
         $postProductNameEditingArea.on("submit", function (e) {
