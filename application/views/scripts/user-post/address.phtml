@@ -9,6 +9,7 @@ $address = $userInfo["address"];
 <tr>
 <td><a href="<?= $escapedUserLink; ?>"><?= $this->picture($userInfo["picture"], "/60x60"); ?></a></td>
 <td>
+<small>
 <strong class="fn"><a href="<?= $escapedUserLink; ?>"><?= $this->escape($userInfo["name"]); ?></a></strong><br />
 <?php
 if ($userInfo["account_type"] == "retail") {
@@ -35,6 +36,7 @@ $formattedBrPhone = sprintf("(%s) %s-%s",
 );
 ?>
 <span class="tel"><a class="tel" href="tel:<?= $this->escape($phone); ?>"><?= $this->escape($formattedBrPhone); ?></a></span>
+</small>
 </td>
 <td>
 <a href="<?= $this->addressMapLink($address); ?>" id="map-link" class="map-link"
