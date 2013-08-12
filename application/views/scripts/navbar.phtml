@@ -13,71 +13,14 @@ if ($this->userInfo) {
     $persistSearchUsername = ($this->userInfo["username"]);
 }
 ?>
-
-<div class="btn-group">
-<?php
-if (isset($signedUserInfo)) {
-?>
-    <a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>"
-       class="btn btn-mini btn-inverse">@<?= $this->escape($signedUserInfo['username']); ?></a>
-<?php
-}
-?>
-    <button class="btn btn-mini btn-inverse dropdown-toggle" data-toggle="dropdown">
-        ☰
-    </button>
-    <ul id="site-menu" class="dropdown-menu">
-        <li>
-            <a href="<?= $this->url(array(), "user_post_new"); ?>" id="post-new-ad-button">
-                <i class="icon-pencil"></i> Anunciar
-            </a>
-        </li>
-        <li class="divider-vertical"></li>
-<?php
-if (! isset($signedUserInfo)) {
-?>
-    <li>
-        <form class="navbar-login-well" enctype="application/x-www-form-urlencoded" action="<?= $this->url(array(), "login"); ?>" method="post">
-            <label for="navbar-login-username">Usuário ou email</label>
-            <input type="text" id="navbar-login-username" name="username" required="required">
-            <label for="navbar-login-password">Senha</label>
-            <input type="password" id="navbar-login-password" name="password" required="required">
-            <fieldset class="form-inline">
-                <input type="hidden" name="remember_me" value="0" />
-                <label class="checkbox">
-                    <input type="checkbox" name="remember_me" value="1" /> Relembrar-me
-                </label>
-                <button type="submit" class="btn">Entrar</button>
-            </fieldset>
-        </form>
-    </li>
-    <li><a href="<?php echo $this->url(array(), "recover") ?>">Perdeu seu usuário ou senha?</a></li>
-    <li><a href="<?php echo $this->url(array(), "join"); ?>">Cadastre-se</a></li>
-<?php
-}
-?>
-<?php
-if (isset($signedUserInfo)) {
-    ?>
-    <li>
-        <a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>">
-            <?php
-            echo $this->picture($signedUserInfo["picture"], "/20x20"), " Meus anúncios";
-            ?>
-        </a>
-    </li>
-    <li><a href="<?= $this->url(array(), "account"); ?>"><i class="icon-wrench"></i> Minha conta</a></li>
-    <li><a href="<?= $this->url(array(), "logout"); ?>" id="navbar-logout-link" rel="nofollow" class="navbar-logout-link">Sair</a></li>
-<?php
-}
-?>
-    </ul>
-</div>
+<div class="span6 search-area">
 <form method="get" action="/search" id="search-posts-form" class="search">
+    <div class="input-append search-text-append">
     <label for="search-text" class="none">Busca</label>
-    <input id="search-text" type="text" placeholder="O que você procura?" maxlength="80" class="search-text search-query" name="q" autocomplete="off"  tabindex="1" />
+    <input id="search-text" type="text" maxlength="80" class="search-text" name="q" autocomplete="off"  tabindex="1" />
+<button class="search-go btn btn-inverse" id="search-go" name="search-go" type="submit" tabindex="-1">Ir</button>
+    </div>
 <?php
-
 $isPersistUserChecked = false;
 if ($persistSearchUsername && $currentRoute == "search") {
     $isPersistUserChecked = true;
@@ -85,10 +28,11 @@ if ($persistSearchUsername && $currentRoute == "search") {
 
 if ($persistSearchUsername) {
 ?>
-    <div class="search-persist-username-box">
-    <label class="radio inline"><input type="radio" name="persist-username" value=""<?= (! $isPersistUserChecked) ? ' checked' : '' ?>>todos usuários</label>
-    <label class="radio inline"><input type="radio" name="persist-username" value="<?= $this->escape($persistSearchUsername); ?>"<?= ($isPersistUserChecked) ? ' checked' : '' ?>><?= $this->escape($persistSearchUsername); ?></label>
-    </div>
+    <label for="persist-username" class="hidden">Persistir usuário</label>
+    <select name="persist-username" id="persist-username" class="persist-username">
+        <option value="" <?= (! $isPersistUserChecked) ? ' selected="selected"' : '' ?>>em todos usuários</option>
+        <option value="<?= $this->escape($persistSearchUsername); ?>" <?= ($isPersistUserChecked) ? ' selected="selected"' : '' ?>>em <?= $this->escape($persistSearchUsername); ?></option>
+    </select>
 <?php
 }
 ?>
@@ -121,3 +65,62 @@ if ($persistSearchUsername) {
     <ul id="search-tips" class="search-tips unstyled hidden">
     </ul>
 </form>
+</div><!-- end of .span6 -->
+<div class="span3">
+    <div class="btn-group navbar-controls">
+<?php
+if (isset($signedUserInfo)) {
+?>
+            <a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>"
+               class="btn" tabindex="30"><?= $this->escape($signedUserInfo['username']); ?></a>
+<?php
+}
+?>
+        <button class="btn dropdown-toggle" data-toggle="dropdown" tabindex="40">
+            ☰
+        </button>
+        <ul id="site-menu" class="site-menu dropdown-menu">
+            <li>
+                <a href="<?= $this->url(array(), "user_post_new"); ?>" id="post-new-ad-button">
+                    <i class="icon-pencil"></i> Anunciar
+                </a>
+            </li>
+            <li class="divider-vertical"></li>
+<?php
+if (! isset($signedUserInfo)) {
+?>
+                <li>
+                    <form class="navbar-login-well" enctype="application/x-www-form-urlencoded" action="<?= $this->url(array(), "login"); ?>" method="post">
+                        <label for="navbar-login-username">Usuário ou email</label>
+                        <input type="text" id="navbar-login-username" name="username" required="required">
+                        <label for="navbar-login-password">Senha</label>
+                        <input type="password" id="navbar-login-password" name="password" required="required">
+                        <fieldset class="form-inline">
+                            <input type="hidden" name="remember_me" value="0" />
+                            <label class="checkbox">
+                                <input type="checkbox" name="remember_me" value="1" /> Relembrar-me
+                            </label>
+                            <button type="submit" class="btn">Entrar</button>
+                        </fieldset>
+                    </form>
+                </li>
+                <li><a href="<?php echo $this->url(array(), "recover") ?>">Perdeu seu usuário ou senha?</a></li>
+                <li><a href="<?php echo $this->url(array(), "join"); ?>">Cadastre-se</a></li>
+<?php
+}
+
+if (isset($signedUserInfo)) {
+?>
+                <li>
+                    <a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>">
+<?= $this->picture($signedUserInfo["picture"], "/20x20"), " Meus anúncios"; ?>
+                    </a>
+                </li>
+                <li><a href="<?= $this->url(array(), "account"); ?>"><i class="icon-wrench"></i> Minha conta</a></li>
+                <li><a href="<?= $this->url(array(), "logout"); ?>" id="navbar-logout-link" rel="nofollow" class="navbar-logout-link">Sair</a></li>
+<?php
+}
+?>
+        </ul>
+    </div>
+</div><!-- end of .span3 -->

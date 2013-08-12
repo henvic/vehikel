@@ -16,6 +16,7 @@ define(
         var $body = $("body");
         var $searchPostsForm = $("#search-posts-form");
         var $searchText = $("#search-text");
+        var $searchGo = $("#search-go");
         var $searchTypesNames = $('[name="type"]', $searchPostsForm);
         var $searchResults = $("#search-results");
         var $searchPriceMin = $("#search-price-min");
@@ -393,6 +394,11 @@ define(
             if ((key >= 48 && key <= 90) || (key >= 188 && key <= 222) || key === 8 || key === 46 || key === 13) {
                 search();
             }
+        });
+
+        $searchGo.on("click", function (e) {
+            e.preventDefault();
+            search();
         });
 
         $searchResults.on("click", ".remove-filters", function (e) {
