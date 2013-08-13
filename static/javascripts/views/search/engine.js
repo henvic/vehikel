@@ -29,6 +29,7 @@ define(
         var $searchTransmission = $("#search-transmission");
         var $searchTraction = $("#search-traction");
         var $searchHandicapped = $("#search-handicapped");
+        var $searchCollection = $("#search-collection");
         var $searchArmor = $("#search-armor");
         var $facetsToggle = $("#facets-toggle");
 
@@ -339,6 +340,7 @@ define(
             changeSearchTermByUrl(urlParams, $searchTransmission, "transmission");
             changeSearchTermByUrl(urlParams, $searchTraction, "traction");
             changeSearchTermByUrl(urlParams, $searchHandicapped, "handicapped");
+            changeSearchTermByUrl(urlParams, $searchCollection, "collection");
             changeSearchTermByUrl(urlParams, $searchArmor, "armor");
         };
 

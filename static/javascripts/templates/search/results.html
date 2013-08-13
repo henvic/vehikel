@@ -98,6 +98,10 @@ var itemsLength = items.length;
                     specialItems.push("Adaptado");
                 }
 
+                if (post.collection) {
+                    specialItems.push("Colecionador");
+                }
+
                 if (post.transmission == 'automatic') {
                     specialItems.push("Automático");
                 }
@@ -177,6 +181,12 @@ for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
             <%
             }
 
+            if (post.collection) {
+            %>
+            <span class="label label-inverse">Colecionador</span>
+            <%
+            }
+
             if (post.transmission == 'automatic') {
             %>
             <span class="label label-info">Automático</span>
@@ -186,12 +196,6 @@ for (var itemPos = 0; itemPos < itemsLength; itemPos++) {
             if (post.traction == '4x4') {
             %>
             <span class="label label-warning">4x4</span>
-            <%
-            }
-
-            if (post.year <= new Date().getFullYear() - 30) {
-            %>
-            <span class="label label-inverse">Colecionador</span>
             <%
             }
             %>

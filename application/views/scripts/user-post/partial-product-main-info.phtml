@@ -200,6 +200,26 @@ type="checkbox"<?= ($post["handicapped"]) ? ' checked="checked"' : ''; ?> tabind
 <?php
 }
 
+if ($post["collection"] || $editable) {
+    ?>
+    <?= ($editable) ? '<label class="label-checkbox-collection label-checkbox">' : "" ?>
+    <span class="label label-inverse<?= ($post["collection"]) ? ' has' : ' has-not' ?>"
+          data-rel="tooltip" data-placement="bottom" title="colecionador">
+<?php
+if ($editable) {
+    ?>
+    <label for="collection" class="hidden">Colecionador</label>
+    <input id="collection" name="collection"
+           type="checkbox"<?= ($post["collection"]) ? ' checked="checked"' : ''; ?> tabindex="122" />
+<?php
+}
+?>
+        Colecionador
+</span>
+    <?= ($editable) ? "</label>" : "" ?>
+<?php
+}
+
 if ($editable) {
     echo $this->render("user-post/post-status.phtml");
 }

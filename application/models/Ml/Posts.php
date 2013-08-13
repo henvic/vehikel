@@ -133,7 +133,8 @@ class Ml_Model_Posts
             "fuel" => $post["fuel"],
             "km" => (int) $post["km"],
             "armor" => (bool) $post["armor"],
-            "handicapped" => (bool) $post["handicapped"]
+            "handicapped" => (bool) $post["handicapped"],
+            "collection" => (bool) $post["collection"]
         ];
 
         $pictures = [];

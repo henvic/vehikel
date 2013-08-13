@@ -10,6 +10,9 @@
             "handicapped" : {
                 "type" : "boolean"
             },
+            "collection" : {
+                "type" : "boolean"
+            },
             "creation" : {
                 "type" : "string"
             },

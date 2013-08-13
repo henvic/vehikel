@@ -66,6 +66,10 @@ if ($post["traction"] == '4x4') {
     $specialItems[] = '4x4';
 }
 
+if ($post["collection"]) {
+    $specialItems[] = 'Colecionador';
+}
+
 $sizeOfSpecialItems = count($specialItems);
 
 for ($counter = 0; $counter < $sizeOfSpecialItems; $counter++)

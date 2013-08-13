@@ -192,6 +192,10 @@ module.exports = function (util, events, http, settings) {
                 {
                     name : "handicapped",
                     field : "handicapped"
+                },
+                {
+                name : "collection",
+                field : "collection"
                 }
             ]
         );
@@ -301,6 +305,11 @@ module.exports = function (util, events, http, settings) {
                     "terms" : {
                         "field" : "handicapped"
                     }
+                },
+                "collection" : {
+                    "terms" : {
+                        "field" : "collection"
+                    }
                 }
             };
 
@@ -315,6 +324,7 @@ module.exports = function (util, events, http, settings) {
                 "km",
                 "armor",
                 "handicapped",
+                "collection",
                 "pictures",
                 "traction",
                 "user.username",
