@@ -81,15 +81,13 @@ if (is_array($metaOgp)) {
 <body id="body">
 <div class="container">
 <div class="row site-topbar-row">
-<div class="span6">
+<div class="span3">
     <div class="site-logotype" id="site-logotype">
         <a href="<?php echo $this->url(array(), "index"); ?>">
-            <img src="<?php echo $this->staticVersion("/images/logotype.png"); ?>" width="551" height="65" alt="<?= $this->escape($config["applicationname"]); ?>" /></a>
+            <img src="<?php echo $this->staticVersion("/images/logotype.png"); ?>" width="220" height="26" alt="<?= $this->escape($config["applicationname"]); ?>" /></a>
     </div>
-</div><!-- end of .span4 -->
-<div class="span6 search-area">
+</div><!-- end of .span3 -->
 <?= $this->render("navbar.phtml"); ?>
-</div><!-- end of .span8 -->
 </div><!-- end of .row -->
 </div><!-- end of .container -->
 <?= $this->render("messenger.phtml"); ?>
