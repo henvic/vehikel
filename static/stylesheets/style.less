@@ -439,6 +439,8 @@ input.no-spin-button::-webkit-inner-spin-button {
         border: 1px solid #eee;
         position: relative;
         overflow: hidden;
+        line-height: 156%;
+
         .rounded(6px);
 
         &.remove {
@@ -455,6 +457,14 @@ input.no-spin-button::-webkit-inner-spin-button {
 
         &:hover {
             background: #f7f7f7;
+        }
+
+        &, .label {
+            font-size: 85%;
+        }
+
+        .label {
+            line-height: 15px;
         }
 
         p {
