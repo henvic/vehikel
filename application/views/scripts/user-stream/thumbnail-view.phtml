@@ -19,8 +19,14 @@ foreach ($posts as $post) {
 
     $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
     $price->setValue($this->escape($post["price"] / 100));
+
+    $hasHasEndClass = "";
+
+    if ($this->editable && $post["status"] == "active") {
+        $hasHasEndClass = ' class="has-end"';
+    }
 ?>
-<li id="post-id-<?= $this->escape($post["id"]); ?>-thumbnail">
+<li id="post-id-<?= $this->escape($post["id"]); ?>-thumbnail"<?= $hasHasEndClass; ?>>
 <a href="<?= $escapedPostLink; ?>">
 <div class="img-place">
 <?php
@@ -80,7 +86,7 @@ if ($post["model_year"] <= date("Y") - 30) {
 if ($this->editable && $post["status"] == "active") {
 ?>
 <div class="end" data-id="<?= $this->escape($post["id"]); ?>">
-    finalizar
+Finalizar
 </div>
 <?php
 }
