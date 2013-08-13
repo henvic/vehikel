@@ -25,7 +25,9 @@ $isPersistUserChecked = false;
 if ($persistSearchUsername && $currentRoute == "search") {
     $isPersistUserChecked = true;
 }
-
+?>
+    <button id="facets-toggle" class="facets-toggle btn visible-phone hidden" data-toggle="button"><i class="icon-filter"></i><span class="hidden"> Filtros</span></button>
+<?php
 if ($persistSearchUsername) {
 ?>
     <label for="persist-username" class="hidden">Persistir usuário</label>
@@ -36,7 +38,6 @@ if ($persistSearchUsername) {
 <?php
 }
 ?>
-    <button id="facets-toggle" class="facets-toggle btn visible-phone hidden" data-toggle="button"><i class="icon-filter"></i><span class="hidden"> Filtros</span></button>
     <div class="hidden">
         <input type="text" id="search-price-max" placeholder="R$ máximo" maxlength="16" class="span2" name="price-max" />
         <input type="text" id="search-price-min" placeholder="R$ mínimo" maxlength="16" class="span2" name="price-min" />
