@@ -65,9 +65,9 @@ $this->metaOgp = $metaOgp;
                 if ($editable) {
                 ?>
                 <div class="btn-group" data-toggle="buttons-checkbox">
-                    <a class="btn<?= ($status == "active") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>">ativos</a>
-                    <a class="btn<?= ($status == "staging") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=staging">pausados</a>
-                    <a class="btn<?= ($status == "end") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=end">finalizados</a>
+                    <a class="btn btn-mini<?= ($status == "active") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>">ativos</a>
+                    <a class="btn btn-mini<?= ($status == "staging") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=staging">pausados</a>
+                    <a class="btn btn-mini<?= ($status == "end") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=end">finalizados</a>
                 </div>
                 <?php
                 }
@@ -77,11 +77,11 @@ $this->metaOgp = $metaOgp;
                 <div class="btn-group pull-right" data-toggle="buttons-radio">
                     <?php
                     if ($this->postsViewStyle === "thumbnail") {
-                        echo '<button id="posts-view-style-thumbnail" class="btn active"><i class="icon-th"></i></button>
-<button id="posts-view-style-table" class="btn"><i class="icon-th-list"></i></button>';
+                        echo '<button id="posts-view-style-thumbnail" class="btn btn-mini active"><i class="icon-th"></i></button>
+<button id="posts-view-style-table" class="btn btn-mini"><i class="icon-th-list"></i></button>';
                     } else {
-                        echo '<button id="posts-view-style-thumbnail" class="btn"><i class="icon-th"></i></button>
-<button id="posts-view-style-table" class="btn active"><i class="icon-th-list"></i></button>';
+                        echo '<button id="posts-view-style-thumbnail" class="btn btn-mini"><i class="icon-th"></i></button>
+<button id="posts-view-style-table" class="btn btn-mini active"><i class="icon-th-list"></i></button>';
                     }
                     ?>
                 </div><!-- end of .btn-group -->
