@@ -9,12 +9,12 @@
 <%
 if (total === 0) {
 %>
-Sua busca não encontrou nenhum documento.
+&nbsp;Sua busca não encontrou nenhum documento.
 <%
 } else {
 %>
-<%- from %>-<%- to %> de <%- total %> resultados (<%- (result.took / 1000) %><span class="visible-phone">s</span><span class="hidden-phone"> segundos</span>)
-<span class="pull-right">
+&nbsp;<%- from %>-<%- to %> de <%- total %> resultados (<%- (result.took / 1000) %><span class="visible-phone">s</span><span class="hidden-phone"> segundos</span>)
+<span class="search-info">
     <div class="btn-group sortable">
         <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
             <%
