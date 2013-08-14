@@ -13,6 +13,8 @@ $types = $this->types;
 $type = $this->type;
 $status = $this->status;
 
+$amountByStatus = $this->amountByStatus;
+
 $this->headTitle($userInfo['name'], "PREPEND");
 
 $paginator =  $this->posts;
@@ -65,9 +67,9 @@ $this->metaOgp = $metaOgp;
                 if ($editable) {
                 ?>
                 <div class="btn-group" data-toggle="buttons-checkbox">
-                    <a class="btn btn-mini<?= ($status == "active") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>">ativos</a>
-                    <a class="btn btn-mini<?= ($status == "staging") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=staging">pausados</a>
-                    <a class="btn btn-mini<?= ($status == "end") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=end">finalizados</a>
+                    <a class="btn btn-mini<?= ($status == "active") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>">ativos (<?= $this->escape($amountByStatus["active"]); ?>)</a>
+                    <a class="btn btn-mini<?= ($status == "staging") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=staging">pausados (<?= $this->escape($amountByStatus["staging"]); ?>)</a>
+                    <a class="btn btn-mini<?= ($status == "end") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=end">finalizados (<?= $this->escape($amountByStatus["end"]); ?>)</a>
                 </div>
                 <?php
                 }

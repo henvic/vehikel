@@ -60,6 +60,8 @@ class UserStreamController extends Ml_Controller_Action
 
         $stock = $posts->getStockAmountByUserId($userInfo["id"], $type, $status);
 
+        $amountByStatus = $posts->getAmountByStatus($userInfo["id"]);
+
         $this->view->addJsParam("postUid", $userInfo["id"]);
         $this->view->addJsParam("postUsername", $userInfo["username"]);
 
@@ -68,6 +70,7 @@ class UserStreamController extends Ml_Controller_Action
         $this->view->assign("model", $model);
         $this->view->assign("status", $status);
         $this->view->assign("stock", $stock);
+        $this->view->assign("amountByStatus", $amountByStatus);
 
         $this->view->addJsParam("status", $status);
 
