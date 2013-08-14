@@ -29,32 +29,6 @@ define([
         ) {
         "use strict";
 
-        var confirmBeforeExit = false;
-
-        function doConfirmBeforeExit()
-        {
-            var response;
-
-            if (confirmBeforeExit) {
-                response = "Você tem mudanças que ainda não foram salvas";
-            } else {
-                response = null;
-            }
-
-            return response;
-        }
-
-        window.onbeforeunload = doConfirmBeforeExit;
-
-        document.onkeyup = function (e) {
-            // on pressing the esc key
-            if (e.keyCode === 27 &&
-                e.target.id === "post-description-text-edit" &&
-                ! confirmBeforeExit) {
-                cancelDescriptionEdit();
-            }
-        };
-
         var $postProductType = $('#post-product-type');
         var $postProductMake = $('#post-product-make');
         var $postProductModel = $('#post-product-model');
@@ -73,7 +47,6 @@ define([
         var $postDescriptionTextEdit = $('#post-description-text-edit');
         var $postDescriptionEditingArea = $('#post-description-editing-area');
         var $postDescriptionTextSave = $('#post-description-text-save');
-        var $postDescriptionTextCancel = $('#post-description-text-cancel');
 
         var $postStatus = $('#post-status');
 
@@ -397,7 +370,6 @@ define([
         var closeDescriptionEdit = function () {
             $postDescriptionText.removeClass("hidden");
             $postDescriptionEditingArea.addClass("hidden");
-            confirmBeforeExit = false;
         };
 
         var saveDescriptionEdit = function () {
@@ -430,17 +402,8 @@ define([
             });
         };
 
-        var cancelDescriptionEdit = function () {
-            $postDescriptionTextEdit.val(postDescriptionTextEditValue);
-            closeDescriptionEdit();
-        };
-
         $postDescriptionTextSave.on("click", function (e) {
             saveDescriptionEdit();
-        });
-
-        $postDescriptionTextCancel.on("click", function (e) {
-            cancelDescriptionEdit();
         });
 
         $postDescriptionText.on("click", function (e) {
@@ -450,14 +413,6 @@ define([
         });
 
         CKEDITOR.replace("post-description-text-edit", ckeditorConfig);
-
-        $postDescriptionTextEdit.on("keyup", function (e) {
-            confirmBeforeExit = ($postDescriptionTextEdit.val() !== postDescriptionTextEditValue);
-        });
-
-        $postDescriptionTextEdit.on("paste", function (e) {
-            confirmBeforeExit = ($postDescriptionTextEdit.val() !== postDescriptionTextEditValue);
-        });
 
         var lastUpdateStatusCall;
 
