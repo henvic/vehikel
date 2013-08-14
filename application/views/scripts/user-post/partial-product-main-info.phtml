@@ -166,7 +166,6 @@ unset($productInfo);
 if ($post["type"] == "car" && ($post["armor"] || $editable)) {
 ?>
 <?= ($editable) ? '<label class="label-checkbox-armor label-checkbox">' : "" ?>
-<span class="label label-important<?= ($post["armor"]) ? ' has' : ' has-not' ?>">
 <?php
 if ($editable) {
 ?>
@@ -175,6 +174,7 @@ if ($editable) {
 <?php
 }
 ?>
+<span class="label label-important<?= ($post["armor"]) ? ' has' : ' has-not' ?>">
 Blindado
 </span>
 <?= ($editable) ? "</label>" : "" ?>
@@ -184,8 +184,6 @@ Blindado
 if ($post["handicapped"] || $editable) {
 ?>
 <?= ($editable) ? '<label class="label-checkbox-handicapped label-checkbox">' : "" ?>
-<span class="label label-handicapped<?= ($post["handicapped"]) ? ' has' : ' has-not' ?>"
-data-rel="tooltip" data-placement="bottom" title="para deficientes físicos">
 <?php
 if ($editable) {
 ?>
@@ -195,6 +193,8 @@ type="checkbox"<?= ($post["handicapped"]) ? ' checked="checked"' : ''; ?> tabind
 <?php
 }
 ?>
+<span class="label label-handicapped<?= ($post["handicapped"]) ? ' has' : ' has-not' ?>"
+data-rel="tooltip" data-placement="bottom" title="para deficientes físicos">
 <i class="icon-vehicle-adapted"></i><span class="hidden"> Adaptado</span>
 </span>
 <?= ($editable) ? "</label>" : "" ?>
@@ -204,8 +204,6 @@ type="checkbox"<?= ($post["handicapped"]) ? ' checked="checked"' : ''; ?> tabind
 if ($post["collection"] || $editable) {
     ?>
     <?= ($editable) ? '<label class="label-checkbox-collection label-checkbox">' : "" ?>
-    <span class="label label-inverse<?= ($post["collection"]) ? ' has' : ' has-not' ?>"
-          data-rel="tooltip" data-placement="bottom" title="colecionador">
 <?php
 if ($editable) {
     ?>
@@ -215,6 +213,8 @@ if ($editable) {
 <?php
 }
 ?>
+<span class="label label-inverse<?= ($post["collection"]) ? ' has' : ' has-not' ?>"
+data-rel="tooltip" data-placement="bottom" title="colecionador">
         Colecionador
 </span>
     <?= ($editable) ? "</label>" : "" ?>

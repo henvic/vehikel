@@ -72,16 +72,7 @@ define([
         };
 
         $postProductInfoOthers.on("click", '.label-checkbox [type="checkbox"]', function (e) {
-            var isChecked = e.target.checked;
-            var $labelTarget = $(e.target.parentNode);
-
-            if (isChecked) {
-                $labelTarget.removeClass("has-not").addClass("has");
-            } else {
-                $labelTarget.removeClass("not").addClass("has-not");
-            }
-
-            updatePostItem(e.target.name, (isChecked) ? 1 : 0);
+            updatePostItem(e.target.name, (e.target.checked) ? 1 : 0);
         });
 
         var lastUpdatePostEquipmentsCall;
