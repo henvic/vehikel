@@ -13,7 +13,7 @@ if ($this->userInfo) {
     $persistSearchUsername = ($this->userInfo["username"]);
 }
 ?>
-<div class="span6 search-area">
+<div class="span7 search-area">
 <form method="get" action="/search" id="search-posts-form" class="search">
     <div class="input-append search-text-append">
     <label for="search-text" class="none">Busca</label>
@@ -67,8 +67,8 @@ if ($persistSearchUsername) {
     <ul id="search-tips" class="search-tips unstyled hidden">
     </ul>
 </form>
-</div><!-- end of .span6 -->
-<div class="span3">
+</div><!-- end of .span7 -->
+<div class="span2">
     <div class="btn-group navbar-controls">
 <?php
 if (isset($signedUserInfo)) {
@@ -125,4 +125,4 @@ if (isset($signedUserInfo)) {
 ?>
         </ul>
     </div>
-</div><!-- end of .span3 -->
+</div><!-- end of .span2 -->
