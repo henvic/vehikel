@@ -225,6 +225,31 @@ class Ml_Model_Posts
         return $this->_dbTable->getAdapter()->fetchAll($select);
     }
 
+    public function getAmountByStatus($uid)
+    {
+        $select = $this->_dbTable->select();
+
+        $select->from($this->_dbTableName, ["status", "COUNT(*) as amount"]);
+
+        $select->where("uid = ?", $uid);
+
+        $select->group("status");
+
+        $data = $this->_dbTable->getAdapter()->fetchAll($select);
+
+        $result = [
+            self::STATUS_STAGING => 0,
+            self::STATUS_ACTIVE => 0,
+            self::STATUS_END => 0
+        ];
+
+        foreach ($data as $datum) {
+            $result[$datum["status"]] = (int) $datum["amount"];
+        }
+
+        return $result;
+    }
+
     /**
      * @param $id
      * @return array|bool|false|mixed
