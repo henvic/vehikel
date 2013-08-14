@@ -7,6 +7,8 @@ $translatePosts = $this->translatePosts;
 $userInfo = $this->userInfo;
 $post = $this->post;
 
+$editable = $this->editable;
+
 $postForm = $this->postForm;
 
 $escapedUserLink = $this->url(array("username" => $userInfo["username"]), "user_stream_1stpage");
@@ -98,11 +100,54 @@ $breadCrumbModelLink = $breadCrumbMakeLink . "&amp;model=" . urlencode(mb_strtol
                     ?>
 <h1 id="post-product-name" class="post-product-name <?= ($this->editable) ? "post-editable" : ""; ?>">
 <span class="category hidden-phone">
+<?php
+if (! $editable) {
+?>
 <a href="<?= $breadCrumbTypeLink; ?>" class="type-a">
+<?php
+}
+?>
 <?= $this->escape($translatePosts->translate($post["type"] . "_plural")); ?>
-</a> &gt;
-<a href="<?= $breadCrumbMakeLink; ?>" class="make-a"><?= $this->escape($post["make"]); ?></a> &gt;
-<a href="<?= $breadCrumbModelLink; ?>" class="model-a"><?= $this->escape($post["model"]); ?></a> &gt;
+<?php
+if (! $editable) {
+?>
+</a>
+<?php
+}
+?>
+ &gt;
+<?php
+if (! $editable) {
+?>
+<a href="<?= $breadCrumbMakeLink; ?>" class="make-a">
+<?php
+}
+?>
+<?= $this->escape($post["make"]); ?>
+<?php
+if (! $editable) {
+?>
+</a>
+<?php
+}
+?>
+ &gt;
+<?php
+if (! $editable) {
+?>
+<a href="<?= $breadCrumbModelLink; ?>" class="model-a">
+<?php
+}
+?>
+<?= $this->escape($post["model"]); ?>
+<?php
+if (! $editable) {
+?>
+</a>
+<?php
+}
+?>
+ &gt;
 </span>
 <span class="title">
 <span class="make"><?= $this->escape($post["make"]); ?></span>
