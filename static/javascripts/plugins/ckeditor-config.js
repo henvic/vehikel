@@ -36,7 +36,8 @@ define(["ckeditor"], function () {
 
     config.toolbar = [
         { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-'] },
-        { name: 'links', items: [ 'Link', 'Unlink'] }
+        { name: 'links', items: [ 'Link', 'Unlink'] },
+        { name: 'clipboard', items : [ 'Undo','Redo' ] }
     ];
 
     config.toolbarGroups = [
