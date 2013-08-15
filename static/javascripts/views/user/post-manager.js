@@ -221,7 +221,9 @@ define([
             var enteredValue = $inputField.val();
 
             if ($value.data("saved-value").toString() === enteredValue) {
-                closeProductInfoField(name);
+                setTimeout(function () {
+                    closeProductInfoField(name);
+                }, 100);
                 return;
             }
 
