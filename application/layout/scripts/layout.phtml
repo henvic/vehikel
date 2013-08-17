@@ -79,7 +79,8 @@ if (is_array($metaOgp)) {
 <script src="<?php echo $this->staticVersion("/vendor/modernizr/modernizr.js"); ?>"></script>
 </head>
 <body id="body">
-<div class="container">
+<div class="containers-not-on-bottom">
+<div class="container navbar-container">
 <div class="row site-topbar-row">
 <div class="span3">
     <div class="site-logotype" id="site-logotype">
@@ -91,7 +92,10 @@ if (is_array($metaOgp)) {
 </div><!-- end of .row -->
 </div><!-- end of .container -->
 <?= $this->render("messenger.phtml"); ?>
+<div class="main-container-area">
 <?php echo $this->layout()->content; ?>
+</div><!-- end of .main-container-area -->
+<div class="containers-on-bottom">
 <footer class="footer">
 <div class="container">
   <div class="row">
@@ -114,6 +118,8 @@ echo $this->staticVersion("/images/follow_bird_us-b.png");
   </div><!-- end of div.row -->
 </div>
 </footer>
+</div>
+</div><!-- .containers-on-bottom -->
 <?php
 if (APPLICATION_ENV != "development") {
 ?>

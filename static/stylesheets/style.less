@@ -230,8 +230,40 @@ body
     }
 }
 
-.navbar-fixed-top-override {
+.containers-on-bottom {
+    bottom: 0;
     position: static;
+    width: 100%;
+
+    footer {
+        margin: 0;
+    }
+}
+
+@media (min-width : 980px) {
+    .navbar-container {
+        margin-bottom: 39px;
+    }
+
+    .site-topbar-row {
+        position: fixed;
+    }
+}
+
+.main-container-area {
+    min-height: 200px;
+
+    @media (min-height : 300px) {
+        min-height: 300px;
+    }
+
+    @media (min-height : 500px) {
+        min-height: 600px;
+    }
+
+    @media (min-height : 700px) {
+        min-height: 700px;
+    }
 }
 
 .site-topbar-row {
