@@ -164,12 +164,10 @@ unset($productInfo);
 <div class="post-product-info-others" id="post-product-info-others">
 <?php
 if ($post["type"] == "car" && ($post["armor"] || $editable)) {
-?>
-<?= ($editable) ? '<label class="label-checkbox-armor label-checkbox">' : "" ?>
-<?php
+
 if ($editable) {
 ?>
-<label for="armor" class="hidden">Blindado</label>
+<label for="armor" class="label-checkbox-armor label-checkbox">
 <input id="armor" name="armor" type="checkbox"<?= ($post["armor"]) ? ' checked="checked"' : ''; ?> tabindex="120" />
 <?php
 }
@@ -177,17 +175,20 @@ if ($editable) {
 <span class="label label-important<?= ($post["armor"]) ? ' has' : ' has-not' ?>">
 Blindado
 </span>
-<?= ($editable) ? "</label>" : "" ?>
 <?php
+if ($editable) {
+?>
+</label>
+<?php
+}
 }
 
 if ($post["handicapped"] || $editable) {
 ?>
-<?= ($editable) ? '<label class="label-checkbox-handicapped label-checkbox">' : "" ?>
 <?php
 if ($editable) {
 ?>
-<label for="handicapped" class="hidden">Adaptado</label>
+<label for="handicapped" class="label-checkbox-handicapped label-checkbox">
 <input id="handicapped" name="handicapped"
 type="checkbox"<?= ($post["handicapped"]) ? ' checked="checked"' : ''; ?> tabindex="121" />
 <?php
@@ -197,28 +198,34 @@ type="checkbox"<?= ($post["handicapped"]) ? ' checked="checked"' : ''; ?> tabind
 data-rel="tooltip" data-placement="bottom" title="para deficientes físicos">
 <i class="icon-vehicle-adapted"></i><span class="hidden"> Adaptado</span>
 </span>
-<?= ($editable) ? "</label>" : "" ?>
 <?php
+if ($editable) {
+?>
+</label>
+<?php
+}
 }
 
 if ($post["collection"] || $editable) {
-    ?>
-    <?= ($editable) ? '<label class="label-checkbox-collection label-checkbox">' : "" ?>
+?>
 <?php
 if ($editable) {
-    ?>
-    <label for="collection" class="hidden">Colecionador</label>
-    <input id="collection" name="collection"
-           type="checkbox"<?= ($post["collection"]) ? ' checked="checked"' : ''; ?> tabindex="122" />
+?>
+<label for="collection" class="label-checkbox-collection label-checkbox">
+<input id="collection" name="collection"
+type="checkbox"<?= ($post["collection"]) ? ' checked="checked"' : ''; ?> tabindex="122" />
 <?php
 }
 ?>
-<span class="label label-inverse<?= ($post["collection"]) ? ' has' : ' has-not' ?>"
-data-rel="tooltip" data-placement="bottom" title="colecionador">
+<span class="label label-inverse<?= ($post["collection"]) ? ' has' : ' has-not' ?>">
         Colecionador
 </span>
-    <?= ($editable) ? "</label>" : "" ?>
 <?php
+if ($editable) {
+?>
+</label>
+<?php
+}
 }
 
 if ($editable) {
