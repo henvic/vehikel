@@ -579,6 +579,23 @@ input.no-spin-button::-webkit-inner-spin-button {
             position: absolute;
         }
     }
+
+    @media (max-width : 480px) {
+        li {
+            width: 100%;
+            height: 300px;
+
+            &.has-end {
+                height: 320px;
+            }
+
+            .img-place {
+                width: 300px;
+                height: 215px;
+                margin: 0 auto;
+            }
+        }
+    }
 }
 
 .gallery-manager-main-buttons {
