@@ -511,23 +511,11 @@ input.no-spin-button::-webkit-inner-spin-button {
         overflow: hidden;
         line-height: 156%;
 
-        &.has-end {
-            height: 250px;
+        &.editable {
+            height: 270px;
         }
 
         .rounded(6px);
-
-        &.remove {
-            opacity: 0.5;
-            .transition(1.5s, ease-in-out);
-        }
-
-        &.removed {
-            width: 0;
-            padding: 0;
-            margin: 0;
-            border: 0;
-        }
 
         &:hover {
             background: #f7f7f7;
@@ -568,15 +556,32 @@ input.no-spin-button::-webkit-inner-spin-button {
             text-decoration: none;
         }
 
-        .end {
+        .actions {
             background: @redT;
             display: block;
             color: white;
             width: 100%;
-            height: 20px;
+            height: 40px;
             bottom: 0;
             padding-left: 10px;
             position: absolute;
+
+            .action {
+                display: inline-block;
+                padding: 10px;
+                height: 100%;
+                vertical-align: middle;
+
+                &:hover {
+                    background: saturate(@redT, 100);
+                }
+
+                &.disabled:hover {
+                    background: inherit;
+                    cursor: not-allowed;
+                    opacity: 0.1;
+                }
+            }
         }
     }
 
@@ -585,8 +590,8 @@ input.no-spin-button::-webkit-inner-spin-button {
             width: 100%;
             height: 300px;
 
-            &.has-end {
-                height: 320px;
+            &.editable {
+                height: 340px;
             }
 
             .img-place {

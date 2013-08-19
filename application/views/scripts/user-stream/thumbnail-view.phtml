@@ -20,13 +20,13 @@ foreach ($posts as $post) {
     $price = new Zend_Currency(array("symbol" => "R$&nbsp;"), "pt_BR");
     $price->setValue($this->escape($post["price"] / 100));
 
-    $hasHasEndClass = "";
+    $hasEditableClass = "";
 
-    if ($this->editable && $post["status"] == "active") {
-        $hasHasEndClass = ' class="has-end"';
+    if ($this->editable) {
+        $hasEditableClass = ' class="editable"';
     }
 ?>
-<li id="post-id-<?= $this->escape($post["id"]); ?>-thumbnail"<?= $hasHasEndClass; ?>>
+<li id="post-id-<?= $this->escape($post["id"]); ?>-thumbnail"<?= $hasEditableClass; ?>>
 <a href="<?= $escapedPostLink; ?>">
 <div class="img-place">
 <?php
@@ -83,11 +83,22 @@ if ($post["collection"]) {
 <?php
 }
 
-if ($this->editable && $post["status"] == "active") {
+if ($this->editable) {
 ?>
-<div class="end" data-id="<?= $this->escape($post["id"]); ?>">
-Finalizar
+<div class="actions" data-id="<?= $this->escape($post["id"]); ?>">
+<div class="action<?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? " disabled" : "" ?>" data-status="staging">
+<i class="icon-pause<?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? "" : " icon-white" ?>"></i>
+<span class="hidden"> pausar</span>
 </div>
+<div class="action<?= ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) ? " disabled" : "" ?>" data-status="active">
+<i class="icon-play<?= ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) ? "" : " icon-white" ?>"></i>
+<span class="hidden"> ativar</span>
+</div>
+<div class="action<?= ($post["status"] == Ml_Model_Posts::STATUS_END) ? " disabled" : "" ?>" data-status="end">
+<i class="icon-stop<?= ($post["status"] == Ml_Model_Posts::STATUS_END) ? "" : " icon-white" ?>"></i>
+<span class="hidden"> finalizar</span>
+</div>
+</div><!-- end of .actions -->
 <?php
 }
 ?>

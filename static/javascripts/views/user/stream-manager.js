@@ -4,19 +4,27 @@
 define(['AppParams', 'jquery'], function (AppParams, $) {
     "use strict";
 
-    //add the "end post" functionality on the user-stream
-    var $end = $(".posts-list .end");
+    var $actions = $(".posts-list .actions");
 
-    $end.on("click", function (e) {
+    var $action = $(".posts-list .actions .action");
+
+    $actions.on("click", function (e) {
         e.preventDefault();
         e.stopPropagation();
+    });
 
-        var postId = e.target.getAttribute("data-id");
+    $action.on("click", function (e) {
+        var $this = $(this);
+
+        if ($this.hasClass("disabled")) {
+            return;
+        }
+
+        var postId = this.parentNode.getAttribute("data-id");
+        var newStatus = this.getAttribute("data-status");
 
         var $postThumbnail = $("#post-id-" + postId + "-thumbnail");
         var $postTableRow = $("#post-id-" + postId + "-row");
-
-        $postThumbnail.addClass("remove");
 
         var xhr = $.ajax({
             url: AppParams.webroot + "/" + AppParams.postUsername + "/" + postId + "/edit",
@@ -24,17 +32,23 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
             dataType: 'json',
             data: {
                 hash: AppParams.globalAuthHash,
-                status: "end"
+                status: newStatus
             }
         });
 
+        $postThumbnail.addClass("removing");
+        $postTableRow.addClass("removing");
+
         xhr.done(function () {
-            $postThumbnail.addClass("removed");
-            $postTableRow.remove();
+            setTimeout(function () {
+                $postThumbnail.remove();
+                $postTableRow.remove();
+            }, 80);
         });
 
         xhr.fail(function () {
-            $postThumbnail.removeClass("remove");
+            $postThumbnail.removeClass("removing");
+            $postTableRow.removeClass("removing");
         });
     });
 });
