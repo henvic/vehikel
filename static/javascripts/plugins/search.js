@@ -18,11 +18,14 @@ define(["AppParams", "jquery", "underscore"],
 
         $searchResults.on("click", ".posts-table-view tr", function (e) {
             var link = e.currentTarget.getAttribute("data-link");
+            var $target = $(e.target);
 
-            if (e.target.tagName.toLowerCase() !== "a") {
-                e.preventDefault();
-                window.location = link;
+            if (e.target.tagName.toLowerCase() === "a" || $target.closest("button")[0] !== undefined) {
+                return;
             }
+
+            e.preventDefault();
+            window.location = link;
         });
 
         var $searchText = $("#search-text");
