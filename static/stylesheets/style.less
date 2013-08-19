@@ -754,6 +754,25 @@ input.no-spin-button::-webkit-inner-spin-button {
     }
 }
 
+.post-status {
+    margin: 0;
+    background: #f4f4f4;
+    display: inline-block;
+    .rounded(3px);
+    padding: 2px 4px;
+    input {
+        display: none;
+    }
+
+    input + .status {
+        opacity: 0.2;
+    }
+
+    input:checked + .status {
+        opacity: 1;
+    }
+}
+
 .post-product-tabs {
     border-left: 1px solid #f4f4f4;
     box-sizing: border-box;

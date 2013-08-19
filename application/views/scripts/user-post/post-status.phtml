@@ -2,20 +2,23 @@
 $post = $this->post;
 ?>
 <br />
-<form id="post-status" class="form-inline">
+<form id="post-status" class="form-inline post-status">
 <label for="status" data-rel="tooltip" data-title="status do anúncio">
     <span class="hidden">status do anúncio</span><i class="icon-tasks"></i>
 </label>
     <label class="radio" for="status-staging">
         <input type="radio" name="status" id="status-staging" value="staging" tabindex="140"
-        <?php if ($post["status"] === Ml_Model_Posts::STATUS_STAGING) echo ' checked="checked"'; ?>>&nbsp;pausado
+        <?php if ($post["status"] === Ml_Model_Posts::STATUS_STAGING) echo ' checked="checked"'; ?>>
+        <span class="status"><i class="icon-pause"></i><span class="hidden">pausado</span></span>
     </label>&nbsp;
     <label class="radio" for="status-active">
         <input type="radio" name="status" id="status-active" value="active" tabindex="140"
-        <?php if ($post["status"] === Ml_Model_Posts::STATUS_ACTIVE) echo ' checked="checked"'; ?>>&nbsp;ativo
+        <?php if ($post["status"] === Ml_Model_Posts::STATUS_ACTIVE) echo ' checked="checked"'; ?>>
+        <span class="status"><i class="icon-play"></i><span class="hidden">ativo</span></span>
     </label>&nbsp;
     <label class="radio" for="status-end">
         <input type="radio" name="status" id="status-end" value="end" tabindex="140"
-        <?php if ($post["status"] === Ml_Model_Posts::STATUS_END) echo ' checked="checked"'; ?>>&nbsp;finalizado
+        <?php if ($post["status"] === Ml_Model_Posts::STATUS_END) echo ' checked="checked"'; ?>>
+        <span class="status"><i class="icon-stop"></i><span class="hidden">finalizado</span></span>
     </label>
 </form>
