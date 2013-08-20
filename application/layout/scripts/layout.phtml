@@ -69,7 +69,7 @@ if (is_array($metaOgp)) {
     foreach ($metaOgp as $eachOg) {
 ?>
 <meta property="<?= $this->escape($eachOg["property"]); ?>" content="<?= $this->escape($eachOg["content"]); ?>" />
-<?
+<?php
     }
     unset($eachOg);
 }

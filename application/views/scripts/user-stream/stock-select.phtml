@@ -54,7 +54,7 @@ foreach ($makes as $eachMake => $makeInfo) {
     <option value="<?= $this->escape($eachMake . ";" . $eachModel["model"]); ?>"<?= $selected; ?>>
         &nbsp; &nbsp; &nbsp;<?= $this->escape($eachModel["model"]); ?> (<?= $this->escape($eachModel["amount"]); ?>)
     </option>
-<?
+<?php
         }
     }
 ?>
