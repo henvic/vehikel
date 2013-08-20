@@ -9,7 +9,7 @@ Unless otherwise referenced to, the versions for the requirements are given by t
 
 ### PHP and Servers
 * Unix-like system
-* [PHP](http://php.net/) >= 5.4.x
+* [PHP](http://php.net/) >= 5.5.x
 * [MySQL](http://www.mysql.com/) >= 5.1
 * [memcached](http://memcached.org/)
 * [Gearman Job Server](http://gearman.org/)
