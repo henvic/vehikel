@@ -188,9 +188,7 @@ class Ml_Model_Posts
 
         $data = $this->_dbAdapter->fetchAll($select);
 
-        $ids = array_map(function ($row) {
-            return $row["id"];
-        }, $data);
+        $ids = array_column($data, "id");
 
         return $ids;
     }
