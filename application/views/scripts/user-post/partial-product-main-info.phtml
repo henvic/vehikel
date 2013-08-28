@@ -168,7 +168,7 @@ if ($post["type"] == "car" && ($post["armor"] || $editable)) {
 if ($editable) {
 ?>
 <label for="armor" class="label-checkbox-armor label-checkbox">
-<input id="armor" name="armor" type="checkbox"<?= ($post["armor"]) ? ' checked="checked"' : ''; ?> tabindex="120" />
+<input id="armor" name="armor" value="1" type="checkbox"<?= ($post["armor"]) ? ' checked="checked"' : ''; ?> tabindex="120" />
 <?php
 }
 ?>
@@ -189,7 +189,7 @@ if ($post["handicapped"] || $editable) {
 if ($editable) {
 ?>
 <label for="handicapped" class="label-checkbox-handicapped label-checkbox">
-<input id="handicapped" name="handicapped"
+<input id="handicapped" name="handicapped" value="1"
 type="checkbox"<?= ($post["handicapped"]) ? ' checked="checked"' : ''; ?> tabindex="121" />
 <?php
 }
@@ -212,7 +212,7 @@ if ($post["collection"] || $editable) {
 if ($editable) {
 ?>
 <label for="collection" class="label-checkbox-collection label-checkbox">
-<input id="collection" name="collection"
+<input id="collection" name="collection" value="1"
 type="checkbox"<?= ($post["collection"]) ? ' checked="checked"' : ''; ?> tabindex="122" />
 <?php
 }

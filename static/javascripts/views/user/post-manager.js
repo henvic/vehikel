@@ -72,7 +72,7 @@ define([
         };
 
         $postProductInfoOthers.on("click", '.label-checkbox [type="checkbox"]', function (e) {
-            updatePostItem(e.target.name, (e.target.checked) ? 1 : 0);
+            updatePostItem(e.target.name, (e.target.checked) ? e.target.value : "");
         });
 
         var lastUpdatePostEquipmentsCall;
