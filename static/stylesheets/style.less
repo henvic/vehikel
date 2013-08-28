@@ -446,8 +446,14 @@ input.no-spin-button::-webkit-inner-spin-button {
     float: right;
 }
 
-.galleria-image-nav-left, .galleria-image-nav-right {
-    opacity: 0;
+.galleria-thumb-nav-left,
+.galleria-thumb-nav-right,
+.galleria-info-link,
+.galleria-info-close,
+.galleria-image-nav-left,
+.galleria-image-nav-right {
+    background-image: url(../images/galleria-io-inverted-classic-map.png);
+    background-repeat: no-repeat;
 }
 
 .galleria {
@@ -459,13 +465,14 @@ input.no-spin-button::-webkit-inner-spin-button {
 
     &:hover, &:active {
         .galleria-image-nav-left, .galleria-image-nav-right {
-            opacity: 0.4 !important;
+            opacity: 0.6 !important;
         }
     }
 }
 
 .galleria-container-background {
-    background: #101010;
+    background: #fefefe;
+    box-shadow: -1px 1px 5px #e1e1e1;
 }
 
 .galleria-container {
@@ -483,6 +490,20 @@ input.no-spin-button::-webkit-inner-spin-button {
 
 .galleria-counter {
     opacity: 0 !important;
+}
+
+.galleria-thumbnails .galleria-image {
+    border: none;
+    box-shadow: 0 0 3px #ccc;
+    background: #222;
+
+    img {
+        opacity: 0.9 !important;
+    }
+
+    img:hover {
+        opacity: 1 !important;
+    }
 }
 
 .posts-thumbnail-view {
