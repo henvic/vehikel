@@ -114,17 +114,12 @@ if (yearTermsLength > 4) {
             <%= termListHtmlElements("transmission", facets["transmission"].terms, formSerialized, currentQueryStringParams, transmissionTranslation) %>
         </ul>
     </dd>
-    <dt>Tração</dt>
-    <dd>
-        <ul>
-            <%= termListHtmlElements("traction", facets["traction"].terms, formSerialized, currentQueryStringParams, tractionTranslation) %>
-        </ul>
-    </dd>
     <dt>
         Especiais
     </dt>
     <dd>
         <ul>
+            <%= termListHtmlElements("traction", facets["traction"].terms, formSerialized, currentQueryStringParams, tractionTranslation) %>
             <%= termListHtmlElementsBool("armor", facets["armor"].terms, formSerialized, currentQueryStringParams, "blindado") %>
             <%= termListHtmlElementsBool("handicapped", facets["handicapped"].terms, formSerialized, currentQueryStringParams, "deficiente físico") %>
             <%= termListHtmlElementsBool("collection", facets["collection"].terms, formSerialized, currentQueryStringParams, "colecionador") %>
