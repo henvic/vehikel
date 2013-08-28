@@ -39,12 +39,6 @@ if ($post["transmission"]) {
     $transmission = $translatePosts->translate($post["transmission"]);
 }
 
-$traction = '';
-
-if ($post["traction"]) {
-    $traction = $translatePosts->translate($post["traction"]);
-}
-
 $postProductInfoData = [
     "price" => [
         "name" => "price",
@@ -80,13 +74,6 @@ $postProductInfoData = [
         "input_value" => $post["transmission"],
         "value" => $transmission,
         "input" => ""
-    ],
-    "traction" => [
-        "name" => "traction",
-        "title" => "Tração",
-        "input_value" => $post["traction"],
-        "value" => $traction,
-        "input" => ""
     ]
 ];
 
@@ -110,11 +97,6 @@ if ($editable) {
         ->removeDecorator("description");
 
     $postProductInfoData["transmission"]["input"] = $postForm->getElement("transmission")->removeDecorator("wrapper")
-        ->removeDecorator("label")
-        ->removeDecorator("htmltag")
-        ->removeDecorator("description");
-
-    $postProductInfoData["traction"]["input"] = $postForm->getElement("traction")->removeDecorator("wrapper")
         ->removeDecorator("label")
         ->removeDecorator("htmltag")
         ->removeDecorator("description");
@@ -163,6 +145,26 @@ unset($productInfo);
 <small class="pull-right muted"><abbr title="referência">ref</abbr>: #<?= $this->escape($post["universal_id"]); ?></small>
 <div class="post-product-info-others" id="post-product-info-others">
 <?php
+if ($post["type"] == "car" && ($post["traction"] || $editable)) {
+if ($editable) {
+?>
+<label for="traction" class="label-checkbox-collection label-checkbox">
+<input id="traction" name="traction" value="4x4"
+type="checkbox"<?= ($post["traction"]) ? ' checked="checked"' : ''; ?> tabindex="120" />
+<?php
+}
+?>
+<span class="label label-warning<?= ($post["traction"]) ? ' has' : ' has-not' ?>">
+4x4
+</span>
+<?php
+if ($editable) {
+?>
+</label>
+<?php
+}
+}
+
 if ($post["type"] == "car" && ($post["armor"] || $editable)) {
 
 if ($editable) {
