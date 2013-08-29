@@ -532,10 +532,6 @@ input.no-spin-button::-webkit-inner-spin-button {
         overflow: hidden;
         line-height: 156%;
 
-        &.editable {
-            height: 270px;
-        }
-
         .rounded(6px);
 
         &:hover {
@@ -558,6 +554,7 @@ input.no-spin-button::-webkit-inner-spin-button {
             width: 200px;
             height: 150px;
             display: block;
+            text-align: center;
         }
 
         img {
@@ -577,30 +574,23 @@ input.no-spin-button::-webkit-inner-spin-button {
             text-decoration: none;
         }
 
-        .actions {
-            background: @redT;
-            display: block;
-            color: white;
+        .img-place .actions {
             width: 100%;
-            height: 40px;
-            bottom: 0;
-            padding-left: 10px;
             position: absolute;
+            color: #fff;
+            box-sizing: border-box;
+            font-size: 90%;
+            cursor: pointer;
+            margin-top: -18px;
 
             .action {
-                display: inline-block;
-                padding: 10px;
-                height: 100%;
-                vertical-align: middle;
+                width: 50%;
+                float: left;
+                background: rgba(167, 13, 28, 0.8);
 
                 &:hover {
-                    background: saturate(@redT, 100);
-                }
-
-                &.disabled:hover {
-                    background: inherit;
-                    cursor: not-allowed;
-                    opacity: 0.1;
+                    background: #333;
+                    .transition(1s);
                 }
             }
         }
@@ -611,14 +601,14 @@ input.no-spin-button::-webkit-inner-spin-button {
             width: 100%;
             height: 300px;
 
-            &.editable {
-                height: 340px;
-            }
-
             .img-place {
                 width: 300px;
                 height: 215px;
                 margin: 0 auto;
+            }
+
+            .img-place .actions {
+                margin-left: -30px;
             }
         }
     }

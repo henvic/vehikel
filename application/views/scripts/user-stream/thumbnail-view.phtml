@@ -36,6 +36,23 @@ foreach ($posts as $post) {
     } else {
         echo $this->picture(null, "/400x300");
     }
+
+
+if ($this->editable) {
+?>
+    <div class="actions" data-id="<?= $this->escape($post["id"]); ?>">
+        <div class="action<?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? " hidden" : "" ?>" data-status="staging">
+            pausar
+        </div>
+        <div class="action<?= ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) ? " hidden" : "" ?>" data-status="active">
+            anunciar
+        </div>
+        <div class="action<?= ($post["status"] == Ml_Model_Posts::STATUS_END) ? " hidden" : "" ?>" data-status="end">
+            finalizar
+        </div>
+    </div><!-- end of .actions -->
+<?php
+}
 ?>
 </div>
 <p>
@@ -80,25 +97,6 @@ if ($post["traction"] == '4x4') {
 if ($post["collection"]) {
 ?>
 <span class="label label-inverse">Colecionador</span>
-<?php
-}
-
-if ($this->editable) {
-?>
-<div class="actions" data-id="<?= $this->escape($post["id"]); ?>">
-<div class="action<?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? " disabled" : "" ?>" data-status="staging">
-<i class="icon-pause<?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? "" : " icon-white" ?>"></i>
-<span class="hidden"> pausar</span>
-</div>
-<div class="action<?= ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) ? " disabled" : "" ?>" data-status="active">
-<i class="icon-play<?= ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) ? "" : " icon-white" ?>"></i>
-<span class="hidden"> ativar</span>
-</div>
-<div class="action<?= ($post["status"] == Ml_Model_Posts::STATUS_END) ? " disabled" : "" ?>" data-status="end">
-<i class="icon-stop<?= ($post["status"] == Ml_Model_Posts::STATUS_END) ? "" : " icon-white" ?>"></i>
-<span class="hidden"> finalizar</span>
-</div>
-</div><!-- end of .actions -->
 <?php
 }
 ?>
