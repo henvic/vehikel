@@ -1,3 +1,48 @@
 <?php
 $post = $this->post;
 ?>
+<div class="post-status" id="post-status">
+<?php
+if ($post["status"] != Ml_Model_Posts::STATUS_ACTIVE) {
+?>
+    <button class="btn btn-large btn-success" data-status="active">Anunciar agora</button>
+<?php
+}
+
+if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
+?>
+    <button class="btn btn-large btn-danger" data-status="end">Encerrar</button>
+<?php
+}
+
+if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
+?>
+    <small>ou <button class="btn btn-link btn-mini" data-status="end">marcar como encerrado</button></small>
+<?php
+}
+
+if ($post["status"] != Ml_Model_Posts::STATUS_STAGING) {
+?>
+    <small>ou <button class="btn btn-link btn-mini" data-status="staging">marcar como pausado</button></small>
+<?php
+}
+
+if ($post["status"] == Ml_Model_Posts::STATUS_STAGING) {
+?>
+    <span class="label label-warning">anúncio pausado</span>
+<?php
+}
+
+if ($post["status"] == Ml_Model_Posts::STATUS_ACTIVE) {
+?>
+    <span class="label label-success">anúncio ativo</span>
+<?php
+}
+
+if ($post["status"] == Ml_Model_Posts::STATUS_END) {
+?>
+    <span class="label label-important">anúncio encerrado</span>
+<?php
+}
+?>
+</div><!-- .post-status -->

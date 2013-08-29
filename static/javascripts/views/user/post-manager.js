@@ -49,6 +49,7 @@ define([
         var $postDescriptionTextSave = $('#post-description-text-save');
 
         var $postStatus = $('#post-status');
+        var $postStatusButtons = $("button", $postStatus);
 
         var postProductMakeValue = $postProductMake.val();
         var postProductModelValue = $postProductModel.val();
@@ -913,6 +914,47 @@ define([
             getVideoLinkElement().value = window.prompt("Link do YouTube:", getVideoLinkElement().value);
 
             $(".video-form", $galleryManager).submit();
+        });
+
+        var lastUpdateStatusCall;
+
+        $postStatusButtons.on("click", function (e) {
+            var saveDescriptionBoolean;
+
+            if (isOpenDescriptionEdit()) {
+                saveDescriptionBoolean = window.confirm("A edição da descrição não foi salva. Deseja continuar?");
+
+                if (! saveDescriptionBoolean) {
+                    return;
+                }
+            }
+
+            $postStatusButtons.attr("disabled", "disabled");
+
+            lastUpdateStatusCall = updatePostItem("status", e.target.getAttribute("data-status"));
+
+            lastUpdateStatusCall.done(function (response) {
+                var newStateHtml = "";
+
+                switch (response.status) {
+                case "staging" :
+                    newStateHtml = '<span class="label label-warning">anúncio pausado</span>';
+                    break;
+                case "active" :
+                    newStateHtml = '<span class="label label-success">anúncio ativo</span>';
+                    break;
+                case "end" :
+                    newStateHtml = '<span class="label label-important">anúncio encerrado</span>';
+                    break;
+                }
+
+                $postStatus.html("<p>Anúncio modificado: " + newStateHtml + "</p>");
+                window.location = AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId;
+            });
+
+            lastUpdateStatusCall.fail(function () {
+                $postStatusButtons.removeAttr("disabled");
+            });
         });
     }
 );
