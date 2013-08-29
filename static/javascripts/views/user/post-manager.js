@@ -365,6 +365,10 @@ define([
             $postDescriptionEditingArea.addClass("hidden");
         };
 
+        var isOpenDescriptionEdit = function () {
+            return $postDescriptionText.hasClass("hidden");
+        };
+
         var saveDescriptionEdit = function () {
             $postDescriptionTextSave.button("loading");
 
