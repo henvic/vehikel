@@ -400,6 +400,8 @@ define([
                 $postDescriptionText.html(response.description_html_escaped);
                 closeDescriptionEdit();
             });
+
+            return xhr;
         };
 
         $postDescriptionTextSave.on("click", function (e) {
