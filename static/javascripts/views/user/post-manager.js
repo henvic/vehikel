@@ -416,16 +416,6 @@ define([
 
         CKEDITOR.replace("post-description-text-edit", ckeditorConfig);
 
-        var lastUpdateStatusCall;
-
-        $("[name=status]", $postStatus).on("change", function (e) {
-            if (lastUpdateStatusCall) {
-                lastUpdateStatusCall.abort();
-            }
-
-            lastUpdateStatusCall = updatePostItem("status", this.value);
-        });
-
         YUI({filter:"raw"}).use("uploader", function(Y) {
 
             if (Y.Uploader.TYPE !== "none" && !Y.UA.ios) {
