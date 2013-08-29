@@ -381,21 +381,24 @@ define([
                 hash: AppParams.globalAuthHash
             };
 
-            $.ajax({
+            var xhr = $.ajax({
                 url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
                 type: 'POST',
                 dataType: 'json',
-                data: data,
-                complete: function () {
+                data: data
+            });
+
+            xhr.complete(function () {
                     $postDescriptionTextSave.button("reset");
-                },
-                success: function (result, textStatus, jqXHR) {
-                    postDescriptionTextEditValue = result.description;
-                    $postDescriptionTextEdit.val(result.description);
-                    editor.setData(result.description);
-                    $postDescriptionText.html(result.description_html_escaped);
-                    closeDescriptionEdit();
                 }
+            );
+
+            xhr.done(function (response) {
+                postDescriptionTextEditValue = response.description;
+                $postDescriptionTextEdit.val(response.description);
+                editor.setData(response.description);
+                $postDescriptionText.html(response.description_html_escaped);
+                closeDescriptionEdit();
             });
         };
 
