@@ -67,8 +67,8 @@ body
     li {
         padding: 5px;
         padding-left: 35px;
-        color: @formOptional;
         font-weight: bold;
+        color: @formOptional;
         cursor: pointer;
         border: 1px solid #fdfdfd;
     }
@@ -93,8 +93,8 @@ body
     }
 
     ul li:nth-child(n+5) {
-        opacity: 0;
         height: 0;
+        opacity: 0;
         -webkit-transition: all .2s cubic-bezier(1,.21,.89,.34);
         -moz-transition: all .2s cubic-bezier(1,.21,.89,.34);
         transition: all .2s cubic-bezier(1,.21,.89,.34);
@@ -105,8 +105,8 @@ body
     }
 
     .read-more-checkbox:checked ~ ul li:nth-child(n+5) {
-        opacity: 1;
         height: 18px;
+        opacity: 1;
         -webkit-transition: all .2s cubic-bezier(1,.21,.89,.34);
         -moz-transition: all .2s cubic-bezier(1,.21,.89,.34);
         transition: all .2s cubic-bezier(1,.21,.89,.34);
@@ -118,16 +118,16 @@ body
 
     .read-more-label {
         display: block;
-        margin-top: -10px;
         width: 60px;
+        margin-top: -10px;
     }
 
     .read-more-checkbox ~ .read-more-label::after {
-        content: "⬇";
-        width: 140px;
-        font-size: 70%;
         display: block;
+        width: 140px;
         padding-left: 2px;
+        font-size: 70%;
+        content: "⬇";
     }
 
     .read-more-checkbox:checked ~ .read-more-label::after {
@@ -136,8 +136,8 @@ body
 }
 
 .search {
-    margin-top: 20px;
     display: inline;
+    margin-top: 20px;
     .facets-toggle {
         @media (max-width : 480px) {
             margin-top: -2px;
@@ -162,11 +162,11 @@ body
 }
 
 .search-text {
-    background: url("../images/magnifying-glass-icon.png") #fff no-repeat;
-    background-position: 10px 5px;
+    min-width: 200px;
     padding-left: 35px !important;
     margin-bottom: 0;
-    min-width: 200px;
+    background: url("../images/magnifying-glass-icon.png") #fff no-repeat;
+    background-position: 10px 5px;
     border-left: 0;
     @media (max-width : 480px) {
         margin-bottom: 2px !important;
@@ -174,11 +174,11 @@ body
 }
 
 .persist-username {
-    background: #111;
-    color: #eee;
-    font-size: 10px;
     width: 120px;
     margin-bottom: 0;
+    font-size: 10px;
+    color: #eee;
+    background: #111;
     opacity: 0;
     .transition(2s, ease-in-out);
 }
@@ -231,8 +231,8 @@ body
 }
 
 .containers-on-bottom {
-    bottom: 0;
     position: static;
+    bottom: 0;
     width: 100%;
 
     footer {
@@ -268,24 +268,24 @@ body
 
 .site-topbar-row {
     z-index: 500000;
-    background: #fff;
-    border-top: 5px solid @redT;
-    -moz-box-shadow: 1px 1px 8px #efefef;
-    -webkit-box-shadow: 1px 1px 8px #efefef;
-    box-shadow: 1px 1px 8px #efefef;
     padding-top: 2px;
     padding-bottom: 2px;
+    background: #fff;
+    border-top: 5px solid @redT;
+    -webkit-box-shadow: 1px 1px 8px #efefef;
+    -moz-box-shadow: 1px 1px 8px #efefef;
+    box-shadow: 1px 1px 8px #efefef;
 }
 
 .post-seller-address {
+    margin-bottom: 0;
     background-color: #ffffff;
     -webkit-background-size: 50px 50px;
     -moz-background-size: 50px 50px;
     background-size: 50px 50px;
-    -moz-box-shadow: 1px 1px 8px #efefef;
     -webkit-box-shadow: 1px 1px 8px #efefef;
+    -moz-box-shadow: 1px 1px 8px #efefef;
     box-shadow: 1px 1px 8px #efefef;
-    margin-bottom: 0;
     ul {
         margin-left: 0;
         list-style-type: none;
@@ -293,14 +293,14 @@ body
 }
 
 .map-link {
-    background: url(../images/maps-icon.png) no-repeat;
+    display: block;
     width: 34px;
     height: 34px;
-    background-size: 34px 34px;
-    margin-left: 10px;
     margin-right: 10px;
-    display: block;
+    margin-left: 10px;
     text-decoration: none;
+    background: url(../images/maps-icon.png) no-repeat;
+    background-size: 34px 34px;
 }
 
 .map-iframe {
@@ -323,8 +323,8 @@ body
         }
     }
     .label {
-        white-space: normal;
         margin-right: 10px;
+        white-space: normal;
     }
 
     @media (min-width : 1200px) and (min-height : 700px) {
@@ -356,12 +356,13 @@ body
 }
 
 .footer {
-    font-size: 75%;
-    margin-top: 120px;
     padding-top: 20px;
+    margin-top: 120px;
+    font-size: 75%;
+    background: @greenT;
     img {
-        background: #fff;
         padding: 4px;
+        background: #fff;
         .rounded(3px)
     }
 	a {
@@ -370,7 +371,6 @@ body
             color: #777;
         }
     }
-    background: @greenT;
 }
 
 @media (max-width : 767px) {
@@ -389,9 +389,9 @@ body
 }
 
 .stock-select {
+    height: 22px;
     margin: 0;
     margin-top: -2px;
-    height: 22px;
     @media (max-width : 480px) {
         margin-top: 10px;
     }
@@ -422,14 +422,14 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .post-contact {
-    margin-top: 10px;
     padding-left: 10px;
+    margin-top: 10px;
 }
 
 .post-contact .form-actions {
-    background: transparent;
     padding: 0;
     margin: 0;
+    background: transparent;
     border: none;
 }
 
@@ -457,8 +457,8 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .galleria {
-    max-width: 600px;
     height: 400px;
+    max-width: 600px;
     @media (max-width : 480px) {
         height: 280px;
     }
@@ -493,9 +493,9 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .galleria-thumbnails .galleria-image {
+    background: #222;
     border: none;
     box-shadow: 0 0 3px #ccc;
-    background: #222;
 
     img {
         opacity: 0.9 !important;
@@ -507,9 +507,9 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .posts-thumbnail-view {
-    list-style-type: none;
     display: block;
     margin: 0;
+    list-style-type: none;
 
     li:first-child, li + li {
         margin-right: 20px;
@@ -521,16 +521,16 @@ input.no-spin-button::-webkit-inner-spin-button {
     }
 
     li {
+        position: relative;
+        display: block;
+        float: left;
         width: 200px;
         height: 230px;
-        box-sizing: border-box;
-        float: left;
-        background: #f3f3f3;
-        display: block;
-        border: 1px solid #eee;
-        position: relative;
         overflow: hidden;
         line-height: 156%;
+        background: #f3f3f3;
+        border: 1px solid #eee;
+        box-sizing: border-box;
 
         .rounded(6px);
 
@@ -551,9 +551,9 @@ input.no-spin-button::-webkit-inner-spin-button {
         }
 
         .img-place {
+            display: block;
             width: 200px;
             height: 150px;
-            display: block;
             text-align: center;
         }
 
@@ -575,8 +575,8 @@ input.no-spin-button::-webkit-inner-spin-button {
         }
 
         .img-place .actions {
-            width: 100%;
             position: absolute;
+            width: 100%;
             color: #fff;
             box-sizing: border-box;
             font-size: 90%;
@@ -584,8 +584,8 @@ input.no-spin-button::-webkit-inner-spin-button {
             margin-top: -18px;
 
             .action {
-                width: 50%;
                 float: left;
+                width: 50%;
                 background: rgba(167, 13, 28, 0.8);
 
                 &:hover {
@@ -630,24 +630,24 @@ input.no-spin-button::-webkit-inner-spin-button {
 
     .pictures-thumbnails .picture {
         position: relative;
-        .galleria-container-background();
-        text-align: center;
-        margin: 0;
+        float: left;
         width: 200px;
         height: 150px;
-        float: left;
+        margin: 0;
+        text-align: center;
+        .galleria-container-background();
     }
 
     .pictures-thumbnails .picture .actions {
-        width: 100%;
         position: absolute;
         bottom: 0;
         left: 0;
-        color: #fff;
+        width: 100%;
         padding: 2px;
-        box-sizing: border-box;
         font-size: 90%;
+        color: #fff;
         cursor: pointer;
+        box-sizing: border-box;
         &:hover {
             -webkit-transition: all 0.5s ease-in-out;
             -moz-transition: all 0.5s ease-in-out;
@@ -692,10 +692,10 @@ input.no-spin-button::-webkit-inner-spin-button {
     }
 
     .youtube-logo {
-        background: url("../images/youtube-icon.png") transparent no-repeat;
+        float: left;
         width: 69px;
         height: 30px;
-        float: left;
+        background: url("../images/youtube-icon.png") transparent no-repeat;
     }
 }
 
@@ -727,9 +727,9 @@ input.no-spin-button::-webkit-inner-spin-button {
         }
         .text-value {
             margin-left: -154px;
-            color: @redT;
-            font-weight: bold;
             font-size: 150%;
+            font-weight: bold;
+            color: @redT;
         }
     }
 }
@@ -752,11 +752,11 @@ input.no-spin-button::-webkit-inner-spin-button {
 
     .input-main-info {
         height: auto;
-        margin: 0;
         padding: 0;
-        box-shadow: none;
+        margin: 0;
         text-shadow: none;
         vertical-align: top;
+        box-shadow: none;
     }
 
     .input-text-main-info {
@@ -771,10 +771,10 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .equipment-header {
-    color: @redT;
-    border-bottom: 4px solid @redT;
     margin-top: 16px;
     margin-bottom: 6px;
+    color: @redT;
+    border-bottom: 4px solid @redT;
 }
 
 .post-product-info-others .label-checkbox {
@@ -821,14 +821,14 @@ input.no-spin-button::-webkit-inner-spin-button {
         }
 
         .has:before {
-            content: "✓";
             margin-left: -17px;
+            content: "✓";
         }
 
         .has-not:before {
+            margin-left: -19px;
             content: "▢";
             opacity: 0.15;
-            margin-left: -19px;
         }
     }
 
@@ -843,9 +843,9 @@ input.no-spin-button::-webkit-inner-spin-button {
     }
 
     ul {
-        background: #fafafa;
-        list-style-type: none;
         margin-left: 0;
+        list-style-type: none;
+        background: #fafafa;
         -moz-column-rule-color:  #f3f3f3;
         -moz-column-rule-style:  solid;
         -moz-column-rule-width:  1px;
@@ -874,12 +874,12 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .post-info-tabs {
+    padding-top: 8px;
+    padding-left: 8px;
     margin-top: 10px;
     margin-bottom: 0;
     background: #fafafa;
     .gradient(#fbfbfb, #fafafa, #f4f4f4);
-    padding-top: 8px;
-    padding-left: 8px;
     .border-radius(3px, 0, 0, 3px);
 
     li {
@@ -887,9 +887,9 @@ input.no-spin-button::-webkit-inner-spin-button {
     }
 
     a {
+        color: #555;
         background: rgb(230, 230, 230);
         background: rgba(255, 255, 255, 0.3);
-        color: #555;
     }
 }
 
@@ -902,20 +902,20 @@ input.no-spin-button::-webkit-inner-spin-button {
     -o-transition: background .5s ease-in-out;
     transition: background .5s ease-in-out;
     &:hover {
-        background: @postEditingBackground;
         cursor: pointer;
+        background: @postEditingBackground;
     }
 }
 
 .post-product-name {
+    padding: 0 10px;
+    margin-bottom: 10px;
     font-size: 100%;
     font-weight: normal;
-    margin-bottom: 10px;
-    padding: 0 10px;
+    color: #5d5d5d;
     background: #fafafa;
     background: -webkit-radial-gradient(80% 40%, closest-corner, #ffffff, #fafafa);
     background: -moz-radial-gradient(80% 40%, closest-corner, #ffffff, #fafafa);
-    color: #5d5d5d;
     .title {
         font-weight: bold;
     }
@@ -947,37 +947,37 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .post-editable-description:hover {
+    cursor: pointer;
     background: @postEditingBackground;
     background-image: url("../images/edit-background.png");
     background-position: center;
     background-repeat: no-repeat;
-    cursor: pointer;
 }
 
 .post-product-tab {
-    border-left: 1px solid #ddd;
+    padding: 5px;
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
-    padding: 5px;
+    border-left: 1px solid #ddd;
 }
 
 .post-description-text {
-    margin-top: 5px;
-    padding: 5px 7px;
     min-height: 470px;
+    padding: 5px 7px;
+    margin-top: 5px;
 }
 
 .post-description-text-edit {
-    background: @postEditingBackground;
-    resize: vertical;
     width: 95%;
     height: 300px;
     margin-top: 5px;
+    background: @postEditingBackground;
+    resize: vertical;
 }
 
 .proposal-textarea {
-    resize: vertical;
     width: 95%;
+    resize: vertical;
 }
 
 .posts-table-view {
@@ -1009,9 +1009,9 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .post-status {
+    padding: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
-    padding: 20px;
     box-shadow: 1px 1px 8px #ddd;
 }
 
