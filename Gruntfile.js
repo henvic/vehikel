@@ -56,8 +56,9 @@ module.exports = function (grunt) {
     });
 
     // Default task.
-    grunt.registerTask("default", "lint recess");
+    grunt.registerTask("default", ["jshint", "recess"]);
 
+    grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-recess");
 
 };
