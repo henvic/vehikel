@@ -46,7 +46,6 @@ define(['jquery'], function($) {
             placement: 'bottom'
         });
         jFileButton.popover('show');
-        console.log(imageElement);
 
         setTimeout(function () {
             jFileButton.popover('hide');
