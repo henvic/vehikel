@@ -230,7 +230,7 @@ Right now this script can:\n
 - set the configs/Environment.php.dist values\n
 - resolve the PHP library dependencies\n
 - tell what PHP extensions are missing\n\n
-Follow the instructions on:\nhttps://github.com/henvic/MediaLab/blob/master/README.md\n\n", "cyan"));
+Follow the instructions on:\nhttps://github.com/henvic/vehikel/blob/master/README.md\n\n", "cyan"));
 
         $this->projectDirectory = realpath(getcwd() . "/..");
 
