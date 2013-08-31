@@ -1,5 +1,5 @@
 /*global define, Modernizr, Galleria, CKEDITOR */
-/*jshint indent:4 */
+/*jslint browser: true */
 
 define([
     'AppParams',
@@ -26,43 +26,65 @@ define([
         postsManagerGalleryTemplate,
         postsManagerPictureTemplate,
         cropPictureTemplate
-        ) {
+    ) {
         "use strict";
 
-        var $postProductType = $('#post-product-type');
-        var $postProductMake = $('#post-product-make');
-        var $postProductModel = $('#post-product-model');
-        var $postProductEngine = $('#post-product-engine');
+        var $postProductType = $("#post-product-type"),
+            $postProductMake = $("#post-product-make"),
+            $postProductModel = $("#post-product-model"),
+            $postProductEngine = $("#post-product-engine"),
+            $postProductName = $("#post-product-name"),
+            $postProductNameEdit = $("#post-product-name-edit"),
+            $postProductNameEditingArea = $("#post-product-name-editing-area"),
+            $postProductMainInfo = $("#post-product-main-info"),
+            $postProductInfo = $("#post-product-info"),
+            $postProductInfoValue = $("#post-product-info .value"),
+            $postProductInfoOthers = $("#post-product-info-others"),
+            $postDescriptionText = $("#post-description-text"),
+            $postDescriptionTextEdit = $("#post-description-text-edit"),
+            $postDescriptionEditingArea = $("#post-description-editing-area"),
+            $postDescriptionTextSave = $("#post-description-text-save"),
+            $postStatus = $("#post-status"),
+            $postStatusButtons = $("button", $postStatus),
+            $editPostButton = $("#edit-post-button"),
+            updatePostItem,
+            lastUpdatePostEquipmentsCall,
+            updatePostEquipments,
+            openPostProductNameEdit,
+            closePostProductNameEdit,
+            closeProductInfoField,
+            filterProductInfoFieldData,
+            updateProductInfoField,
+            editor,
+            openDescriptionEdit,
+            closeDescriptionEdit,
+            isOpenDescriptionEdit,
+            saveDescriptionEdit,
+            compiledPostsManagerPictureTemplate,
+            compiledpostsManagerGalleryTemplate,
+            $galleryManager = $("#gallery-manager"),
+            videoLinkEl,
+            pictures,
+            videoId,
+            reloadImages,
+            cutPicture,
+            addPicture,
+            editPicture,
+            erasePicture,
+            buildVideoLink,
+            getVideoLinkElement,
+            setVideoIdValue,
+            updateVideoId,
+            drawThumbnails,
+            createThumbnails,
+            setUpGalleryManager,
+            $openGalleryManager,
+            $setYouTubeVideo,
+            lastUpdateStatusCall;
 
-        var $postProductName = $('#post-product-name');
-        var $postProductNameEdit = $('#post-product-name-edit');
-        var $postProductNameEditingArea = $('#post-product-name-editing-area');
-
-        var $postProductMainInfo = $("#post-product-main-info");
-        var $postProductInfo = $("#post-product-info");
-        var $postProductInfoValue = $("#post-product-info .value");
-        var $postProductInfoOthers = $("#post-product-info-others");
-
-        var $postDescriptionText = $('#post-description-text');
-        var $postDescriptionTextEdit = $('#post-description-text-edit');
-        var $postDescriptionEditingArea = $('#post-description-editing-area');
-        var $postDescriptionTextSave = $('#post-description-text-save');
-
-        var $postStatus = $('#post-status');
-        var $postStatusButtons = $("button", $postStatus);
-
-        var postProductMakeValue = $postProductMake.val();
-        var postProductModelValue = $postProductModel.val();
-        var postProductNameEditValue = $postProductNameEdit.val();
-
-        var $editPostButton = $("#edit-post-button");
-
-        var updatePostItem = function (name, value) {
-            var data =
-                encodeURIComponent(name) + "=" + encodeURIComponent(value) +
-                    "&hash=" +
-                    encodeURIComponent(AppParams.globalAuthHash)
-                ;
+        updatePostItem = function (name, value) {
+            var data = encodeURIComponent(name) + "=" + encodeURIComponent(value) +
+                    "&hash=" + encodeURIComponent(AppParams.globalAuthHash);
 
             return $.ajax({
                 url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
@@ -76,22 +98,22 @@ define([
             updatePostItem(e.target.name, (e.target.checked) ? e.target.value : "");
         });
 
-        var lastUpdatePostEquipmentsCall;
+        updatePostEquipments = function () {
+            var equipment,
+                data;
 
-        var updatePostEquipments = function () {
             if (lastUpdatePostEquipmentsCall) {
                 lastUpdatePostEquipmentsCall.abort();
             }
 
-            var equipment = $('.post-equipments-list [name="equipment[]"]', $postProductMainInfo).serialize();
+            equipment = $('.post-equipments-list [name="equipment[]"]', $postProductMainInfo).serialize();
 
             if (equipment === "") {
                 equipment = 'equipment%5B%5D=';
             }
 
-            var data = equipment + "&hash=" + encodeURIComponent(AppParams.globalAuthHash);
+            data = equipment + "&hash=" + encodeURIComponent(AppParams.globalAuthHash);
 
-            // @todo add success and failure handling
             lastUpdatePostEquipmentsCall = $.ajax({
                 url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
                 type: 'POST',
@@ -101,8 +123,8 @@ define([
         };
 
         $postProductMainInfo.on("click", '.post-equipments-list [type="checkbox"]', function (e) {
-            var isChecked = e.target.checked;
-            var $labelTarget = $(e.target.parentNode);
+            var isChecked = e.target.checked,
+                $labelTarget = $(e.target.parentNode);
 
             if (isChecked) {
                 $labelTarget.removeClass("has-not").addClass("has");
@@ -113,7 +135,7 @@ define([
             updatePostEquipments();
         });
 
-        $editPostButton.on("click", function (e) {
+        $editPostButton.on("click", function () {
             openPostProductNameEdit();
             openDescriptionEdit();
             $(window).scrollTop($postProductNameEditingArea.position().top);
@@ -123,7 +145,7 @@ define([
 
         vehiclesModel.setUp($postProductType, $postProductMake, $postProductModel);
 
-        var openPostProductNameEdit = function () {
+        openPostProductNameEdit = function () {
             $postProductName.attr('unselectable', 'on').on('selectstart', false);
             $postProductName.addClass("hidden");
             $postProductMake.focus();
@@ -132,12 +154,12 @@ define([
             $postProductNameEditingArea.removeClass("hidden");
         };
 
-        var closePostProductNameEdit = function () {
+        closePostProductNameEdit = function () {
             $postProductName.removeClass("hidden");
             $postProductNameEditingArea.addClass("hidden");
         };
 
-        $postProductName.on("click", function (e) {
+        $postProductName.on("click", function () {
             openPostProductNameEdit();
         });
 
@@ -157,10 +179,10 @@ define([
                 type: 'POST',
                 dataType: 'json',
                 data: data,
-                success: function (result, textStatus, jqXHR) {
-                    var breadCrumbTypeLink = AppParams.webroot + "/search?type=" + encodeURI(result.type);
-                    var breadCrumbMakeLink = breadCrumbTypeLink + "&make=" + encodeURI(result.make);
-                    var breadCrumbModelLink = breadCrumbMakeLink + "&model=" + encodeURI(result.model);
+                success: function (result) {
+                    var breadCrumbTypeLink = AppParams.webroot + "/search?type=" + encodeURI(result.type),
+                        breadCrumbMakeLink = breadCrumbTypeLink + "&make=" + encodeURI(result.make),
+                        breadCrumbModelLink = breadCrumbMakeLink + "&model=" + encodeURI(result.model);
 
                     $(".make-a", $postProductName).text(result.make).attr("href", breadCrumbMakeLink);
                     $(".make", $postProductName).text(result.make);
@@ -171,9 +193,6 @@ define([
 
                     closePostProductNameEdit();
 
-                    postProductMakeValue = result.make;
-                    postProductModelValue = result.model;
-                    postProductNameEditValue = result.name;
                     vehiclesModel.loadPostProductMakes($postProductMake, result.type, result.make);
                     vehiclesModel.loadPostProductModels($postProductModel, result.type, result.make, result.model);
                     $postProductNameEdit.val(result.name);
@@ -183,19 +202,16 @@ define([
                         result.model + " " +
                         result.engine + " " +
                         result.name + " – " +
-                        AppParams.applicationname
-                    ;
+                        AppParams.applicationname;
                 }
             });
         });
 
-        var closeProductInfoField = function (name) {
-            //@todo escape the unescaped name var
-            var $value = $('[data-name="' + name + '"] .value');
-
-            var $action = $(".action", $value);
-            var $textValue = $(".text-value", $value);
-            var $editableValue = $(".editable-value", $value);
+        closeProductInfoField = function (name) {
+            var $value = $('[data-name="' + name + '"] .value'),
+                $action = $(".action", $value),
+                $textValue = $(".text-value", $value),
+                $editableValue = $(".editable-value", $value);
 
             $value.addClass("value-on");
             $textValue.removeClass("none");
@@ -204,7 +220,7 @@ define([
             $(".icon-ok", $action).addClass("icon-edit").removeClass("icon-ok");
         };
 
-        var filterProductInfoFieldData = function (name, value) {
+        filterProductInfoFieldData = function (name, value) {
             if (name === "price" && value.substr(0, 3) === "R$ ") {
                 value = value.substr(3);
             }
@@ -212,14 +228,13 @@ define([
             return value;
         };
 
-        var updateProductInfoField = function (name) {
-            //@todo escape the unescaped name var
-            var $inputField = $('[name="' + name + '"]', $postProductInfo);
-            var $value = $('[data-name="' + name + '"] .value');
-
-            var $textValue = $(".text-value", $value);
-
-            var enteredValue = $inputField.val();
+        updateProductInfoField = function (name) {
+            var $inputField = $('[name="' + name + '"]', $postProductInfo),
+                $value = $('[data-name="' + name + '"] .value'),
+                $textValue = $(".text-value", $value),
+                enteredValue = $inputField.val(),
+                value,
+                post;
 
             if ($value.data("saved-value").toString() === enteredValue) {
                 setTimeout(function () {
@@ -228,9 +243,8 @@ define([
                 return;
             }
 
-            var value = filterProductInfoFieldData(name, enteredValue);
-
-            var post = updatePostItem(name, value);
+            value = filterProductInfoFieldData(name, enteredValue);
+            post = updatePostItem(name, value);
 
             post.done(function () {
                 $($inputField).addClass("input-field-feedback-done");
@@ -249,7 +263,7 @@ define([
                         $textValue.text(printName);
                     }
 
-                    if (! enteredValue) {
+                    if (!enteredValue) {
                         $textValue.html('<span class="muted">-</span>');
                     }
 
@@ -267,12 +281,16 @@ define([
         };
 
         $postProductInfoValue.on("click", function (e) {
-            var $value = $(this.parentNode.getElementsByClassName("value")[0]);
-            var $action = $(".action", $value);
+            var $value = $(this.parentNode.getElementsByClassName("value")[0]),
+                $action = $(".action", $value),
+                $textValue,
+                $editableValue,
+                targetName,
+                name;
 
             if ($action.hasClass("edit-button")) {
-                var $textValue = $(".text-value", $value);
-                var $editableValue = $(".editable-value", $value);
+                $textValue = $(".text-value", $value);
+                $editableValue = $(".editable-value", $value);
 
                 $value.removeClass("value-on");
                 $textValue.addClass("none");
@@ -284,9 +302,9 @@ define([
             }
 
             if ($action.hasClass("save-button")) {
-                var targetName = e.target.nodeName.toLowerCase();
+                targetName = e.target.nodeName.toLowerCase();
                 if (targetName === "button" || targetName === "i") {
-                    var name = this.parentNode.getAttribute("data-name");
+                    name = this.parentNode.getAttribute("data-name");
                     updateProductInfoField(name);
                 }
             }
@@ -298,15 +316,16 @@ define([
         });
 
         $postProductInfoValue.on("keydown", function (e) {
+            var name,
+                $nextItem;
+
             if (e.target.nodeName.toLowerCase() !== "button" && e.keyCode === 13) {
-                var name = e.target.parentNode.parentNode.getAttribute("data-name");
+                name = e.target.parentNode.parentNode.getAttribute("data-name");
                 updateProductInfoField(name);
             }
 
             //on the tab key go to next
             if (e.keyCode === 9) {
-                var $nextItem;
-
                 //if the shift key is being pressed, let's go back instead
                 if (e.shiftKey) {
                     $nextItem = $(e.target.parentNode).parent('tr').prev();
@@ -322,15 +341,11 @@ define([
             }
         });
 
-        var postDescriptionTextEditValue = $postDescriptionTextEdit.val();
-
-        var editor;
-
-        CKEDITOR.on("instanceReady", function (ev) {
+        CKEDITOR.on("instanceReady", function () {
             editor = CKEDITOR.instances["post-description-text-edit"];
         });
 
-        var openDescriptionEdit = function () {
+        openDescriptionEdit = function () {
             $postDescriptionText.addClass("hidden");
             $postDescriptionEditingArea.removeClass("hidden");
 
@@ -340,15 +355,16 @@ define([
 
             //see http://stackoverflow.com/questions/8914543/ckeditor-cursor-position-after-inserting-uneditable-element
 
-            var s = editor.getSelection();
-            var selected_ranges = s.getRanges();
-            var node = selected_ranges[0].startContainer;
-            var parents = node.getParents(true);
+            var s = editor.getSelection(),
+                selected_ranges = s.getRanges(),
+                node = selected_ranges[0].startContainer,
+                parents = node.getParents(true),
+                x;
 
             node = parents[parents.length - 2].getFirst();
 
             while (true) {
-                var x = node.getNext();
+                x = node.getNext();
                 if (x === null) {
                     break;
                 }
@@ -361,28 +377,30 @@ define([
             s.selectRanges(selected_ranges);
         };
 
-        var closeDescriptionEdit = function () {
+        closeDescriptionEdit = function () {
             $postDescriptionText.removeClass("hidden");
             $postDescriptionEditingArea.addClass("hidden");
         };
 
-        var isOpenDescriptionEdit = function () {
+        isOpenDescriptionEdit = function () {
             return $postDescriptionText.hasClass("hidden");
         };
 
-        var saveDescriptionEdit = function () {
-            $postDescriptionTextSave.button("loading");
+        saveDescriptionEdit = function () {
+            var content = editor.getData(),
+                data,
+                xhr;
 
-            var content = editor.getData();
+            $postDescriptionTextSave.button("loading");
 
             $postDescriptionTextEdit.val(content);
 
-            var data = {
+            data = {
                 description: $postDescriptionTextEdit.val(),
                 hash: AppParams.globalAuthHash
             };
 
-            var xhr = $.ajax({
+            xhr = $.ajax({
                 url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
                 type: 'POST',
                 dataType: 'json',
@@ -390,12 +408,10 @@ define([
             });
 
             xhr.complete(function () {
-                    $postDescriptionTextSave.button("reset");
-                }
-            );
+                $postDescriptionTextSave.button("reset");
+            });
 
             xhr.done(function (response) {
-                postDescriptionTextEditValue = response.description;
                 $postDescriptionTextEdit.val(response.description);
                 editor.setData(response.description);
                 $postDescriptionText.html(response.description_html_escaped);
@@ -405,7 +421,7 @@ define([
             return xhr;
         };
 
-        $postDescriptionTextSave.on("click", function (e) {
+        $postDescriptionTextSave.on("click", function () {
             saveDescriptionEdit();
         });
 
@@ -417,10 +433,11 @@ define([
 
         CKEDITOR.replace("post-description-text-edit", ckeditorConfig);
 
-        YUI({filter:"raw"}).use("uploader", function(Y) {
+        YUI({filter: "raw"}).use("uploader", function (Y) {
 
             if (Y.Uploader.TYPE !== "none" && !Y.UA.ios) {
-                var uploader = new Y.Uploader({width: "250px",
+                var uploader = new Y.Uploader({
+                    width: "250px",
                     height: "35px",
                     multipleFiles: true,
                     swfURL: "http://yui.yahooapis.com/3.9.1/build/uploader/assets/flashuploader.swf?t=" + Math.random(),
@@ -433,28 +450,24 @@ define([
                     },
                     simLimit: 2,
                     withCredentials: false
-                });
-
-                var uploadDone = false;
+                }),
+                    uploadDone = false,
+                    foo = document.createElement("div"),
+                    $uploadFile = $("#upload-file");
 
                 if (Y.Uploader.TYPE === "html5") {
                     uploader.set("dragAndDropArea", "body");
                 }
 
-                var foo = document.createElement("div");
                 uploader.render(foo);
-
-                var $uploadFile = $("#upload-file");
 
                 $uploadFile.on("click", function () {
                     uploader.openFileSelectDialog();
                 });
 
                 uploader.after("fileselect", function (event) {
-
-                    var fileList = event.fileList;
-
-                    var fileTable = Y.one("#file-names tbody");
+                    var fileList = event.fileList,
+                        fileTable = Y.one("#file-names tbody");
 
                     if (uploadDone) {
                         uploadDone = false;
@@ -464,7 +477,7 @@ define([
                     Y.each(fileList, function (fileInstance) {
                         var fileSize = filesModel.convertBytesToSize(fileInstance.get("size"), 2);
 
-                        fileTable.append('<tr id="'+ fileInstance.get("id") + "_row" + '"><td><strong>' +
+                        fileTable.append('<tr id="' + fileInstance.get("id") + "_row" + '"><td><strong>' +
                             fileInstance.get("name") + '</strong></td>' +
                             '<td>' + fileSize + '</td>' +
                             '<td><div class="progress progress-striped active">' +
@@ -473,7 +486,7 @@ define([
                             '</tr>');
                     });
 
-                    if (! uploadDone && uploader.get("fileList").length > 0) {
+                    if (!uploadDone && uploader.get("fileList").length > 0) {
                         uploader.uploadAll();
                         Y.one("#filelist").removeClass("hidden");
                     }
@@ -484,7 +497,7 @@ define([
                     fileRow.one(".percentdone").setStyle("width", event.percentLoaded + "%");
                 });
 
-                uploader.on("uploadstart", function (event) {
+                uploader.on("uploadstart", function () {
                     uploader.set("enabled", false);
                     $("#upload-file").addClass("disabled");
                 });
@@ -494,7 +507,7 @@ define([
                     fileRow.one(".percentdone").setStyle("width", "100%").removeClass("active");
                 });
 
-                uploader.on("alluploadscomplete", function (event) {
+                uploader.on("alluploadscomplete", function () {
                     uploader.set("enabled", true);
                     uploader.set("fileList", []);
 
@@ -508,19 +521,22 @@ define([
                     }, 1000);
                     uploadDone = true;
                 });
-            }
-            else {
+            } else {
                 Y.one("#uploaderContainer").set("text", "Seu browser não suporta upload de imagens.");
             }
         });
 
         YUI().use('dd-constrain', 'dd-proxy', 'dd-drop', 'dd-delegate', 'dd-drop-plugin', function (Y) {
+            var goingUp,
+                lastY,
+                del;
+
             Y.DD.DDM.on('drop:over', function (e) {
                 var drag = e.drag.get('node'),
                     drop = e.drop.get('node');
 
                 if (drop.get('tagName').toLowerCase() === 'li') {
-                    if (! goingUp) {
+                    if (!goingUp) {
                         drop = drop.get('nextSibling');
                     }
                     e.drop.get('node').get('parentNode').insertBefore(drag, drop);
@@ -550,19 +566,22 @@ define([
             });
 
             Y.DD.DDM.on('drag:end', function (e) {
-                var drag = e.target;
+                var drag = e.target,
+                    orderLis,
+                    ids = [],
+                    post;
+
                 drag.get('node').setStyles({
                     visibility: '',
                     opacity: '1'
                 });
 
-                var orderLis = Y.Node.all('#gallery-manager .pictures-thumbnails .picture');
-                var ids = [];
-                orderLis.each(function (v, k) {
+                orderLis = Y.Node.all('#gallery-manager .pictures-thumbnails .picture');
+                orderLis.each(function (v) {
                     ids.push(v.getData("id"));
                 });
 
-                var post = $.ajax({
+                post = $.ajax({
                     url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/picture/sort",
                     type: 'POST',
                     dataType: 'json',
@@ -582,8 +601,8 @@ define([
             });
 
             Y.DD.DDM.on('drag:drophit', function (e) {
-                var drop = e.drop.get('node');
-                var drag = e.drag.get('node');
+                var drop = e.drop.get('node'),
+                    drag = e.drag.get('node');
 
                 //if we are not on an li, we must have been dropped on a ul
                 if (drop.get('tagName').toLowerCase() !== 'li') {
@@ -593,9 +612,9 @@ define([
                 }
             });
 
-            var goingUp = false, lastY = 0;
-
-            var del = new Y.DD.Delegate({
+            goingUp = false;
+            lastY = 0;
+            del = new Y.DD.Delegate({
                 container: '.pictures-thumbnails',
                 nodes: '.picture',
                 target: {
@@ -615,19 +634,7 @@ define([
             del.dd.plug(Y.Plugin.Drop);
         });
 
-        var compiledPostsManagerPictureTemplate;
-
-        var compiledpostsManagerGalleryTemplate;
-
-        var $galleryManager = $("#gallery-manager");
-
-        var videoLinkEl;
-
-        var pictures;
-
-        var videoId;
-
-        var reloadImages = function () {
+        reloadImages = function () {
             var post = $.ajax({
                 url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId,
                 type: 'GET',
@@ -642,7 +649,7 @@ define([
                 AppParams.postGalleryImages = response.gallery;
                 var $thumbnails = $(".pictures-thumbnails", $("#gallery-manager"));
                 $thumbnails.html(drawThumbnails(response.gallery));
-                Galleria.ready(function (options) {
+                Galleria.ready(function () {
                     var gallery = this;
                     gallery.splice(0);
                     gallery.push(response.gallery);
@@ -650,7 +657,7 @@ define([
             });
         };
 
-        var cutPicture = function (pictureId, cut) {
+        cutPicture = function (pictureId, cut) {
             return $.ajax({
                 url: AppParams.webroot + "/" + AppParams.postUsername + "/" +
                     AppParams.postId + "/picture/edit",
@@ -669,49 +676,51 @@ define([
             });
         };
 
-        var addPicture = function (picture) {
+        addPicture = function (picture) {
             return compiledPostsManagerPictureTemplate({
                 picture: picture
             });
         };
 
-        var editPicture = function (pictureId) {
-            var picture = underscore.find(AppParams.postGalleryImages,
+        editPicture = function (pictureId) {
+            var picture,
+                compiledTemplate = underscore.template(cropPictureTemplate),
+                $cropPictureModal;
+
+            picture = underscore.find(AppParams.postGalleryImages,
                 function (eachPicture) {
                     return eachPicture.id === pictureId;
-                }
-            );
+                });
 
-            var compiledTemplate = underscore.template(cropPictureTemplate);
             $("body").append(compiledTemplate({
                 imageSrc: picture.original
             }));
 
-            var $cropPictureModal = $("#crop-picture-modal");
+            $cropPictureModal = $("#crop-picture-modal");
 
             $cropPictureModal.modal();
 
             $cropPictureModal.on("shown", function () {
-                var $cropImage = $(".crop-image", $cropPictureModal);
+                var $cropImage = $(".crop-image", $cropPictureModal),
+                    jCropApi,
+                    width = picture.original_size.width,
+                    height = picture.original_size.height,
+                    selected = false,
+                    setRelease,
+                    setSelect;
 
-                var jCropApi;
-
-                $cropPictureModal.on("hidden", function (e) {
+                $cropPictureModal.on("hidden", function () {
                     jCropApi.destroy();
                     $cropPictureModal.off();
                     $cropImage.off();
                     $cropPictureModal.remove();
                 });
 
-                var width = picture.original_size.width;
-                var height = picture.original_size.height;
-                var selected = false;
-
-                var setRelease = function () {
+                setRelease = function () {
                     selected = false;
                 };
 
-                var setSelect = function () {
+                setSelect = function () {
                     selected = true;
                 };
 
@@ -722,16 +731,15 @@ define([
                         onRelease: setRelease,
                         onSelect: setSelect
                     }, function () {
+                        var cropOptions = picture.crop_options,
+                            crop = {
+                                x : width * 0.1,
+                                y : height * 0.1,
+                                x2 : width * 0.9,
+                                y2 : height * 0.9
+                            };
+
                         jCropApi = this;
-
-                        var cropOptions = picture.crop_options;
-
-                        var crop = {
-                            x : width * 0.1,
-                            y : height * 0.1,
-                            x2 : width * 0.9,
-                            y2 : height * 0.9
-                        };
 
                         if (cropOptions && cropOptions.w > 0 && cropOptions.h > 0) {
                             crop = {
@@ -747,12 +755,13 @@ define([
                     });
                 }, 300);
 
-                $(".clear-selection", $cropPictureModal).on("click", function (e) {
+                $(".clear-selection", $cropPictureModal).on("click", function () {
                     jCropApi.release();
                 });
 
-                $(".cut", $cropPictureModal).on("click", function (e) {
-                    var cut;
+                $(".cut", $cropPictureModal).on("click", function () {
+                    var cut,
+                        cutResponse;
 
                     if (selected) {
                         cut = jCropApi.tellSelect();
@@ -760,7 +769,7 @@ define([
                         cut = {x: 0, y: 0, x2: 0, y2: 0, w: 0, h: 0};
                     }
 
-                    var cutResponse = cutPicture(pictureId, {
+                    cutResponse = cutPicture(pictureId, {
                         x: Math.floor(cut.x),
                         y: Math.floor(cut.y),
                         x2: Math.floor(cut.x2),
@@ -777,7 +786,7 @@ define([
             });
         };
 
-        var erasePicture = function (pictureId) {
+        erasePicture = function (pictureId) {
             var post = $.ajax({
                 url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/picture/delete",
                 type: 'POST',
@@ -797,15 +806,15 @@ define([
             });
         };
 
-        var buildVideoLink = function (id) {
-            return (id) ? "http://www.youtube.com/watch?v=" + encodeURIComponent(videoId) : "";
+        buildVideoLink = function (id) {
+            return id ? "http://www.youtube.com/watch?v=" + encodeURIComponent(videoId) : "";
         };
 
-        var getVideoLinkElement = function () {
+        getVideoLinkElement = function () {
             return videoLinkEl[0];
         };
 
-        var setVideoIdValue = function (newVideoId) {
+        setVideoIdValue = function (newVideoId) {
             videoId = newVideoId;
 
             var el = getVideoLinkElement();
@@ -815,7 +824,7 @@ define([
             }
         };
 
-        var updateVideoId = function (newVideoId) {
+        updateVideoId = function (newVideoId) {
             setVideoIdValue(newVideoId);
 
             var post = updatePostItem("youtube_video", newVideoId);
@@ -836,11 +845,12 @@ define([
             });
         };
 
-        var drawThumbnails = function (pictures) {
-            var picturesLength = pictures.length;
+        drawThumbnails = function (pictures) {
+            var picturesLength = pictures.length,
+                picturesDiv = "",
+                counter;
 
-            var picturesDiv = "";
-            for (var counter = 0; counter < picturesLength; counter++) {
+            for (counter = 0; counter < picturesLength; counter += 1) {
                 if (pictures[counter].type === "video") {
                     setVideoIdValue(pictures[counter].id);
                 } else if (pictures[counter].type === "image" && pictures[counter].placeholder === undefined) {
@@ -851,7 +861,7 @@ define([
             return picturesDiv;
         };
 
-        var createThumbnails = function ($element, pictures) {
+        createThumbnails = function ($element, pictures) {
             $element.html(compiledpostsManagerGalleryTemplate({
                 picturesDiv : drawThumbnails(pictures),
                 isTouch : Modernizr.touch,
@@ -859,7 +869,7 @@ define([
             }));
         };
 
-        var setUpGalleryManager = function () {
+        setUpGalleryManager = function () {
             compiledPostsManagerPictureTemplate = underscore.template(postsManagerPictureTemplate);
             compiledpostsManagerGalleryTemplate = underscore.template(postsManagerGalleryTemplate);
             videoLinkEl = $galleryManager[0].getElementsByClassName("video-link");
@@ -887,9 +897,9 @@ define([
 
         setUpGalleryManager();
 
-        var $openGalleryManager = $("#open-gallery-manager");
+        $openGalleryManager = $("#open-gallery-manager");
 
-        $openGalleryManager.on("click", function (e) {
+        $openGalleryManager.on("click", function () {
             if ($galleryManager.hasClass("hidden")) {
                 $galleryManager.removeClass("hidden");
                 $openGalleryManager.addClass("active");
@@ -904,9 +914,9 @@ define([
             }
         });
 
-        var $setYouTubeVideo = $("#set-youtube-video");
+        $setYouTubeVideo = $("#set-youtube-video");
 
-        $setYouTubeVideo.on("click", function (e) {
+        $setYouTubeVideo.on("click", function () {
             if ($galleryManager.hasClass("hidden")) {
                 $openGalleryManager.click();
             }
@@ -916,15 +926,13 @@ define([
             $(".video-form", $galleryManager).submit();
         });
 
-        var lastUpdateStatusCall;
-
         $postStatusButtons.on("click", function (e) {
             var saveDescriptionBoolean;
 
             if (isOpenDescriptionEdit()) {
                 saveDescriptionBoolean = window.confirm("A edição da descrição não foi salva. Deseja continuar?");
 
-                if (! saveDescriptionBoolean) {
+                if (!saveDescriptionBoolean) {
                     return;
                 }
             }
@@ -937,13 +945,13 @@ define([
                 var newStateHtml = "";
 
                 switch (response.status) {
-                case "staging" :
+                case "staging":
                     newStateHtml = '<span class="label label-warning">anúncio pausado</span>';
                     break;
-                case "active" :
+                case "active":
                     newStateHtml = '<span class="label label-success">anúncio ativo</span>';
                     break;
-                case "end" :
+                case "end":
                     newStateHtml = '<span class="label label-important">anúncio encerrado</span>';
                     break;
                 }
@@ -956,5 +964,4 @@ define([
                 $postStatusButtons.removeAttr("disabled");
             });
         });
-    }
-);
+    });
