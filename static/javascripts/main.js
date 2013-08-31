@@ -1,5 +1,5 @@
 /*global require, AppParams, Modernizr */
-/*jshint indent:4 */
+/*jslint browser: true */
 var config = (function () {
     "use strict";
     require.config({
@@ -8,7 +8,7 @@ var config = (function () {
 
             // Core Libraries
             // modernizr shall be called just after CSS, so it is not here
-            // @todo find a way to remove the AppParams / foo.js hack
+            // The AppParams / foo.js hack is just so it is possible to call AppParams as a module
             AppParams: "foo",
             yui: "http://yui.yahooapis.com/3.9.1/build/yui/yui-min",
             jquery: "../vendor/jquery-1.9.1/jquery",
@@ -68,23 +68,20 @@ var config = (function () {
     });
 
     require(["jquery", "twitter.bootstrap", "jquery.fn.autoResize"],
-        function ($) {
+        function () {
             if (window.location.pathname !== AppParams.webroot + "/search") {
-                require(["plugins/facets"], function () {
-                });
+                require(["plugins/facets"]);
             }
 
             require(["common", "search"], function () {
-                if (typeof AppParams.route !== 'undefined') {
-                    require(["views/" + AppParams.route], function () {
-                    });
+                if (AppParams.route !== undefined) {
+                    require(["views/" + AppParams.route]);
                 }
 
-                if (typeof AppParams.selfUid !== 'undefined') {
-                    require(["authenticated"], function () {
-                    });
+                if (AppParams.selfUid !== undefined) {
+                    require(["authenticated"]);
                 }
             });
         });
 
-} ());
+}());
