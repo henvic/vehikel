@@ -1,28 +1,28 @@
 /*global define */
 /*jslint browser: true */
 
-define(["AppParams", "jquery", "underscore", "models/search", "text!templates/search/facets.html"],
+define(['AppParams', 'jquery', 'underscore', 'models/search', 'text!templates/search/facets.html'],
     function (AppParams, $, underscore, searchModel, facetsTemplate) {
-        "use strict";
+        'use strict';
 
-        if (!document.getElementById("aside-similar-offers")) {
+        if (!document.getElementById('aside-similar-offers')) {
             //there is no aside-similar-offers navbar
             return;
         }
 
-        var $asideSimilarOffers = $("#aside-similar-offers"),
-            formSerialized = "q=",
+        var $asideSimilarOffers = $('#aside-similar-offers'),
+            formSerialized = 'q=',
             xhr,
             loadFacets;
 
         if (AppParams.postUsername !== undefined) {
-            formSerialized += "&u=" + encodeURIComponent(AppParams.postUsername);
+            formSerialized += '&u=' + encodeURIComponent(AppParams.postUsername);
         }
 
         xhr = $.ajax({
             data: formSerialized,
-            url: AppParams.webroot + "/search-engine?facets",
-            type: "GET",
+            url: AppParams.webroot + '/search-engine?facets',
+            type: 'GET',
             cache: true
         });
 
@@ -37,48 +37,48 @@ define(["AppParams", "jquery", "underscore", "models/search", "text!templates/se
 
             facetsHtml = compiledFacets(
                 {
-                    termListHtmlElements : searchModel.termListHtmlElements,
-                    termListHtmlElementsType : searchModel.termListHtmlElementsType,
-                    termListHtmlElementsBool : searchModel.termListHtmlElementsBool,
-                    formSerialized : formSerialized,
-                    transmissionTranslation : searchModel.transmissionTranslation,
-                    tractionTranslation : searchModel.tractionTranslation,
-                    facets : facets,
-                    searchParamsTotal : 0,
-                    currentQueryStringParams : searchModel.parseQueryString(formSerialized)
+                    termListHtmlElements: searchModel.termListHtmlElements,
+                    termListHtmlElementsType: searchModel.termListHtmlElementsType,
+                    termListHtmlElementsBool: searchModel.termListHtmlElementsBool,
+                    formSerialized: formSerialized,
+                    transmissionTranslation: searchModel.transmissionTranslation,
+                    tractionTranslation: searchModel.tractionTranslation,
+                    facets: facets,
+                    searchParamsTotal: 0,
+                    currentQueryStringParams: searchModel.parseQueryString(formSerialized)
                 }
             );
 
             $asideSimilarOffers.html(facetsHtml);
 
-            $priceInputs = $(".price-inputs", $asideSimilarOffers);
-            $priceMinInput = $(".price-min-input", $asideSimilarOffers);
-            $priceMaxInput = $(".price-max-input", $asideSimilarOffers);
+            $priceInputs = $('.price-inputs', $asideSimilarOffers);
+            $priceMinInput = $('.price-min-input', $asideSimilarOffers);
+            $priceMaxInput = $('.price-max-input', $asideSimilarOffers);
 
-            $priceInputs.on("keyup", function (e) {
+            $priceInputs.on('keyup', function (e) {
                 var priceMin,
                     priceMax,
                     linkParamsArray = [];
 
                 if (e.keyCode === 13) {
-                    priceMin = $priceMinInput.val().match(/[\d]/g).join("");
-                    priceMax = $priceMaxInput.val().match(/[\d]/g).join("");
+                    priceMin = $priceMinInput.val().match(/[\d]/g).join('');
+                    priceMax = $priceMaxInput.val().match(/[\d]/g).join('');
 
-                    linkParamsArray.push("q=");
+                    linkParamsArray.push('q=');
 
                     if (AppParams.postUsername !== undefined) {
-                        linkParamsArray.push("u=" + encodeURIComponent(AppParams.postUsername));
+                        linkParamsArray.push('u=' + encodeURIComponent(AppParams.postUsername));
                     }
 
                     if (priceMin) {
-                        linkParamsArray.push("price-min=" + encodeURIComponent(priceMin));
+                        linkParamsArray.push('price-min=' + encodeURIComponent(priceMin));
                     }
 
                     if (priceMax) {
-                        linkParamsArray.push("price-max=" + encodeURIComponent(priceMax));
+                        linkParamsArray.push('price-max=' + encodeURIComponent(priceMax));
                     }
 
-                    window.location = AppParams.webroot + "/search?" + linkParamsArray.join("&");
+                    window.location = AppParams.webroot + '/search?' + linkParamsArray.join('&');
                 }
             });
 
