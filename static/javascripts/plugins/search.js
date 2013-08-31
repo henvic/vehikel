@@ -1,15 +1,15 @@
 /*global define */
 /*jslint browser: true */
 
-define(["AppParams", "jquery", "underscore"],
+define(['AppParams', 'jquery', 'underscore'],
     function (AppParams, $, underscore) {
-        "use strict";
+        'use strict';
 
         //the #search-results is used both on the search page as well as on the user posts pages
-        var $searchPostsForm = ("#search-posts-form"),
-            $searchResults = $("#search-results"),
-            $searchText = $("#search-text"),
-            $searchTips = $("#search-tips"),
+        var $searchPostsForm = ('#search-posts-form'),
+            $searchResults = $('#search-results'),
+            $searchText = $('#search-text'),
+            $searchTips = $('#search-tips'),
             hideSearchTips,
             loadSearch,
             autoComplete = [],
@@ -19,15 +19,15 @@ define(["AppParams", "jquery", "underscore"],
 
         //change the u input field w/ the username of the given user
         //on the persist-username checkbox, when the checkbox selection is changed
-        $("[name=persist-username]", $searchPostsForm).on("change", function () {
-            $("[name=u]", $searchPostsForm).val(this.value);
+        $('[name=persist-username]', $searchPostsForm).on('change', function () {
+            $('[name=u]', $searchPostsForm).val(this.value);
         });
 
-        $searchResults.on("click", ".posts-table-view tr", function (e) {
-            var link = e.currentTarget.getAttribute("data-link"),
+        $searchResults.on('click', '.posts-table-view tr', function (e) {
+            var link = e.currentTarget.getAttribute('data-link'),
                 $target = $(e.target);
 
-            if (e.target.tagName.toLowerCase() === "a" || $target.closest("button")[0] !== undefined) {
+            if (e.target.tagName.toLowerCase() === 'a' || $target.closest('button')[0] !== undefined) {
                 return;
             }
 
@@ -36,7 +36,7 @@ define(["AppParams", "jquery", "underscore"],
         });
 
         hideSearchTips = function () {
-            $searchTips.html("").addClass("hidden");
+            $searchTips.html('').addClass('hidden');
         };
 
         loadSearch = function () {
@@ -45,46 +45,46 @@ define(["AppParams", "jquery", "underscore"],
                 persistUsernameValue;
 
             q = $searchText.val();
-            url = AppParams.webroot + "/search?q=" + encodeURIComponent(q);
-            persistUsernameValue = $("[name=persist-username]:checked").val();
+            url = AppParams.webroot + '/search?q=' + encodeURIComponent(q);
+            persistUsernameValue = $('[name=persist-username]:checked').val();
 
             if (persistUsernameValue) {
-                url += "&u=" + encodeURIComponent(persistUsernameValue);
+                url += '&u=' + encodeURIComponent(persistUsernameValue);
             }
 
-            if (AppParams.route !== "search/engine") {
+            if (AppParams.route !== 'search/engine') {
                 window.location = url;
             } else {
                 hideSearchTips();
             }
         };
 
-        $searchTips.on("mouseenter", "li", function () {
-            $("li", $searchTips).removeClass("active");
-            $(this).addClass("active");
+        $searchTips.on('mouseenter', 'li', function () {
+            $('li', $searchTips).removeClass('active');
+            $(this).addClass('active');
         });
 
-        $searchTips.on("mouseleave", "li", function () {
-            $("li", $searchTips).removeClass("active");
+        $searchTips.on('mouseleave', 'li', function () {
+            $('li', $searchTips).removeClass('active');
         });
 
-        $searchTips.on("click", "li", function () {
+        $searchTips.on('click', 'li', function () {
             $searchText.val(this.innerHTML);
             loadSearch();
         });
 
-        $searchText.on("blur", function () {
+        $searchText.on('blur', function () {
             setTimeout(hideSearchTips, 300);
         });
 
         // prevent the cursor from moving when the up and down arrows are used
-        $searchText.on("keydown", function (e) {
+        $searchText.on('keydown', function (e) {
             if (e.keyCode === 38 || e.keyCode === 40) {
                 e.preventDefault();
             }
         });
 
-        $searchText.on("keyup", function (e) {
+        $searchText.on('keyup', function (e) {
             var key = e.keyCode,
                 q = this.value,
                 isUp,
@@ -92,7 +92,7 @@ define(["AppParams", "jquery", "underscore"],
                 requestData,
                 persistUsernameValue;
 
-            if (q === "") {
+            if (q === '') {
                 hideSearchTips();
             } else if (key === 13) {
                 loadSearch();
@@ -120,8 +120,8 @@ define(["AppParams", "jquery", "underscore"],
                         offset = autoCompletePos - 1;
                     }
 
-                    $("li", $searchTips).removeClass("active");
-                    $($("li", $searchTips)[offset]).addClass("active");
+                    $('li', $searchTips).removeClass('active');
+                    $($('li', $searchTips)[offset]).addClass('active');
 
                     this.value = autoComplete[offset];
                 }
@@ -133,10 +133,10 @@ define(["AppParams", "jquery", "underscore"],
                 }
 
                 requestData = {
-                    "q" : q
+                    'q' : q
                 };
 
-                persistUsernameValue = $("[name=persist-username]:checked").val();
+                persistUsernameValue = $('[name=persist-username]:checked').val();
 
                 if (persistUsernameValue) {
                     requestData.u = persistUsernameValue;
@@ -144,14 +144,14 @@ define(["AppParams", "jquery", "underscore"],
 
                 lastAutoCompleteXhr = $.ajax({
                     data: requestData,
-                    url: AppParams.webroot + "/search-engine?suggestion=true",
+                    url: AppParams.webroot + '/search-engine?suggestion=true',
                     cache: true,
-                    type: "GET",
+                    type: 'GET',
                     success: function (result) {
                         var counter,
                             lowerCasedQ = q.toLowerCase(),
                             autoCompleteHasQ,
-                            html = "";
+                            html = '';
 
                         autoComplete = result;
 
@@ -167,14 +167,14 @@ define(["AppParams", "jquery", "underscore"],
 
                         for (counter = 0; counter < autoCompleteLength; counter += 1) {
                             if (autoCompleteHasQ !== 0 && counter === autoCompleteLength - 1) {
-                                html += '<li class="hidden">' + underscore.escape(autoComplete[counter]) + "</li>";
+                                html += '<li class="hidden">' + underscore.escape(autoComplete[counter]) + '</li>';
                             } else {
-                                html += "<li>" + underscore.escape(autoComplete[counter]) + "</li>";
+                                html += '<li>' + underscore.escape(autoComplete[counter]) + '</li>';
                             }
                         }
 
                         if (autoComplete.length > 0) {
-                            $searchTips.removeClass("hidden").html(html);
+                            $searchTips.removeClass('hidden').html(html);
                         } else {
                             hideSearchTips();
                         }
@@ -183,8 +183,8 @@ define(["AppParams", "jquery", "underscore"],
             }
         });
 
-        $(document.documentElement).on("keyup", function (e) {
-            if (e.target.nodeName.toLowerCase() !== "body") {
+        $(document.documentElement).on('keyup', function (e) {
+            if (e.target.nodeName.toLowerCase() !== 'body') {
                 return;
             }
 
