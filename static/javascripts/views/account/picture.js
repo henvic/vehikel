@@ -1,16 +1,20 @@
-/*global define */
-define(['jquery'], function($) {
+/*global define, FileReader */
+/*jslint browser: true */
+
+define(['jquery'], function ($) {
     "use strict";
 
     //jQuery doesn't copy e.dataTransfer natively
-    var fileButton = document.getElementById('choose-image');
-    var jFileButton = $('#choose-image');
-
-    var fileInput = document.getElementById("upload-image");
+    var fileButton = document.getElementById('choose-image'),
+        jFileButton = $('#choose-image'),
+        fileInput = document.getElementById("upload-image"),
+        imageElement = document.createElement("img"),
+        createImage,
+        previewImage;
 
     $(fileInput).hide();
 
-    fileInput.addEventListener("change", function (e) {
+    fileInput.addEventListener("change", function () {
         createImage(this.files[0]);
     }, false);
 
@@ -36,9 +40,7 @@ define(['jquery'], function($) {
         createImage(e.dataTransfer.files[0]);
     }, false);
 
-    var imageElement = document.createElement("img");
-
-    function previewImage(imageElement) {
+    previewImage = function (imageElement) {
         jFileButton.popover({
             title: 'Preview',
             content: imageElement,
@@ -51,10 +53,14 @@ define(['jquery'], function($) {
             jFileButton.popover('hide');
             imageElement.src = "";
         }, 2500);
-    }
+    };
 
-    function createImage(file) {
-        if (! file.type.match('image.*')) {
+    createImage = function (file) {
+        if (typeof FileReader !== "function") {
+            return;
+        }
+
+        if (!file.type.match('image.*')) {
             return;
         }
 
@@ -69,5 +75,5 @@ define(['jquery'], function($) {
         };
 
         reader.readAsDataURL(file);
-    }
+    };
 });
