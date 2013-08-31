@@ -1,5 +1,5 @@
-/*global define, window */
-/*jshint indent:4 */
+/*global define */
+/*jslint browser: true */
 
 define([], function () {
     "use strict";
@@ -15,10 +15,10 @@ define([], function () {
      * @return string
      */
     exports.convertBytesToSize = function (bytes, precision) {
-        var kilobyte = 1024;
-        var megabyte = kilobyte * 1024;
-        var gigabyte = megabyte * 1024;
-        var terabyte = gigabyte * 1024;
+        var kilobyte = 1024,
+            megabyte = kilobyte * 1024,
+            gigabyte = megabyte * 1024,
+            terabyte = gigabyte * 1024;
 
         if ((bytes >= 0) && (bytes < kilobyte)) {
             return bytes + ' B';
