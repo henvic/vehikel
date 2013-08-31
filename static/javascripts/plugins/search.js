@@ -1,24 +1,31 @@
-/*global define, window */
-/*jshint indent:4 */
+/*global define */
+/*jslint browser: true */
 
 define(["AppParams", "jquery", "underscore"],
     function (AppParams, $, underscore) {
         "use strict";
 
-        var $searchPostsForm = ("#search-posts-form");
+        //the #search-results is used both on the search page as well as on the user posts pages
+        var $searchPostsForm = ("#search-posts-form"),
+            $searchResults = $("#search-results"),
+            $searchText = $("#search-text"),
+            $searchTips = $("#search-tips"),
+            hideSearchTips,
+            loadSearch,
+            autoComplete = [],
+            autoCompletePos = 0,
+            autoCompleteLength = 0,
+            lastAutoCompleteXhr;
 
         //change the u input field w/ the username of the given user
         //on the persist-username checkbox, when the checkbox selection is changed
-        $("[name=persist-username]", $searchPostsForm).on("change", function (e) {
+        $("[name=persist-username]", $searchPostsForm).on("change", function () {
             $("[name=u]", $searchPostsForm).val(this.value);
         });
 
-        //the #search-results is used both on the search page as well as on the user posts pages
-        var $searchResults = $("#search-results");
-
         $searchResults.on("click", ".posts-table-view tr", function (e) {
-            var link = e.currentTarget.getAttribute("data-link");
-            var $target = $(e.target);
+            var link = e.currentTarget.getAttribute("data-link"),
+                $target = $(e.target);
 
             if (e.target.tagName.toLowerCase() === "a" || $target.closest("button")[0] !== undefined) {
                 return;
@@ -28,19 +35,18 @@ define(["AppParams", "jquery", "underscore"],
             window.location = link;
         });
 
-        var $searchText = $("#search-text");
-        var $searchTips = $("#search-tips");
-
-        var hideSearchTips = function () {
+        hideSearchTips = function () {
             $searchTips.html("").addClass("hidden");
         };
 
-        var loadSearch = function () {
-            var q = $searchText.val();
+        loadSearch = function () {
+            var q,
+                url,
+                persistUsernameValue;
 
-            var url = AppParams.webroot + "/search?q=" + encodeURIComponent(q);
-
-            var persistUsernameValue = $("[name=persist-username]:checked").val();
+            q = $searchText.val();
+            url = AppParams.webroot + "/search?q=" + encodeURIComponent(q);
+            persistUsernameValue = $("[name=persist-username]:checked").val();
 
             if (persistUsernameValue) {
                 url += "&u=" + encodeURIComponent(persistUsernameValue);
@@ -53,26 +59,21 @@ define(["AppParams", "jquery", "underscore"],
             }
         };
 
-        $searchTips.on("mouseenter", "li", function (e) {
+        $searchTips.on("mouseenter", "li", function () {
             $("li", $searchTips).removeClass("active");
             $(this).addClass("active");
         });
 
-        $searchTips.on("mouseleave", "li", function (e) {
+        $searchTips.on("mouseleave", "li", function () {
             $("li", $searchTips).removeClass("active");
         });
 
-        $searchTips.on("click", "li", function (e) {
+        $searchTips.on("click", "li", function () {
             $searchText.val(this.innerHTML);
             loadSearch();
         });
 
-        var autoComplete = [];
-        var autoCompletePos = 0;
-        var autoCompleteLength = 0;
-        var lastAutoCompleteXhr;
-
-        $searchText.on("blur", function (e) {
+        $searchText.on("blur", function () {
             setTimeout(hideSearchTips, 300);
         });
 
@@ -84,8 +85,12 @@ define(["AppParams", "jquery", "underscore"],
         });
 
         $searchText.on("keyup", function (e) {
-            var key = e.keyCode;
-            var q = this.value;
+            var key = e.keyCode,
+                q = this.value,
+                isUp,
+                offset,
+                requestData,
+                persistUsernameValue;
 
             if (q === "") {
                 hideSearchTips();
@@ -94,8 +99,7 @@ define(["AppParams", "jquery", "underscore"],
             } else if (key === 27) {
                 hideSearchTips();
             } else if (key === 38 || key === 40) { //if key is up or down
-                var isUp = (key === 38);
-                var offset;
+                isUp = (key === 38);
 
                 if (autoCompleteLength > 1) {
                     if (isUp) {
@@ -128,11 +132,11 @@ define(["AppParams", "jquery", "underscore"],
                     lastAutoCompleteXhr.abort();
                 }
 
-                var requestData = {
+                requestData = {
                     "q" : q
                 };
 
-                var persistUsernameValue = $("[name=persist-username]:checked").val();
+                persistUsernameValue = $("[name=persist-username]:checked").val();
 
                 if (persistUsernameValue) {
                     requestData.u = persistUsernameValue;
@@ -144,11 +148,14 @@ define(["AppParams", "jquery", "underscore"],
                     cache: true,
                     type: "GET",
                     success: function (result) {
+                        var counter,
+                            lowerCasedQ = q.toLowerCase(),
+                            autoCompleteHasQ,
+                            html = "";
+
                         autoComplete = result;
 
-                        var lowerCasedQ = q.toLowerCase();
-
-                        var autoCompleteHasQ = underscore.indexOf(autoComplete, lowerCasedQ);
+                        autoCompleteHasQ = underscore.indexOf(autoComplete, lowerCasedQ);
 
                         //add the searched value to the autoComplete list, if already not there
                         if (autoComplete.length > 0 && autoCompleteHasQ !== 0) {
@@ -158,9 +165,7 @@ define(["AppParams", "jquery", "underscore"],
                         autoCompletePos = 0;
                         autoCompleteLength = autoComplete.length;
 
-                        var html = "";
-
-                        for (var counter = 0; counter < autoCompleteLength; counter++) {
+                        for (counter = 0; counter < autoCompleteLength; counter += 1) {
                             if (autoCompleteHasQ !== 0 && counter === autoCompleteLength - 1) {
                                 html += '<li class="hidden">' + underscore.escape(autoComplete[counter]) + "</li>";
                             } else {
@@ -188,7 +193,4 @@ define(["AppParams", "jquery", "underscore"],
                 $searchText.focus();
             }
         });
-
-        return function () {};
-    }
-);
+    });
