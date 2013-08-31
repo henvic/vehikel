@@ -1,8 +1,11 @@
-/*global define, window */
-/*jshint indent:4 */
+/*global define */
+/*jslint browser: true */
 
 define(["AppParams", "jquery", "models/vehicles", "jquery.maskMoney"], function (AppParams, $, vehiclesModel) {
     "use strict";
+
+    var postNewAd,
+        $postNewAdButton;
 
     /**
      * Logout routine for the logout button on the navbar
@@ -11,21 +14,30 @@ define(["AppParams", "jquery", "models/vehicles", "jquery.maskMoney"], function 
      * the /logout page in which the user can do remote logout
      * and see its recent activities
      */
-    var navbarLogoutClosure = (function () {
+    (function () {
         var logoutAnchor = $("#navbar-logout-link");
         logoutAnchor.click(function (e) {
+            var params,
+                form,
+                key,
+                hiddenField;
+
             e.preventDefault();
 
-            var params = { "hash" : AppParams.globalAuthHash, "signout" : "true" };
-            var form = document.createElement("form");
+            params = {
+                "hash" : AppParams.globalAuthHash,
+                "signout" : "true"
+            };
+
+            form = document.createElement("form");
+
             document.body.appendChild(form);
             form.setAttribute("method", "POST");
             form.setAttribute("action", "/logout");
 
-            for (var key in params) {
-                if (params.hasOwnProperty(key))
-                {
-                    var hiddenField = document.createElement("input");
+            for (key in params) {
+                if (params.hasOwnProperty(key)) {
+                    hiddenField = document.createElement("input");
                     hiddenField.setAttribute("type", "hidden");
                     hiddenField.setAttribute("name", key);
                     hiddenField.setAttribute("value", params[key]);
@@ -34,13 +46,13 @@ define(["AppParams", "jquery", "models/vehicles", "jquery.maskMoney"], function 
             }
             form.submit();
         });
-    } ());
+    }());
 
-    var postNewAd = function () {
-        var $postProductTypeNew = $("#post-product-type-new");
-        var $postProductMakeNew = $("#post-product-make-new");
-        var $postProductModelNew = $("#post-product-model-new");
-        var $postProductPriceNew = $("#post-product-price-new");
+    postNewAd = function () {
+        var $postProductTypeNew = $("#post-product-type-new"),
+            $postProductMakeNew = $("#post-product-make-new"),
+            $postProductModelNew = $("#post-product-model-new"),
+            $postProductPriceNew = $("#post-product-price-new");
 
         vehiclesModel.setUp($postProductTypeNew, $postProductMakeNew, $postProductModelNew);
 
@@ -57,7 +69,7 @@ define(["AppParams", "jquery", "models/vehicles", "jquery.maskMoney"], function 
     if (window.location.pathname === AppParams.webroot + "/new") {
         postNewAd();
     } else {
-        var $postNewAdButton = $("#post-new-ad-button");
+        $postNewAdButton = $("#post-new-ad-button");
 
         $postNewAdButton.one("click", function (e) {
             // if the viewport is too small, don't use modal
@@ -70,12 +82,15 @@ define(["AppParams", "jquery", "models/vehicles", "jquery.maskMoney"], function 
             $.ajax({
                 url: AppParams.webroot + "/new",
                 type: "GET",
-                success: function (data, textStatus, jqXHR) {
+                success: function (data) {
+                    var $postProductNewNext,
+                        $postProductNew;
+
                     $("body").append($(data));
                     $("#post-product-new-modal").modal();
                     postNewAd();
-                    var $postProductNewNext = $("#post-product-new-next");
-                    var $postProductNew = $("#post-product-new");
+                    $postProductNewNext = $("#post-product-new-next");
+                    $postProductNew = $("#post-product-new");
 
                     $postProductNewNext.on("click", function () {
                         $postProductNew.submit();
@@ -91,6 +106,4 @@ define(["AppParams", "jquery", "models/vehicles", "jquery.maskMoney"], function 
             });
         });
     }
-
-    return function () {};
 });
