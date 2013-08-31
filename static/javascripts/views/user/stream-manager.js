@@ -2,30 +2,30 @@
 /*jslint browser: true */
 
 define(['AppParams', 'jquery'], function (AppParams, $) {
-    "use strict";
+    'use strict';
 
-    var $actions = $(".posts-list .actions"),
-        $action = $(".posts-list .actions .action");
+    var $actions = $('.posts-list .actions'),
+        $action = $('.posts-list .actions .action');
 
-    $actions.on("click", function (e) {
+    $actions.on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
     });
 
-    $action.on("click", function () {
+    $action.on('click', function () {
         var $this = $(this),
-            postId = this.parentNode.getAttribute("data-id"),
-            newStatus = this.getAttribute("data-status"),
-            $postThumbnail = $("#post-id-" + postId + "-thumbnail"),
-            $postTableRow = $("#post-id-" + postId + "-row"),
+            postId = this.parentNode.getAttribute('data-id'),
+            newStatus = this.getAttribute('data-status'),
+            $postThumbnail = $('#post-id-' + postId + '-thumbnail'),
+            $postTableRow = $('#post-id-' + postId + '-row'),
             xhr;
 
-        if ($this.hasClass("disabled")) {
+        if ($this.hasClass('disabled')) {
             return;
         }
 
         xhr = $.ajax({
-            url: AppParams.webroot + "/" + AppParams.postUsername + "/" + postId + "/edit",
+            url: AppParams.webroot + '/' + AppParams.postUsername + '/' + postId + '/edit',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -34,8 +34,8 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
             }
         });
 
-        $postThumbnail.addClass("removing");
-        $postTableRow.addClass("removing");
+        $postThumbnail.addClass('removing');
+        $postTableRow.addClass('removing');
 
         xhr.done(function () {
             setTimeout(function () {
@@ -45,8 +45,8 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
         });
 
         xhr.fail(function () {
-            $postThumbnail.removeClass("removing");
-            $postTableRow.removeClass("removing");
+            $postThumbnail.removeClass('removing');
+            $postTableRow.removeClass('removing');
         });
     });
 });
