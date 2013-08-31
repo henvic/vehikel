@@ -1,16 +1,18 @@
 /*global define, require */
-/*jshint indent:4 */
+/*jslint browser: true */
 
 define(['AppParams', 'jquery'], function (AppParams, $) {
     "use strict";
 
-    var $postsViewStyleThumbnail = $('#posts-view-style-thumbnail');
-    var $postsViewStyleTable = $('#posts-view-style-table');
+    var $postsViewStyleThumbnail = $('#posts-view-style-thumbnail'),
+        $postsViewStyleTable = $('#posts-view-style-table'),
+        $postsTableView = $("#posts-table-view"),
+        $postsThumbnailView = $("#posts-thumbnail-view"),
+        $statusTypeMenuDropdown = $("#status-type-menu-dropdown"),
+        $stockSelect = $("#stock-select"),
+        changeViewStyle;
 
-    var $postsTableView = $("#posts-table-view");
-    var $postsThumbnailView = $("#posts-thumbnail-view");
-
-    var changeViewStyle = function (style) {
+    changeViewStyle = function (style) {
         if (style === "table") {
             $postsTableView.removeClass("none");
             $postsThumbnailView.addClass("none");
@@ -33,30 +35,26 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
         changeViewStyle("thumbnail");
     });
 
-    var $statusTypeMenuDropdown = $("#status-type-menu-dropdown");
-
     $statusTypeMenuDropdown.on("click", function (e) {
         if (AppParams.accountEditable === true && e.target.className.match(/type/) !== null) {
             e.preventDefault();
         }
     });
 
-    var $stockSelect = $("#stock-select");
-
     $stockSelect.on("change", function (e) {
-        var value = e.target.value.split(";");
-        var status;
-        var make = value[0];
-        var model = "";
-        var url = AppParams.webroot + "/" + AppParams.postUsername;
+        var value = e.target.value.split(";"),
+            status,
+            make = value[0],
+            model = "",
+            url = AppParams.webroot + "/" + AppParams.postUsername,
+            requestParams = {},
+            subUrl;
 
-        if (! AppParams.status || AppParams.status === "active") {
+        if (!AppParams.status || AppParams.status === "active") {
             status = "";
         } else {
             status = AppParams.status;
         }
-
-        var requestParams = {};
 
         if (status) {
             requestParams.status = status;
@@ -71,7 +69,7 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
             requestParams.model = model;
         }
 
-        var subUrl = $.param(requestParams);
+        subUrl = $.param(requestParams);
 
         if (subUrl) {
             url = url + "?" + subUrl;
@@ -81,7 +79,6 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
     });
 
     if (AppParams.accountEditable === true) {
-        require(["views/user/stream-manager"], function () {
-        });
+        require(["views/user/stream-manager"]);
     }
 });
