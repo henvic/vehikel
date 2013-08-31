@@ -1,20 +1,24 @@
-/*jslint node: true */
-/*global require */
+/*jslint node: true, nomen: true */
 
 module.exports = function (childProcess, gearman) {
     "use strict";
 
-    var syncUserProfileOnPostsByUserId = function (id, syncedCallback, worker) {
-        var filteredId = parseInt(id, 10);
+    var syncUserProfileOnPostsByUserId,
+        syncedCallback;
+
+    syncUserProfileOnPostsByUserId = function (id, syncedCallback, worker) {
+        var filteredId = parseInt(id, 10),
+            cmdParams,
+            cmd;
 
         if (isNaN(filteredId)) {
             syncedCallback({error: true, message: "User ID received is not a number."});
             return;
         }
 
-        var cmdParams = "--controller search --action sync-user-profile-on-posts --uid " + filteredId;
+        cmdParams = "--controller search --action sync-user-profile-on-posts --uid " + filteredId;
 
-        var cmd = "php " + __dirname + "/../../../bin/services " + cmdParams;
+        cmd = "php " + __dirname + "/../../../bin/services " + cmdParams;
 
         childProcess.exec(cmd, function (error, stdout, stderr) {
             if (error === null) {
@@ -26,7 +30,7 @@ module.exports = function (childProcess, gearman) {
         });
     };
 
-    var syncedCallback = function (result, worker) {
+    syncedCallback = function (result, worker) {
         if (result.error) {
             worker.error();
             console.error(result.message + "\n");
