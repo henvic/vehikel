@@ -1,36 +1,41 @@
-/*global define, window */
-/*jshint indent:4 */
+/*global define */
+/*jslint browser: true */
 
 define(["AppParams", "jquery", "underscore", "models/search", "text!templates/search/facets.html"],
     function (AppParams, $, underscore, searchModel, facetsTemplate) {
         "use strict";
 
-        if (! document.getElementById("aside-similar-offers")) {
+        if (!document.getElementById("aside-similar-offers")) {
             //there is no aside-similar-offers navbar
             return;
         }
 
-        //@todo only load this if the screen has the necessary space to show it (it is not hidden)
-
-        var $asideSimilarOffers = $("#aside-similar-offers");
-
-        var formSerialized = "q=";
+        var $asideSimilarOffers = $("#aside-similar-offers"),
+            formSerialized = "q=",
+            xhr,
+            loadFacets;
 
         if (AppParams.postUsername !== undefined) {
             formSerialized += "&u=" + encodeURIComponent(AppParams.postUsername);
         }
 
-        var xhr = $.ajax({
+        xhr = $.ajax({
             data: formSerialized,
             url: AppParams.webroot + "/search-engine?facets",
             type: "GET",
             cache: true
         });
 
-        var loadFacets = function (facets) {
-            var compiledFacets = underscore.template(facetsTemplate);
+        loadFacets = function (facets) {
+            var compiledFacets,
+                facetsHtml,
+                $priceInputs,
+                $priceMinInput,
+                $priceMaxInput;
 
-            var facetsHtml = compiledFacets(
+            compiledFacets = underscore.template(facetsTemplate);
+
+            facetsHtml = compiledFacets(
                 {
                     termListHtmlElements : searchModel.termListHtmlElements,
                     termListHtmlElementsType : searchModel.termListHtmlElementsType,
@@ -46,16 +51,18 @@ define(["AppParams", "jquery", "underscore", "models/search", "text!templates/se
 
             $asideSimilarOffers.html(facetsHtml);
 
-            var $priceInputs = $(".price-inputs", $asideSimilarOffers);
-            var $priceMinInput = $(".price-min-input", $asideSimilarOffers);
-            var $priceMaxInput = $(".price-max-input", $asideSimilarOffers);
+            $priceInputs = $(".price-inputs", $asideSimilarOffers);
+            $priceMinInput = $(".price-min-input", $asideSimilarOffers);
+            $priceMaxInput = $(".price-max-input", $asideSimilarOffers);
 
             $priceInputs.on("keyup", function (e) {
-                if (e.keyCode === 13) {
-                    var priceMin = $priceMinInput.val().replace(/[^0-9]/g, '');
-                    var priceMax = $priceMaxInput.val().replace(/[^0-9]/g, '');
+                var priceMin,
+                    priceMax,
+                    linkParamsArray = [];
 
-                    var linkParamsArray = [];
+                if (e.keyCode === 13) {
+                    priceMin = $priceMinInput.val().match(/[\d]/g).join("");
+                    priceMax = $priceMaxInput.val().match(/[\d]/g).join("");
 
                     linkParamsArray.push("q=");
 
@@ -84,5 +91,4 @@ define(["AppParams", "jquery", "underscore", "models/search", "text!templates/se
         xhr.done(function (response) {
             loadFacets(response.facets);
         });
-    }
-);
+    });
