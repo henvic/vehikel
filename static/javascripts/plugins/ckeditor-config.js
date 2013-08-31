@@ -1,19 +1,20 @@
 /*global define, CKEDITOR */
-/*jshint indent:4 */
+/*jslint browser: true */
 
 define(["ckeditor"], function () {
     "use strict";
 
     //open a simpler link dialog
-    CKEDITOR.on("dialogDefinition", function(ev) {
-        var dialogName = ev.data.name;
-        var dialogDefinition = ev.data.definition;
+    CKEDITOR.on("dialogDefinition", function (ev) {
+        var dialogName = ev.data.name,
+            dialogDefinition = ev.data.definition,
+            infoTab;
 
         if (dialogName === "link") {
             dialogDefinition.removeContents("target");
             dialogDefinition.removeContents("advanced");
 
-            var infoTab = dialogDefinition.getContents("info");
+            infoTab = dialogDefinition.getContents("info");
 
             infoTab.remove("linkType");
             infoTab.remove("protocol");
@@ -35,14 +36,29 @@ define(["ckeditor"], function () {
     config.removeButtons = "Anchor,Subscript,Superscript";
 
     config.toolbar = [
-        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-'] },
-        { name: 'links', items: [ 'Link', 'Unlink'] },
-        { name: 'clipboard', items : [ 'Undo','Redo' ] }
+        {
+            name: 'basicstyles',
+            groups: ['basicstyles', 'cleanup' ],
+            items: ['Bold', 'Italic', 'Underline', 'Strike', '-']
+        },
+        {
+            name: 'links',
+            items: [ 'Link', 'Unlink']
+        },
+        {
+            name: 'clipboard',
+            items : [ 'Undo', 'Redo' ]
+        }
     ];
 
     config.toolbarGroups = [
-        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-        { name: 'links' }
+        {
+            name: 'basicstyles',
+            groups: [ 'basicstyles', 'cleanup' ]
+        },
+        {
+            name: 'links'
+        }
     ];
 
     return config;
