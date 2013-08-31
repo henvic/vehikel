@@ -1,8 +1,8 @@
 /*global define */
 /*jslint browser: true */
 
-define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, underscore, vehiclesJsonDataText) {
-    "use strict";
+define(['jquery', 'underscore', 'text!../../data/vehicles.json'], function ($, underscore, vehiclesJsonDataText) {
+    'use strict';
 
     var exports = {},
         vehicles,
@@ -21,9 +21,9 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
     };
 
     exports.setUp = function ($typeSelector, $makeSelector, $modelSelector) {
-        $typeSelector.on("change", function () {
-            $makeSelector.val("").attr("disabled", "disabled");
-            $modelSelector.val("").attr("disabled", "disabled");
+        $typeSelector.on('change', function () {
+            $makeSelector.val('').attr('disabled', 'disabled');
+            $modelSelector.val('').attr('disabled', 'disabled');
             exports.loadPostProductMakes($makeSelector, $typeSelector.val());
         });
 
@@ -35,8 +35,8 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
             $modelSelector.val()
         );
 
-        $makeSelector.on("change", function () {
-            $modelSelector.val("").attr("disabled", "disabled");
+        $makeSelector.on('change', function () {
+            $modelSelector.val('').attr('disabled', 'disabled');
 
             exports.loadPostProductModels($modelSelector, $typeSelector.val(), $makeSelector.val());
         });
@@ -45,24 +45,24 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
     exports.loadPostProductMakes = function ($makeSelector, type, activeMake) {
         var filter,
             makes,
-            $optGroup = $($makeSelector.find("optgroup")[0]),
-            $entrySet = $("<select>");
+            $optGroup = $($makeSelector.find('optgroup')[0]),
+            $entrySet = $('<select>');
 
 
         filter = {
-            type : type
+            type: type
         };
 
-        makes = underscore.uniq(underscore.pluck(underscore.where(getVehicles(), filter), "make"));
+        makes = underscore.uniq(underscore.pluck(underscore.where(getVehicles(), filter), 'make'));
 
         $entrySet.append('<option value="">-</option>');
         $.each(makes, function () {
-            $entrySet.append($("<option>", { value : this }).text(this));
+            $entrySet.append($('<option>', { value: this }).text(this));
         });
 
-        $entrySet.append($("<option>", { "data-action" : "other" }).text("Outro"));
+        $entrySet.append($('<option>', { 'data-action' : 'other' }).text('Outro'));
 
-        $makeSelector.removeAttr("disabled");
+        $makeSelector.removeAttr('disabled');
         $optGroup.html($entrySet.children());
 
         if (activeMake !== undefined) {
@@ -72,7 +72,7 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
                 return;
             }
 
-            $optGroup.append($("<option>", { value : activeMake }).text(activeMake));
+            $optGroup.append($('<option>', { value: activeMake }).text(activeMake));
             $makeSelector.val(activeMake);
         }
     };
@@ -91,20 +91,20 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
         models = underscore.uniq(
             underscore.pluck(
                 underscore.where(getVehicles(), filter),
-                "model"
+                'model'
             )
         );
 
         $modelSelector.html('<optgroup label="Modelo"><option value="">-</option></optgroup>');
-        $optGroup = $($modelSelector.find("optgroup")[0]);
-        $entrySet = $("<select>");
+        $optGroup = $($modelSelector.find('optgroup')[0]);
+        $entrySet = $('<select>');
         $.each(models, function () {
-            $entrySet.append($("<option>", { value : this }).text(this));
+            $entrySet.append($('<option>', { value: this }).text(this));
         });
 
-        $entrySet.append($("<option>", { "data-action" : "other" }).text("Outro"));
+        $entrySet.append($('<option>', { 'data-action' : 'other' }).text('Outro'));
 
-        $modelSelector.removeAttr("disabled");
+        $modelSelector.removeAttr('disabled');
         $optGroup.append($entrySet.children());
 
         if (activeModel !== undefined) {
@@ -114,7 +114,7 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
                 return;
             }
 
-            $optGroup.append($("<option>", { value : activeModel }).text(activeModel));
+            $optGroup.append($('<option>', { value: activeModel }).text(activeModel));
             $modelSelector.val(activeModel);
         }
     };
@@ -147,7 +147,7 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
             return link;
         }
 
-        return "";
+        return '';
     };
 
     return exports;
