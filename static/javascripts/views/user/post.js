@@ -2,13 +2,13 @@
 /*jslint browser: true */
 
 define(['AppParams', 'jquery', 'galleria'], function (AppParams, $) {
-    "use strict";
+    'use strict';
 
-    var $postProductMainInfo = $("#post-product-main-info"),
+    var $postProductMainInfo = $('#post-product-main-info'),
         $postInfoTabsLinks = $('#post-info-tabs a'),
         $postContact = $('#post-contact'),
-        $postPicturesThumbnails = $("#post-pictures-thumbnails"),
-        $postPicturesCarousel = $("#post-pictures-carousel"),
+        $postPicturesThumbnails = $('#post-pictures-thumbnails'),
+        $postPicturesCarousel = $('#post-pictures-carousel'),
         updateGalleria;
 
     Galleria.loadTheme(AppParams.cdn + 'vendor/galleria-1.2.9/src/themes/classic/galleria.classic.js');
@@ -18,16 +18,16 @@ define(['AppParams', 'jquery', 'galleria'], function (AppParams, $) {
         transition: 'fade'
     });
 
-    Galleria.on("image", function (e) {
+    Galleria.on('image', function (e) {
         var gallery = this;
 
-        $(e.imageTarget).unbind("click").click(function () {
+        $(e.imageTarget).unbind('click').click(function () {
             gallery.openLightbox();
         });
     });
 
     updateGalleria = function () {
-        Galleria.run("#galleria", {
+        Galleria.run('#galleria', {
             dataSource: AppParams.postGalleryImages
         });
     };
@@ -35,21 +35,21 @@ define(['AppParams', 'jquery', 'galleria'], function (AppParams, $) {
     updateGalleria();
 
     if (AppParams.accountEditable === true) {
-        require(["views/user/post-manager"]);
+        require(['views/user/post-manager']);
     }
 
     $postInfoTabsLinks.click(function (e) {
         e.preventDefault();
         $(this).tab('show');
 
-        if (e.target.getAttribute("href") === "#post-contact") {
-            $postProductMainInfo.addClass("hidden-phone");
+        if (e.target.getAttribute('href') === '#post-contact') {
+            $postProductMainInfo.addClass('hidden-phone');
         } else {
-            $postProductMainInfo.removeClass("hidden-phone");
+            $postProductMainInfo.removeClass('hidden-phone');
         }
     });
 
-    $postContact.on("submit", function (e) {
+    $postContact.on('submit', function (e) {
         var target = $(e.target),
             $submit = $('input[type="submit"]', $postContact);
 
@@ -71,7 +71,7 @@ define(['AppParams', 'jquery', 'galleria'], function (AppParams, $) {
         }
     });
 
-    $postContact.on("click", function (e) {
+    $postContact.on('click', function (e) {
         var target = $(e.target);
         if (target.is('.close')) {
             $.ajax({
@@ -87,22 +87,22 @@ define(['AppParams', 'jquery', 'galleria'], function (AppParams, $) {
         interval: 0
     });
 
-    $postPicturesThumbnails.on("click", function (e) {
+    $postPicturesThumbnails.on('click', function (e) {
         var $target = $(e.target),
-            $closestLi = $target.closest("li");
+            $closestLi = $target.closest('li');
 
-        if ($closestLi.hasClass("post-picture") && !$target.hasClass("thumbnail-remove-picture")) {
+        if ($closestLi.hasClass('post-picture') && !$target.hasClass('thumbnail-remove-picture')) {
             $postPicturesCarousel.carousel($closestLi.index());
         }
     });
 
-    $postPicturesThumbnails.on("mouseenter", "li", function (e) {
+    $postPicturesThumbnails.on('mouseenter', 'li', function (e) {
         e.currentTarget.click();
     });
 
     // don't let a non-editor user change the checked state of the equipment list
     if (!AppParams.accountEditable) {
-        $postProductMainInfo.on("click", '.post-equipments-list [type="checkbox"]', function (e) {
+        $postProductMainInfo.on('click', '.post-equipments-list [type="checkbox"]', function (e) {
             e.preventDefault();
         });
     }
