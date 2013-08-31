@@ -1,14 +1,14 @@
-/*global define, window */
-/*jshint indent:4 */
+/*global define */
+/*jslint browser: true */
 
 define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, underscore, vehiclesJsonDataText) {
     "use strict";
 
-    var exports = {};
+    var exports = {},
+        vehicles,
+        getVehicles;
 
-    var vehicles;
-
-    var getVehicles = function () {
+    getVehicles = function () {
         if (vehicles === undefined) {
             try {
                 vehicles = JSON.parse(vehiclesJsonDataText);
@@ -20,8 +20,8 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
         return vehicles;
     };
 
-    exports.setUp = function ($typeSelector, $makeSelector, $modelSelector, make, model, type) {
-        $typeSelector.on("change", function (e) {
+    exports.setUp = function ($typeSelector, $makeSelector, $modelSelector) {
+        $typeSelector.on("change", function () {
             $makeSelector.val("").attr("disabled", "disabled");
             $modelSelector.val("").attr("disabled", "disabled");
             exports.loadPostProductMakes($makeSelector, $typeSelector.val());
@@ -35,7 +35,7 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
             $modelSelector.val()
         );
 
-        $makeSelector.on("change", function (e) {
+        $makeSelector.on("change", function () {
             $modelSelector.val("").attr("disabled", "disabled");
 
             exports.loadPostProductModels($modelSelector, $typeSelector.val(), $makeSelector.val());
@@ -43,21 +43,21 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
     };
 
     exports.loadPostProductMakes = function ($makeSelector, type, activeMake) {
-        var filter = {
+        var filter,
+            makes,
+            $optGroup = $($makeSelector.find("optgroup")[0]),
+            $entrySet = $("<select>");
+
+
+        filter = {
             type : type
         };
 
-        var makes = underscore.uniq(
-            underscore.pluck(
-                underscore.where(getVehicles(), filter), "make"
-            )
-        );
+        makes = underscore.uniq(underscore.pluck(underscore.where(getVehicles(), filter), "make"));
 
-        var $optGroup = $($makeSelector.find("optgroup")[0]);
-        var $entrySet = $("<select>");
         $entrySet.append('<option value="">-</option>');
-        $.each(makes, function (key, value) {
-            $entrySet.append($("<option>", { value : value }).text(value));
+        $.each(makes, function () {
+            $entrySet.append($("<option>", { value : this }).text(this));
         });
 
         $entrySet.append($("<option>", { "data-action" : "other" }).text("Outro"));
@@ -78,12 +78,17 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
     };
 
     exports.loadPostProductModels = function ($modelSelector, type, make, activeModel) {
-        var filter = {
+        var filter,
+            models,
+            $optGroup,
+            $entrySet;
+
+        filter = {
             type: type,
             make: make
         };
 
-        var models = underscore.uniq(
+        models = underscore.uniq(
             underscore.pluck(
                 underscore.where(getVehicles(), filter),
                 "model"
@@ -91,10 +96,10 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
         );
 
         $modelSelector.html('<optgroup label="Modelo"><option value="">-</option></optgroup>');
-        var $optGroup = $($modelSelector.find("optgroup")[0]);
-        var $entrySet = $("<select>");
-        $.each(models, function (key, value) {
-            $entrySet.append($("<option>", { value : value }).text(value));
+        $optGroup = $($modelSelector.find("optgroup")[0]);
+        $entrySet = $("<select>");
+        $.each(models, function () {
+            $entrySet.append($("<option>", { value : this }).text(this));
         });
 
         $entrySet.append($("<option>", { "data-action" : "other" }).text("Outro"));
@@ -129,9 +134,12 @@ define(["jquery", "underscore", "text!../../data/vehicles.json"], function ($, u
 
     exports.parseYouTubeIdFromLink = function (link, softPass) {
         //from http://stackoverflow.com/posts/10591582/revisions
-        var id = link.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
 
-        if(id !== null) {
+        /*jslint regexp: true*/
+        var id = link.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+        /*jslint regexp: false*/
+
+        if (id !== null) {
             return id[1];
         }
 
