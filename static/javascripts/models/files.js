@@ -2,7 +2,7 @@
 /*jslint browser: true */
 
 define([], function () {
-    "use strict";
+    'use strict';
 
     var exports = {};
 
