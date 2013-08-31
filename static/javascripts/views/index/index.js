@@ -2,10 +2,10 @@
 /*jslint browser: true */
 
 define(['jquery'], function ($) {
-    "use strict";
+    'use strict';
 
-    var $indexContent = $("#index-content"),
-        $searchText = $("#search-text"),
+    var $indexContent = $('#index-content'),
+        $searchText = $('#search-text'),
         closeIndexContent;
 
     closeIndexContent = function () {
@@ -15,8 +15,8 @@ define(['jquery'], function ($) {
 
         $indexContent.stop(true, true)
             .animate({
-                height: "toggle",
-                opacity: "toggle"
+                height: 'toggle',
+                opacity: 'toggle'
             }, 700);
 
         setTimeout(function () {
@@ -25,15 +25,15 @@ define(['jquery'], function ($) {
         }, 800);
     };
 
-    $searchText.one("keyup", function () {
+    $searchText.one('keyup', function () {
         closeIndexContent();
     });
 
-    $searchText.one("change", function () {
+    $searchText.one('change', function () {
         closeIndexContent();
     });
 
-    $searchText.one("paste", function () {
+    $searchText.one('paste', function () {
         closeIndexContent();
     });
 });
