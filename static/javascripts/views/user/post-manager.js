@@ -27,26 +27,26 @@ define([
         postsManagerPictureTemplate,
         cropPictureTemplate
     ) {
-        "use strict";
+        'use strict';
 
-        var $postProductType = $("#post-product-type"),
-            $postProductMake = $("#post-product-make"),
-            $postProductModel = $("#post-product-model"),
-            $postProductEngine = $("#post-product-engine"),
-            $postProductName = $("#post-product-name"),
-            $postProductNameEdit = $("#post-product-name-edit"),
-            $postProductNameEditingArea = $("#post-product-name-editing-area"),
-            $postProductMainInfo = $("#post-product-main-info"),
-            $postProductInfo = $("#post-product-info"),
-            $postProductInfoValue = $("#post-product-info .value"),
-            $postProductInfoOthers = $("#post-product-info-others"),
-            $postDescriptionText = $("#post-description-text"),
-            $postDescriptionTextEdit = $("#post-description-text-edit"),
-            $postDescriptionEditingArea = $("#post-description-editing-area"),
-            $postDescriptionTextSave = $("#post-description-text-save"),
-            $postStatus = $("#post-status"),
-            $postStatusButtons = $("button", $postStatus),
-            $editPostButton = $("#edit-post-button"),
+        var $postProductType = $('#post-product-type'),
+            $postProductMake = $('#post-product-make'),
+            $postProductModel = $('#post-product-model'),
+            $postProductEngine = $('#post-product-engine'),
+            $postProductName = $('#post-product-name'),
+            $postProductNameEdit = $('#post-product-name-edit'),
+            $postProductNameEditingArea = $('#post-product-name-editing-area'),
+            $postProductMainInfo = $('#post-product-main-info'),
+            $postProductInfo = $('#post-product-info'),
+            $postProductInfoValue = $('#post-product-info .value'),
+            $postProductInfoOthers = $('#post-product-info-others'),
+            $postDescriptionText = $('#post-description-text'),
+            $postDescriptionTextEdit = $('#post-description-text-edit'),
+            $postDescriptionEditingArea = $('#post-description-editing-area'),
+            $postDescriptionTextSave = $('#post-description-text-save'),
+            $postStatus = $('#post-status'),
+            $postStatusButtons = $('button', $postStatus),
+            $editPostButton = $('#edit-post-button'),
             updatePostItem,
             lastUpdatePostEquipmentsCall,
             updatePostEquipments,
@@ -62,7 +62,7 @@ define([
             saveDescriptionEdit,
             compiledPostsManagerPictureTemplate,
             compiledpostsManagerGalleryTemplate,
-            $galleryManager = $("#gallery-manager"),
+            $galleryManager = $('#gallery-manager'),
             videoLinkEl,
             pictures,
             videoId,
@@ -83,19 +83,19 @@ define([
             lastUpdateStatusCall;
 
         updatePostItem = function (name, value) {
-            var data = encodeURIComponent(name) + "=" + encodeURIComponent(value) +
-                    "&hash=" + encodeURIComponent(AppParams.globalAuthHash);
+            var data = encodeURIComponent(name) + '=' + encodeURIComponent(value) +
+                    '&hash=' + encodeURIComponent(AppParams.globalAuthHash);
 
             return $.ajax({
-                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
+                url: AppParams.webroot + '/' + AppParams.postUsername + '/' + AppParams.postId + '/edit',
                 type: 'POST',
                 dataType: 'json',
                 data: data
             });
         };
 
-        $postProductInfoOthers.on("click", '.label-checkbox [type="checkbox"]', function (e) {
-            updatePostItem(e.target.name, (e.target.checked) ? e.target.value : "");
+        $postProductInfoOthers.on('click', '.label-checkbox [type="checkbox"]', function (e) {
+            updatePostItem(e.target.name, (e.target.checked) ? e.target.value : '');
         });
 
         updatePostEquipments = function () {
@@ -108,62 +108,62 @@ define([
 
             equipment = $('.post-equipments-list [name="equipment[]"]', $postProductMainInfo).serialize();
 
-            if (equipment === "") {
+            if (equipment === '') {
                 equipment = 'equipment%5B%5D=';
             }
 
-            data = equipment + "&hash=" + encodeURIComponent(AppParams.globalAuthHash);
+            data = equipment + '&hash=' + encodeURIComponent(AppParams.globalAuthHash);
 
             lastUpdatePostEquipmentsCall = $.ajax({
-                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
+                url: AppParams.webroot + '/' + AppParams.postUsername + '/' + AppParams.postId + '/edit',
                 type: 'POST',
                 dataType: 'json',
                 data: data
             });
         };
 
-        $postProductMainInfo.on("click", '.post-equipments-list [type="checkbox"]', function (e) {
+        $postProductMainInfo.on('click', '.post-equipments-list [type="checkbox"]', function (e) {
             var isChecked = e.target.checked,
                 $labelTarget = $(e.target.parentNode);
 
             if (isChecked) {
-                $labelTarget.removeClass("has-not").addClass("has");
+                $labelTarget.removeClass('has-not').addClass('has');
             } else {
-                $labelTarget.removeClass("not").addClass("has-not");
+                $labelTarget.removeClass('not').addClass('has-not');
             }
 
             updatePostEquipments();
         });
 
-        $editPostButton.on("click", function () {
+        $editPostButton.on('click', function () {
             openPostProductNameEdit();
             openDescriptionEdit();
             $(window).scrollTop($postProductNameEditingArea.position().top);
         });
 
-        vehiclesModel.maskMoney($("#post-product-info #price"));
+        vehiclesModel.maskMoney($('#post-product-info #price'));
 
         vehiclesModel.setUp($postProductType, $postProductMake, $postProductModel);
 
         openPostProductNameEdit = function () {
             $postProductName.attr('unselectable', 'on').on('selectstart', false);
-            $postProductName.addClass("hidden");
+            $postProductName.addClass('hidden');
             $postProductMake.focus();
 
-            $postProductNameEdit.removeClass("hidden");
-            $postProductNameEditingArea.removeClass("hidden");
+            $postProductNameEdit.removeClass('hidden');
+            $postProductNameEditingArea.removeClass('hidden');
         };
 
         closePostProductNameEdit = function () {
-            $postProductName.removeClass("hidden");
-            $postProductNameEditingArea.addClass("hidden");
+            $postProductName.removeClass('hidden');
+            $postProductNameEditingArea.addClass('hidden');
         };
 
-        $postProductName.on("click", function () {
+        $postProductName.on('click', function () {
             openPostProductNameEdit();
         });
 
-        $postProductNameEditingArea.on("submit", function (e) {
+        $postProductNameEditingArea.on('submit', function (e) {
             e.preventDefault();
 
             var data = {
@@ -175,21 +175,21 @@ define([
             };
 
             $.ajax({
-                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
+                url: AppParams.webroot + '/' + AppParams.postUsername + '/' + AppParams.postId + '/edit',
                 type: 'POST',
                 dataType: 'json',
                 data: data,
                 success: function (result) {
-                    var breadCrumbTypeLink = AppParams.webroot + "/search?type=" + encodeURI(result.type),
-                        breadCrumbMakeLink = breadCrumbTypeLink + "&make=" + encodeURI(result.make),
-                        breadCrumbModelLink = breadCrumbMakeLink + "&model=" + encodeURI(result.model);
+                    var breadCrumbTypeLink = AppParams.webroot + '/search?type=' + encodeURI(result.type),
+                        breadCrumbMakeLink = breadCrumbTypeLink + '&make=' + encodeURI(result.make),
+                        breadCrumbModelLink = breadCrumbMakeLink + '&model=' + encodeURI(result.model);
 
-                    $(".make-a", $postProductName).text(result.make).attr("href", breadCrumbMakeLink);
-                    $(".make", $postProductName).text(result.make);
-                    $(".model-a", $postProductName).text(result.model).attr("href", breadCrumbModelLink);
-                    $(".model", $postProductName).text(result.model);
-                    $(".engine", $postProductName).text(result.engine);
-                    $(".name", $postProductName).text(result.name);
+                    $('.make-a', $postProductName).text(result.make).attr('href', breadCrumbMakeLink);
+                    $('.make', $postProductName).text(result.make);
+                    $('.model-a', $postProductName).text(result.model).attr('href', breadCrumbModelLink);
+                    $('.model', $postProductName).text(result.model);
+                    $('.engine', $postProductName).text(result.engine);
+                    $('.name', $postProductName).text(result.name);
 
                     closePostProductNameEdit();
 
@@ -198,10 +198,10 @@ define([
                     $postProductNameEdit.val(result.name);
 
                     window.document.title =
-                        result.make + " " +
-                        result.model + " " +
-                        result.engine + " " +
-                        result.name + " – " +
+                        result.make + ' ' +
+                        result.model + ' ' +
+                        result.engine + ' ' +
+                        result.name + ' – ' +
                         AppParams.applicationname;
                 }
             });
@@ -209,19 +209,19 @@ define([
 
         closeProductInfoField = function (name) {
             var $value = $('[data-name="' + name + '"] .value'),
-                $action = $(".action", $value),
-                $textValue = $(".text-value", $value),
-                $editableValue = $(".editable-value", $value);
+                $action = $('.action', $value),
+                $textValue = $('.text-value', $value),
+                $editableValue = $('.editable-value', $value);
 
-            $value.addClass("value-on");
-            $textValue.removeClass("none");
-            $editableValue.addClass("none");
-            $action.addClass("edit-button").removeClass("save-button");
-            $(".icon-ok", $action).addClass("icon-edit").removeClass("icon-ok");
+            $value.addClass('value-on');
+            $textValue.removeClass('none');
+            $editableValue.addClass('none');
+            $action.addClass('edit-button').removeClass('save-button');
+            $('.icon-ok', $action).addClass('icon-edit').removeClass('icon-ok');
         };
 
         filterProductInfoFieldData = function (name, value) {
-            if (name === "price" && value.substr(0, 3) === "R$ ") {
+            if (name === 'price' && value.substr(0, 3) === 'R$ ') {
                 value = value.substr(3);
             }
 
@@ -231,12 +231,12 @@ define([
         updateProductInfoField = function (name) {
             var $inputField = $('[name="' + name + '"]', $postProductInfo),
                 $value = $('[data-name="' + name + '"] .value'),
-                $textValue = $(".text-value", $value),
+                $textValue = $('.text-value', $value),
                 enteredValue = $inputField.val(),
                 value,
                 post;
 
-            if ($value.data("saved-value").toString() === enteredValue) {
+            if ($value.data('saved-value').toString() === enteredValue) {
                 setTimeout(function () {
                     closeProductInfoField(name);
                 }, 100);
@@ -247,15 +247,15 @@ define([
             post = updatePostItem(name, value);
 
             post.done(function () {
-                $($inputField).addClass("input-field-feedback-done");
-                var $action = $(".action", $value);
-                $action.removeAttr("tabindex");
+                $($inputField).addClass('input-field-feedback-done');
+                var $action = $('.action', $value);
+                $action.removeAttr('tabindex');
                 setTimeout(function () {
-                    $($inputField).removeClass("input-field-feedback-done");
+                    $($inputField).removeClass('input-field-feedback-done');
 
                     var printName = enteredValue;
 
-                    if ($inputField[0].nodeName && $inputField[0].nodeName.toLowerCase() === "select") {
+                    if ($inputField[0].nodeName && $inputField[0].nodeName.toLowerCase() === 'select') {
                         printName = $(':selected', $inputField).text();
                     }
 
@@ -268,59 +268,59 @@ define([
                     }
 
                     closeProductInfoField(name);
-                    $value.data("saved-value", enteredValue);
+                    $value.data('saved-value', enteredValue);
                 }, 500);
             });
 
             post.fail(function () {
-                $($inputField).addClass("input-field-feedback-fail");
+                $($inputField).addClass('input-field-feedback-fail');
                 setTimeout(function () {
-                    $($inputField).removeClass("input-field-feedback-fail");
+                    $($inputField).removeClass('input-field-feedback-fail');
                 }, 500);
             });
         };
 
-        $postProductInfoValue.on("click", function (e) {
-            var $value = $(this.parentNode.getElementsByClassName("value")[0]),
-                $action = $(".action", $value),
+        $postProductInfoValue.on('click', function (e) {
+            var $value = $(this.parentNode.getElementsByClassName('value')[0]),
+                $action = $('.action', $value),
                 $textValue,
                 $editableValue,
                 targetName,
                 name;
 
-            if ($action.hasClass("edit-button")) {
-                $textValue = $(".text-value", $value);
-                $editableValue = $(".editable-value", $value);
+            if ($action.hasClass('edit-button')) {
+                $textValue = $('.text-value', $value);
+                $editableValue = $('.editable-value', $value);
 
-                $value.removeClass("value-on");
-                $textValue.addClass("none");
-                $editableValue.removeClass("none").focus();
-                $action.removeClass("edit-button").addClass("save-button").attr("tabindex", "-1");
-                $(".icon-edit", $action).removeClass("icon-edit").addClass("icon-ok");
+                $value.removeClass('value-on');
+                $textValue.addClass('none');
+                $editableValue.removeClass('none').focus();
+                $action.removeClass('edit-button').addClass('save-button').attr('tabindex', '-1');
+                $('.icon-edit', $action).removeClass('icon-edit').addClass('icon-ok');
 
                 return;
             }
 
-            if ($action.hasClass("save-button")) {
+            if ($action.hasClass('save-button')) {
                 targetName = e.target.nodeName.toLowerCase();
-                if (targetName === "button" || targetName === "i") {
-                    name = this.parentNode.getAttribute("data-name");
+                if (targetName === 'button' || targetName === 'i') {
+                    name = this.parentNode.getAttribute('data-name');
                     updateProductInfoField(name);
                 }
             }
         });
 
-        $postProductInfoValue.on("focusout", function (e) {
-            var name = e.target.parentNode.parentNode.getAttribute("data-name");
+        $postProductInfoValue.on('focusout', function (e) {
+            var name = e.target.parentNode.parentNode.getAttribute('data-name');
             updateProductInfoField(name);
         });
 
-        $postProductInfoValue.on("keydown", function (e) {
+        $postProductInfoValue.on('keydown', function (e) {
             var name,
                 $nextItem;
 
-            if (e.target.nodeName.toLowerCase() !== "button" && e.keyCode === 13) {
-                name = e.target.parentNode.parentNode.getAttribute("data-name");
+            if (e.target.nodeName.toLowerCase() !== 'button' && e.keyCode === 13) {
+                name = e.target.parentNode.parentNode.getAttribute('data-name');
                 updateProductInfoField(name);
             }
 
@@ -334,20 +334,20 @@ define([
                 }
 
                 if ($nextItem[0] !== undefined) {
-                    $nextItem.children(".value").click();
-                    $nextItem.find(".value .editable-value").focus();
+                    $nextItem.children('.value').click();
+                    $nextItem.find('.value .editable-value').focus();
                     e.preventDefault();
                 }
             }
         });
 
-        CKEDITOR.on("instanceReady", function () {
-            editor = CKEDITOR.instances["post-description-text-edit"];
+        CKEDITOR.on('instanceReady', function () {
+            editor = CKEDITOR.instances['post-description-text-edit'];
         });
 
         openDescriptionEdit = function () {
-            $postDescriptionText.addClass("hidden");
-            $postDescriptionEditingArea.removeClass("hidden");
+            $postDescriptionText.addClass('hidden');
+            $postDescriptionEditingArea.removeClass('hidden');
 
             $postDescriptionTextEdit.focus();
 
@@ -378,12 +378,12 @@ define([
         };
 
         closeDescriptionEdit = function () {
-            $postDescriptionText.removeClass("hidden");
-            $postDescriptionEditingArea.addClass("hidden");
+            $postDescriptionText.removeClass('hidden');
+            $postDescriptionEditingArea.addClass('hidden');
         };
 
         isOpenDescriptionEdit = function () {
-            return $postDescriptionText.hasClass("hidden");
+            return $postDescriptionText.hasClass('hidden');
         };
 
         saveDescriptionEdit = function () {
@@ -391,7 +391,7 @@ define([
                 data,
                 xhr;
 
-            $postDescriptionTextSave.button("loading");
+            $postDescriptionTextSave.button('loading');
 
             $postDescriptionTextEdit.val(content);
 
@@ -401,14 +401,14 @@ define([
             };
 
             xhr = $.ajax({
-                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/edit",
+                url: AppParams.webroot + '/' + AppParams.postUsername + '/' + AppParams.postId + '/edit',
                 type: 'POST',
                 dataType: 'json',
                 data: data
             });
 
             xhr.complete(function () {
-                $postDescriptionTextSave.button("reset");
+                $postDescriptionTextSave.button('reset');
             });
 
             xhr.done(function (response) {
@@ -421,53 +421,53 @@ define([
             return xhr;
         };
 
-        $postDescriptionTextSave.on("click", function () {
+        $postDescriptionTextSave.on('click', function () {
             saveDescriptionEdit();
         });
 
-        $postDescriptionText.on("click", function (e) {
+        $postDescriptionText.on('click', function (e) {
             if (e.target.nodeName.toLowerCase() !== 'a') {
                 openDescriptionEdit();
             }
         });
 
-        CKEDITOR.replace("post-description-text-edit", ckeditorConfig);
+        CKEDITOR.replace('post-description-text-edit', ckeditorConfig);
 
-        YUI({filter: "raw"}).use("uploader", function (Y) {
+        YUI({filter: 'raw'}).use('uploader', function (Y) {
 
-            if (Y.Uploader.TYPE !== "none" && !Y.UA.ios) {
+            if (Y.Uploader.TYPE !== 'none' && !Y.UA.ios) {
                 var uploader = new Y.Uploader({
-                    width: "250px",
-                    height: "35px",
+                    width: '250px',
+                    height: '35px',
                     multipleFiles: true,
-                    swfURL: "http://yui.yahooapis.com/3.9.1/build/uploader/assets/flashuploader.swf?t=" + Math.random(),
-                    uploadURL: AppParams.webroot + "/" + AppParams.postUsername + "/" +
-                        AppParams.postId + "/picture/add",
+                    swfURL: 'http://yui.yahooapis.com/3.9.1/build/uploader/assets/flashuploader.swf?t=' + Math.random(),
+                    uploadURL: AppParams.webroot + '/' + AppParams.postUsername + '/' +
+                        AppParams.postId + '/picture/add',
                     postVarsPerFile: {hash: AppParams.globalAuthHash},
                     fileFilters: {
-                        description: "Images",
-                        extensions: "*.jpg;*.jpeg;*.gif;*.png"
+                        description: 'Images',
+                        extensions: '*.jpg;*.jpeg;*.gif;*.png'
                     },
                     simLimit: 2,
                     withCredentials: false
                 }),
                     uploadDone = false,
-                    foo = document.createElement("div"),
-                    $uploadFile = $("#upload-file");
+                    foo = document.createElement('div'),
+                    $uploadFile = $('#upload-file');
 
-                if (Y.Uploader.TYPE === "html5") {
-                    uploader.set("dragAndDropArea", "body");
+                if (Y.Uploader.TYPE === 'html5') {
+                    uploader.set('dragAndDropArea', 'body');
                 }
 
                 uploader.render(foo);
 
-                $uploadFile.on("click", function () {
+                $uploadFile.on('click', function () {
                     uploader.openFileSelectDialog();
                 });
 
-                uploader.after("fileselect", function (event) {
+                uploader.after('fileselect', function (event) {
                     var fileList = event.fileList,
-                        fileTable = Y.one("#file-names tbody");
+                        fileTable = Y.one('#file-names tbody');
 
                     if (uploadDone) {
                         uploadDone = false;
@@ -475,10 +475,10 @@ define([
                     }
 
                     Y.each(fileList, function (fileInstance) {
-                        var fileSize = filesModel.convertBytesToSize(fileInstance.get("size"), 2);
+                        var fileSize = filesModel.convertBytesToSize(fileInstance.get('size'), 2);
 
-                        fileTable.append('<tr id="' + fileInstance.get("id") + "_row" + '"><td><strong>' +
-                            fileInstance.get("name") + '</strong></td>' +
+                        fileTable.append('<tr id="' + fileInstance.get('id') + '_row' + '"><td><strong>' +
+                            fileInstance.get('name') + '</strong></td>' +
                             '<td>' + fileSize + '</td>' +
                             '<td><div class="progress progress-striped active">' +
                             '<div class="percentdone bar" style="width: 0%"></div>' +
@@ -486,43 +486,43 @@ define([
                             '</tr>');
                     });
 
-                    if (!uploadDone && uploader.get("fileList").length > 0) {
+                    if (!uploadDone && uploader.get('fileList').length > 0) {
                         uploader.uploadAll();
-                        Y.one("#filelist").removeClass("hidden");
+                        Y.one('#filelist').removeClass('hidden');
                     }
                 });
 
-                uploader.on("uploadprogress", function (event) {
-                    var fileRow = Y.one("#" + event.file.get("id") + "_row");
-                    fileRow.one(".percentdone").setStyle("width", event.percentLoaded + "%");
+                uploader.on('uploadprogress', function (event) {
+                    var fileRow = Y.one('#' + event.file.get('id') + '_row');
+                    fileRow.one('.percentdone').setStyle('width', event.percentLoaded + '%');
                 });
 
-                uploader.on("uploadstart", function () {
-                    uploader.set("enabled", false);
-                    $("#upload-file").addClass("disabled");
+                uploader.on('uploadstart', function () {
+                    uploader.set('enabled', false);
+                    $('#upload-file').addClass('disabled');
                 });
 
-                uploader.on("uploadcomplete", function (event) {
-                    var fileRow = Y.one("#" + event.file.get("id") + "_row");
-                    fileRow.one(".percentdone").setStyle("width", "100%").removeClass("active");
+                uploader.on('uploadcomplete', function (event) {
+                    var fileRow = Y.one('#' + event.file.get('id') + '_row');
+                    fileRow.one('.percentdone').setStyle('width', '100%').removeClass('active');
                 });
 
-                uploader.on("alluploadscomplete", function () {
-                    uploader.set("enabled", true);
-                    uploader.set("fileList", []);
+                uploader.on('alluploadscomplete', function () {
+                    uploader.set('enabled', true);
+                    uploader.set('fileList', []);
 
-                    $uploadFile.removeClass("disabled");
+                    $uploadFile.removeClass('disabled');
 
                     setTimeout(function () {
-                        var fileTable = Y.one("#file-names tbody");
+                        var fileTable = Y.one('#file-names tbody');
                         fileTable.setHTML('');
-                        Y.one("#filelist").addClass("hidden");
+                        Y.one('#filelist').addClass('hidden');
                         reloadImages();
                     }, 1000);
                     uploadDone = true;
                 });
             } else {
-                Y.one("#uploaderContainer").set("text", "Seu browser não suporta upload de imagens.");
+                Y.one('#uploaderContainer').set('text', 'Seu browser não suporta upload de imagens.');
             }
         });
 
@@ -578,11 +578,11 @@ define([
 
                 orderLis = Y.Node.all('#gallery-manager .pictures-thumbnails .picture');
                 orderLis.each(function (v) {
-                    ids.push(v.getData("id"));
+                    ids.push(v.getData('id'));
                 });
 
                 post = $.ajax({
-                    url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/picture/sort",
+                    url: AppParams.webroot + '/' + AppParams.postUsername + '/' + AppParams.postId + '/picture/sort',
                     type: 'POST',
                     dataType: 'json',
                     data: {
@@ -636,18 +636,18 @@ define([
 
         reloadImages = function () {
             var post = $.ajax({
-                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId,
+                url: AppParams.webroot + '/' + AppParams.postUsername + '/' + AppParams.postId,
                 type: 'GET',
                 dataType: 'json',
                 data: ({
-                    format: "json",
+                    format: 'json',
                     gallery: true
                 })
             });
 
             post.done(function (response) {
                 AppParams.postGalleryImages = response.gallery;
-                var $thumbnails = $(".pictures-thumbnails", $("#gallery-manager"));
+                var $thumbnails = $('.pictures-thumbnails', $('#gallery-manager'));
                 $thumbnails.html(drawThumbnails(response.gallery));
                 Galleria.ready(function () {
                     var gallery = this;
@@ -659,19 +659,19 @@ define([
 
         cutPicture = function (pictureId, cut) {
             return $.ajax({
-                url: AppParams.webroot + "/" + AppParams.postUsername + "/" +
-                    AppParams.postId + "/picture/edit",
+                url: AppParams.webroot + '/' + AppParams.postUsername + '/' +
+                    AppParams.postId + '/picture/edit',
                 type: 'POST',
                 dataType: 'json',
                 data: {
                     hash: AppParams.globalAuthHash,
                     picture_id: pictureId,
-                    x : cut.x,
-                    y : cut.y,
-                    x2 : cut.x2,
-                    y2 : cut.y2,
-                    w : cut.w,
-                    h : cut.h
+                    x: cut.x,
+                    y: cut.y,
+                    x2: cut.x2,
+                    y2: cut.y2,
+                    w: cut.w,
+                    h: cut.h
                 }
             });
         };
@@ -692,16 +692,16 @@ define([
                     return eachPicture.id === pictureId;
                 });
 
-            $("body").append(compiledTemplate({
+            $('body').append(compiledTemplate({
                 imageSrc: picture.original
             }));
 
-            $cropPictureModal = $("#crop-picture-modal");
+            $cropPictureModal = $('#crop-picture-modal');
 
             $cropPictureModal.modal();
 
-            $cropPictureModal.on("shown", function () {
-                var $cropImage = $(".crop-image", $cropPictureModal),
+            $cropPictureModal.on('shown', function () {
+                var $cropImage = $('.crop-image', $cropPictureModal),
                     jCropApi,
                     width = picture.original_size.width,
                     height = picture.original_size.height,
@@ -709,7 +709,7 @@ define([
                     setRelease,
                     setSelect;
 
-                $cropPictureModal.on("hidden", function () {
+                $cropPictureModal.on('hidden', function () {
                     jCropApi.destroy();
                     $cropPictureModal.off();
                     $cropImage.off();
@@ -733,20 +733,20 @@ define([
                     }, function () {
                         var cropOptions = picture.crop_options,
                             crop = {
-                                x : width * 0.1,
-                                y : height * 0.1,
-                                x2 : width * 0.9,
-                                y2 : height * 0.9
+                                x: width * 0.1,
+                                y: height * 0.1,
+                                x2: width * 0.9,
+                                y2: height * 0.9
                             };
 
                         jCropApi = this;
 
                         if (cropOptions && cropOptions.w > 0 && cropOptions.h > 0) {
                             crop = {
-                                x : cropOptions.x,
-                                y : cropOptions.y,
-                                x2 : cropOptions.x2,
-                                y2 : cropOptions.y2
+                                x: cropOptions.x,
+                                y: cropOptions.y,
+                                x2: cropOptions.x2,
+                                y2: cropOptions.y2
                             };
                         }
 
@@ -755,11 +755,11 @@ define([
                     });
                 }, 300);
 
-                $(".clear-selection", $cropPictureModal).on("click", function () {
+                $('.clear-selection', $cropPictureModal).on('click', function () {
                     jCropApi.release();
                 });
 
-                $(".cut", $cropPictureModal).on("click", function () {
+                $('.cut', $cropPictureModal).on('click', function () {
                     var cut,
                         cutResponse;
 
@@ -779,7 +779,7 @@ define([
                     });
 
                     cutResponse.done(function () {
-                        $cropPictureModal.modal("hide");
+                        $cropPictureModal.modal('hide');
                         reloadImages();
                     });
                 });
@@ -788,7 +788,7 @@ define([
 
         erasePicture = function (pictureId) {
             var post = $.ajax({
-                url: AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId + "/picture/delete",
+                url: AppParams.webroot + '/' + AppParams.postUsername + '/' + AppParams.postId + '/picture/delete',
                 type: 'POST',
                 dataType: 'json',
                 data: ({
@@ -807,7 +807,7 @@ define([
         };
 
         buildVideoLink = function (id) {
-            return id ? "http://www.youtube.com/watch?v=" + encodeURIComponent(videoId) : "";
+            return id ? 'http://www.youtube.com/watch?v=' + encodeURIComponent(videoId) : '';
         };
 
         getVideoLinkElement = function () {
@@ -827,33 +827,33 @@ define([
         updateVideoId = function (newVideoId) {
             setVideoIdValue(newVideoId);
 
-            var post = updatePostItem("youtube_video", newVideoId);
+            var post = updatePostItem('youtube_video', newVideoId);
 
             post.done(function () {
                 reloadImages();
-                $(videoLinkEl).addClass("input-field-feedback-done");
+                $(videoLinkEl).addClass('input-field-feedback-done');
                 setTimeout(function () {
-                    $(videoLinkEl).removeClass("input-field-feedback-done");
+                    $(videoLinkEl).removeClass('input-field-feedback-done');
                 }, 500);
             });
 
             post.fail(function () {
-                $(videoLinkEl).addClass("input-field-feedback-fail");
+                $(videoLinkEl).addClass('input-field-feedback-fail');
                 setTimeout(function () {
-                    $(videoLinkEl).removeClass("input-field-feedback-fail");
+                    $(videoLinkEl).removeClass('input-field-feedback-fail');
                 }, 500);
             });
         };
 
         drawThumbnails = function (pictures) {
             var picturesLength = pictures.length,
-                picturesDiv = "",
+                picturesDiv = '',
                 counter;
 
             for (counter = 0; counter < picturesLength; counter += 1) {
-                if (pictures[counter].type === "video") {
+                if (pictures[counter].type === 'video') {
                     setVideoIdValue(pictures[counter].id);
-                } else if (pictures[counter].type === "image" && pictures[counter].placeholder === undefined) {
+                } else if (pictures[counter].type === 'image' && pictures[counter].placeholder === undefined) {
                     picturesDiv += addPicture(pictures[counter]);
                 }
             }
@@ -863,30 +863,30 @@ define([
 
         createThumbnails = function ($element, pictures) {
             $element.html(compiledpostsManagerGalleryTemplate({
-                picturesDiv : drawThumbnails(pictures),
-                isTouch : Modernizr.touch,
-                videoLink : buildVideoLink(videoId)
+                picturesDiv: drawThumbnails(pictures),
+                isTouch: Modernizr.touch,
+                videoLink: buildVideoLink(videoId)
             }));
         };
 
         setUpGalleryManager = function () {
             compiledPostsManagerPictureTemplate = underscore.template(postsManagerPictureTemplate);
             compiledpostsManagerGalleryTemplate = underscore.template(postsManagerGalleryTemplate);
-            videoLinkEl = $galleryManager[0].getElementsByClassName("video-link");
+            videoLinkEl = $galleryManager[0].getElementsByClassName('video-link');
 
             pictures = AppParams.postGalleryImages;
 
-            $galleryManager.on("click", ".image .action-edit", function (e) {
-                var pictureId = e.target.parentNode.parentNode.getAttribute("data-id");
+            $galleryManager.on('click', '.image .action-edit', function (e) {
+                var pictureId = e.target.parentNode.parentNode.getAttribute('data-id');
                 editPicture(pictureId);
             });
 
-            $galleryManager.on("click", ".image .action-delete", function (e) {
-                var pictureId = e.target.parentNode.parentNode.getAttribute("data-id");
+            $galleryManager.on('click', '.image .action-delete', function (e) {
+                var pictureId = e.target.parentNode.parentNode.getAttribute('data-id');
                 erasePicture(pictureId);
             });
 
-            $galleryManager.on("submit", ".video-form", function (e) {
+            $galleryManager.on('submit', '.video-form', function (e) {
                 e.preventDefault();
                 var youTubeId = vehiclesModel.parseYouTubeIdFromLink(getVideoLinkElement().value, true);
                 updateVideoId(youTubeId);
@@ -897,71 +897,71 @@ define([
 
         setUpGalleryManager();
 
-        $openGalleryManager = $("#open-gallery-manager");
+        $openGalleryManager = $('#open-gallery-manager');
 
-        $openGalleryManager.on("click", function () {
-            if ($galleryManager.hasClass("hidden")) {
-                $galleryManager.removeClass("hidden");
-                $openGalleryManager.addClass("active");
-                $("i", $openGalleryManager).removeClass("icon-plus").addClass("icon-minus");
+        $openGalleryManager.on('click', function () {
+            if ($galleryManager.hasClass('hidden')) {
+                $galleryManager.removeClass('hidden');
+                $openGalleryManager.addClass('active');
+                $('i', $openGalleryManager).removeClass('icon-plus').addClass('icon-minus');
                 $('html, body').animate({
                     scrollTop: $openGalleryManager.offset().top - 90
                 }, 400);
             } else {
-                $galleryManager.addClass("hidden");
-                $openGalleryManager.removeClass("active");
-                $("i", $openGalleryManager).removeClass("icon-minus").addClass("icon-plus");
+                $galleryManager.addClass('hidden');
+                $openGalleryManager.removeClass('active');
+                $('i', $openGalleryManager).removeClass('icon-minus').addClass('icon-plus');
             }
         });
 
-        $setYouTubeVideo = $("#set-youtube-video");
+        $setYouTubeVideo = $('#set-youtube-video');
 
-        $setYouTubeVideo.on("click", function () {
-            if ($galleryManager.hasClass("hidden")) {
+        $setYouTubeVideo.on('click', function () {
+            if ($galleryManager.hasClass('hidden')) {
                 $openGalleryManager.click();
             }
 
-            getVideoLinkElement().value = window.prompt("Link do YouTube:", getVideoLinkElement().value);
+            getVideoLinkElement().value = window.prompt('Link do YouTube:', getVideoLinkElement().value);
 
-            $(".video-form", $galleryManager).submit();
+            $('.video-form', $galleryManager).submit();
         });
 
-        $postStatusButtons.on("click", function (e) {
+        $postStatusButtons.on('click', function (e) {
             var saveDescriptionBoolean;
 
             if (isOpenDescriptionEdit()) {
-                saveDescriptionBoolean = window.confirm("A edição da descrição não foi salva. Deseja continuar?");
+                saveDescriptionBoolean = window.confirm('A edição da descrição não foi salva. Deseja continuar?');
 
                 if (!saveDescriptionBoolean) {
                     return;
                 }
             }
 
-            $postStatusButtons.attr("disabled", "disabled");
+            $postStatusButtons.attr('disabled', 'disabled');
 
-            lastUpdateStatusCall = updatePostItem("status", e.target.getAttribute("data-status"));
+            lastUpdateStatusCall = updatePostItem('status', e.target.getAttribute('data-status'));
 
             lastUpdateStatusCall.done(function (response) {
-                var newStateHtml = "";
+                var newStateHtml = '';
 
                 switch (response.status) {
-                case "staging":
+                case 'staging':
                     newStateHtml = '<span class="label label-warning">anúncio pausado</span>';
                     break;
-                case "active":
+                case 'active':
                     newStateHtml = '<span class="label label-success">anúncio ativo</span>';
                     break;
-                case "end":
+                case 'end':
                     newStateHtml = '<span class="label label-important">anúncio encerrado</span>';
                     break;
                 }
 
-                $postStatus.html("<p>Anúncio modificado: " + newStateHtml + "</p>");
-                window.location = AppParams.webroot + "/" + AppParams.postUsername + "/" + AppParams.postId;
+                $postStatus.html('<p>Anúncio modificado: ' + newStateHtml + '</p>');
+                window.location = AppParams.webroot + '/' + AppParams.postUsername + '/' + AppParams.postId;
             });
 
             lastUpdateStatusCall.fail(function () {
-                $postStatusButtons.removeAttr("disabled");
+                $postStatusButtons.removeAttr('disabled');
             });
         });
     });
