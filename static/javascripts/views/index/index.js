@@ -1,22 +1,22 @@
 /*global define, require */
-/*jshint indent:4 */
+/*jslint browser: true */
 
-define(['AppParams', 'jquery', 'underscore'], function (AppParams, $, underscore) {
+define(['jquery'], function ($) {
     "use strict";
 
-    var $indexContent = $("#index-content");
+    var $indexContent = $("#index-content"),
+        $searchText = $("#search-text"),
+        closeIndexContent;
 
-    var $searchText = $("#search-text");
-
-    var closeIndexContent = function () {
+    closeIndexContent = function () {
         if ($indexContent === undefined) {
             return;
         }
 
         $indexContent.stop(true, true)
             .animate({
-                height:"toggle",
-                opacity:"toggle"
+                height: "toggle",
+                opacity: "toggle"
             }, 700);
 
         setTimeout(function () {
@@ -25,15 +25,15 @@ define(['AppParams', 'jquery', 'underscore'], function (AppParams, $, underscore
         }, 800);
     };
 
-    $searchText.one("keyup", function (e) {
+    $searchText.one("keyup", function () {
         closeIndexContent();
     });
 
-    $searchText.one("change", function (e) {
+    $searchText.one("change", function () {
         closeIndexContent();
     });
 
-    $searchText.one("paste", function (e) {
+    $searchText.one("paste", function () {
         closeIndexContent();
     });
 });
