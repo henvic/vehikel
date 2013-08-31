@@ -1,11 +1,12 @@
-/*global define, window */
-/*jshint indent:4 */
+/*global define */
+/*jslint browser: true */
 
 define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
     function (AppParams, $, underscore) {
         "use strict";
 
-        var exports = {};
+        var exports = {},
+            getTermItem;
 
         exports.transmissionTranslation = {
             "manual" : "manual",
@@ -21,11 +22,11 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
 
         exports.parseQueryString = function (queryString) {
             //from http://www.joezimjs.com/javascript/3-ways-to-parse-a-query-string-in-a-url/
-            var params = {};
-            var queries;
-            var temp;
-            var i;
-            var l;
+            var params = {},
+                queries,
+                temp,
+                i,
+                l;
 
             queryString = queryString.replace(/\+/g, ' ');
 
@@ -46,9 +47,8 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
                 params.q = "";
             }
 
-            //@todo improve this: the filter shouldn't be here
-            delete(params["persist-username"]);
-            delete(params["search-go"]);
+            delete params["persist-username"];
+            delete params["search-go"];
 
             return params;
         };
@@ -62,31 +62,30 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
                 if (page === 1) {
                     if (pageSort) {
                         return "?sort=" + pageSort;
-                    } else {
-                        return "";
                     }
-                } else {
-                    if (pageSort) {
-                        return "?page=" + page + "&sort=" + pageSort;
-                    } else {
-                        return "?page=" + page;
-                    }
+                    return "";
                 }
-            } else {
-                if (page === 1) {
-                    if (pageSort) {
-                        return "?" + formSerialized + "&sort=" + pageSort;
-                    } else {
-                        return "?" + formSerialized;
-                    }
-                } else {
-                    if (pageSort) {
-                        return "?" + formSerialized + "&page=" + page + "&sort=" + pageSort;
-                    } else {
-                        return "?" + formSerialized + "&page=" + page;
-                    }
+
+                if (pageSort) {
+                    return "?page=" + page + "&sort=" + pageSort;
                 }
+
+                return "?page=" + page;
             }
+
+            if (page === 1) {
+                if (pageSort) {
+                    return "?" + formSerialized + "&sort=" + pageSort;
+                }
+
+                return "?" + formSerialized;
+            }
+
+            if (pageSort) {
+                return "?" + formSerialized + "&page=" + page + "&sort=" + pageSort;
+            }
+
+            return "?" + formSerialized + "&page=" + page;
         };
 
         exports.maskMoney = function ($element) {
@@ -110,150 +109,142 @@ define(["AppParams", "jquery", "underscore", "jquery.maskMoney"],
             return $foo.val();
         };
 
-        exports.termListHtmlElementsType = function (terms, formSerialized, currentQueryStringParams) {
-            var jsonFormSerialized = exports.parseQueryString(formSerialized);
-            var types = {
+        getTermItem = function (jsonFormSerialized, name, terms, pos, translationObj, currentQParams) {
+            var content = "<li>",
+                escapedUrl,
+                value,
+                escapedUrlRemove;
+
+            jsonFormSerialized[name] = underscore.escape(terms[pos].term);
+
+            escapedUrl = AppParams.webroot + "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+
+            value = terms[pos].term;
+
+            if (translationObj !== undefined && translationObj[value] !== undefined) {
+                value = translationObj[value];
+            }
+
+            if (underscore.isEqual(currentQParams, jsonFormSerialized)) {
+                delete jsonFormSerialized[name];
+                escapedUrlRemove = AppParams.webroot +
+                    "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+
+                content += '<span class="label label-inverse">' +
+                    underscore.escape(value) +
+                    " (" + underscore.escape(terms[pos].count) + ')' +
+                    ' <a href="' + escapedUrlRemove + '" data-name="' +
+                    underscore.escape(name) + '" ' +
+                    'data-value=""><i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>' +
+                    '</span>';
+            } else {
+                content += '<a href="' + escapedUrl + '" data-name="' +
+                    underscore.escape(name) + '" ' +
+                    'data-value="' + underscore.escape(terms[pos].term) + '">' +
+                    underscore.escape(value) +
+                    "</a> (" + underscore.escape(terms[pos].count) + ")";
+            }
+
+            content += "</li>";
+
+            return content;
+        };
+
+        exports.termListHtmlElementsType = function (terms, formSerialized, currentQParams) {
+            var jsonFormSerialized,
+                types,
+                content = "",
+                pos,
+                termLength;
+
+            jsonFormSerialized = exports.parseQueryString(formSerialized);
+
+            types = {
                 car : "carro",
                 motorcycle : "motocicleta",
                 boat : "embarcação"
             };
 
-            var content = "";
-
-            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
-                jsonFormSerialized.type = underscore.escape(terms[termPos].term);
-
-                content += "<li>";
-
-                if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
-                    delete jsonFormSerialized.type;
-                    var escapedUrlRemove = AppParams.webroot +
-                        "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+')
-                    ;
-
-                    content += '<span class="label label-inverse">' +
-                        underscore.escape(types[terms[termPos].term]) +
-                        " (" + underscore.escape(terms[termPos].count) + ")" +
-                        ' <a href="' + escapedUrlRemove + '" data-name="type" ' +
-                        'data-value=""><i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>' +
-                        "</span>";
-                } else {
-                    var escapedUrl = AppParams.webroot + "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
-
-                    content += '<a href="' + escapedUrl + '" data-name="type" ' +
-                        'data-value="' + underscore.escape(terms[termPos].term) + '">' +
-                        underscore.escape(types[terms[termPos].term]) +
-                        "</a> (" + underscore.escape(terms[termPos].count) + ")";
-                }
-
-                content += "</li>";
+            for (pos = 0, termLength = terms.length; termLength > pos; pos = pos + 1) {
+                content += getTermItem(jsonFormSerialized, "type", terms, pos, types, currentQParams);
             }
 
             return content;
         };
 
         exports.termListHtmlElements = function (
-            termName,
+            name,
             terms,
             formSerialized,
-            currentQueryStringParams,
-            translationObject
-            ) {
-            var jsonFormSerialized = exports.parseQueryString(formSerialized);
-            var content = "";
+            currentQParams,
+            translationObj
+        ) {
+            var jsonFormSerialized,
+                content = "",
+                pos,
+                termLength;
 
-            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
-                if (! terms[termPos].term) {
-                    continue;
+            jsonFormSerialized = exports.parseQueryString(formSerialized);
+
+            for (pos = 0, termLength = terms.length; termLength > pos; pos = pos + 1) {
+                if (terms[pos].term) {
+                    content += getTermItem(jsonFormSerialized, name, terms, pos, translationObj, currentQParams);
                 }
-
-                jsonFormSerialized[termName] = underscore.escape(terms[termPos].term);
-
-                var escapedUrl = AppParams.webroot + "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
-
-                content += "<li>";
-
-                var value = terms[termPos].term;
-
-                if (translationObject !== undefined && translationObject[value] !== undefined) {
-                    value = translationObject[value];
-                }
-
-                if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
-                    delete jsonFormSerialized[termName];
-                    var escapedUrlRemove = AppParams.webroot +
-                        "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+')
-                    ;
-
-                    content += '<span class="label label-inverse">' +
-                        underscore.escape(value) +
-                        " (" + underscore.escape(terms[termPos].count) + ')' +
-                        ' <a href="' + escapedUrlRemove + '" data-name="' +
-                        underscore.escape(termName) + '" ' +
-                        'data-value=""><i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>' +
-                        '</span>';
-                } else {
-                    content += '<a href="' + escapedUrl + '" data-name="' +
-                        underscore.escape(termName) + '" ' +
-                        'data-value="' + underscore.escape(terms[termPos].term) + '">' +
-                        underscore.escape(value) +
-                        "</a> (" + underscore.escape(terms[termPos].count) + ")";
-                }
-
-                content += "</li>";
             }
 
             return content;
         };
 
         exports.termListHtmlElementsBool = function (
-            termName,
+            name,
             terms,
             formSerialized,
-            currentQueryStringParams,
+            currentQParams,
             value
-            ) {
-            var jsonFormSerialized = exports.parseQueryString(formSerialized);
-            var content = "";
+        ) {
+            var jsonFormSerialized,
+                content = "",
+                pos,
+                termLength,
+                escapedUrl,
+                escapedUrlRemove;
 
-            for (var termPos = 0, termLength = terms.length; termLength > termPos; termPos = termPos + 1) {
-                jsonFormSerialized[termName] = "1";
+            jsonFormSerialized = exports.parseQueryString(formSerialized);
 
-                var escapedUrl = AppParams.webroot + "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+            for (pos = 0, termLength = terms.length; termLength > pos; pos = pos + 1) {
+                jsonFormSerialized[name] = "1";
 
-                if (terms[termPos].term !== "T") {
-                    continue;
+                escapedUrl = AppParams.webroot + "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+
+                if (terms[pos].term === "T") {
+                    content += "<li>";
+
+                    if (underscore.isEqual(currentQParams, jsonFormSerialized)) {
+                        delete jsonFormSerialized[name];
+                        escapedUrlRemove = AppParams.webroot +
+                            "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+');
+
+                        content += '<span class="label label-inverse">' +
+                            underscore.escape(value) +
+                            " (" + underscore.escape(terms[pos].count) + ')' +
+                            ' <a href="' + escapedUrlRemove + '" data-name="' +
+                            underscore.escape(name) + '" data-value="">' +
+                            '<i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>' +
+                            '</span>';
+                    } else {
+                        content += '<a href="' + escapedUrl + '" data-name="' +
+                            underscore.escape(name) + '" ' +
+                            'data-value="1">' +
+                            underscore.escape(value) +
+                            "</a> (" + underscore.escape(terms[pos].count) + ")";
+                    }
+
+                    content += "</li>";
                 }
-
-                content += "<li>";
-
-                if (underscore.isEqual(currentQueryStringParams, jsonFormSerialized)) {
-                    delete jsonFormSerialized[termName];
-                    var escapedUrlRemove = AppParams.webroot +
-                        "/search?" + $.param(jsonFormSerialized).replace(/%2B/g, '+')
-                        ;
-
-                    content += '<span class="label label-inverse">' +
-                        underscore.escape(value) +
-                        " (" + underscore.escape(terms[termPos].count) + ')' +
-                        ' <a href="' + escapedUrlRemove + '" data-name="' +
-                        underscore.escape(termName) + '" ' +
-                        'data-value=""><i class="icon-remove icon-white"></i><span class="hidden"> remover</span></a>' +
-                        '</span>';
-                } else {
-                    content += '<a href="' + escapedUrl + '" data-name="' +
-                        underscore.escape(termName) + '" ' +
-                        'data-value="1">' +
-                        underscore.escape(value) +
-                        "</a> (" + underscore.escape(terms[termPos].count) + ")";
-                }
-
-                content += "</li>";
             }
 
             return content;
         };
 
         return exports;
-    }
-);
+    });
