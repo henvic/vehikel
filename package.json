@@ -23,7 +23,7 @@
     "dependencies": {
         "grunt-recess" : ">= 0.3.5",
         "node-gearman" : ">= 0.2.2",
-        "grunt-contrib-jshint" : ">= 0.4.0"
+        "grunt-jslint" : ">= 1.0.0"
     },
     "devDependencies": {
         "qunit": ">= 0.5.16",

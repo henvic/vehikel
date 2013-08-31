@@ -1,22 +1,12 @@
-/*jshint indent:4 */
+/*global module */
+
 module.exports = function (grunt) {
     "use strict";
     // Project configuration.
     grunt.initConfig({
         pkg: "<json:package.json>",
-        lint: {
-            files: ["grunt.js",
-                "application/search/**/*.js",
-                "static/javascripts/models/**/*.js",
-                "static/javascripts/plugins/**/*.js",
-                "static/javascripts/routers/**/*.js",
-                "static/javascripts/tests/**/*.js",
-                "static/javascripts/views/**/*.js",
-                "static/javascripts/main.js"
-            ]
-        },
         watch: {
-            files: ["<config:lint.files>", "<config:recess.dist.src>"],
+            files: ["<config:recess.dist.src>"],
             tasks: "default"
         },
         recess: {
@@ -29,36 +19,29 @@ module.exports = function (grunt) {
                 }
             }
         },
-        jshint: {
-            options: {
-                curly: true,
-                eqeqeq: true,
-                immed: true,
-                latedef: true,
-                newcap: true,
-                noarg: true,
-                sub: true,
-                undef: true,
-                boss: true,
-                eqnull: true,
-                node: true,
-                strict: true,
-                plusplus: true,
-                quotmark: "double",
-                trailing: true,
-                browser: true,
-                es5: true
-            },
-            globals: {
-                exports: true
+        jslint: {
+            all: {
+                src: ["grunt.js",
+                    "application/search/**/*.js",
+                    "static/javascripts/models/**/*.js",
+                    "static/javascripts/plugins/**/*.js",
+                    "static/javascripts/routers/**/*.js",
+                    "static/javascripts/tests/**/*.js",
+                    "static/javascripts/views/**/*.js",
+                    "static/javascripts/main.js"
+                    ],
+                options: {
+                    shebang: true
+                }
             }
         }
     });
 
     // Default task.
-    grunt.registerTask("default", ["jshint", "recess"]);
+    grunt.registerTask("default", ["jslint", "recess"]);
+    grunt.registerTask("lint", ["jslint"]);
 
-    grunt.loadNpmTasks("grunt-contrib-jshint");
+    grunt.loadNpmTasks("grunt-jslint");
     grunt.loadNpmTasks("grunt-recess");
 
 };
