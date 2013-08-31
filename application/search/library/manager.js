@@ -1,7 +1,7 @@
 /*jslint node: true, nomen: true */
 
 module.exports = function (childProcess, gearman) {
-    "use strict";
+    'use strict';
 
     var syncUserProfileOnPostsByUserId,
         syncedCallback;
@@ -12,13 +12,13 @@ module.exports = function (childProcess, gearman) {
             cmd;
 
         if (isNaN(filteredId)) {
-            syncedCallback({error: true, message: "User ID received is not a number."});
+            syncedCallback({error: true, message: 'User ID received is not a number.'});
             return;
         }
 
-        cmdParams = "--controller search --action sync-user-profile-on-posts --uid " + filteredId;
+        cmdParams = '--controller search --action sync-user-profile-on-posts --uid ' + filteredId;
 
-        cmd = "php " + __dirname + "/../../../bin/services " + cmdParams;
+        cmd = 'php ' + __dirname + '/../../../bin/services ' + cmdParams;
 
         childProcess.exec(cmd, function (error, stdout, stderr) {
             if (error === null) {
@@ -33,17 +33,17 @@ module.exports = function (childProcess, gearman) {
     syncedCallback = function (result, worker) {
         if (result.error) {
             worker.error();
-            console.error(result.message + "\n");
+            console.error(result.message + '\n');
             return;
         }
 
         worker.end();
-        console.info(result.message + "\n");
+        console.info(result.message + '\n');
     };
 
     exports.setUpSyncUserProfileOnPostsFromUserWorker = function () {
-        gearman.registerWorker("syncUserProfileOnPosts", function (payload, worker) {
-            var uid = payload.toString("utf-8");
+        gearman.registerWorker('syncUserProfileOnPosts', function (payload, worker) {
+            var uid = payload.toString('utf-8');
 
             syncUserProfileOnPostsByUserId(uid, syncedCallback, worker);
 
