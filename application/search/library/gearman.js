@@ -1,5 +1,4 @@
 /*jslint node: true */
-/*global require */
 
 module.exports = function (Gearman) {
     "use strict";
@@ -14,7 +13,7 @@ module.exports = function (Gearman) {
             console.info("Connected to Gearman!\n");
         });
 
-        gearman.on("idle", function (s) {
+        gearman.on("idle", function () {
             console.info("No jobs, resting!\n");
         });
 
