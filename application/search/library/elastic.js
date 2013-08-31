@@ -1,21 +1,30 @@
 /*jslint node: true */
-/*global require */
 
 module.exports = function (util, events, http, settings) {
     "use strict";
 
-    var setFilters = function (query, filter, filterList) {
-        var filterLength = filterList.length;
+    var setFilters,
+        getFilterString,
+        getFilterTypes,
+        search;
 
-        for (var pos = 0; pos < filterLength; pos = pos + 1) {
-            var field = filterList[pos].field;
-            var fieldName = filterList[pos].name;
+    setFilters = function (query, filter, filterList) {
+        var filterLength = filterList.length,
+            field,
+            fieldName,
+            fieldValue,
+            thisFilter,
+            pos;
+
+        for (pos = 0; pos < filterLength; pos = pos + 1) {
+            field = filterList[pos].field;
+            fieldName = filterList[pos].name;
 
             if (query[fieldName] !== undefined) {
-                var fieldValue = getFilterString(query[fieldName]);
+                fieldValue = getFilterString(query[fieldName]);
 
                 if (fieldValue !== undefined) {
-                    var thisFilter = {};
+                    thisFilter = {};
                     thisFilter.term = {};
                     thisFilter.term[field] = fieldValue;
                     filter.and.push(thisFilter);
@@ -24,7 +33,7 @@ module.exports = function (util, events, http, settings) {
         }
     };
 
-    var getFilterString = function (input) {
+    getFilterString = function (input) {
         var value;
 
         if (typeof input === "string") {
@@ -34,14 +43,15 @@ module.exports = function (util, events, http, settings) {
         return value;
     };
 
-    var getFilterTypes = function (input) {
-        var type = [];
+    getFilterTypes = function (input) {
+        var type = [],
+            isArrayOfStrings;
 
         if (input !== undefined) {
             if (typeof input === "string") {
                 type.push(input);
             } else if (Array.isArray(input)) {
-                var isArrayOfStrings = input.every(function (element) {
+                isArrayOfStrings = input.every(function (element) {
                     return (typeof element === "string");
                 });
 
@@ -54,28 +64,46 @@ module.exports = function (util, events, http, settings) {
         return type;
     };
 
-    var search = function () {
+    search = function () {
         events.EventEmitter.call(this);
     };
 
     util.inherits(search, events.EventEmitter);
 
     search.prototype.query = function (query) {
-        var that = this;
+        var that = this,
+            filter,
+            highlight,
+            requestData,
+            q,
+            qSuggestion,
+            priceMin,
+            priceMax,
+            filterPrice,
+            filterTypesList,
+            filterTypes,
+            priceSort,
+            qSuggestionEscaped,
+            sendBuffer,
+            from,
+            size,
+            postRequest,
+            buffer,
+            req;
 
-        var filter = {
+        filter = {
             "and" : [
             ]
         };
 
-        var highlight = {
+        highlight = {
             "fields" : {
                 "title" : {}
             },
             "encoder" : "html"
         };
 
-        var requestData = {
+        requestData = {
             "query" : {
                 "filtered" : {
                     query : {}
@@ -84,8 +112,8 @@ module.exports = function (util, events, http, settings) {
             "highlight" : highlight
         };
 
-        var q = "";
-        var qSuggestion = "";
+        q = "";
+        qSuggestion = "";
 
         if (query.q !== undefined && typeof query.q === "string" && query.q !== "") {
             if (query.suggestion !== undefined) {
@@ -105,38 +133,35 @@ module.exports = function (util, events, http, settings) {
             "default_operator" : "AND"
         };
 
-        var priceMin;
-        var priceMax;
-
         if (query["price-min"] !== undefined && typeof query["price-min"] === "string") {
-            priceMin = query["price-min"].replace(/[^\d]/g, "");
+            priceMin = query["price-min"].match(/[\d]/g).join("");
             priceMin = parseInt(priceMin, 10);
         }
 
         if (query["price-max"] !== undefined && typeof query["price-max"] === "string") {
-            priceMax = parseInt(query["price-max"].replace(/[^\d]/g, ""), 10);
+            priceMax = parseInt(query["price-max"].match(/[\d]/g).join(""), 10);
             priceMax = parseInt(priceMax, 10);
         }
 
-        if (! isNaN(priceMin) || ! isNaN(priceMax)) {
-            var filterPrice = {};
+        if (!isNaN(priceMin) || !isNaN(priceMax)) {
+            filterPrice = {};
             filterPrice.numeric_range = {};
             filterPrice.numeric_range.price = {};
-            if (! isNaN(priceMin)) {
+            if (!isNaN(priceMin)) {
                 filterPrice.numeric_range.price.from = priceMin;
             }
 
-            if (! isNaN(priceMax)) {
+            if (!isNaN(priceMax)) {
                 filterPrice.numeric_range.price.to = priceMax;
             }
 
             filter.and.push(filterPrice);
         }
 
-        var filterTypesList = getFilterTypes(query.type);
+        filterTypesList = getFilterTypes(query.type);
 
         if (filterTypesList.length !== 0) {
-            var filterTypes = {
+            filterTypes = {
                 "terms" : {
                     "type" : filterTypesList
                 }
@@ -194,8 +219,8 @@ module.exports = function (util, events, http, settings) {
                     field : "handicapped"
                 },
                 {
-                name : "collection",
-                field : "collection"
+                    name : "collection",
+                    field : "collection"
                 }
             ]
         );
@@ -206,8 +231,6 @@ module.exports = function (util, events, http, settings) {
 
         if (query.sort !== undefined) {
             if (query.sort === "price-min" || query.sort === "price-max") {
-                var priceSort;
-
                 if (query.sort === "price-min") {
                     priceSort = "asc";
                 } else {
@@ -238,9 +261,9 @@ module.exports = function (util, events, http, settings) {
 
         if (query.suggestion !== undefined) {
             // see http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
-            var qSuggestionEscaped = qSuggestion.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+            qSuggestionEscaped = qSuggestion.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
             requestData.facets = {
-                "title_suggestions":{
+                "title_suggestions": {
                     "terms" : {
                         "field" : "title.suggestions",
                         "regex" : "^" + qSuggestionEscaped.toLowerCase() + ".*",
@@ -271,7 +294,7 @@ module.exports = function (util, events, http, settings) {
                 "year": {
                     "terms" : {
                         "field" : "year",
-                            "size" : 30
+                        "size" : 30
                     }
                 },
                 "where" : {
@@ -332,22 +355,21 @@ module.exports = function (util, events, http, settings) {
             ];
         }
 
-        var sendBuffer = JSON.stringify(requestData);
-
-        var from = 0;
-        var size = 10;
+        sendBuffer = JSON.stringify(requestData);
+        from = 0;
+        size = 10;
 
         if (query.facets !== undefined || query.suggestion !== undefined) {
             size = 0;
-        } else if (query.size !== undefined && ! isNaN(query.size)) {
+        } else if (query.size !== undefined && !isNaN(query.size)) {
             size = parseInt(query.size, 10);
         }
 
-        if (query.from !== undefined && ! isNaN(query.from)) {
+        if (query.from !== undefined && !isNaN(query.from)) {
             from = parseInt(query.from, 10) - 1;
         }
 
-        var postRequest = {
+        postRequest = {
             hostname: settings.elastic.hostname,
             path: "/posts/post/_search?size=" + encodeURIComponent(size) + "&from=" + encodeURIComponent(from),
             port: settings.elastic.port,
@@ -357,14 +379,14 @@ module.exports = function (util, events, http, settings) {
             }
         };
 
-        var buffer = "";
+        buffer = "";
 
-        var req = http.request(postRequest, function (res) {
+        req = http.request(postRequest, function (res) {
             res.setEncoding('utf8');
             res.on("data", function (data) {
                 buffer += data;
             });
-            res.on("end", function() {
+            res.on("end", function () {
                 if (res.statusCode === 200) {
                     var searchResponse;
 
@@ -389,7 +411,7 @@ module.exports = function (util, events, http, settings) {
                 }
             });
         });
-        req.on("error", function (error) {
+        req.on("error", function () {
             that.emit("failure", {
                 error: true,
                 errorCode: "requestError"
