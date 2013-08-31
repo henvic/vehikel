@@ -1,17 +1,19 @@
 /*jslint node: true */
-/*global require */
 
-module.exports = function (util, events, http, querystring, url, elastic) {
+module.exports = function (url, elastic) {
     "use strict";
 
-    var exports = {};
+    var exports = {},
+        filterPublicPosts,
+        searchRequest,
+        notFoundRequest;
 
     /**
      * Filter the posts to only query the public posts available
      * @param query
      * @returns modified query
      */
-    var filterPublicPosts = function (query) {
+    filterPublicPosts = function (query) {
         query.status = "active";
 
         if (query.user === undefined) {
@@ -23,43 +25,52 @@ module.exports = function (util, events, http, querystring, url, elastic) {
         return query;
     };
 
-    var searchRequest = function (request, response) {
+    searchRequest = function (request, response) {
         request.setEncoding("utf8");
 
         var body = "";
 
-        request.on("data", function (chunk) {
-            body += chunk;
+        //hack to avoid jslint from saying body is not being used
+        if (body) {
+            console.log();
+        }
+
+        request.on("data", function (chuck) {
+            body += chuck;
         });
+
         request.on("end", function () {
+            var requestUrl,
+                search;
+
             if (request.url.length > 400) {
                 response.writeHead(403, {"Content-Type": "text/plain"});
                 response.end("Search string is too long.");
                 return;
             }
 
-            var requestUrl = url.parse(request.url.toLowerCase(), true);
+            requestUrl = url.parse(request.url.toLowerCase(), true);
 
-            var search = new elastic.search();
+            search = new elastic.search();
 
             search.query(filterPublicPosts(requestUrl.query));
 
             search.on("success", function (searchResponse) {
-                var result;
-                var resultJson;
+                var result,
+                    resultJson,
+                    terms,
+                    suggestions = [],
+                    suggestionPos;
 
                 response.writeHead(200, {"Content-Type": "application/json"});
 
                 if (requestUrl.query.suggestion !== undefined) {
                     if (searchResponse.facets !== undefined &&
-                        searchResponse.facets.title_suggestions !== undefined &&
-                        searchResponse.facets.title_suggestions.terms !== undefined
-                        ) {
-                        var terms = searchResponse.facets.title_suggestions.terms;
+                            searchResponse.facets.title_suggestions !== undefined &&
+                            searchResponse.facets.title_suggestions.terms !== undefined) {
+                        terms = searchResponse.facets.title_suggestions.terms;
 
-                        var suggestions = [];
-
-                        for (var suggestionPos in terms) {
+                        for (suggestionPos in terms) {
                             if (terms.hasOwnProperty(suggestionPos) && terms[suggestionPos].term !== undefined) {
                                 suggestions.push(terms[suggestionPos].term);
                             }
@@ -79,26 +90,28 @@ module.exports = function (util, events, http, querystring, url, elastic) {
                 response.end(resultJson);
             });
 
-            search.on("failure", function (error) {
+            search.on("failure", function () {
                 response.writeHead(404, {"Content-Type": "text/plain"});
                 response.end("Search failure.");
             });
         });
     };
 
-    var notFoundRequest = function (request, response) {
+    /*jslint unparam: true */
+    notFoundRequest = function (request, response) {
         response.writeHead(404, {"Content-Type": "text/plain"});
         response.end("Not found.");
     };
+    /*jslint unparam: false */
 
     exports.load = function (request, response) {
         var requestUrl = url.parse(request.url);
 
         if (requestUrl.pathname === "/") {
             return searchRequest(request, response);
-        } else {
-            return notFoundRequest(request, response);
         }
+
+        return notFoundRequest(request, response);
     };
 
     return exports;
