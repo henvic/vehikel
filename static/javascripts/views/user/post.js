@@ -1,9 +1,15 @@
 /*global define, require, Galleria */
-/*jshint indent:4 */
+/*jslint browser: true */
 
-define(['AppParams', 'jquery', 'galleria'],
-function (AppParams, $) {
+define(['AppParams', 'jquery', 'galleria'], function (AppParams, $) {
     "use strict";
+
+    var $postProductMainInfo = $("#post-product-main-info"),
+        $postInfoTabsLinks = $('#post-info-tabs a'),
+        $postContact = $('#post-contact'),
+        $postPicturesThumbnails = $("#post-pictures-thumbnails"),
+        $postPicturesCarousel = $("#post-pictures-carousel"),
+        updateGalleria;
 
     Galleria.loadTheme(AppParams.cdn + 'vendor/galleria-1.2.9/src/themes/classic/galleria.classic.js');
 
@@ -15,12 +21,12 @@ function (AppParams, $) {
     Galleria.on("image", function (e) {
         var gallery = this;
 
-        $(e.imageTarget).unbind("click").click(function() {
+        $(e.imageTarget).unbind("click").click(function () {
             gallery.openLightbox();
         });
     });
 
-    var updateGalleria = function () {
+    updateGalleria = function () {
         Galleria.run("#galleria", {
             dataSource: AppParams.postGalleryImages
         });
@@ -29,12 +35,8 @@ function (AppParams, $) {
     updateGalleria();
 
     if (AppParams.accountEditable === true) {
-        require(["views/user/post-manager"], function () {
-        });
+        require(["views/user/post-manager"]);
     }
-
-    var $postProductMainInfo = $("#post-product-main-info");
-    var $postInfoTabsLinks = $('#post-info-tabs a');
 
     $postInfoTabsLinks.click(function (e) {
         e.preventDefault();
@@ -47,14 +49,12 @@ function (AppParams, $) {
         }
     });
 
-    var $postContact = $('#post-contact');
-
     $postContact.on("submit", function (e) {
-        var target = $(e.target);
+        var target = $(e.target),
+            $submit = $('input[type="submit"]', $postContact);
+
         if (target.is('form')) {
             e.preventDefault();
-
-            var $submit = $('input[type="submit"]', $postContact);
 
             $submit.data('loading-text', 'Enviando...').button('loading');
 
@@ -64,7 +64,7 @@ function (AppParams, $) {
                 success: function (result) {
                     $postContact.html(result);
                 },
-                complete: function (result) {
+                complete: function () {
                     $submit.button('reset');
                 }
             });
@@ -83,18 +83,15 @@ function (AppParams, $) {
         }
     });
 
-    var $postPicturesThumbnails = $("#post-pictures-thumbnails");
-    var $postPicturesCarousel = $("#post-pictures-carousel");
-
     $postPicturesCarousel.carousel({
         interval: 0
     });
 
     $postPicturesThumbnails.on("click", function (e) {
-        var $target = $(e.target);
-        var $closestLi = $target.closest("li");
+        var $target = $(e.target),
+            $closestLi = $target.closest("li");
 
-        if ($closestLi.hasClass("post-picture") && ! $target.hasClass("thumbnail-remove-picture")) {
+        if ($closestLi.hasClass("post-picture") && !$target.hasClass("thumbnail-remove-picture")) {
             $postPicturesCarousel.carousel($closestLi.index());
         }
     });
@@ -104,7 +101,7 @@ function (AppParams, $) {
     });
 
     // don't let a non-editor user change the checked state of the equipment list
-    if (! AppParams.accountEditable) {
+    if (!AppParams.accountEditable) {
         $postProductMainInfo.on("click", '.post-equipments-list [type="checkbox"]', function (e) {
             e.preventDefault();
         });
