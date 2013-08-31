@@ -1,7 +1,7 @@
 /*jslint node: true */
 
 module.exports = function (url, elastic) {
-    "use strict";
+    'use strict';
 
     var exports = {},
         filterPublicPosts,
@@ -14,38 +14,38 @@ module.exports = function (url, elastic) {
      * @returns modified query
      */
     filterPublicPosts = function (query) {
-        query.status = "active";
+        query.status = 'active';
 
         if (query.user === undefined) {
             query.user = {};
         }
 
-        query.user.active = "1";
+        query.user.active = '1';
 
         return query;
     };
 
     searchRequest = function (request, response) {
-        request.setEncoding("utf8");
+        request.setEncoding('utf8');
 
-        var body = "";
+        var body = '';
 
         //hack to avoid jslint from saying body is not being used
         if (body) {
             console.log();
         }
 
-        request.on("data", function (chuck) {
+        request.on('data', function (chuck) {
             body += chuck;
         });
 
-        request.on("end", function () {
+        request.on('end', function () {
             var requestUrl,
                 search;
 
             if (request.url.length > 400) {
-                response.writeHead(403, {"Content-Type": "text/plain"});
-                response.end("Search string is too long.");
+                response.writeHead(403, {'Content-Type': 'text/plain'});
+                response.end('Search string is too long.');
                 return;
             }
 
@@ -55,14 +55,14 @@ module.exports = function (url, elastic) {
 
             search.query(filterPublicPosts(requestUrl.query));
 
-            search.on("success", function (searchResponse) {
+            search.on('success', function (searchResponse) {
                 var result,
                     resultJson,
                     terms,
                     suggestions = [],
                     suggestionPos;
 
-                response.writeHead(200, {"Content-Type": "application/json"});
+                response.writeHead(200, {'Content-Type': 'application/json'});
 
                 if (requestUrl.query.suggestion !== undefined) {
                     if (searchResponse.facets !== undefined &&
@@ -78,8 +78,8 @@ module.exports = function (url, elastic) {
 
                         result = suggestions;
                     } else {
-                        response.writeHead(404, {"Content-Type": "text/plain"});
-                        response.end("Missing data for the suggestions response.");
+                        response.writeHead(404, {'Content-Type': 'text/plain'});
+                        response.end('Missing data for the suggestions response.');
                     }
                 } else {
                     result = searchResponse;
@@ -90,24 +90,24 @@ module.exports = function (url, elastic) {
                 response.end(resultJson);
             });
 
-            search.on("failure", function () {
-                response.writeHead(404, {"Content-Type": "text/plain"});
-                response.end("Search failure.");
+            search.on('failure', function () {
+                response.writeHead(404, {'Content-Type': 'text/plain'});
+                response.end('Search failure.');
             });
         });
     };
 
     /*jslint unparam: true */
     notFoundRequest = function (request, response) {
-        response.writeHead(404, {"Content-Type": "text/plain"});
-        response.end("Not found.");
+        response.writeHead(404, {'Content-Type': 'text/plain'});
+        response.end('Not found.');
     };
     /*jslint unparam: false */
 
     exports.load = function (request, response) {
         var requestUrl = url.parse(request.url);
 
-        if (requestUrl.pathname === "/") {
+        if (requestUrl.pathname === '/') {
             return searchRequest(request, response);
         }
 
