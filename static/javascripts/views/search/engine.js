@@ -1,5 +1,5 @@
 /*global define, require */
-/*jshint indent:4 */
+/*jslint browser: true */
 
 define(
     [
@@ -13,29 +13,36 @@ define(
     function (AppParams, $, underscore, searchModel, resultsTemplate, facetsTemplate) {
         "use strict";
 
-        var $body = $("body");
-        var $searchPostsForm = $("#search-posts-form");
-        var $searchText = $("#search-text");
-        var $searchGo = $("#search-go");
-        var $searchTypesNames = $('[name="type"]', $searchPostsForm);
-        var $searchResults = $("#search-results");
-        var $searchPriceMin = $("#search-price-min");
-        var $searchPriceMax = $("#search-price-max");
-        var $searchMake = $("#search-make");
-        var $searchModel = $("#search-model");
-        var $searchYear = $("#search-year");
-        var $searchWhere = $("#search-where");
-        var $searchUser = $("#search-user");
-        var $searchTransmission = $("#search-transmission");
-        var $searchTraction = $("#search-traction");
-        var $searchHandicapped = $("#search-handicapped");
-        var $searchCollection = $("#search-collection");
-        var $searchArmor = $("#search-armor");
-        var $facetsToggle = $("#facets-toggle");
-
-        var currentPage;
-        var currentSort;
-        var pages;
+        var $body = $("body"),
+            $searchPostsForm = $("#search-posts-form"),
+            $searchText = $("#search-text"),
+            $searchGo = $("#search-go"),
+            $searchTypesNames = $('[name="type"]', $searchPostsForm),
+            $searchResults = $("#search-results"),
+            $searchPriceMin = $("#search-price-min"),
+            $searchPriceMax = $("#search-price-max"),
+            $searchMake = $("#search-make"),
+            $searchModel = $("#search-model"),
+            $searchYear = $("#search-year"),
+            $searchWhere = $("#search-where"),
+            $searchUser = $("#search-user"),
+            $searchTransmission = $("#search-transmission"),
+            $searchTraction = $("#search-traction"),
+            $searchHandicapped = $("#search-handicapped"),
+            $searchCollection = $("#search-collection"),
+            $searchArmor = $("#search-armor"),
+            $facetsToggle = $("#facets-toggle"),
+            currentPage,
+            currentSort,
+            pages,
+            changeViewStyle,
+            removeFilters,
+            search,
+            compiledResults = underscore.template(resultsTemplate),
+            compiledFacets = underscore.template(facetsTemplate),
+            changeSearchTermByUrl,
+            changeSearchTermsByUrlParams,
+            urlParams;
 
         $(document.documentElement).on("keyup", function (e) {
             if (e.target.nodeName.toLowerCase() !== "body") {
@@ -55,22 +62,23 @@ define(
         });
 
         $searchResults.on("click", ".sortable a", function (e) {
-            var target = e.currentTarget;
-            e.preventDefault();
+            var target = e.currentTarget,
+                sortBy = target.getAttribute("data-sort");
 
-            var sortBy = target.getAttribute("data-sort");
+            e.preventDefault();
             search({sort: sortBy});
         });
 
         $searchResults.on("click", ".pagination a", function (e) {
-            var target = e.currentTarget;
+            var target = e.currentTarget,
+                page = target.getAttribute("data-page"),
+                sort = target.getAttribute("data-sort");
+
             e.preventDefault();
-            var page = target.getAttribute("data-page");
-            var sort = target.getAttribute("data-sort");
             search({page: page, sort: sort, scroll: true});
         });
 
-        var changeViewStyle = function (style) {
+        changeViewStyle = function (style) {
             if (style === "table") {
                 $($(".results-thumbnail", $searchResults)[0]).addClass("none");
             } else {
@@ -97,10 +105,10 @@ define(
             e.preventDefault();
         });
 
-        var removeFilters = function () {
-            $searchPostsForm.find(':input').each(function (e) {
-                var type = this.type;
-                var tag = this.tagName.toLowerCase();
+        removeFilters = function () {
+            $searchPostsForm.find(':input').each(function () {
+                var type = this.type,
+                    tag = this.tagName.toLowerCase();
 
                 if (this.name !== "q") {
                     if (type === 'text' || type === 'password' || tag === 'textarea') {
@@ -117,8 +125,18 @@ define(
             $('[name="persist-username"][value=""]', $searchPostsForm).prop("checked", true);
         };
 
-        var search = function (data) {
-            var persistUsernameValue = $("[name=persist-username]:checked").val();
+        search = function (data) {
+            var persistUsernameValue,
+                sort,
+                page,
+                scroll,
+                formSerialized,
+                size,
+                from,
+                to,
+                total;
+
+            persistUsernameValue = $("[name=persist-username]:checked").val();
 
             if (persistUsernameValue) {
                 $searchUser.val(persistUsernameValue);
@@ -128,9 +146,9 @@ define(
                 data = {};
             }
 
-            var sort = data.sort || "";
-            var page = data.page || 1;
-            var scroll = data.scroll || false;
+            sort = data.sort || "";
+            page = data.page || 1;
+            scroll = data.scroll || false;
 
             if (scroll) {
                 $body.animate({
@@ -138,16 +156,14 @@ define(
                 }, 500);
             }
 
-            var formSerialized = $(':input', $searchPostsForm).filter(
+            formSerialized = $(':input', $searchPostsForm).filter(
                 function () {
                     return $(this).val();
                 }
             ).serialize();
 
-            var size = 20;
-            var from = 1;
-            var to;
-            var total;
+            size = 20;
+            from = 1;
 
             if (page !== undefined) {
 
@@ -167,6 +183,19 @@ define(
                 url: AppParams.webroot + "/search-engine?size=" + encodeURIComponent(size) + "&from=" + encodeURIComponent(from) + "&sort=" + encodeURIComponent(sort),
                 type: "GET",
                 success: function (result) {
+                    var viewStyle,
+                        searchParams,
+                        oldSearchParams,
+                        searchParamsEqual,
+                        address,
+                        part,
+                        searchParamsTotal,
+                        facetsHtml,
+                        getFirstPictureAddress,
+                        $priceInputs,
+                        $priceMinInput,
+                        $priceMaxInput;
+
                     total = result.hits.total;
                     to = from + size - 1;
 
@@ -175,11 +204,6 @@ define(
                     if (to > total) {
                         to = total;
                     }
-
-                    var compiledResults = underscore.template(resultsTemplate);
-                    var compiledFacets = underscore.template(facetsTemplate);
-
-                    var viewStyle;
 
                     if (AppParams.postsViewStyle === "table") {
                         viewStyle = "table";
@@ -190,7 +214,7 @@ define(
                     currentPage = page;
                     currentSort = sort;
 
-                    var searchParams = searchModel.parseQueryString(formSerialized);
+                    searchParams = searchModel.parseQueryString(formSerialized);
 
                     if (currentPage !== 1) {
                         searchParams.page = currentPage;
@@ -201,22 +225,22 @@ define(
                     }
 
                     if (searchParams["price-min"]) {
-                        searchParams["price-min"] = decodeURIComponent(searchParams["price-min"]).replace(/[^0-9]/g, '');
+                        searchParams["price-min"] = decodeURIComponent(searchParams["price-min"]).match(/[\d]/g).join("");
                     }
 
                     if (searchParams["price-max"]) {
-                        searchParams["price-max"] = decodeURIComponent(searchParams["price-max"]).replace(/[^0-9]/g, '');
+                        searchParams["price-max"] = decodeURIComponent(searchParams["price-max"]).match(/[\d]/g).join("");
                     }
 
-                    var oldSearchParams = searchModel.parseLocationQueryString(window);
+                    oldSearchParams = searchModel.parseLocationQueryString(window);
 
-                    var searchParamsEqual = underscore.isEqual(searchParams, oldSearchParams);
+                    searchParamsEqual = underscore.isEqual(searchParams, oldSearchParams);
 
-                    if ((window.history && window.history.pushState && ! searchParamsEqual) ||
+                    if ((window.history && window.history.pushState && !searchParamsEqual) ||
                             window.location.pathname !== AppParams.webroot + "/search") {
-                        var address = AppParams.webroot + "/search";
+                        address = AppParams.webroot + "/search";
 
-                        var part = $.param(searchParams);
+                        part = $.param(searchParams);
 
                         if (part === "=") {
                             part = "q=";
@@ -227,9 +251,9 @@ define(
                         window.history.pushState(null, null, address);
                     }
 
-                    var searchParamsTotal = underscore.size(searchParams);
+                    searchParamsTotal = underscore.size(searchParams);
 
-                    var facetsHtml = compiledFacets(
+                    facetsHtml = compiledFacets(
                         {
                             pageLink : searchModel.pageLink,
                             formatMoney : searchModel.formatMoney,
@@ -245,8 +269,9 @@ define(
                         }
                     );
 
-                    var getFirstPictureAddress = function (pictures, cropOptions) {
-                        var picture;
+                    getFirstPictureAddress = function (pictures, cropOptions) {
+                        var picture,
+                            cropSubPath;
                         if (pictures !== undefined && pictures !== null && pictures[0] !== undefined) {
                             picture = pictures[0];
                         } else {
@@ -255,11 +280,10 @@ define(
                             };
                         }
 
-                        var cropSubPath = "";
+                        cropSubPath = "";
                         if (picture.crop_options) {
                             cropSubPath = picture.crop_options.x + "x" + picture.crop_options.y + ":" +
-                                picture.crop_options.x2 + "x" + picture.crop_options.y2 + "/"
-                            ;
+                                picture.crop_options.x2 + "x" + picture.crop_options.y2 + "/";
                         }
 
                         cropSubPath = cropSubPath + cropOptions;
@@ -291,9 +315,9 @@ define(
                         }
                     ));
 
-                    var $priceInputs = $(".price-inputs", $searchResults);
-                    var $priceMinInput = $(".price-min-input", $searchResults);
-                    var $priceMaxInput = $(".price-max-input", $searchResults);
+                    $priceInputs = $(".price-inputs", $searchResults);
+                    $priceMinInput = $(".price-min-input", $searchResults);
+                    $priceMaxInput = $(".price-max-input", $searchResults);
 
                     $priceMinInput.val(searchModel.formatMoney($searchPriceMin.val()));
                     $priceMaxInput.val(searchModel.formatMoney($searchPriceMax.val()));
@@ -305,8 +329,8 @@ define(
 
                     $priceInputs.on("keyup", function (e) {
                         if (e.keyCode === 13) {
-                            var priceMin = $priceMinInput.val().replace(/[^\d]/g, "");
-                            var priceMax = $priceMaxInput.val().replace(/[^\d]/g, "");
+                            var priceMin = $priceMinInput.val().match(/[\d]/g).join(""),
+                                priceMax = $priceMaxInput.val().match(/[\d]/g).join("");
                             $searchPriceMin.val(priceMin);
                             $searchPriceMax.val(priceMax);
                             search();
@@ -316,7 +340,7 @@ define(
             });
         };
 
-        var changeSearchTermByUrl = function (urlParams, $termObject, name) {
+        changeSearchTermByUrl = function (urlParams, $termObject, name) {
             if (urlParams[name] !== undefined) {
                 $termObject.val(decodeURIComponent(urlParams[name].replace(/\+/gi, " ")));
             } else {
@@ -324,7 +348,7 @@ define(
             }
         };
 
-        var changeSearchTermsByUrlParams = function (urlParams) {
+        changeSearchTermsByUrlParams = function (urlParams) {
             changeSearchTermByUrl(urlParams, $searchPriceMin, "price-min");
             changeSearchTermByUrl(urlParams, $searchPriceMax, "price-max");
 
@@ -344,7 +368,7 @@ define(
             changeSearchTermByUrl(urlParams, $searchArmor, "armor");
         };
 
-        var urlParams = searchModel.parseLocationQueryString();
+        urlParams = searchModel.parseLocationQueryString();
 
         changeSearchTermsByUrlParams(urlParams);
 
@@ -352,8 +376,7 @@ define(
         // otherwise, if the search is accessed without a query and not on the index page,
         // focus it, and if the page is in the index page, load the index js file
         if (window.location.pathname === "/") {
-            require(["views/index/index"], function () {
-            });
+            require(["views/index/index"]);
         } else if (urlParams.q !== undefined) {
             $searchText.val(decodeURIComponent(urlParams.q.replace(/\+/gi, " ")));
             search({page: urlParams.page || 1, sort: urlParams.sort});
@@ -361,7 +384,7 @@ define(
             $searchText.focus();
         }
 
-        window.onpopstate = function (event) {
+        window.onpopstate = function () {
             if (window.location.pathname === AppParams.webroot + "/") {
                 return;
             }
@@ -376,21 +399,19 @@ define(
             }
         };
 
-        $searchText.on("change", function (e) {
+        $searchText.on("change", function () {
             setTimeout(function () {
                 search();
             }, 200);
 
         });
-        $searchText.on("paste", function (e) {
+        $searchText.on("paste", function () {
             setTimeout(function () {
                 search();
             }, 200);
         });
 
         $searchText.on("keyup", function (e) {
-            var q = $searchText.val();
-
             //only go ahead if the keyCode is a "printable character" or erase / delete, return
             var key = e.keyCode;
             if ((key >= 48 && key <= 90) || (key >= 188 && key <= 222) || key === 8 || key === 46 || key === 13) {
@@ -403,20 +424,23 @@ define(
             search();
         });
 
-        $searchResults.on("click", ".remove-filters", function (e) {
+        $searchResults.on("click", ".remove-filters", function () {
             removeFilters();
             search();
         });
 
         $searchResults.on("click", ".search-facets a", function (e) {
-            var target = e.currentTarget;
+            var target,
+                name,
+                value,
+                $input;
 
             e.preventDefault();
 
-            var name = target.getAttribute("data-name");
-            var value = target.getAttribute("data-value");
-
-            var $input = $('[name="' + underscore.escape(name) + '"]', $searchPostsForm);
+            target = e.currentTarget;
+            name = target.getAttribute("data-name");
+            value = target.getAttribute("data-value");
+            $input = $('[name="' + underscore.escape(name) + '"]', $searchPostsForm);
 
             if (name === "price") {
                 $searchPriceMin.val(target.getAttribute("data-price-from"));
