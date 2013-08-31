@@ -2,10 +2,10 @@
 /*jslint browser: true */
 
 var config = (function () {
-    "use strict";
+    'use strict';
 
-    test("hello test", function () {
-        var oneOne = "1";
-        ok(oneOne === "1", "Passed!");
+    test('hello test', function () {
+        var oneOne = '1';
+        ok(oneOne === '1', 'Passed!');
     });
 }());
