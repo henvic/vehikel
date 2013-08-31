@@ -1,23 +1,21 @@
 /*global define, CKEDITOR */
-/*jshint indent:4 */
+/*jslint browser: true */
 
-define(['AppParams', 'jquery', 'plugins/ckeditor-config'],
-    function (AppParams, $, ckeditorConfig) {
+define(['jquery', 'plugins/ckeditor-config'],
+    function ($, ckeditorConfig) {
         "use strict";
 
-        var $postTemplateForm = $("#post-template-form");
-        var $postTemplate = $("#post_template");
+        var $postTemplateForm = $("#post-template-form"),
+            $postTemplate = $("#post_template"),
+            editor;
 
-        var editor;
-
-        CKEDITOR.on("instanceReady", function (ev) {
+        CKEDITOR.on("instanceReady", function () {
             editor = CKEDITOR.instances.post_template;
 
-            $postTemplateForm.on("submit", function (e) {
+            $postTemplateForm.on("submit", function () {
                 $postTemplate.val(editor.getData());
             });
         });
 
         CKEDITOR.replace("post_template", ckeditorConfig);
-    }
-);
+    });
