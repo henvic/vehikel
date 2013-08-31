@@ -1,30 +1,22 @@
 #!/usr/bin/env node
 
 /*jslint node: true */
-/*global require */
 
 module.exports = function () {
     "use strict";
 
-    var settings = require("./settings");
+    var settings = require("./settings"),
+        util = require("util"),
+        events = require("events"),
+        http = require("http"),
+        url = require("url"),
+        elastic = require("./library/elastic")(util, events, http, settings),
+        requests = require("./library/requests")(url, elastic),
+        server;
 
     console.info("Loading search server\nListening on port %d (%s)", settings.port, settings.env);
 
-    var util = require("util");
-
-    var events = require("events");
-
-    var http = require("http");
-
-    var querystring = require("querystring");
-
-    var url = require("url");
-
-    var elastic = require("./library/elastic")(util, events, http, settings);
-
-    var requests = require("./library/requests")(util, events, http, querystring, url, elastic);
-
-    var server = http.createServer();
+    server = http.createServer();
 
     server.listen(settings.port);
 
