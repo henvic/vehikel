@@ -1,32 +1,30 @@
 /*global define */
-/*jshint indent:4 */
+/*jslint browser: true */
 
 define(['AppParams', 'jquery'], function (AppParams, $) {
     "use strict";
 
-    var $actions = $(".posts-list .actions");
-
-    var $action = $(".posts-list .actions .action");
+    var $actions = $(".posts-list .actions"),
+        $action = $(".posts-list .actions .action");
 
     $actions.on("click", function (e) {
         e.preventDefault();
         e.stopPropagation();
     });
 
-    $action.on("click", function (e) {
-        var $this = $(this);
+    $action.on("click", function () {
+        var $this = $(this),
+            postId = this.parentNode.getAttribute("data-id"),
+            newStatus = this.getAttribute("data-status"),
+            $postThumbnail = $("#post-id-" + postId + "-thumbnail"),
+            $postTableRow = $("#post-id-" + postId + "-row"),
+            xhr;
 
         if ($this.hasClass("disabled")) {
             return;
         }
 
-        var postId = this.parentNode.getAttribute("data-id");
-        var newStatus = this.getAttribute("data-status");
-
-        var $postThumbnail = $("#post-id-" + postId + "-thumbnail");
-        var $postTableRow = $("#post-id-" + postId + "-row");
-
-        var xhr = $.ajax({
+        xhr = $.ajax({
             url: AppParams.webroot + "/" + AppParams.postUsername + "/" + postId + "/edit",
             type: 'POST',
             dataType: 'json',
