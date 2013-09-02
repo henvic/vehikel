@@ -755,10 +755,6 @@ define([
                     });
                 }, 300);
 
-                $('.clear-selection', $cropPictureModal).on('click', function () {
-                    jCropApi.release();
-                });
-
                 $('.cut', $cropPictureModal).on('click', function () {
                     var cut,
                         cutResponse;
