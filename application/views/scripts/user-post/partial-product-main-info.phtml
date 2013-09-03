@@ -142,7 +142,6 @@ if ($editable) {
 unset($productInfo);
 ?>
 </tbody></table><!-- end of .post-product-info -->
-<small class="pull-right muted"><abbr title="referência">ref</abbr>: #<?= $this->escape($post["universal_id"]); ?></small>
 <div class="post-product-info-others" id="post-product-info-others">
 <?php
 if ($post["type"] == "car" && ($post["traction"] || $editable)) {
@@ -230,4 +229,6 @@ if ($editable) {
 }
 }
 ?>
+<br />
+<small class="muted"><abbr title="referência">ref</abbr>: #<?= $this->escape($post["universal_id"]); ?></small>
 </div>
