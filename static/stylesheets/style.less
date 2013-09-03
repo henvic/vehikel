@@ -586,6 +586,7 @@ input.no-spin-button::-webkit-inner-spin-button {
             font-size: 90%;
             cursor: pointer;
             margin-top: -18px;
+            opacity: 0;
 
             .action {
                 float: left;
@@ -615,6 +616,28 @@ input.no-spin-button::-webkit-inner-spin-button {
                 margin-left: -30px;
             }
         }
+    }
+}
+
+.posts-thumbnail-view-touch {
+    .img-place .actions {
+        opacity: 1;
+    }
+}
+
+.posts-thumbnail-view-not-touch {
+    .img-place .actions {
+        opacity: 0;
+        -webkit-transition: opacity 0.3s ease-in-out;
+        -moz-transition: opacity 0.3s ease-in-out;
+        -o-transition: opacity 0.3s ease-in-out;
+    }
+
+    .img-place:hover .actions {
+        opacity: 1;
+        -webkit-transition: opacity 0.3s ease-in-out;
+        -moz-transition: opacity 0.3s ease-in-out;
+        -o-transition: opacity 0.3s ease-in-out;
     }
 }
 

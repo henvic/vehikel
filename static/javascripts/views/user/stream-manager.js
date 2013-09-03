@@ -1,11 +1,18 @@
-/*global define */
+/*global define, Modernizr */
 /*jslint browser: true */
 
 define(['AppParams', 'jquery'], function (AppParams, $) {
     'use strict';
 
-    var $actions = $('.posts-list .actions'),
+    var $postsThumbnailView = $('#posts-thumbnail-view'),
+        $actions = $('.posts-list .actions'),
         $action = $('.posts-list .actions .action');
+
+    if (Modernizr.touch) {
+        $postsThumbnailView.addClass('posts-thumbnail-view-touch');
+    } else {
+        $postsThumbnailView.addClass('posts-thumbnail-view-not-touch');
+    }
 
     $actions.on('click', function (e) {
         e.preventDefault();
