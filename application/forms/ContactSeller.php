@@ -74,7 +74,7 @@ class Ml_Form_ContactSeller extends Twitter_Bootstrap_Form_Horizontal
 
         $this->addElement('submit', 'submit', array(
             'label'    => 'Enviar proposta',
-            'class' => 'btn btn-success'
+            'class' => 'btn btn-primary'
         ));
 
         $this->addElement(Ml_Model_MagicCookies::formElement());
