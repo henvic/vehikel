@@ -219,15 +219,13 @@ if ($this->editable) {
                     <div class="tab-content">
                         <div class="tab-pane active" id="post-description">
                             <div id="post-description-text" class="post-description-text <?= ($this->editable) ? 'post-editable-description' : ''; ?>
-                             <?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? "hidden " : ""; ?>
-<?= ($this->editable) ? "post-editable" : ""; ?>">
+                              <?= ($this->editable) ? "post-editable" : ""; ?>">
                                 <?= $post["description_html_escaped"]; ?>
                             </div>
                             <?php
                             if ($this->editable) {
                                 ?>
-                                <div id="post-description-editing-area"
-                                     class="<?= ($post["status"] != Ml_Model_Posts::STATUS_STAGING) ? "hidden" : ""; ?>">
+                                <div id="post-description-editing-area" class="hidden">
                                     <textarea id="post-description-text-edit" class="post-description-text-edit"
                                               placeholder="Escreva a descrição do produto aqui"
                                         ><?= $this->escape($post["description"]); ?></textarea>
