@@ -45,7 +45,7 @@ define([
             $postDescriptionEditingArea = $('#post-description-editing-area'),
             $postDescriptionTextSave = $('#post-description-text-save'),
             $postStatus = $('#post-status'),
-            $postStatusButtons = $('button', $postStatus),
+            $postStatusActions = $('.action', $postStatus),
             $editPostButton = $('#edit-post-button'),
             updatePostItem,
             lastUpdatePostEquipmentsCall,
@@ -922,7 +922,7 @@ define([
             $('.video-form', $galleryManager).submit();
         });
 
-        $postStatusButtons.on('click', function (e) {
+        $postStatusActions.on('click', function (e) {
             var saveDescriptionBoolean;
 
             if (isOpenDescriptionEdit()) {
@@ -933,31 +933,15 @@ define([
                 }
             }
 
-            $postStatusButtons.attr('disabled', 'disabled');
-
             lastUpdateStatusCall = updatePostItem('status', e.target.getAttribute('data-status'));
 
             lastUpdateStatusCall.done(function (response) {
-                var newStateHtml = '';
+                var status = response.status;
 
-                switch (response.status) {
-                case 'staging':
-                    newStateHtml = '<span class="label label-warning">anúncio pausado</span>';
-                    break;
-                case 'active':
-                    newStateHtml = '<span class="label label-success">anúncio ativo</span>';
-                    break;
-                case 'end':
-                    newStateHtml = '<span class="label label-important">anúncio encerrado</span>';
-                    break;
+                $postStatusActions.removeClass('checked');
+                if (status === 'staging' || status === 'active' || status === 'end') {
+                    $('[data-status="' + response.status + '"]', $postStatus).addClass('checked');
                 }
-
-                $postStatus.html('<p>Anúncio modificado: ' + newStateHtml + '</p>');
-                window.location = AppParams.webroot + '/' + AppParams.postUsername + '/' + AppParams.postId;
-            });
-
-            lastUpdateStatusCall.fail(function () {
-                $postStatusButtons.removeAttr('disabled');
             });
         });
     });

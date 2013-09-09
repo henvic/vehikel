@@ -230,5 +230,12 @@ if ($editable) {
 }
 ?>
 <br />
-<small class="muted"><abbr title="referência">ref</abbr>: #<?= $this->escape($post["universal_id"]); ?></small>
+<small class="muted ref">
+    <abbr title="referência">ref</abbr>: #<?= $this->escape($post["universal_id"]); ?>
+<?php
+if ($editable) {
+    echo $this->render("user-post/post-status.phtml");
+}
+?>
+</small>
 </div>

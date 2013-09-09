@@ -1035,11 +1035,32 @@ input.no-spin-button::-webkit-inner-spin-button {
     .transition(.08s, ease-in-out);
 }
 
-.post-status {
-    padding: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    box-shadow: 1px 1px 8px #ddd;
+.ref {
+    .post-status {
+        opacity: 0;
+        .transition(1s, ease-in-out);
+
+        span {
+            text-decoration: underline;
+            cursor: pointer;
+            .rounded(3px);
+            padding: 0 4px;
+
+            &.checked {
+                text-decoration: none;
+                background: #050505;
+                color: #fafafa;
+                cursor: default;
+            }
+        }
+    }
+
+    &:hover .post-status {
+        opacity: 1;
+        .transition(0.5s, ease-in-out);
+    }
+}
+
 }
 
 ::selection {
