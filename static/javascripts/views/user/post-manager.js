@@ -46,6 +46,8 @@ define([
             $postDescriptionTextSave = $('#post-description-text-save'),
             $postStatus = $('#post-status'),
             $postStatusActions = $('.action', $postStatus),
+            $alertAdStaging = $('#alert-ad-staging'),
+            $alertAdEnd = $('#alert-ad-end'),
             $editPostButton = $('#edit-post-button'),
             $galleryManager = $('#gallery-manager'),
             updatePostItem,
@@ -942,6 +944,19 @@ define([
                 if (status === 'staging' || status === 'active' || status === 'end') {
                     $('[data-status="' + response.status + '"]', $postStatus).addClass('checked');
                 }
+
+                if (status === 'staging') {
+                    $alertAdStaging.removeClass('hidden');
+                } else {
+                    $alertAdStaging.addClass('hidden');
+                }
+
+                if (status === 'end') {
+                    $alertAdEnd.removeClass('hidden');
+                } else {
+                    $alertAdEnd.addClass('hidden');
+                }
+
             });
         });
     });

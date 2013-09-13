@@ -167,6 +167,17 @@ if ($this->editable) {
 if ($this->editable) {
     echo $this->render("user-post/product-name-editing-area.phtml");
 }
+
+if ($editable) {
+?>
+    <div id="alert-ad-staging" class="alert alert-info<?= ($post["status"] == Ml_Model_Posts::STATUS_STAGING) ? "" : " hidden" ?>">
+        Este anúncio não está ativo.
+    </div>
+    <div id="alert-ad-end" class="alert alert-info<?= ($post["status"] == Ml_Model_Posts::STATUS_END) ? "" : " hidden" ?>">
+        Este anúncio foi encerrado.
+    </div>
+<?php
+}
 ?>
                 </div><!-- end of .span10 -->
             </div><!-- end of the top bar for the user post -->
