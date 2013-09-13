@@ -256,6 +256,12 @@ if ($this->editable) {
             </div><!-- end of post-product description .row -->
 <?php
 if ($editable) {
+?>
+    <div class="btn-publish-area">
+        <button id="main-publish-ad-button" class="btn btn-primary btn-large btn-publish
+        <?= $post["status"] === Ml_Model_Posts::STATUS_ACTIVE ? " invisible" : "" ?>">Anunciar</button>
+    </div>
+<?php
 }
 ?>
         </div><!-- end of the main content area for the user-post -->

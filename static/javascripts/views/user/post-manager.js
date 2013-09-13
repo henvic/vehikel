@@ -50,6 +50,7 @@ define([
             $alertAdEnd = $('#alert-ad-end'),
             $editPostButton = $('#edit-post-button'),
             $galleryManager = $('#gallery-manager'),
+            $mainPublishAdButton = $('#main-publish-ad-button'),
             updatePostItem,
             lastUpdatePostEquipmentsCall,
             updatePostEquipments,
@@ -925,17 +926,8 @@ define([
         });
 
         $postStatusActions.on('click', function (e) {
-            var saveDescriptionBoolean;
-
-            if (isOpenDescriptionEdit()) {
-                saveDescriptionBoolean = window.confirm('A edição da descrição não foi salva. Deseja continuar?');
-
-                if (!saveDescriptionBoolean) {
-                    return;
-                }
-            }
-
             lastUpdateStatusCall = updatePostItem('status', e.target.getAttribute('data-status'));
+
 
             lastUpdateStatusCall.done(function (response) {
                 var status = response.status;
@@ -957,6 +949,18 @@ define([
                     $alertAdEnd.addClass('hidden');
                 }
 
+                if (status === 'active') {
+                    $mainPublishAdButton.addClass('invisible');
+                } else {
+                    $mainPublishAdButton.removeClass('invisible');
+                }
             });
+        });
+
+        $mainPublishAdButton.on('click', function () {
+            if (isOpenDescriptionEdit()) {
+                saveDescriptionEdit();
+            }
+            $postStatusActions.closest('[data-status="active"]').click();
         });
     });
