@@ -13,6 +13,6 @@ trait Ml_Model_Db_Table_History
             . $this->_dbAdapter->quoteTableAs($this->_dbTableName)
             . "WHERE id = :id";
 
-        $this->_dbAdapter->query($historySql, array("id" => $id));
+        $this->_dbAdapter->query($historySql, ["id" => $id]);
     }
 }
