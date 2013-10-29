@@ -62,8 +62,6 @@ module.exports = function (url, elastic) {
                     suggestions = [],
                     suggestionPos;
 
-                response.writeHead(200, {'Content-Type': 'application/json'});
-
                 if (requestUrl.query.suggestion !== undefined) {
                     if (searchResponse.facets !== undefined &&
                             searchResponse.facets.title_suggestions !== undefined &&
@@ -80,10 +78,13 @@ module.exports = function (url, elastic) {
                     } else {
                         response.writeHead(404, {'Content-Type': 'text/plain'});
                         response.end('Missing data for the suggestions response.');
+                        return;
                     }
                 } else {
                     result = searchResponse;
                 }
+
+                response.writeHead(200, {'Content-Type': 'application/json'});
 
                 resultJson = JSON.stringify(result);
 
