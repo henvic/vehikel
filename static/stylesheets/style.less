@@ -308,6 +308,16 @@ body
     height: 350px;
 }
 
+.aside-similar-offers-wrapper {
+    @media (min-width : 1200px) and (min-height : 700px) {
+        width: 150px;
+        height: 650px;
+        overflow: hidden;
+        position: fixed;
+        border-bottom: 3px solid #f4f4f4;
+    }
+}
+
 .aside-similar-offers {
     padding: 0 0 5px 10px;
     .bw-gradient(#ffffff, 250, 255);
@@ -328,10 +338,9 @@ body
     }
 
     @media (min-width : 1200px) and (min-height : 700px) {
-        position: fixed;
         width: 170px;
         height: 650px;
-        overflow: scroll;
+        overflow: auto;
     }
 }
 
