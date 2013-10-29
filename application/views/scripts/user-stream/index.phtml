@@ -69,7 +69,7 @@ $this->metaOgp = $metaOgp;
                 <div class="btn-group" data-toggle="buttons-checkbox">
                     <a class="btn btn-mini<?= ($status == "active") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>">ativos (<?= $this->escape($amountByStatus["active"]); ?>)</a>
                     <a class="btn btn-mini<?= ($status == "staging") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=staging">pausados (<?= $this->escape($amountByStatus["staging"]); ?>)</a>
-                    <a class="btn btn-mini<?= ($status == "end") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=end">encerrados (<?= $this->escape($amountByStatus["end"]); ?>)</a>
+                    <a class="btn btn-mini<?= ($status == "end") ? " active" : ""; ?>" href="<?= $escapedUserLink ?>?status=end">finalizados (<?= $this->escape($amountByStatus["end"]); ?>)</a>
                 </div>
                 <?php
                 }
