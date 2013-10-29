@@ -84,7 +84,10 @@ module.exports = function (url, elastic) {
                     result = searchResponse;
                 }
 
-                response.writeHead(200, {'Content-Type': 'application/json'});
+                response.writeHead(200, {
+                    'Content-Type': 'application/json',
+                    'Cache-Control' : 'public, max-age=40'
+                });
 
                 resultJson = JSON.stringify(result);
 
