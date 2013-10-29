@@ -48,6 +48,7 @@ define([
             $postStatus = $('#post-status'),
             $postStatusActions = $('.action', $postStatus),
             $alertAdStaging = $('#alert-ad-staging'),
+            $alertAdActive = $('#alert-ad-active'),
             $alertAdEnd = $('#alert-ad-end'),
             $editPostButton = $('#edit-post-button'),
             $galleryManager = $('#gallery-manager'),
@@ -952,8 +953,15 @@ define([
 
                 if (status === 'active') {
                     $mainPublishAdButton.addClass('invisible');
+                    $alertAdActive.removeClass('hidden');
+                    $window.scrollTop(0);
+
+                    setTimeout(function () {
+                        $alertAdActive.addClass('hidden');
+                    }, 1000);
                 } else {
                     $mainPublishAdButton.removeClass('invisible');
+                    $alertAdActive.addClass('hidden');
                 }
             });
         });
