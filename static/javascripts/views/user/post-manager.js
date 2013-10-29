@@ -29,7 +29,8 @@ define([
     ) {
         'use strict';
 
-        var $postProductType = $('#post-product-type'),
+        var $window = $(window),
+            $postProductType = $('#post-product-type'),
             $postProductMake = $('#post-product-make'),
             $postProductModel = $('#post-product-model'),
             $postProductEngine = $('#post-product-engine'),
@@ -141,7 +142,7 @@ define([
         $editPostButton.on('click', function () {
             openPostProductNameEdit();
             openDescriptionEdit();
-            $(window).scrollTop($postProductNameEditingArea.position().top);
+            $window.scrollTop($postProductNameEditingArea.position().top);
         });
 
         vehiclesModel.maskMoney($('#post-product-info #price'));
