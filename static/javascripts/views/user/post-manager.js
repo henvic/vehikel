@@ -317,7 +317,11 @@ define([
 
         $postProductInfoValue.on('focusout', function (e) {
             var name = e.target.parentNode.parentNode.getAttribute('data-name');
-            updateProductInfoField(name);
+
+            //Improve this rule, right now it's silently ignoring errors
+            if (name) {
+                updateProductInfoField(name);
+            }
         });
 
         $postProductInfoValue.on('keydown', function (e) {
