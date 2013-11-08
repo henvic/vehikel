@@ -1,64 +1,128 @@
 <?php
-$title = "Publicar novo anúncio";
-$this->headTitle($title);
-
 $postForm = $this->postForm;
+
+$postForm->type->setDecorators(array('ViewHelper'));
+
+$postForm->engine->setDecorators(array('ViewHelper'));
+
+$postForm->model_year->setDecorators(array('ViewHelper'));
+
+$postForm->price->setDecorators(array('ViewHelper', 'Addon'));
+
+$postForm->km->setDecorators(array('ViewHelper', 'Addon'));
+
+$postForm->fuel->setDecorators(array('ViewHelper', 'Addon'));
+
+$postForm->transmission->setDecorators(array('ViewHelper', 'Addon'));
 
 $postFormErrors = $postForm->getErrors();
 ?>
-&nbsp;
-<div class="container">
-<div class="row">
-<div class="span12">
-<h1><?= $this->escape($title); ?></h1>
-<form id="post-new" method="post">
+<div id="post-product-new-modal" class="modal <?= ($this->isModal) ? " hide fade" : ""; ?>" tabindex="-1" role="dialog">
+    <div class="modal-header">
 <?php
-echo $postForm->type;
+if ($this->isModal) {
 ?>
-<div class="control-group<?= (!empty($postFormErrors["make"])) ? " error" : "" ?>">
-<label for="post-product-make-new">Marca</label>
-<div class="controls">
-<select id="post-product-make-new" class="input-medium" name="make">
-<optgroup label="Marca">
-<option value="">-</option>
-</optgroup>
-</select>
-<?php
-if (!empty($postFormErrors["make"])) {
-?>
-<span class="help-inline">Value is required and can't be empty</span>
+            <button type="button" class="close" data-dismiss="modal"><span class="hidden">close </span>×</button>
 <?php
 }
 ?>
+        <h3>Publicar novo anúncio</h3>
+    </div>
+    <div class="modal-body">
+        <form id="post-product-new" method="post" action="<?= $this->url(array(), "user_post_new"); ?>"
+              class="form-inline">
+            <table class="table">
+                <tr>
+                    <td><label for="post-product-type-new">Veículo</label></td>
+                    <td><?= $postForm->type; ?></td>
+                </tr>
+                <tr>
+                    <td><label for="post-product-make-new">Marca</label></td>
+                    <td>
+                        <select id="post-product-make-new" class="input-medium" name="make">
+                            <optgroup label="Marca">
+                                <option value="">-</option>
+                            </optgroup>
+                        </select>
+                        <?php
+                        if (!empty($postFormErrors["make"])) {
+                            ?>
+                            <span class="help-inline">Value is required and can't be empty</span>
+                        <?php
+                        }
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="post-product-model-new">Modelo</label></td>
+                    <td>
+                        <select id="post-product-model-new" class="input-medium" name="model">
+                            <optgroup label="Modelo">
+                                <option value="">-</option>
+                            </optgroup>
+                        </select>
+                        <?php
+                        if (!empty($postFormErrors["model"])) {
+                            ?>
+                            <span class="help-inline">Value is required and can't be empty</span>
+                        <?php
+                        }
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Motor</td>
+                    <td>
+                        <?= $postForm->engine; ?>
+                        <select name="engine" id="post-product-engine-Car" class="input-mini">
+                            <optgroup label="Motor">
+                                <option value="">-</option>
+                                <?php
+                                for ($engineCc = 0.8; $engineCc <= 6.8; $engineCc += 0.1) {
+                                    $engineCcFormated = number_format($engineCc, 1);
+                                ?>
+                                <option value="<?= $this->escape($engineCcFormated); ?>">
+                                    <?= $this->escape($engineCcFormated); ?>
+                                </option>
+                                <?php
+                                }
+                                ?>
+                            </optgroup>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ano do modelo</td>
+                    <td><?= $postForm->model_year; ?></td>
+                </tr>
+                <tr>
+                    <td>Preço</td>
+                    <td><?= $postForm->price; ?></td>
+                </tr>
+                <tr>
+                    <td>Quilometragem</td>
+                    <td><?= $postForm->km; ?></td>
+                </tr>
+                <tr>
+                    <td>Combustível</td>
+                    <td><?= $postForm->fuel; ?></td>
+                </tr>
+                <tr>
+                    <td>Transmissão</td>
+                    <td><?= $postForm->transmission; ?></td>
+                </tr>
+            </table>
+
+            <?php
+            $postForm->engine->setDecorators(array('ViewHelper', 'Label'));
+            echo $postForm->hash;
+            ?>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+        <button class="btn btn-primary" type="submit" id="post-product-new-next">
+            <i class="icon-forward icon-white"></i> Prosseguir
+        </button>
+    </div>
 </div>
-</div>
-<div class="control-group<?= (!empty($postFormErrors["make"])) ? " error" : "" ?>">
-<label for="post-product-model-new">Modelo</label>
-<div class="controls">
-<select id="post-product-model-new" class="input-medium" name="model">
-<optgroup label="Modelo">
-<option value="">-</option>
-</optgroup>
-</select>
-<?php
-if (!empty($postFormErrors["make"])) {
-?>
-<span class="help-inline">Value is required and can't be empty</span>
-<?php
-}
-?>
-</div>
-</div>
-<?php
-$postForm->engine->setDecorators(array('ViewHelper', 'Label'));
-echo $postForm->engine, $postForm->model_year, $postForm->price, $postForm->hash;
-?>
-<div class="form-actions">
-<button class="btn btn-primary btn-large" type="submit">
-<i class="icon-forward icon-white"></i> Prosseguir
-</button>
-</div><!-- end of .form-actions -->
-</form>
-</div><!-- end of .span12 -->
-</div><!-- end of .row -->
-</div><!-- end of .container -->

@@ -11,7 +11,7 @@ class UserPostManagerController extends Ml_Controller_Action
         $router = Zend_Controller_Front::getInstance()->getRouter();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
-            $this->_helper->viewRenderer("new-xhr");
+            $this->view->isModal = true;
             $this->_helper->layout->disableLayout();
         }
 
@@ -26,7 +26,9 @@ class UserPostManagerController extends Ml_Controller_Action
 
             $data = [];
 
-            $formKeys = array("type", "make", "model", "price", "model_year", "engine");
+            $formKeys = [
+                "type", "make", "model", "price", "model_year", "engine", "km", "fuel", "transmission"
+            ];
 
             foreach ($formKeys as $key) {
                 if (! isset($validatePost[$key])) {

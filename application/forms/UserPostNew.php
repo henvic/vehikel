@@ -79,19 +79,50 @@ class Ml_Form_UserPostNew extends Twitter_Bootstrap_Form_Horizontal
             'class' => 'input-small'
         ));
 
-        $engineCcs = ["" => "-"];
+        $this->addElement('text', 'km', array(
+            'label'      => 'Quilometragem',
+            'required'   => false,
+            'class' => 'input-mini no-spin-button',
+            'pattern' => '[0-9]*',
+            'maxlength' => 7,
+            'append' => 'km'
+        ));
 
-        for ($engineCc = 0.8; $engineCc <= 6.8; $engineCc += 0.1) {
-            $engineCcFormated = number_format($engineCc, 1);
-            $engineCcs[$engineCcFormated] = $engineCcFormated;
-        }
+        $this->addElement('select', 'fuel', array(
+                'required' => false,
+                'label'    => 'Combustível',
+                'multiOptions' => array(
+                    "" => "-",
+                    "flex" => "Flexível",
+                    "gasoline" => "Gasolina",
+                    "ethanol" => "Etanol",
+                    "diesel" => "Diesel",
+                    "other" => "Outro"
+                ),
+                'class' => 'input-small'
+            )
+        );
 
-        $this->addElement('select', 'engine', array(
-            'label' => 'cc',
+        $this->addElement(
+            'select',
+            'transmission',
+            array(
+                'required' => false,
+                'label'    => 'Câmbio',
+                'multiOptions' => array(
+                    "" => "-",
+                    "manual" => "Manual",
+                    "automatic" => "Automático"
+                ),
+                'class' => 'input-small'
+            )
+        );
+
+        $this->addElement('text', 'engine', array(
+            'label' => 'Motor',
             'required' => false,
-            'multiOptions' => ["Motor" => $engineCcs],
             'id' => 'post-product-engine',
-            'class' => 'input-mini'
+            'class' => 'input-mini none'
         ));
 
         $this->addElement('submit', 'submit', array(

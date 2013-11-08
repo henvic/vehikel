@@ -52,9 +52,25 @@ define(['AppParams', 'jquery', 'models/vehicles', 'jquery.maskMoney'], function 
         var $postProductTypeNew = $('#post-product-type-new'),
             $postProductMakeNew = $('#post-product-make-new'),
             $postProductModelNew = $('#post-product-model-new'),
-            $postProductPriceNew = $('#post-product-price-new');
+            $postProductPriceNew = $('#post-product-price-new'),
+            $postProductEngine = $('#post-product-engine'),
+            $postProductEngineCar = $('#post-product-engine-Car');
 
         vehiclesModel.setUp($postProductTypeNew, $postProductMakeNew, $postProductModelNew);
+
+        $postProductEngineCar.on('change', function (e) {
+            $postProductEngine.val($postProductEngineCar.val());
+        });
+
+        $postProductTypeNew.on('change', function (e) {
+            if ($postProductTypeNew.val() === 'car') {
+                $postProductEngine.addClass('none').val('');
+                $postProductEngineCar.removeClass('none').val('');
+            } else {
+                $postProductEngine.removeClass('none').val('');
+                $postProductEngineCar.addClass('none').val('');
+            }
+        });
 
         $postProductPriceNew.maskMoney(
             {
