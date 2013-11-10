@@ -276,6 +276,33 @@ class Ml_Model_Posts
     }
 
     /**
+     * @param $universalId
+     * @return array|bool|false|mixed
+     */
+    public function getByUniversalId($universalId)
+    {
+        $select = $this->_dbTable->select()->where("universal_id = ?", mb_strtoupper($universalId));
+
+        $data = $this->_dbAdapter->fetchRow($select);
+
+        if (is_array($data)) {
+            $picturesSortingOrder = json_decode($data["pictures_sorting_order"], true);
+            unset($data["pictures_sorting_order"]);
+
+            $pictures = $this->_picture->getPictures($data["uid"], $data["id"], Ml_Model_Picture::PICTURE_ACTIVE);
+
+            $sortedPictures = $this->_picture->sortPictures($pictures, $picturesSortingOrder);
+
+            $data["pictures"] = $sortedPictures;
+            $data["equipment"] = json_decode($data["equipment"], true);
+
+            return $data;
+        }
+
+        return false;
+    }
+
+    /**
      * @param $post
      * @return mixed int with version on success, false otherwise
      */
