@@ -60,6 +60,48 @@ class UserPostManagerController extends Ml_Controller_Action
         }
     }
 
+    public function openIdAction()
+    {
+        $params = $this->getRequest()->getParams();
+
+        $people =  $this->_registry->get("sc")->get("people");
+        /** @var $people \Ml_Model_People() */
+
+        $posts =  $this->_registry->get("sc")->get("posts");
+        /** @var $posts \Ml_Model_Posts() */
+
+        $post = $posts->getByUniversalId($params["universal_id"]);
+
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+
+        $this->view->addJsParam("route", "user/open-id");
+
+        if (!$post) {
+            $this->render("open-id-not-found");
+            return;
+        }
+
+        $userInfo = $people->getById($post["uid"]);
+
+        if (! $userInfo) {
+            throw new Exception("User not found for the searched post");
+        }
+
+        if ($this->_auth->getIdentity() != $post["uid"]) {
+            $this->_redirect($router->assemble(
+                    ["username" => $userInfo["username"], "post_id" => $post["id"]], "user_post"), ["exit"]
+            );
+            exit;
+        }
+
+        $this->view->addJsParam("postId", $post["id"]);
+        $this->view->addJsParam("postUid", $userInfo["id"]);
+        $this->view->addJsParam("postUsername", $userInfo["username"]);
+
+        $this->view->userInfo = $userInfo;
+        $this->view->post = $post;
+    }
+
     public function editAction()
     {
         $params = $this->getRequest()->getParams();

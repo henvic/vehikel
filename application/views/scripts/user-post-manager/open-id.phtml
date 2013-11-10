@@ -1,0 +1,94 @@
+<?php
+$translatePosts = $this->translatePosts;
+/** @var $translatePosts \Zend_Translate_Adapter() */
+
+$userInfo = $this->userInfo;
+$post = $this->post;
+
+$unEscapedTitle = $post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"];
+$escapedTitle = $this->escape($unEscapedTitle);
+$this->headTitle($unEscapedTitle, "PREPEND");
+
+$price = '';
+$priceOnInput = '';
+
+$pictureLink = '';
+
+if ($post["price"]) {
+    $price = new Zend_Currency(array("symbol" => "R$ "), "pt_BR");
+    $price->setValue($post["price"] / 100);
+
+    $priceOnInput = "R$ " . number_format($post["price"] / 100, 2, ",", ".");
+}
+
+$km = '';
+
+if ($post["km"]) {
+    $km = number_format($post["km"], 0, ".", ".");
+}
+
+$fuel = '';
+
+if ($post["fuel"]) {
+    $fuel = $translatePosts->translate($post["fuel"]);
+}
+
+$transmission = '';
+
+if ($post["transmission"]) {
+    $transmission = $translatePosts->translate($post["transmission"]);
+}
+
+if (is_array($post["pictures"])) {
+    $amountOfPictures = sizeof($post["pictures"]);
+
+    if ($amountOfPictures >= 1) {
+        $pictureLink = $this->pictureLink($post["pictures"][0], "/600x450");
+    }
+}
+?>
+&nbsp;
+<div class="container">
+    <div class="row">
+        <div class="span6">
+<?php
+if ($pictureLink) {
+?>
+    <img src="<?= $this->escape($pictureLink); ?>"
+         width="600" height="450" alt="imagem do veículo" class="img-polaroid" />
+<?php
+}
+?>
+            <br /><br />
+        </div>
+        <div class="span6">
+            <h1><?= $escapedTitle; ?></h1>
+            <table class="post-product-info table table-hover">
+                <tr>
+                    <td><strong>Preço</strong></td>
+                    <td><?= $this->escape($priceOnInput); ?></td>
+                </tr>
+                <tr>
+                    <td><strong>Ano</strong></td>
+                    <td><?= $this->escape($post["model_year"]); ?></td>
+                </tr>
+                <tr>
+                    <td><strong>km</strong></td>
+                    <td><?= $this->escape($post["km"]); ?></td>
+                </tr>
+                <tr>
+                    <td><strong>Combustível</strong></td>
+                    <td><?= $this->escape($fuel); ?></td>
+                </tr>
+                <tr>
+                    <td><strong>Câmbio</strong></td>
+                    <td><?= $this->escape($transmission); ?></td>
+                </tr>
+            </table>
+            <a href="<?= $this->url(["username" => $userInfo["username"], "post_id" => $post["id"]], "user_post"); ?>"
+               class="btn btn-large btn-primary">Abrir anúncio</a>
+            <button class="btn btn-large btn-danger" id="set-status-end-button"
+                <?= ($post["status"] == Ml_Model_Posts::STATUS_END) ? ' disabled' : '' ?>>Finalizar venda</button>
+        </div>
+    </div><!-- end of .row -->
+</div><!-- end of .container -->

@@ -35,7 +35,7 @@ trait Ml_Controller_People
             }
         }
 
-        if ($route == "user_post_open") {
+        if ($route == "user_post_open" || $route == "user_post_open_id") {
             return true;
         }
 
