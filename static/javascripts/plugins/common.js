@@ -1,16 +1,65 @@
 /*global define */
 /*jslint browser: true */
 
-define(['jquery', 'underscore', 'text!templates/posts/map-modal.html'],
-    function ($, underscore, mapModalTemplate) {
+define(['jquery', 'underscore', 'text!templates/posts/map-modal.html', 'AppParams'],
+    function ($, underscore, mapModalTemplate, AppParams) {
         'use strict';
 
         $(window).ready(function () {
             (function () {
-                var $mapLink = $('#map-link'),
+                var $postOpenVehicleButton,
+                    $openVehicle,
+                    $postProductOpenModal,
+                    $inputOpenVehicle,
+                    $mapLink = $('#map-link'),
                     $mapModal = $('#map-modal'),
                     $mapModalInner,
+                    openVehicleButton,
+                    isOpenVehicleScreenSaved,
                     loadMapModal;
+
+                openVehicleButton = function () {
+                    $postProductOpenModal.modal();
+
+                    $openVehicle.on('submit', function (e) {
+                        e.preventDefault();
+                        window.location = AppParams.webroot + '/open/' + $inputOpenVehicle.val().toLowerCase();
+                    });
+                };
+
+                if (window.location.pathname === AppParams.webroot + '/open') {
+                    $openVehicle = $('#open-vehicle');
+                    $postProductOpenModal = $('#post-product-open-modal');
+                    $inputOpenVehicle = $('#input-open-vehicle');
+
+                    openVehicleButton();
+                } else {
+                    $postOpenVehicleButton = $('#post-open-vehicle-button');
+
+                    $postOpenVehicleButton.on('click', function (e) {
+                        var xhr;
+
+                        e.preventDefault();
+
+                        if (!isOpenVehicleScreenSaved) {
+                            xhr = $.ajax({url: AppParams.webroot + '/open'});
+
+                            xhr.done(function (data) {
+                                $('body').append($(data));
+
+                                $openVehicle = $('#open-vehicle');
+                                $postProductOpenModal = $('#post-product-open-modal');
+                                $inputOpenVehicle = $('#input-open-vehicle');
+
+                                openVehicleButton();
+                                isOpenVehicleScreenSaved = true;
+                            });
+                            return;
+                        }
+
+                        $('#post-product-open-modal').modal();
+                    });
+                }
 
                 loadMapModal = function () {
                     var mapLink = $mapLink.attr('href'),

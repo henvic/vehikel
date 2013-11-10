@@ -52,6 +52,14 @@ class UserPostManagerController extends Ml_Controller_Action
         }
     }
 
+    public function openAction()
+    {
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $this->view->isModal = true;
+            $this->_helper->layout->disableLayout();
+        }
+    }
+
     public function editAction()
     {
         $params = $this->getRequest()->getParams();

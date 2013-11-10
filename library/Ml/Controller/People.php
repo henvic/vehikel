@@ -35,6 +35,10 @@ trait Ml_Controller_People
             }
         }
 
+        if ($route == "user_post_open") {
+            return true;
+        }
+
         $people =  $this->_registry->get("sc")->get("people");
         /** @var $people \Ml_Model_People() */
 
