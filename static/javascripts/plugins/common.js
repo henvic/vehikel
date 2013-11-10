@@ -57,7 +57,7 @@ define(['jquery', 'underscore', 'text!templates/posts/map-modal.html', 'AppParam
                             return;
                         }
 
-                        $('#post-product-open-modal').modal();
+                        $postProductOpenModal.modal();
                     });
                 }
 
