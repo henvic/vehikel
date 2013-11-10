@@ -32,6 +32,10 @@ define(['jquery', 'underscore', 'text!templates/posts/map-modal.html', 'AppParam
                     $postProductOpenModal = $('#post-product-open-modal');
                     $inputOpenVehicle = $('#input-open-vehicle');
 
+                    $postProductOpenModal.on('shown', function () {
+                        $inputOpenVehicle.focus();
+                    });
+
                     openVehicleButton();
                 } else {
                     $postOpenVehicleButton = $('#post-open-vehicle-button');
@@ -50,6 +54,10 @@ define(['jquery', 'underscore', 'text!templates/posts/map-modal.html', 'AppParam
                                 $openVehicle = $('#open-vehicle');
                                 $postProductOpenModal = $('#post-product-open-modal');
                                 $inputOpenVehicle = $('#input-open-vehicle');
+
+                                $postProductOpenModal.on('shown', function () {
+                                    $inputOpenVehicle.focus();
+                                });
 
                                 openVehicleButton();
                                 isOpenVehicleScreenSaved = true;
