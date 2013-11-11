@@ -54,8 +54,10 @@ if (is_array($post["pictures"])) {
 <?php
 if ($pictureLink) {
 ?>
+    <a href="<?= $this->url(["username" => $userInfo["username"], "post_id" => $post["id"]], "user_post"); ?>">
     <img src="<?= $this->escape($pictureLink); ?>"
          width="600" height="450" alt="imagem do veículo" class="img-polaroid" />
+    </a>
 <?php
 }
 ?>
@@ -74,7 +76,7 @@ if ($pictureLink) {
                 </tr>
                 <tr>
                     <td><strong>km</strong></td>
-                    <td><?= $this->escape($post["km"]); ?></td>
+                    <td><?= $this->escape($km); ?></td>
                 </tr>
                 <tr>
                     <td><strong>Combustível</strong></td>

@@ -19,7 +19,7 @@ define(['AppParams', 'jquery'], function (AppParams, $) {
             }
         });
 
-        xhr.complete(function () {
+        xhr.fail(function () {
             $setStatusEndButton.attr('disabled', false);
         });
 
