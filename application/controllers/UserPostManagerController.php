@@ -70,6 +70,10 @@ class UserPostManagerController extends Ml_Controller_Action
         $posts =  $this->_registry->get("sc")->get("posts");
         /** @var $posts \Ml_Model_Posts() */
 
+        if (! $this->_auth->hasIdentity()) {
+            return $this->_forward("redirect", "login");
+        }
+
         $post = $posts->getByUniversalId($params["universal_id"]);
 
         $router = Zend_Controller_Front::getInstance()->getRouter();
