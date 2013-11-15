@@ -89,8 +89,19 @@ if ($pictureLink) {
             </table>
             <a href="<?= $this->url(["username" => $userInfo["username"], "post_id" => $post["id"]], "user_post"); ?>"
                class="btn btn-large btn-primary">Abrir anúncio</a>
-            <button class="btn btn-large btn-danger" id="set-status-end-button"
-                <?= ($post["status"] == Ml_Model_Posts::STATUS_END) ? ' disabled' : '' ?>>Finalizar venda</button>
+<?php
+if ($post["status"] == Ml_Model_Posts::STATUS_END) {
+?>
+            <strong>Veículo vendido</strong>
+<?php
+}
+
+if ($post["status"] != Ml_Model_Posts::STATUS_END) {
+?>
+            <button class="btn btn-large btn-danger" id="set-status-end-button">Finalizar</button>
+<?php
+}
+?>
         </div>
     </div><!-- end of .row -->
 </div><!-- end of .container -->
