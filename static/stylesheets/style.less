@@ -35,7 +35,7 @@ form input[type="file"]
 
 html
 {
-    background: @greenT;
+    background: @redT;
 }
 
 body
@@ -365,27 +365,13 @@ body
 }
 
 .footer {
-    padding-top: 20px;
-    margin-top: 120px;
+    width: 100%;
     font-size: 75%;
-    background: @greenT;
-    img {
-        padding: 4px;
-        background: #fff;
-        .rounded(3px)
-    }
-	a {
+    background: @redT;
+    padding-top: 10px;
+    position: absolute;
+    a {
         color: @footerLinks;
-        &:active, &:hover {
-            color: #777;
-        }
-    }
-}
-
-@media (max-width : 767px) {
-    .footer {
-        margin-left: -20px;
-        padding-right: 40px;
     }
 }
 

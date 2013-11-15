@@ -97,16 +97,7 @@ if (is_array($metaOgp)) {
 </div><!-- end of .main-container-area -->
 <div class="containers-on-bottom">
 <footer class="footer">
-<div class="container">
-  <div class="row">
-    <div class="span3 hidden-phone">
-      <p><a href="http://www.twitter.com/<?php
-      echo $this->escape($config['services']['twitter']['username']); ?>" class="new-window"><img src="<?php
-echo $this->staticVersion("/images/follow_bird_us-b.png");
-?>" alt="Follow us on Twitter" /></a></p>
-    </div><!-- end of div -->
-    <div class="span9">
-        <ul class="nav nav-pills">
+        <ul class="unstyled inline">
             <li><a href="<?php echo $this->url(array(), "index"); ?>">Página inicial</a></li>
             <li><a href="<?php echo $this->staticUrl("/about") ?>">Sobre</a></li>
             <li><a href="<?php echo $this->url(array(), "account"); ?>">Sua conta</a></li>
@@ -114,9 +105,6 @@ echo $this->staticVersion("/images/follow_bird_us-b.png");
             <li><a href="<?php echo $this->staticUrl("/tos") ?>">Termos de Serviço</a></li>
             <li><a href="<?php echo $this->staticUrl("/privacy") ?>">Política de Privacidade</a></li>
         </ul>
-    </div>
-  </div><!-- end of div.row -->
-</div>
 </footer>
 </div>
 </div><!-- .containers-on-bottom -->
