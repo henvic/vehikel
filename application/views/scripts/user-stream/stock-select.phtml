@@ -29,6 +29,7 @@ $makes = array_map(function ($eachMake) {
     return $eachMake;
 }, $makes);
 ?>
+<label for="stock-select" class="hidden">Filtrar:</label>
 <select id="stock-select" class="stock-select span2">
     <option value="">Todos veículos (<?= $this->escape($paginator->getTotalItemCount()); ?>)</option>
 <?php

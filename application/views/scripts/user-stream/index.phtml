@@ -46,23 +46,6 @@ $this->metaOgp = $metaOgp;
         &nbsp;
         <div class="row">
             <div class="span8">
-                <span class="muted"><?php
-                if (! $paginator->getTotalItemCount()) {
-                    echo 'Zero';
-                } else {
-                    $defaultPostsPerPage = $paginator->getDefaultItemCountPerPage();
-                    $page = $paginator->getCurrentPageNumber();
-                    $postsInThisPage = $paginator->getCurrentItemCount();
-                    $totalPosts = $paginator->getTotalItemCount();
-
-                    $firstShowedPostItem = (($page - 1) * $defaultPostsPerPage) + 1;
-                    $lastShowedPostItem = $firstShowedPostItem + $postsInThisPage - 1;
-
-                    echo $firstShowedPostItem, '-', $lastShowedPostItem, ' de ', $this->escape($totalPosts);
-                }
-                ?>
-                 resultados</span>
-                <?= $this->render("user-stream/stock-select.phtml"); ?>
                 <?php
                 if ($editable) {
                 ?>
@@ -116,6 +99,24 @@ $this->metaOgp = $metaOgp;
                 <?php
                 echo $this->paginationControl($paginator, null, "user-stream/pagination.phtml");
                 ?>
+                <?= $this->render("user-stream/stock-select.phtml"); ?>
+                <span class="muted"><?php
+                    if (! $paginator->getTotalItemCount()) {
+                        echo 'Zero';
+                    } else {
+                        $defaultPostsPerPage = $paginator->getDefaultItemCountPerPage();
+                        $page = $paginator->getCurrentPageNumber();
+                        $postsInThisPage = $paginator->getCurrentItemCount();
+                        $totalPosts = $paginator->getTotalItemCount();
+
+                        $firstShowedPostItem = (($page - 1) * $defaultPostsPerPage) + 1;
+                        $lastShowedPostItem = $firstShowedPostItem + $postsInThisPage - 1;
+
+                        echo $firstShowedPostItem, '-', $lastShowedPostItem, ' de ', $this->escape($totalPosts);
+                    }
+                    ?>
+                    resultados</span>
+                <br />&nbsp;
             </div><!-- end of .span10 -->
     </div><!-- end of .span10 -->
 </div><!-- end of .row -->
