@@ -155,8 +155,8 @@ install() {
   https://nodeload.github.com/Emagister/zend-form-decorators-bootstrap/tarball/0.1.3
 
   echo "Downloading HTML Purifier (standalone version)"
-  curl -o htmlpurifier-4.4.0-standalone.tar.gz -O \
-  http://htmlpurifier.org/releases/htmlpurifier-4.4.0-standalone.tar.gz
+  curl -o htmlpurifier-4.5.0-standalone.tar.gz -O \
+  http://htmlpurifier.org/releases/htmlpurifier-4.5.0-standalone.tar.gz
 
   echo "Downloading oauth-php"
   curl -o oauth-php-175.tar.gz -O http://oauth-php.googlecode.com/files/oauth-php-175.tar.gz
@@ -188,9 +188,9 @@ install() {
   rm -r Emagister-zend-form-decorators-bootstrap-78f94a6
   rm twitter.bootstrap.tar.gz
 
-  tar xzf htmlpurifier-4.4.0-standalone.tar.gz
-  mv htmlpurifier-4.4.0-standalone htmlpurifier-standalone
-  rm htmlpurifier-4.4.0-standalone.tar.gz
+  tar xzf htmlpurifier-4.5.0-standalone.tar.gz
+  mv htmlpurifier-4.5.0-standalone htmlpurifier-standalone
+  rm htmlpurifier-4.5.0-standalone.tar.gz
 
   tar xzf oauth-php-175.tar.gz
   rm oauth-php-175.tar.gz
