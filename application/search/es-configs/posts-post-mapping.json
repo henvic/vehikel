@@ -34,9 +34,6 @@
             "id" : {
                 "type" : "long"
             },
-            "universal_id" : {
-                "type" : "string"
-            },
             "km" : {
                 "type" : "integer"
             },

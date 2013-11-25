@@ -74,7 +74,7 @@ class UserPostManagerController extends Ml_Controller_Action
             return $this->_forward("redirect", "login");
         }
 
-        $post = $posts->getByUniversalId($params["universal_id"]);
+        $post = $posts->getById($params["id"]);
 
         $router = Zend_Controller_Front::getInstance()->getRouter();
 

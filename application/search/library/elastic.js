@@ -338,7 +338,6 @@ module.exports = function (util, events, http, settings) {
 
             requestData.fields = [
                 'id',
-                'universal_id',
                 'title',
                 'price',
                 'year',

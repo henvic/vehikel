@@ -129,7 +129,6 @@ CREATE TABLE `pictures` (
 
 CREATE TABLE `posts` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `universal_id` varchar(20) NOT NULL DEFAULT '',
   `uid` bigint(20) unsigned NOT NULL,
   `creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `name` varchar(30) NOT NULL DEFAULT '',
@@ -153,7 +152,6 @@ CREATE TABLE `posts` (
   `description` text NOT NULL,
   `description_html_escaped` text NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `universal_id` (`universal_id`),
   KEY `uid` (`uid`),
   KEY `type` (`type`),
   KEY `price` (`price`),
@@ -169,7 +167,6 @@ CREATE TABLE `posts` (
 CREATE TABLE `posts_history` (
   `history_id` char(36) NOT NULL DEFAULT '',
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `universal_id` varchar(20) NOT NULL DEFAULT '',
   `uid` bigint(20) unsigned NOT NULL,
   `creation` timestamp NULL DEFAULT NULL,
   `name` varchar(30) NOT NULL DEFAULT '',

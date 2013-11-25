@@ -37,7 +37,7 @@ $picture = $postsPictures[$post["id"]][0];
 <div class="span4">
 <a href="<?= $escapedPostLink; ?>">
 <?= $this->escape($post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"]); ?></a>
- <span class="muted">#<?= $this->escape($post["universal_id"]); ?></span><br />
+ <span class="muted">#<?= $this->escape($post["id"]); ?></span><br />
 <?= $this->escape($post["model_year"]); ?>
 <?php
 if ($post["km"] != "") {

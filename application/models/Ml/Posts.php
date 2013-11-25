@@ -102,15 +102,6 @@ class Ml_Model_Posts
         $this->_picture = $picture;
     }
 
-    public function getUniversalId($uid, $postId)
-    {
-        return mb_strtoupper(
-            $this->_numbers->base58Encode($uid) .
-                "-" .
-                $this->_numbers->base58Encode($postId)
-        );
-    }
-
     /**
      * @param $post
      * @return array
@@ -119,7 +110,6 @@ class Ml_Model_Posts
     {
         $content = [
             "id" => (int) $post["id"],
-            "universal_id" => $post["universal_id"],
             "creation" => $post["creation"],
             "title" => $post["make"] . " " . $post["model"] . " " . $post["engine"] . " " . $post["name"],
             "name" => $post["name"],
@@ -276,33 +266,6 @@ class Ml_Model_Posts
     }
 
     /**
-     * @param $universalId
-     * @return array|bool|false|mixed
-     */
-    public function getByUniversalId($universalId)
-    {
-        $select = $this->_dbTable->select()->where("universal_id = ?", mb_strtoupper($universalId));
-
-        $data = $this->_dbAdapter->fetchRow($select);
-
-        if (is_array($data)) {
-            $picturesSortingOrder = json_decode($data["pictures_sorting_order"], true);
-            unset($data["pictures_sorting_order"]);
-
-            $pictures = $this->_picture->getPictures($data["uid"], $data["id"], Ml_Model_Picture::PICTURE_ACTIVE);
-
-            $sortedPictures = $this->_picture->sortPictures($pictures, $picturesSortingOrder);
-
-            $data["pictures"] = $sortedPictures;
-            $data["equipment"] = json_decode($data["equipment"], true);
-
-            return $data;
-        }
-
-        return false;
-    }
-
-    /**
      * @param $post
      * @return mixed int with version on success, false otherwise
      */
@@ -352,10 +315,6 @@ class Ml_Model_Posts
             $this->_dbTable->insert($data);
 
             $id = $this->_dbAdapter->lastInsertId();
-
-            $universalIdData = ["universal_id" => $this->getUniversalId($uid, $id)];
-
-            $this->_dbTable->update($universalIdData, $this->_dbAdapter->quoteInto("id = ?", $id));
 
             $this->saveHistorySnapshot($id);
 
