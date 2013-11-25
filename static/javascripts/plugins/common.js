@@ -7,8 +7,7 @@ define(['jquery', 'underscore', 'text!templates/posts/map-modal.html', 'AppParam
 
         $(window).ready(function () {
             (function () {
-                var $postOpenVehicleButton,
-                    $openVehicle,
+                var $openVehicle,
                     $postProductOpenModal,
                     $inputOpenVehicle,
                     $mapLink = $('#map-link'),
@@ -38,34 +37,39 @@ define(['jquery', 'underscore', 'text!templates/posts/map-modal.html', 'AppParam
 
                     openVehicleButton();
                 } else {
-                    $postOpenVehicleButton = $('#post-open-vehicle-button');
-
-                    $postOpenVehicleButton.on('click', function (e) {
-                        var xhr;
-
-                        e.preventDefault();
-
-                        if (!isOpenVehicleScreenSaved) {
-                            xhr = $.ajax({url: AppParams.webroot + '/open'});
-
-                            xhr.done(function (data) {
-                                $('body').append($(data));
-
-                                $openVehicle = $('#open-vehicle');
-                                $postProductOpenModal = $('#post-product-open-modal');
-                                $inputOpenVehicle = $('#input-open-vehicle');
-
-                                $postProductOpenModal.on('shown', function () {
-                                    $inputOpenVehicle.focus();
-                                });
-
-                                openVehicleButton();
-                                isOpenVehicleScreenSaved = true;
-                            });
+                    $(document.documentElement).on('keyup', function (e) {
+                        if (e.target.nodeName.toLowerCase() !== 'body') {
                             return;
                         }
 
-                        $postProductOpenModal.modal();
+                        // L
+                        if (e.keyCode === 76) {
+                            var xhr;
+
+                            e.preventDefault();
+
+                            if (!isOpenVehicleScreenSaved) {
+                                xhr = $.ajax({url: AppParams.webroot + '/open'});
+
+                                xhr.done(function (data) {
+                                    $('body').append($(data));
+
+                                    $openVehicle = $('#open-vehicle');
+                                    $postProductOpenModal = $('#post-product-open-modal');
+                                    $inputOpenVehicle = $('#input-open-vehicle');
+
+                                    $postProductOpenModal.on('shown', function () {
+                                        $inputOpenVehicle.focus();
+                                    });
+
+                                    openVehicleButton();
+                                    isOpenVehicleScreenSaved = true;
+                                });
+                                return;
+                            }
+
+                            $postProductOpenModal.modal();
+                        }
                     });
                 }
 
