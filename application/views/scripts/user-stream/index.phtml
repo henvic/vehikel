@@ -46,6 +46,10 @@ $this->metaOgp = $metaOgp;
         &nbsp;
         <div class="row">
             <div class="span8">
+                <form class="form-inline" method="GET" action="<?= $this->url([], "search"); ?>">
+                    <i class="icon-search"></i>&nbsp;
+                    <input name="q" type="text" class="search-user-stream" placeholder="Buscar nesta loja" />
+                    <input name="u" type="hidden" value="<?= $this->escape($userInfo["username"]); ?>" />
                 <?php
                 if ($editable) {
                 ?>
@@ -57,6 +61,7 @@ $this->metaOgp = $metaOgp;
                 <?php
                 }
                 ?>
+                </form>
             </div>
             <div class="span2">
                 <div class="btn-group search-info" data-toggle="buttons-radio">
