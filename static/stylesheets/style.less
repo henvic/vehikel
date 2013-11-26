@@ -139,14 +139,19 @@ body
 
     .read-more-checkbox ~ .read-more-label::after {
         display: block;
-        width: 140px;
+        width: 15px;
+        height: 15px;
+        margin-top: 15px;
         padding-left: 2px;
-        font-size: 70%;
-        content: "▾";
+        box-sizing: border-box;
+        background: url("../images/arrows.png") no-repeat;
+        background-size: 30px 30px;
+        background-position: top 0 right 0;
+        content: "";
     }
 
     .read-more-checkbox:checked ~ .read-more-label::after {
-        content: "▴";
+        background-position: top 0 left 0;
     }
 }
 
