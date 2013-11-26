@@ -15,6 +15,28 @@ $config = $this->config;
         <li><a href="mailto:henriquevicente@gmail.com">Contato</a></li>
     </ul>
     <img src="<?= $this->staticVersion("/images/map.jpg"); ?>" />
+    <div class="sharing sharing-on-index hidden-phone">
+        <div class="fb-like" data-send="true" data-width="450" data-show-faces="true"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button"
+           data-via="<?= $this->escape($config["services"]["twitter"]["username"]); ?>"
+           data-lang="pt">Tweetar</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];
+                if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";
+                    fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+        </script>
+    </div><!-- end of .sharing -->
+    <p id="partners" class="partners text-center visible-desktop">
+        <img src="<?= $this->staticVersion("/images/partners/via-sul.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/italiana.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/eurovia.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/jac.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/jbs.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/sael.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/tayo.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/toyolex.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/troller.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/caxanga.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/bremen.png"); ?>" /></p>
 </div>
 <div class="span2">
     <form method="GET" action="<?= $this->url([], "search"); ?>">
@@ -63,60 +85,26 @@ Blindado
             <button class="btn">Buscar</button>
         </fieldset>
     </form>
-</div>
-</div>
-<div class="row">
-<div class="offset1 span10">
-<div class="sharing sharing-on-index hidden-phone">
-<div class="fb-like" data-send="true" data-width="450" data-show-faces="true"></div>
-<a href="https://twitter.com/share" class="twitter-share-button"
- data-via="<?= $this->escape($config["services"]["twitter"]["username"]); ?>"
- data-lang="pt">Tweetar</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];
-if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";
-fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-</script>
-</div><!-- end of .sharing -->
-</div>
-</div>
-<div class="row">
-<div class="offset1 span3">
 <?php
 if (! $auth->hasIdentity()) {
 ?>
-<form class="well span2" enctype="application/x-www-form-urlencoded" action="<?= $this->url(array(), "login"); ?>" method="post">
- <strong>Anunciante?</strong>
- <input type="text" class="input-small" placeholder="Email" name="username" required="required">
- <input type="password" class="input-small" placeholder="Password" name="password" required="required">
- <input type="hidden" name="remember_me" value="0" />
- <label class="checkbox">
-  <input type="checkbox" name="remember_me" value="1" /> Relembrar-me
- </label>
- <button type="submit" class="btn">Entrar</button>
- <p><small><a href="<?php echo $this->url(array(), "recover") ?>">Perdeu seu usuário ou senha?</a>
- <br />
-  Não é ainda um anunciante? <a href="<?php echo $this->url(array(), "join"); ?>">Cadastre-se</a></small>
-</p>
-</form>
+    <form class="well span2" enctype="application/x-www-form-urlencoded" action="<?= $this->url(array(), "login"); ?>" method="post">
+        <strong>Anunciante?</strong>
+        <input type="text" class="input-small" placeholder="Email" name="username" required="required">
+        <input type="password" class="input-small" placeholder="Password" name="password" required="required">
+        <input type="hidden" name="remember_me" value="0" />
+        <label class="checkbox">
+            <input type="checkbox" name="remember_me" value="1" /> Relembrar-me
+        </label>
+        <button type="submit" class="btn">Entrar</button>
+        <p><small><a href="<?php echo $this->url(array(), "recover") ?>">Perdeu seu usuário ou senha?</a>
+                <br />
+                Não é ainda um anunciante? <a href="<?php echo $this->url(array(), "join"); ?>">Cadastre-se</a></small>
+        </p>
+    </form>
 <?php
 }
 ?>
-</div><!-- end of .span3 -->
-</div><!-- end of row -->
-<div class="row">
-<div class="offset1 span10 visible-desktop">
-    <p id="partners" class="partners text-center">
-    <img src="<?= $this->staticVersion("/images/partners/via-sul.png"); ?>" />
-    <img src="<?= $this->staticVersion("/images/partners/italiana.png"); ?>" />
-    <img src="<?= $this->staticVersion("/images/partners/eurovia.png"); ?>" />
-    <img src="<?= $this->staticVersion("/images/partners/jac.png"); ?>" />
-    <img src="<?= $this->staticVersion("/images/partners/jbs.png"); ?>" />
-    <img src="<?= $this->staticVersion("/images/partners/sael.png"); ?>" />
-    <img src="<?= $this->staticVersion("/images/partners/tayo.png"); ?>" />
-    <img src="<?= $this->staticVersion("/images/partners/toyolex.png"); ?>" />
-    <img src="<?= $this->staticVersion("/images/partners/troller.png"); ?>" />
-    <img src="<?= $this->staticVersion("/images/partners/caxanga.png"); ?>" />
-    <img src="<?= $this->staticVersion("/images/partners/bremen.png"); ?>" /></p>
 </div>
 </div>
 </div><!-- end of container -->
