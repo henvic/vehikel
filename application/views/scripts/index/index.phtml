@@ -8,12 +8,65 @@ $config = $this->config;
 <div id="index-content">
 <div class="container">
 <div class="row">
-<div class="span12">
+<div class="offset1 span8">
+    <ul class="inline">
+        <li><a href="<?= $this->url([], "user_post_new"); ?>">Anunciar</a></li>
+        <li><a href="#partners">Parceiros</a></li>
+        <li><a href="mailto:henriquevicente@gmail.com">Contato</a></li>
+    </ul>
     <img src="<?= $this->staticVersion("/images/map.jpg"); ?>" />
+</div>
+<div class="span2">
+    <form method="GET" action="<?= $this->url([], "search"); ?>">
+        <fieldset>
+            <legend>Busca avançada</legend>
+            <select id="advanced-search-make" name="make">
+                <option value="">Marca</option>
+            </select>
+            <select id="advanced-search-model" name="model">
+                <option value="">Modelo</option>
+            </select>
+            <input type="text" name="q" />
+            <div class="form-inline">
+                <label>
+                    <input name="transmission" value="automatic" type="checkbox">
+                    <span class="label label-info has">
+                        Automático
+                    </span>
+                </label>
+                <label>
+                    <input name="armor" value="1" type="checkbox">
+<span class="label label-important has">
+Blindado
+</span>
+                </label>
+                <label>
+                    <input name="collection" value="1" type="checkbox">
+<span class="label label-inverse has-not">
+        Colecionador
+</span>
+                </label>
+                <label>
+                    <input name="traction" value="4x4" type="checkbox">
+<span class="label label-warning has">
+4x4
+</span>
+                </label>
+                <label>
+                    <input name="handicapped" value="1" type="checkbox">
+<span class="label label-handicapped has" data-rel="tooltip" data-placement="bottom"
+      title="" data-original-title="para deficientes físicos">
+<i class="icon-vehicle-adapted"></i><span class="hidden"> Adaptado</span>
+</span>
+                </label>
+            </div><!-- end of .form-inline -->
+            <button class="btn">Buscar</button>
+        </fieldset>
+    </form>
 </div>
 </div>
 <div class="row">
-<div class="span12">
+<div class="offset1 span10">
 <div class="sharing sharing-on-index hidden-phone">
 <div class="fb-like" data-send="true" data-width="450" data-show-faces="true"></div>
 <a href="https://twitter.com/share" class="twitter-share-button"
@@ -27,7 +80,7 @@ fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 </div>
 </div>
 <div class="row">
-<div class="span3">
+<div class="offset1 span3">
 <?php
 if (! $auth->hasIdentity()) {
 ?>
