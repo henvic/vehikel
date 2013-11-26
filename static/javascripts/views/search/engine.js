@@ -329,8 +329,23 @@ define(
 
                     $priceInputs.on('keyup', function (e) {
                         if (e.keyCode === 13) {
-                            var priceMin = $priceMinInput.val().match(/[\d]/g).join(''),
-                                priceMax = $priceMaxInput.val().match(/[\d]/g).join('');
+                            var priceMin,
+                                priceMax;
+
+                            priceMin = $priceMinInput.val().match(/[\d]/g);
+                            priceMax = $priceMaxInput.val().match(/[\d]/g);
+
+                            if (priceMin === null) {
+                                priceMin = [];
+                            }
+
+                            if (priceMax === null) {
+                                priceMax = [];
+                            }
+
+                            priceMin = priceMin.join('');
+                            priceMax = priceMax.join('');
+
                             $searchPriceMin.val(priceMin);
                             $searchPriceMax.val(priceMax);
                             search();

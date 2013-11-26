@@ -61,8 +61,19 @@ define(['AppParams', 'jquery', 'underscore', 'models/search', 'text!templates/se
                     linkParamsArray = [];
 
                 if (e.keyCode === 13) {
-                    priceMin = $priceMinInput.val().match(/[\d]/g).join('');
-                    priceMax = $priceMaxInput.val().match(/[\d]/g).join('');
+                    priceMin = $priceMinInput.val().match(/[\d]/g);
+                    priceMax = $priceMaxInput.val().match(/[\d]/g);
+
+                    if (priceMin === null) {
+                        priceMin = [];
+                    }
+
+                    if (priceMax === null) {
+                        priceMax = [];
+                    }
+
+                    priceMin = priceMin.join('');
+                    priceMax = priceMax.join('');
 
                     linkParamsArray.push('q=');
 
