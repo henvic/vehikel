@@ -82,12 +82,6 @@ if (isset($signedUserInfo)) {
             ☰
         </button>
         <ul id="site-menu" class="site-menu dropdown-menu">
-            <li>
-                <a href="<?= $this->url(array(), "user_post_new"); ?>" id="post-new-ad-button">
-                    <i class="icon-pencil"></i> Anunciar
-                </a>
-            </li>
-            <li class="divider-vertical"></li>
 <?php
 if (! isset($signedUserInfo)) {
 ?>
@@ -113,6 +107,12 @@ if (! isset($signedUserInfo)) {
 
 if (isset($signedUserInfo)) {
 ?>
+    <li>
+        <a href="<?= $this->url(array(), "user_post_new"); ?>" id="post-new-ad-button">
+            <i class="icon-pencil"></i> Anunciar
+        </a>
+    </li>
+    <li class="divider-vertical"></li>
                 <li>
                     <a href="<?= $this->url(array("username" => $signedUserInfo['username']), "user_stream_1stpage"); ?>">
 <?= $this->picture($signedUserInfo["picture"], "/20x20"), " Meus anúncios"; ?>
