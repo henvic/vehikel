@@ -88,7 +88,7 @@ Blindado
 <?php
 if (! $auth->hasIdentity()) {
 ?>
-    <form class="well span2" enctype="application/x-www-form-urlencoded" action="<?= $this->url(array(), "login"); ?>" method="post">
+    <form class="well well-no-margin span2" enctype="application/x-www-form-urlencoded" action="<?= $this->url(array(), "login"); ?>" method="post">
         <strong>Anunciante?</strong>
         <input type="text" class="input-small" placeholder="Email" name="username" required="required">
         <input type="password" class="input-small" placeholder="Password" name="password" required="required">
