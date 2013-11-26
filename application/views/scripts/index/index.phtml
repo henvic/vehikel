@@ -42,11 +42,21 @@ $config = $this->config;
     <form method="GET" action="<?= $this->url([], "search"); ?>">
         <fieldset>
             <legend>Busca avançada</legend>
+            <select name="type" id="advanced-search-type">
+                <optgroup label="Veículo">
+                    <option value="car">Carro</option>
+                    <option value="motorcycle">Motocicleta</option>
+                </optgroup>
+            </select>
             <select id="advanced-search-make" name="make">
-                <option value="">Marca</option>
+                <optgroup label="Marca">
+                    <option value="">Marca</option>
+                </optgroup>
             </select>
             <select id="advanced-search-model" name="model">
-                <option value="">Modelo</option>
+                <optgroup label="Modelo">
+                    <option value="">Modelo</option>
+                </optgroup>
             </select>
             <input type="text" name="q" />
             <div class="form-inline">
