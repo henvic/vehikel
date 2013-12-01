@@ -66,7 +66,6 @@ return array(
     "equipment_car_entertainment_cd_player" => "CD player",
     "equipment_car_entertainment_navigation_system" => "Sistema de navegação",
     "equipment_motorcycle_ride_alloy_wheels" => "Rodas de liga leve",
-    "equipment_boat_security_alarm" => "Alarme"
     "equipment_motorcycle_ride_kick_starter" => "Partida à pedal",
     "equipment_motorcycle_ride_electric_starter" => "Partida elétrica",
     "equipment_motorcycle_ride_xenon_headlamps" => "Farol de xenon",
@@ -74,4 +73,5 @@ return array(
     "equipment_motorcycle_safety_abs" => "Freio ABS",
     "equipment_motorcycle_safety_alarm" => "Alarme",
     "equipment_motorcycle_safety_handguard" => "Protetor de mãos",
+    "equipment_boat_safety_alarm" => "Alarme"
 );
