@@ -213,11 +213,13 @@ if ($this->editable) {
             </div><!-- end of post-info-tabs .row -->
             <!-- begin of post-product description .row -->
             <div class="row">
-                <div id="post-product-main-info" class="span4 post-product-main-info-parent">
+                <div class="span4 post-product-main-info-parent">
+                <div class="post-product-main-info" id="post-product-main-info">
                     <?= $this->render("user-post/equipment-list.phtml"); ?>
+                </div>
                     <div class="sharing">
                         <div class="fb-like pull-left" data-href="<?= $escapedPostUriExternal; ?>"
-                             data-send="true" data-layout="button_count" data-show-faces="true"></div>
+                             data-send="true" data-layout="button_count" data-show-faces="false"></div>
                         &nbsp;
                         <a href="https://twitter.com/share" class="twitter-share-button"
                            data-url="<?= $escapedPostUriExternal; ?>"
