@@ -67,4 +67,11 @@ return array(
     "equipment_car_entertainment_navigation_system" => "Sistema de navegação",
     "equipment_motorcycle_ride_alloy_wheels" => "Rodas de liga leve",
     "equipment_boat_security_alarm" => "Alarme"
+    "equipment_motorcycle_ride_kick_starter" => "Partida à pedal",
+    "equipment_motorcycle_ride_electric_starter" => "Partida elétrica",
+    "equipment_motorcycle_ride_xenon_headlamps" => "Farol de xenon",
+    "equipment_motorcycle_safety_disc_break" => "Freio à disco",
+    "equipment_motorcycle_safety_abs" => "Freio ABS",
+    "equipment_motorcycle_safety_alarm" => "Alarme",
+    "equipment_motorcycle_safety_handguard" => "Protetor de mãos",
 );
