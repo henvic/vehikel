@@ -182,7 +182,7 @@ class Ml_Form_UserPostEdit extends Twitter_Bootstrap_Form_Horizontal
         );
 
         $equipment = new Zend_Form_Element_MultiCheckbox('equipment');
-        $equipment->setLabel('Acessórios principais');
+        $equipment->setLabel('Opcionais');
 
         foreach ($this->_equipment as $equipmentGroupKey => $equipmentGroup) {
             foreach ($equipmentGroup as $eachEquipment) {

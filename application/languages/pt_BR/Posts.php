@@ -5,7 +5,7 @@ return array(
     "type" => "Tipo",
     "make" => "Marca",
     "model" => "Modelo",
-    "main_equipment" => "Acessórios principais",
+    "main_equipment" => "Opcionais",
     "car" => "Carro",
     "car_lowercase" => "carro",
     "car_plural" => "Carros",
