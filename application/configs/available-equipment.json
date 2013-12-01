@@ -33,7 +33,16 @@
     },
     "motorcycle" : {
         "ride" : [
-            "alloy_wheels"
+            "alloy_wheels",
+            "kick_starter",
+            "electric_starter",
+            "xenon_headlamps"
+        ],
+        "safety" : [
+            "disc_break",
+            "abs",
+            "alarm",
+            "handguard"
         ]
     },
     "boat" : {
