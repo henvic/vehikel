@@ -104,12 +104,12 @@ if (! $auth->hasIdentity()) {
         <input type="password" class="input-small" placeholder="Password" name="password" required="required">
         <input type="hidden" name="remember_me" value="0" />
         <label class="checkbox">
-            <input type="checkbox" name="remember_me" value="1" /> Relembrar-me
+            <input type="checkbox" name="remember_me" value="1" /> Continuar conectado
         </label>
         <button type="submit" class="btn">Entrar</button>
-        <p><small><a href="<?php echo $this->url(array(), "recover") ?>">Perdeu seu usuário ou senha?</a>
+        <p><small><a href="<?php echo $this->url(array(), "recover") ?>">Esqueceu sua senha?</a>
                 <br />
-                Não é ainda um anunciante? <a href="<?php echo $this->url(array(), "join"); ?>">Cadastre-se</a></small>
+                <a href="<?php echo $this->url(array(), "join"); ?>">Criar uma conta</a></small>
         </p>
     </form>
 <?php

@@ -1,14 +1,14 @@
 <?php
 $registry = Zend_Registry::getInstance();
 $config = $registry->get("config");
-$this->headTitle("Cadastre-se em " . $config['applicationname'], "SET");
+$this->headTitle("Criar uma conta em " . $config['applicationname'], "SET");
 $this->signUpForm->getElement("email")->getDecorator("description")->setEscape(false);
 ?>
 &nbsp;
 <div class="container">
   <div class="row">
       <div class="span12">
-          <h1>Cadastre-se</h1>
+          <h1>Criar uma conta</h1>
           <?php echo $this->signUpForm; ?>
       </div>
   </div><!-- end of .row -->

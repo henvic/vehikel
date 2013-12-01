@@ -94,14 +94,14 @@ if (! isset($signedUserInfo)) {
                         <fieldset class="form-inline">
                             <input type="hidden" name="remember_me" value="0" />
                             <label class="checkbox">
-                                <input type="checkbox" name="remember_me" value="1" /> Relembrar-me
+                                <input type="checkbox" name="remember_me" value="1" /> Continuar conectado
                             </label>
                             <button type="submit" class="btn">Entrar</button>
                         </fieldset>
                     </form>
                 </li>
-                <li><a href="<?php echo $this->url(array(), "recover") ?>">Perdeu seu usuário ou senha?</a></li>
-                <li><a href="<?php echo $this->url(array(), "join"); ?>">Cadastre-se</a></li>
+                <li><a href="<?php echo $this->url(array(), "recover") ?>">Esqueceu sua senha?</a></li>
+                <li><a href="<?php echo $this->url(array(), "join"); ?>">Criar uma conta</a></li>
 <?php
 }
 
