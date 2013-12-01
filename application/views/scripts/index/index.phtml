@@ -8,14 +8,38 @@ $config = $this->config;
 <div id="index-content">
 <div class="container">
 <div class="row">
-<div class="offset1 span8">
-    <ul class="inline">
-        <li><a href="<?= $this->url([], "user_post_new"); ?>">Anunciar</a></li>
-        <li><a href="#partners">Parceiros</a></li>
-        <li><a href="mailto:henriquevicente@gmail.com">Contato</a></li>
+<div class="span8">
+    <ul class="inline main-page-options-list">
+        <li><a href="<?= $this->url([], "user_post_new"); ?>" id="post-new-ad-button-on-main-page"><strong>Anunciar</strong></a></li>
+        <li><a href="#partners"><strong>Parceiros</strong></a></li>
+        <li><a href="mailto:henriquevicente@gmail.com"><strong>Contato</strong></a></li>
     </ul>
-    <img src="<?= $this->staticVersion("/images/map.jpg"); ?>" />
-    <div class="sharing sharing-on-index hidden-phone">
+    <div id="myCarousel" class="carousel slide">
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+        </ol>
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+            <div class="active item"><img src="<?= $this->staticVersion("/images/map.jpg"); ?>" /></div>
+            <div class="item"><img src="<?= $this->staticVersion("/images/city-map.jpg"); ?>" /></div>
+        </div>
+        <!-- Carousel nav -->
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div>
+    <p id="partners" class="partners text-center visible-desktop">
+        <img src="<?= $this->staticVersion("/images/partners/via-sul.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/italiana.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/eurovia.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/jac.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/jbs.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/tayo.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/toyolex.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/troller.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/caxanga.png"); ?>" />
+        <img src="<?= $this->staticVersion("/images/partners/bremen.png"); ?>" /></p>
+    <?php /*<div class="sharing sharing-on-index">
         <div class="fb-like" data-send="true" data-width="450" data-show-faces="true"></div>
         <a href="https://twitter.com/share" class="twitter-share-button"
            data-via="<?= $this->escape($config["services"]["twitter"]["username"]); ?>"
@@ -24,22 +48,10 @@ $config = $this->config;
                 if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";
                     fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
         </script>
-    </div><!-- end of .sharing -->
-    <p id="partners" class="partners text-center visible-desktop">
-        <img src="<?= $this->staticVersion("/images/partners/via-sul.png"); ?>" />
-        <img src="<?= $this->staticVersion("/images/partners/italiana.png"); ?>" />
-        <img src="<?= $this->staticVersion("/images/partners/eurovia.png"); ?>" />
-        <img src="<?= $this->staticVersion("/images/partners/jac.png"); ?>" />
-        <img src="<?= $this->staticVersion("/images/partners/jbs.png"); ?>" />
-        <img src="<?= $this->staticVersion("/images/partners/sael.png"); ?>" />
-        <img src="<?= $this->staticVersion("/images/partners/tayo.png"); ?>" />
-        <img src="<?= $this->staticVersion("/images/partners/toyolex.png"); ?>" />
-        <img src="<?= $this->staticVersion("/images/partners/troller.png"); ?>" />
-        <img src="<?= $this->staticVersion("/images/partners/caxanga.png"); ?>" />
-        <img src="<?= $this->staticVersion("/images/partners/bremen.png"); ?>" /></p>
+    </div><!-- end of .sharing -->*/ ?>
 </div>
 <div class="span2">
-    <form method="GET" action="<?= $this->url([], "search"); ?>" class="advanced-search">
+    <form method="GET" action="<?= $this->url([], "search"); ?>" class="advanced-search hidden">
         <fieldset>
             <legend>Busca avançada</legend>
             <select name="type" id="advanced-search-type">
@@ -98,6 +110,7 @@ Blindado
 <?php
 if (! $auth->hasIdentity()) {
 ?>
+    &nbsp;
     <form class="well well-no-margin span2" enctype="application/x-www-form-urlencoded" action="<?= $this->url(array(), "login"); ?>" method="post">
         <strong>Anunciante?</strong>
         <input type="text" class="input-small" placeholder="Email" name="username" required="required">
