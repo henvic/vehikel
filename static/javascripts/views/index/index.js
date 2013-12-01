@@ -1,7 +1,7 @@
 /*global define, require */
 /*jslint browser: true */
 
-define(['jquery', 'models/vehicles'], function ($, vehiclesModel) {
+define(['AppParams', 'jquery', 'models/vehicles'], function (AppParams, $, vehiclesModel) {
     'use strict';
 
     var $indexContent = $('#index-content'),
@@ -9,6 +9,8 @@ define(['jquery', 'models/vehicles'], function ($, vehiclesModel) {
         $advancedSearchType = $('#advanced-search-type'),
         $advancedSearchMake = $('#advanced-search-make'),
         $advancedSearchModel = $('#advanced-search-model'),
+        $postNewAdButtonOnMainPage = $('#post-new-ad-button-on-main-page'),
+        $postNewAdButton = $('#post-new-ad-button'),
         closeIndexContent;
 
     vehiclesModel.setUp($advancedSearchType, $advancedSearchMake, $advancedSearchModel);
@@ -41,4 +43,11 @@ define(['jquery', 'models/vehicles'], function ($, vehiclesModel) {
     $searchText.one('paste', function () {
         closeIndexContent();
     });
+
+    if (AppParams.selfUid) {
+        $postNewAdButtonOnMainPage.on('click', function (e) {
+            $postNewAdButton.click();
+            e.preventDefault();
+        });
+    }
 });
