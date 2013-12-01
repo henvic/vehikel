@@ -10,7 +10,7 @@
             "electric_windows",
             "sunroof"
         ],
-        "security" : [
+        "safety" : [
             "power_door_locks",
             "alarm",
             "remote_keyless_entry_system",
@@ -37,7 +37,7 @@
         ]
     },
     "boat" : {
-        "security" : [
+        "safety" : [
             "alarm"
         ]
     }
