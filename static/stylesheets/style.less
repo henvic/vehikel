@@ -423,9 +423,8 @@ body
 }
 
 .post-listing-price {
-    font-size: 120%;
+    font-size: 140%;
     font-weight: bold;
-    color: @redT;
     vertical-align: bottom;
 }
 
@@ -794,6 +793,8 @@ input.no-spin-button::-webkit-inner-spin-button {
 }
 
 .post-product-main-info-parent {
+    margin-top: -5px;
+
     @media (min-width : 767px) {
         float: right;
         box-sizing: border-box;
@@ -817,6 +818,11 @@ input.no-spin-button::-webkit-inner-spin-button {
     }
 
     .tr-price {
+        td {
+            border: none;
+            padding-top: 0;
+        }
+
         .name {
             width: 30px;
         }
@@ -830,7 +836,6 @@ input.no-spin-button::-webkit-inner-spin-button {
             margin-left: -154px;
             font-size: 150%;
             font-weight: bold;
-            color: @redT;
         }
     }
 }
