@@ -21,7 +21,7 @@ define(['AppParams', 'jquery', 'underscore', 'models/search', 'text!templates/se
 
         xhr = $.ajax({
             data: formSerialized,
-            url: AppParams.webroot + '/search-engine?facets',
+            url: AppParams.searchEngineCdn + '?facets',
             type: 'GET',
             cache: true
         });

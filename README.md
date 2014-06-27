@@ -118,7 +118,7 @@ For performance and to avoid the trouble of dealing with .htaccess I recommend n
 Note /index.php is hard-coded to return a 404 Not Found to make sure you do the proper thing and to avoid duplicates.
 
 #### Search engine
-Set the entry-point */search-engine* to the search service with a reverse proxy.
+Set the search entry-point on the configuration file.
 
 #### Static assets
 Set the static/ directory to the entry-point */static/**.

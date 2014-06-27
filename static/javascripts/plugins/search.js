@@ -144,7 +144,7 @@ define(['AppParams', 'jquery', 'underscore'],
 
                 lastAutoCompleteXhr = $.ajax({
                     data: requestData,
-                    url: AppParams.webroot + '/search-engine?suggestion=true',
+                    url: AppParams.searchEngineCdn + '?suggestion=true',
                     cache: true,
                     type: 'GET',
                     success: function (result) {

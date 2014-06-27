@@ -28,6 +28,8 @@ $this->addJsParam("cdn", $config['cdn']);
 
 $this->addJsParam("imagesCdn", $config['services']['thumbor']['cdn']);
 
+$this->addJsParam("searchEngineCdn", $config['services']['search']['cdn']);
+
 $this->headLink()
 ->appendStylesheet($this->staticVersion("/vendor/bootstrap/css/bootstrap.css"))
 ->appendStylesheet($this->staticVersion("/vendor/bootstrap/css/bootstrap-responsive.css"))
